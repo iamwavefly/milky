@@ -1,0 +1,60 @@
+import React, { useEffect } from "react";
+import "@/styles/globals.scss";
+import theme from "@/theme/mui";
+import { ThemeProvider } from "@mui/material";
+import type { AppProps } from "next/app";
+import { wrapper } from "../store/store";
+import "slick-carousel/slick/slick.scss";
+import "slick-carousel/slick/slick-theme.scss";
+import ProtectRoutes from "@/middleware/protectRoutes";
+import useFetch from "@/hooks/useFetch";
+import baseUrl from "@/middleware/baseUrl";
+import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { setUserState } from "@/store/authSlice";
+import AOS from "aos";
+import "aos/dist/aos.css";
+import "../styles/colors.scss";
+
+function App({ Component, pageProps }: AppProps) {
+  const token = Cookies.get("token");
+  // user profile req
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/me`,
+    "get"
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    AOS.init({
+      once: false,
+      mirror: false,
+    });
+  }, []);
+
+  useEffect(() => {
+    const fetchUserProfile = () => {
+      handleSubmit();
+    };
+    token && fetchUserProfile();
+  }, [token]);
+
+  useEffect(() => {
+    if (data?.user) {
+      dispatch(setUserState(data?.user));
+    }
+  }, [data]);
+
+  return (
+    <>
+      <ThemeProvider theme={theme}>
+        <ProtectRoutes>
+          <Component {...pageProps} />
+        </ProtectRoutes>
+      </ThemeProvider>
+    </>
+  );
+}
+
+export default wrapper.withRedux(App);
