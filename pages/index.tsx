@@ -64,11 +64,11 @@ export default function Index() {
           Log In
         </Button>
         <Stack width="100%" direction="row" spacing="28px" alignItems="center">
-          <Divider />
+          <Divider sx={{ flex: 1 }} />
           <Typography fontSize="14px" fontWeight={500} lineHeight="20px">
             or
           </Typography>
-          <Divider />
+          <Divider sx={{ flex: 1 }} />
         </Stack>
         <Button
           onClick={() => Router.push("/signup")}
