@@ -84,11 +84,11 @@ export default function Index() {
           Next
         </Button>
         <Stack width="100%" direction="row" spacing="28px" alignItems="center">
-          <Divider />
+          <Divider sx={{ flex: 1 }} />
           <Typography fontSize="14px" fontWeight={500} lineHeight="20px">
             or
           </Typography>
-          <Divider />
+          <Divider sx={{ flex: 1 }} />
         </Stack>
         <Button onClick={() => Router.push("/")} variant="outlined" fullWidth>
           Log In to your account

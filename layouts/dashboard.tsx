@@ -3,11 +3,13 @@ import { Avatar, Box, IconButton, Stack, Typography } from "@mui/material";
 import Logo from "../public/images/icon.svg";
 import ArrowIcon from "../public/images/arrow.svg";
 import NotificationIcon from "../public/images/notification-active.svg";
+import Drawal from "@/components/drawal/Drawal";
 import Head from "next/head";
 import Styles from "./dashboard.module.scss";
 import routes from "@/configs/routes";
 import MenuIcon from "remixicon-react/Menu2LineIcon";
 import { faker } from "@faker-js/faker";
+import Router, { useRouter } from "next/router";
 
 interface Props {
   children?: ReactNode;
@@ -15,7 +17,7 @@ interface Props {
 }
 
 const Dashboard = ({ children, title }: Props) => {
-  const [showSidebar, setShowSidebar] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(true);
 
   const toggleMenu = () => {
     setShowSidebar((prev) => !prev);
@@ -24,15 +26,16 @@ const Dashboard = ({ children, title }: Props) => {
   useEffect(() => {
     localStorage.setItem("sidebar", showSidebar ? "open" : "close");
     const isSidebarOpen = localStorage.getItem("sidebar");
-    console.log({ isSidebarOpen });
   }, [showSidebar]);
 
   useLayoutEffect(() => {
     const isSidebarOpen = localStorage.getItem("sidebar");
-    isSidebarOpen !== null &&
+    isSidebarOpen === "close" &&
       isSidebarOpen !== undefined &&
-      setShowSidebar(isSidebarOpen === "open" ? true : false);
+      setShowSidebar(false);
   }, []);
+
+  const { pathname } = useRouter();
 
   return (
     <>
@@ -110,7 +113,11 @@ const Dashboard = ({ children, title }: Props) => {
           <nav className={Styles.navigations}>
             <ul>
               {routes?.map(({ id, Icon, link, name, func, nest }) => (
-                <li key={id}>
+                <li
+                  key={id}
+                  className={pathname.includes(link) ? Styles.active : ""}
+                  onClick={() => Router.push(link)}
+                >
                   <Icon size={18} color="rgba(38, 43, 64, 0.8)" />
                   <Typography
                     fontWeight={500}
@@ -126,6 +133,7 @@ const Dashboard = ({ children, title }: Props) => {
             </ul>
           </nav>
         </Stack>
+        {/* header */}
         <Stack
           className={Styles.topbar}
           direction="row"
@@ -145,7 +153,10 @@ const Dashboard = ({ children, title }: Props) => {
             />
           </Stack>
         </Stack>
-        <Stack className={Styles.content}>{children}</Stack>
+        <Stack className={Styles.content}>
+          <Drawal />
+          <Box>{children}</Box>
+        </Stack>
       </Stack>
     </>
   );

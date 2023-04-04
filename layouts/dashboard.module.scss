@@ -5,6 +5,9 @@
   grid-template-rows: 60px 1fr;
 }
 .sidebar {
+  position: sticky;
+  left: 0;
+  top: 0;
   grid-column: 1 / 2;
   grid-row: 1 / -1;
   background-color: #fff;
@@ -32,6 +35,9 @@
   }
 }
 .topbar {
+  position: sticky;
+  top: 0;
+  left: 0;
   width: 100%;
   border-bottom: 1px solid #dde0e7;
   background-color: #fff;
@@ -39,6 +45,7 @@
 }
 .content {
   background-color: #f7f9fc;
+  overflow: auto;
 }
 
 .navigations {
@@ -74,8 +81,15 @@
       &:last-child {
         margin-top: 10px;
       }
+      &.active,
       &:hover {
         background-color: #f3f3f9;
+        & path {
+          fill: #2e3192;
+        }
+        & > a {
+          color: #2e3192;
+        }
       }
     }
   }

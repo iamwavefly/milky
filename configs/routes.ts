@@ -15,7 +15,7 @@ const routes = [
   {
     id: 1,
     name: "Get Started",
-    link: "/overview",
+    link: "/onboarding",
     Icon: RestartIcon,
   },
   {

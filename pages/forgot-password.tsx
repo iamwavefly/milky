@@ -1,14 +1,5 @@
 import Onboarding from "@/layouts/onboarding";
-import {
-  Box,
-  Button,
-  Divider,
-  IconButton,
-  InputAdornment,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import Link from "next/link";
 import { useState } from "react";
 import Logo from "../public/images/logo.svg";

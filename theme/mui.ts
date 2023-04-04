@@ -266,6 +266,11 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           padding: 0,
+          color: "#B7B8BF",
+          "& svg": {
+            width: "20px",
+            height: "20px",
+          },
         },
       },
     },

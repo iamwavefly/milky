@@ -1,8 +1,6 @@
 import Onboarding from "@/layouts/onboarding";
 import {
-  Box,
   Button,
-  Divider,
   IconButton,
   InputAdornment,
   Stack,

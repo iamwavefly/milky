@@ -1,4 +1,10 @@
-import BusinessLogo from "../../public/assets/icons/business-logo.svg";
+import BankDetails from "@/components/setup/BankDetails";
+import ContactInformation from "@/components/setup/ContactInformation";
+import BusinessRegistration from "@/components/setup/BusinessRegistration";
+import InformationBusiness from "@/components/setup/BusinessInformation";
+import BusinessInformation from "@/components/setup/BusinessInformation";
+import Legal from "@/components/setup/Legal";
+import PersonalInformation from "@/components/setup/PersonalInformation";
 
 export const merchants = {
   store: [
@@ -248,7 +254,6 @@ export const merchants = {
       key: "logo",
       name: "Business logo",
       variant: "img",
-      value: BusinessLogo(),
     },
   ],
   bank: [
@@ -357,3 +362,94 @@ export const settlements = {
     },
   ],
 };
+
+// account setup
+export const accountRegisterSetup = [
+  {
+    id: 1,
+    title: "Verify your email address",
+    desc: "Click on the verification link sent to your email address. You can resend the link if you did not get it.",
+  },
+  {
+    id: 2,
+    title: "Contact Information",
+    desc: "Please provide details for a contact person if we need to get in touch.",
+    Component: ContactInformation,
+    drawalTitle: "Contact Information",
+  },
+  {
+    id: 3,
+    title: "Business Registration (KYC)",
+    desc: "Please provide your business’ registration documents.",
+    Component: BusinessRegistration,
+    drawalTitle: "Business Registration",
+  },
+  {
+    id: 4,
+    title: "Business Information",
+    Component: BusinessInformation,
+    drawalTitle: "Business Information",
+    desc: "Please provide a few details to help us verify your identity.",
+  },
+  {
+    id: 5,
+    title: "Bank Details",
+    desc: "Please provide bank details of your preferred settlement account.",
+    Component: BankDetails,
+    drawalTitle: "Bank Details",
+  },
+  {
+    id: 6,
+    title: "Terms and Conditions",
+    desc: "Read and agree to our terms and conditions of use.",
+    Component: Legal,
+    drawalTitle: "Terms and Conditions",
+  },
+  {
+    id: 7,
+    title: "Take dashboard tour (optional)",
+    desc: "Learn about the awesome things that you can do on your new dashboard.",
+  },
+];
+
+// account setup
+export const accountPersonalSetup = [
+  {
+    id: 1,
+    title: "Verify your email address",
+    desc: "Click on the verification link sent to your email address. You can resend the link if you did not get it.",
+  },
+  {
+    id: 2,
+    title: "Personal Information",
+    desc: "Please provide a few details to help us verify your identity.",
+    Component: PersonalInformation,
+    drawalTitle: "Personal Information",
+  },
+  {
+    id: 3,
+    title: "Business Information",
+    Component: BusinessInformation,
+    drawalTitle: "Business Information",
+    desc: "Please provide a few details to help us verify your identity.",
+  },
+  {
+    id: 4,
+    title: "Bank Details",
+    desc: "Please provide bank details of your preferred settlement account.",
+    Component: BankDetails,
+    drawalTitle: "Bank Details",
+  },
+  {
+    id: 5,
+    title: "Terms and Conditions",
+    desc: "Read and agree to our terms and conditions of use.",
+    Component: Legal,
+    drawalTitle: "Terms and Conditions",
+  },
+  {
+    id: 6,
+    title: "Take dashboard tour (optional)",
+    desc: "Learn about the awesome things that you can do on your new dashboard.",
+  },
+];
