@@ -1,0 +1,52 @@
+
+
+.rejected,
+.approved,
+.in-review,
+.processing,
+.completed,
+.decline,
+.due,
+.pending-review {
+  align-items: center;
+  padding: 6px 12px;
+  gap: 8px;
+  width: 77px;
+  height: 30px;
+  background: rgba(255, 194, 191, 0.15);
+  // text
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 18px;
+  color: #ea5851;
+}
+.approved {
+  color: #097122;
+  background-color: rgba(0, 128, 55, 0.05);
+}
+.pending-review {
+  color: #cd8a0a;
+  background-color: rgba(184, 123, 8, 0.05);
+}
+.in-review {
+  color: #1155d9;
+  background-color: rgba(16, 96, 251, 0.05);
+}
+.processing {
+  color: #B87B08;
+background: rgba(184, 123, 8, 0.05);
+}
+.completed {
+  color: #097122;
+background: rgba(0, 128, 55, 0.05);
+}
+.decline {
+color: #EA5851;
+background: rgba(255, 194, 191, 0.15);
+}
+.due {
+color: #EA5851;
+background: rgba(255, 194, 191, 0.15);
+}
+
+

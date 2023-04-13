@@ -12,7 +12,9 @@ export interface AuthState {
     mobile_number: string;
     status: string;
     role: string;
+    role_id: number;
     permission: null | string;
+    is_email_verified: boolean;
     avatar: string;
     date_created: string;
   };
@@ -28,6 +30,8 @@ const initialState: AuthState = {
     mobile_number: "",
     status: "",
     role: "",
+    role_id: 0,
+    is_email_verified: false,
     permission: null,
     avatar: "",
     date_created: "",

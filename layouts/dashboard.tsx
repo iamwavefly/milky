@@ -10,6 +10,8 @@ import routes from "@/configs/routes";
 import MenuIcon from "remixicon-react/Menu2LineIcon";
 import { faker } from "@faker-js/faker";
 import Router, { useRouter } from "next/router";
+import Link from "next/link";
+import CarretDownIcon from "../public/icons/carret-down.svg";
 
 interface Props {
   children?: ReactNode;
@@ -18,14 +20,26 @@ interface Props {
 
 const Dashboard = ({ children, title }: Props) => {
   const [showSidebar, setShowSidebar] = useState(true);
+  const [openMenuId, setOpenMenuId] = useState(0);
 
   const toggleMenu = () => {
     setShowSidebar((prev) => !prev);
   };
 
+  // nested menu
+  useEffect(() => {
+    openMenuId !== 0 && localStorage.setItem("menu", String(openMenuId));
+  }, [openMenuId]);
+
+  useEffect(() => {
+    const menuId = localStorage.getItem("menu");
+    if (typeof menuId === "string") {
+      return setOpenMenuId(+menuId);
+    }
+  }, [openMenuId]);
+
   useEffect(() => {
     localStorage.setItem("sidebar", showSidebar ? "open" : "close");
-    const isSidebarOpen = localStorage.getItem("sidebar");
   }, [showSidebar]);
 
   useLayoutEffect(() => {
@@ -112,24 +126,55 @@ const Dashboard = ({ children, title }: Props) => {
           {/* navigation */}
           <nav className={Styles.navigations}>
             <ul>
-              {routes?.map(({ id, Icon, link, name, func, nest }) => (
-                <li
-                  key={id}
-                  className={pathname.includes(link) ? Styles.active : ""}
-                  onClick={() => Router.push(link)}
-                >
-                  <Icon size={18} color="rgba(38, 43, 64, 0.8)" />
-                  <Typography
-                    fontWeight={500}
-                    fontSize="14px"
-                    lineHeight="20px"
-                    color="rgba(38, 43, 64, 0.8)"
-                    component="a"
-                  >
-                    {name}
-                  </Typography>
-                </li>
-              ))}
+              {routes?.map(({ link, id, Icon, name, nest, func }) => {
+                return (
+                  <li key={id}>
+                    <Box
+                      className={
+                        pathname.includes(link as string) ? Styles.active : ""
+                      }
+                      onClick={() =>
+                        func
+                          ? func()
+                          : link
+                          ? Router.push(link)
+                          : setOpenMenuId(id)
+                      }
+                      key={id}
+                    >
+                      <Icon />
+                      <Typography component="span">{name}</Typography>
+                      {nest && (
+                        <IconButton
+                          sx={{ position: "absolute", right: "18px" }}
+                        >
+                          <CarretDownIcon />
+                        </IconButton>
+                      )}
+                    </Box>
+                    {nest && (
+                      <ul
+                        className={`${Styles.nested} ${
+                          openMenuId === id ? Styles.active : ""
+                        }`}
+                      >
+                        {nest?.map(({ key, link, name }) => (
+                          <li key={key}>
+                            <Link
+                              className={pathname === link ? Styles.active : ""}
+                              href={link}
+                              key={key}
+                            >
+                              <Box></Box>
+                              <Typography component="span">{name}</Typography>
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </nav>
         </Stack>

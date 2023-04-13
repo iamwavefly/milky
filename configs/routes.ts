@@ -21,13 +21,18 @@ const routes = [
   {
     id: 2,
     name: "Home",
-    link: "/dashboard",
     Icon: HomeIcon,
+    nest: [
+      {
+        key: 1,
+        name: "Dashboard",
+        link: "/dashboard",
+      },
+    ],
   },
   {
-    id: 2,
+    id: 3,
     name: "Business",
-    link: "/business",
     Icon: BriefcaseIcon,
     nest: [
       {
@@ -53,26 +58,52 @@ const routes = [
       {
         key: 4,
         name: "Payment Links",
-        link: "/business/payment",
+        link: "/business/payment-links",
       },
     ],
   },
   {
-    id: 3,
-    name: "Account",
-    link: "/account",
-    Icon: FIleCopyIcon,
-  },
-  {
     id: 4,
-    name: "Balance",
-    link: "/balance",
-    Icon: MoneyBoxIcon,
+    name: "Account",
+    Icon: FIleCopyIcon,
+    nest: [
+      {
+        key: 1,
+        name: "Virtual Account",
+        link: "/account/virtual",
+      },
+      {
+        key: 2,
+        name: "Settlements",
+        link: "/account/settlements",
+      },
+    ],
   },
   {
     id: 5,
+    name: "Balance",
+    Icon: MoneyBoxIcon,
+    nest: [
+      {
+        key: 1,
+        name: "Balance",
+        link: "/balance",
+      },
+      {
+        key: 2,
+        name: "Balance History",
+        link: "/balance/history",
+      },
+      {
+        key: 3,
+        name: "Rolling Reserve History",
+        link: "/balance/history",
+      },
+    ],
+  },
+  {
+    id: 6,
     name: "Payouts",
-    link: "/payouts",
     Icon: BankCardIcon,
     nest: [
       {
@@ -98,25 +129,25 @@ const routes = [
     ],
   },
   {
-    id: 6,
+    id: 7,
     name: "Refunds",
     link: "/refunds",
     Icon: NewspaperIcon,
   },
   {
-    id: 7,
+    id: 8,
     name: "Chargeback",
     link: "/chargeback",
     Icon: ArrowLeftRightIcon,
   },
   {
-    id: 8,
+    id: 9,
     name: "Settings",
     link: "/settings",
     Icon: SettingIcon,
   },
   {
-    id: 9,
+    id: 10,
     name: "Sign Out",
     link: "/sign-out",
     func: logoutHandler,

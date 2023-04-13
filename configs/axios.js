@@ -5,13 +5,13 @@
 
 // axios.interceptors.request.use((request) => {
 //   request.headers["type"] = "web";
-//   request.headers["Authorization"] = `bearer ${token}`;
+//   request.headers["Authorization"] = `Bearer ${token}`;
 //   return request;
 // });
 
 // if (token) {
 //   axios.interceptors.request.use((request) => {
-//     request.headers["Authorization"] = `bearer ${token}`;
+//     request.headers["Authorization"] = `Bearer ${token}`;
 //     return request;
 //   });
 // }
@@ -24,7 +24,7 @@
 //   baseURL:
 //     "http://genbank-api-gateway-develop.eba-bzpck5tm.us-west-2.elasticbeanstalk.com",
 //   headers: {
-//     Authorization: `bearer ${token}`,
+//     Authorization: `Bearer ${token}`,
 //   },
 // });
 

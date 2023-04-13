@@ -52,6 +52,11 @@ export const checkNewDevice = (email_address) => {
 export const loginHandler = async (data, fundRefId) => {
   clearCacheHandler();
   const { next } = Router.query;
+
+  const { business_type, verification_status } =
+    data?.subsidiary_details?.subsidiaries?.find((elem) => elem?.is_default) ??
+    {};
+
   localforage.setItem("user", { ...data });
   localforage.setItem("key", data.token.access_token);
 
@@ -62,9 +67,23 @@ export const loginHandler = async (data, fundRefId) => {
 
   axios.defaults.headers.common[
     "Authorization"
-  ] = `bearer ${data.token.access_token}`;
+  ] = `Bearer ${data.token.access_token}`;
 
-  return Router.push("/overview");
+  if (data?.route_to_get_started) {
+    return Router.push("/onboarding");
+  }
+
+  if (business_type && !verification_status) {
+    return Router.push(
+      `/onboarding/setup?type=${
+        business_type?.toLowerCase() === "company"
+          ? "registered"
+          : "unregistered"
+      }`
+    );
+  }
+
+  Router.push("/dashboard");
 };
 
 export const setSignUpToken = async (data, fundRefId) => {
@@ -77,7 +96,7 @@ export const setSignUpToken = async (data, fundRefId) => {
 
   axios.defaults.headers.common[
     "Authorization"
-  ] = `bearer ${data.token.access_token}`;
+  ] = `Bearer ${data.token.access_token}`;
 
   // --- If the logged in email has a pending fund user request recently ---
   // if (fundRefId !== null && fundRefId.length) {
@@ -91,7 +110,7 @@ export const fundingHandler = (data) => {
   if (tempToken) Cookies.remove("token");
   Cookies.set("token", data.token.access_token);
 
-  axios.defaults.headers.common["Authorization"] = `bearer ${
+  axios.defaults.headers.common["Authorization"] = `Bearer ${
     data.token.access_token ?? "just4"
   }`;
 

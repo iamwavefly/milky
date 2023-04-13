@@ -1,7 +1,8 @@
 import React from "react";
 import Dashboard from "@/layouts/dashboard";
-import { Box, IconButton, Stack, Typography } from "@mui/material";
+import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
 import DropdownMenu from "@/components/DropdownMenu";
+import CountChart from "@/components/CountChart";
 
 export default function Index() {
   return (
@@ -29,7 +30,18 @@ export default function Index() {
           padding="25px 39px 25px 32px"
           gap="45px"
           minHeight="105px"
-        ></Stack>
+        >
+          <Box flex={1}>
+            <CountChart />
+          </Box>
+          <Divider />
+          <Box flex={1}>
+            <CountChart />
+          </Box>
+          <Box flex={1}>
+            <CountChart />
+          </Box>
+        </Stack>
       </Box>
     </Dashboard>
   );

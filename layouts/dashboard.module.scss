@@ -25,7 +25,7 @@
     }
     & li {
       padding: 20px;
-      & > a {
+      & > span {
         display: none;
       }
     }
@@ -49,48 +49,156 @@
 }
 
 .navigations {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 10px;
+  position: relative;
+  grid-column: 1 / 2;
+  grid-row: 1 / -1;
+  border-right: 1px solid #e9ebf2;
+  min-width: 250px;
+  overflow-y: auto;
   margin-top: 20px;
-  height: auto;
   & > ul {
-    position: relative;
+    list-style: none;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    width: 100%;
+    height: 100%;
     & > li {
       width: 100%;
-      height: 44px;
-      padding: 0 24px;
+      height: auto;
       display: flex;
-      align-items: center;
-      gap: 15px;
-      cursor: pointer;
-      background-color: #fff;
-      transition: background-color 0.3s;
-      & > a {
-        transition: all 0.2s ease-in;
-        position: relative;
-        opacity: 1;
-        visibility: visible;
-        white-space: nowrap;
+      flex-direction: column;
+      & > div {
+        display: flex;
+        align-items: center;
+        min-height: 44px;
+        cursor: pointer;
+        padding: 0 24px;
+        & path {
+          fill: rgba(38, 43, 64, 0.8);
+        }
+        &.active,
+        &:hover {
+          background: #f3f3f9;
+          & path {
+            fill: #2e3192;
+          }
+          & > span {
+            color: #2e3192;
+          }
+        }
+        & > span {
+          font-size: 14px;
+          color: rgba(38, 43, 64, 0.8);
+          margin-left: 15px;
+        }
       }
       &:last-child {
-        margin-top: 10px;
-      }
-      &.active,
-      &:hover {
-        background-color: #f3f3f9;
-        & path {
-          fill: #2e3192;
-        }
-        & > a {
-          color: #2e3192;
-        }
+        position: sticky;
+        margin-top: auto;
+        background-color: #fff;
+        bottom: 0;
+        left: 0;
+        max-width: 250px;
       }
     }
   }
 }
+
+.nested {
+  width: 100%;
+  height: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease-in;
+  transform: translateY(-10%);
+  &.active {
+    height: auto;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+  & > li {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    & > a {
+      display: flex;
+      align-items: center;
+      min-height: 44px;
+      cursor: pointer;
+      padding: 0 48px;
+      & > div {
+        width: 4px;
+        height: 4px;
+        background: #b9badb;
+        border-radius: 100px;
+      }
+      & path {
+        fill: rgba(38, 43, 64, 0.8);
+      }
+      &.active,
+      &:hover {
+        background: #f3f3f9;
+        & path {
+          fill: #2e3192;
+        }
+        & > span {
+          color: #2e3192;
+        }
+      }
+      & > span {
+        font-size: 14px;
+        color: rgba(38, 43, 64, 0.8);
+        margin-left: 15px;
+      }
+    }
+  }
+}
+
+// .navigations {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-start;
+//   gap: 10px;
+//   margin-top: 20px;
+//   height: auto;
+//   & > ul {
+//     position: relative;
+//     display: flex;
+//     flex-direction: column;
+//     gap: 10px;
+//     width: 100%;
+//     & > li {
+//       width: 100%;
+//       height: 44px;
+//       padding: 0 24px;
+//       display: flex;
+//       align-items: center;
+//       gap: 15px;
+//       cursor: pointer;
+//       background-color: #fff;
+//       transition: background-color 0.3s;
+//       & > a {
+//         transition: all 0.2s ease-in;
+//         position: relative;
+//         opacity: 1;
+//         visibility: visible;
+//         white-space: nowrap;
+//       }
+//       &:last-child {
+//         margin-top: 10px;
+//       }
+//       &.active,
+//       &:hover {
+//         background-color: #f3f3f9;
+//         & path {
+//           fill: #2e3192;
+//         }
+//         & > a {
+//           color: #2e3192;
+//         }
+//       }
+//     }
+//   }
+// }

@@ -7,8 +7,9 @@ import {
 } from "@/middleware/catchErrors";
 import { useDispatch } from "react-redux";
 import { setToastState } from "@/store/appSlice";
+import { toast } from "react-hot-toast";
 
-const useFetch = (url: string, type?: string) => {
+const useFetch = (url: string, type?: "get" | "post") => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
@@ -26,9 +27,6 @@ const useFetch = (url: string, type?: string) => {
     } catch (error) {
       catchErrors(error, setError);
       let { errorMsg } = resolveErrorMsg(error);
-      dispatch(
-        setToastState({ active: true, title: errorMsg, theme: "error" })
-      );
       notifyErrorHandler({
         type: "error",
         title: errorMsg,

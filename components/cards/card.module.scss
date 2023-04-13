@@ -1,0 +1,105 @@
+@import "../../styles/colors.scss";
+
+.container {
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 24px;
+    // gap: 24px;
+    width: 442px;
+    height: 260px;
+    // background: $light;
+    border: 1px solid $primary;
+    // margin-top: 43px;
+
+    & .title {
+        display: flex;
+      width: 100%;
+        justify-content: space-between;
+        align-items: center;
+
+        h2 {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 24px;        
+            color: $dark;
+            margin: 0;
+            
+        }
+    }
+
+    
+    .subtitle{
+        h3 {
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            color: rgba(10, 9, 3, 0.7);
+            margin-top: 8px;
+            margin-bottom: 0;
+            display: block;
+
+        }
+    }
+
+    
+
+    .settlement, .member {
+        height: 26px;
+        // margin-top: 24px;
+        // border: 2px solid red;
+
+    }
+
+    p {
+
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        padding: 0;
+        color: rgba(10, 9, 3, 0.8);
+    }
+
+    button {
+        // border: 2px solid red;
+        padding: 18px 24px;
+        margin-top: 22px;
+        font-weight: 600;
+        width: 394px;
+        height: 56px;
+        color: $secondary;
+        background: #F1F1F9;
+        border: none;
+        outline: none;
+        display: flex;
+        align-items: center;
+      cursor: pointer;
+    }
+    .rightArrow{
+        margin-left: 14px;
+    }
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 24px;
+    & > div{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        & > svg{
+            height: 24px;
+            width: 24px;
+        }
+        & > p{
+            font-weight: 400;
+            font-size: 16px;
+            line-height: 24px;
+            color: rgba(10, 9, 3, 0.8);
+        }
+    }
+}

@@ -110,7 +110,7 @@ const theme = createTheme({
         },
         contained: {
           background: "#2E3192 !important",
-          padding: "12px 24px !important",
+          padding: "7px 24px !important",
           gap: "8px",
           height: "52px",
           minWidth: "max-content",
@@ -143,6 +143,9 @@ const theme = createTheme({
             left: 0,
             transform: "scale(1)",
           },
+          "&.Mui-error": {
+            color: "#EA5851 !important",
+          },
         },
       },
     },
@@ -151,6 +154,7 @@ const theme = createTheme({
         select: {
           display: "flex",
           gap: "10px",
+          padding: "17px !important",
         },
       },
     },
@@ -197,6 +201,9 @@ const theme = createTheme({
           },
           "&.Mui-focused": {
             border: "1px solid #2E3192 !important",
+          },
+          "&.Mui-error": {
+            border: "1px solid #EA5851 !important",
           },
           "&::after": {
             border: "0 !important",

@@ -4,42 +4,43 @@ import YupPassword from "yup-password";
 import "yup-phone";
 
 YupPassword(yup);
-
-export const companyInfoSchema = () =>
+// getStarted
+export const getStarted = () =>
   yup.object({
-    companyName: yup
-      .string("Enter your company name")
-      .required("Company name is required"),
-    companyType: yup
-      .string("Select your company type")
-      .required("Company type is required"),
-    formationDate: yup
-      .string("Select your company formation date")
-      .required("Company formation date is required"),
-    ein: yup
-      .string("Enter your company EIN")
-      .required("Company EIN is required"),
-    duns: yup
-      .string("Enter your company DUNS")
-      .required("Company DUNS is required"),
-    address: yup
-      .string("Enter your business address")
-      .required("Business address is required"),
+    businessName: yup
+      .string("Enter your business name")
+      .required("Business name is required"),
+    businessLocation: yup
+      .string("Select your business location")
+      .required("Business location is required"),
+    businessSize: yup
+      .string("Select your business size")
+      .required("Business size is required"),
+    businessCategory: yup
+      .string("Select your business category")
+      .required("Business type is required"),
+    referralCode: yup.string(),
+  });
+// contact information
+export const contactInformation = () =>
+  yup.object({
+    firstName: yup
+      .string("Enter first name")
+      .required("First name is required"),
+    lastName: yup.string("Enter last name").required("Last name is required"),
     phoneNumber: yup
-      .string("Enter your business phone number")
-      .phone("errorMessage", true, "Invalid phone number")
-      .required("Company phone number is required"),
-    industry: yup
-      .string("Select industry")
-      .required("Company industry is required"),
-    bio: yup
-      .string("Enter your company bio")
-      .min(20, "Bio cannot be less than 20 characters or more than 280")
-      .max(280, "Bio cannot be less than 20 characters or more than 280")
-      .required("Bio is required"),
-    acceptPolily: yup
-      .bool("Check this field")
-      .required("Please indicate that you are legally authorized"),
+      .string("Enter phone number")
+      .required("Phone number is required"),
+  });
+// business registration
+export const businessRegistration = () =>
+  yup.object({
+    businessClass: yup
+      .string("Select your business class")
+      .required("Business class is required"),
+    taxIdNumber: yup
+      .string("Enter your business Tax identification number")
+      .required("Business Tax identification number is required"),
   });
 
 const passportSchema = yup.object({});

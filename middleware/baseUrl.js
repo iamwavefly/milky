@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const baseUrl =
-  "https://admin-api-service.staging-sayswitchgroup.com/admin/dashboard";
+  "https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard";
 
 const token = Cookies.get("token");
 
@@ -12,11 +12,11 @@ axios.interceptors.request.use((request) => {
 });
 
 if (token) {
+  console.log({ token });
   axios.interceptors.request.use((request) => {
-    request.headers["Authorization"] = `bearer ${token}`;
+    request.headers["Authorization"] = `Bearer ${token}`;
     return request;
   });
 }
 
 export default baseUrl;
-

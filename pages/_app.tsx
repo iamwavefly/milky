@@ -15,6 +15,7 @@ import { setUserState } from "@/store/authSlice";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "../styles/colors.scss";
+import { Toaster } from "react-hot-toast";
 
 function App({ Component, pageProps }: AppProps) {
   const token = Cookies.get("token");
@@ -50,6 +51,7 @@ function App({ Component, pageProps }: AppProps) {
     <>
       <ThemeProvider theme={theme}>
         <ProtectRoutes>
+          <Toaster  />
           <Component {...pageProps} />
         </ProtectRoutes>
       </ThemeProvider>

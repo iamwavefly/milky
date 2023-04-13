@@ -1,0 +1,14 @@
+.menu {
+    & > button {
+      width: 118px;
+      height: 40px;
+      color: #fff;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 18px;
+      background: #2e3192;
+      display: flex;
+      gap: 8px;
+      border-radius: 0 !important;
+    }
+  }

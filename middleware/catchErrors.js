@@ -2,6 +2,7 @@
 import { logoutHandler } from "./auth";
 import { store } from "../store/store";
 import { setToastState } from "@/store/appSlice";
+import { toast } from "react-hot-toast";
 
 const networkErrors = ["Failed to fetch", "Network Error", "401"];
 
@@ -58,7 +59,7 @@ export const notifyErrorHandler = ({ type, title, msg, duration }) => {
     active: true,
   };
 
-  store().dispatch(setToastState(toastConfig));
+  toast.error(title);
 };
 
 export const resolveErrorMsg = (msg) => {

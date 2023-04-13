@@ -415,40 +415,40 @@ export const accountRegisterSetup = [
 // account setup
 export const accountPersonalSetup = [
   {
-    id: 1,
+    id: 8,
     title: "Verify your email address",
     desc: "Click on the verification link sent to your email address. You can resend the link if you did not get it.",
   },
   {
-    id: 2,
+    id: 9,
     title: "Personal Information",
     desc: "Please provide a few details to help us verify your identity.",
     Component: PersonalInformation,
     drawalTitle: "Personal Information",
   },
   {
-    id: 3,
+    id: 10,
     title: "Business Information",
     Component: BusinessInformation,
     drawalTitle: "Business Information",
     desc: "Please provide a few details to help us verify your identity.",
   },
   {
-    id: 4,
+    id: 11,
     title: "Bank Details",
     desc: "Please provide bank details of your preferred settlement account.",
     Component: BankDetails,
     drawalTitle: "Bank Details",
   },
   {
-    id: 5,
+    id: 12,
     title: "Terms and Conditions",
     desc: "Read and agree to our terms and conditions of use.",
     Component: Legal,
     drawalTitle: "Terms and Conditions",
   },
   {
-    id: 6,
+    id: 13,
     title: "Take dashboard tour (optional)",
     desc: "Learn about the awesome things that you can do on your new dashboard.",
   },

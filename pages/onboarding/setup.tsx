@@ -10,22 +10,30 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import React, { ReactNode, useLayoutEffect, useState } from "react";
+import React, { ReactNode, useEffect, useLayoutEffect, useState } from "react";
 import UserIcon from "remixicon-react/User6LineIcon";
 import FileIcon from "remixicon-react/FileList2LineIcon";
 import AccountSetup from "@/layouts/setup";
 import { accountPersonalSetup, accountRegisterSetup } from "@/configs/labels";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setDrawalState } from "@/store/appSlice";
 import { useRouter } from "next/router";
+import { selectUserState } from "@/store/authSlice";
+import useFetch from "@/hooks/useFetch";
+import baseUrl from "@/middleware/baseUrl";
 
 export default function Index() {
   const [labels, setLabels] = useState([]);
 
   const dispatch = useDispatch();
+  const { is_email_verified, email_address, mobile_number } =
+    useSelector(selectUserState);
+
   const close = () => dispatch(setDrawalState({ active: false }));
 
   const { type } = useRouter().query;
+
+  // console.log({ user });
 
   useLayoutEffect(() => {
     if (type === "registered") {
@@ -43,6 +51,20 @@ export default function Index() {
       })
     );
   };
+
+  const isCompleted = (id: number) => {
+    if (id === 1 && is_email_verified) {
+      return true;
+    }
+    return false;
+  };
+
+  // text
+  const testRoute = useFetch(`${baseUrl}/onboarding/current/step`, "get");
+  // fetch business sizes
+  useEffect(() => {
+    testRoute.handleSubmit();
+  }, []);
 
   return (
     <AccountSetup
@@ -73,7 +95,7 @@ export default function Index() {
               >
                 {title}
               </Typography>
-              <Checkbox />
+              <Checkbox checked={isCompleted(id)} />
             </Stack>
             <Typography
               mt="4px"
