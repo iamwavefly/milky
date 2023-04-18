@@ -60,7 +60,7 @@ export default function Index() {
   };
 
   // text
-  const testRoute = useFetch(`${baseUrl}/onboarding/current/step`, "get");
+  const testRoute = useFetch(`${baseUrl}/onboarding/percentage`, "get");
   // fetch business sizes
   useEffect(() => {
     testRoute.handleSubmit();
