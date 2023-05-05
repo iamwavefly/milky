@@ -5,6 +5,19 @@ import "yup-phone";
 
 YupPassword(yup);
 // getStarted
+export const signup = () =>
+  yup.object({
+    firstName: yup.string().required("First name is required"),
+    lastName: yup.string().required("Last name is required"),
+    email: yup.string().email().required("Email address is required"),
+    password: yup.string().password().required("Password is required"),
+    password2: yup
+      .string()
+      .password()
+      .required("Confirm password is required")
+      .oneOf([yup.ref("password"), null], "Passwords must match"),
+  });
+// getStarted
 export const getStarted = () =>
   yup.object({
     businessName: yup
