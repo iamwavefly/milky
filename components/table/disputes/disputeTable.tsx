@@ -17,11 +17,7 @@ import Checkmark from "../../../public/assets/icons/check.svg";
 import FilterTable from "../filter";
 import Table from "../table";
 import Router from "next/router";
-import {
-  BusinessTableColumns,
-  DisputeColumns,
-  PayoutCreditColumns,
-} from "../columns";
+import { DisputeColumns, PayoutCreditColumns } from "../columns";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import Modal from "@/components/modal/modal";

@@ -21,6 +21,7 @@ interface props {
   children: ReactNode;
   isOpen: boolean;
   onClose: () => void;
+  close: () => void;
 }
 
 export default function Modal({

@@ -11,7 +11,6 @@ import FilterTable from "../filter";
 import Table from "../table";
 import Router from "next/router";
 import {
-  BusinessTableColumns,
   FeesTableColumns,
   SettingRoleTableColumns,
   SettingsTableColumns,

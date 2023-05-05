@@ -111,10 +111,11 @@ export default function FilterTable({
                 exclusive
                 aria-label="Channel"
               >
-                {FILTER_OPTIONS[category].map((option: any) => {
+                {FILTER_OPTIONS[category].map((option: any, index: number) => {
                   console.log(selectedFilters[category]);
                   return (
                     <ToggleButton
+                      key={index}
                       selected={selectedFilters[category] === option.value}
                       onClick={() => handleFilterChange(category, option.value)}
                       value={option.value}
@@ -186,8 +187,9 @@ export default function FilterTable({
         flexWrap="wrap"
         gap="16px"
       >
-        {Object.entries(previewFilters)?.map((filterArr) => (
+        {Object.entries(previewFilters)?.map((filterArr, index) => (
           <ChipFilter
+            key={index}
             placeholder={filterArr[0]}
             title={filterArr[1]}
             onClick={() => handleRemoveFilter(filterArr[0])}

@@ -61,7 +61,12 @@ export default function PieChart() {
       <Stack mt="33px" direction="row" alignItems="center" spacing="32px">
         {data?.data?.map(
           ({ name, value }: { name: string; value: string }, index: number) => (
-            <Stack direction="row" alignItems="center" spacing="10px">
+            <Stack
+              key={value}
+              direction="row"
+              alignItems="center"
+              spacing="10px"
+            >
               <ColorBop color={COLORS[index % COLORS.length]} />
               <Typography color="#262B40" fontSize="12px">
                 {name}

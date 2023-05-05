@@ -6,7 +6,7 @@ import CarretDown from "../../../public/assets/icons/carret-down.svg";
 import FilterTable from "../filter";
 import Table from "../table";
 import Router from "next/router";
-import { BusinessTableColumns, PayoutCreditColumns } from "../columns";
+import { PayoutCreditColumns } from "../columns";
 
 const PayoutCreditTable = () => {
   const [transactions, setTransactions] = useState<any>([]);

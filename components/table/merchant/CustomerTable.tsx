@@ -7,7 +7,6 @@ import Table from "@/components/table/table";
 import FilterTable from "@/components/table/filter";
 import {
   AccountCustomerTableColumns,
-  CustomerTableColumns,
   TransactionTableColumns,
 } from "@/components/table/columns";
 import Router from "next/router";

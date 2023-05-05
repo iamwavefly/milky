@@ -10,11 +10,7 @@ import Header from "../header";
 import FilterTable from "../filter";
 import Table from "../table";
 import Router from "next/router";
-import {
-  BusinessTableColumns,
-  FeesTableColumns,
-  SettingsTableColumns,
-} from "../columns";
+import { FeesTableColumns, SettingsTableColumns } from "../columns";
 
 const SettingsTable = () => {
   const [transactions, setTransactions] = useState<any>([]);
