@@ -12,11 +12,18 @@ export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
     },
   },
   {
-    accessorKey: "date",
+    accessorKey: "date_created",
     header: "Date",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {moment(row.getValue()).format("L")}
+        </Typography>
+      );
+    },
   },
   {
-    accessorKey: "enail",
+    accessorKey: "customer_email",
     header: "Email",
   },
   {
@@ -25,7 +32,7 @@ export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
     cell: (row: any) => {
       return (
         <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
+          NGN {stringToCurrency(row.getValue())}
         </Typography>
       );
     },
@@ -35,11 +42,11 @@ export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
     header: "Payment type",
   },
   {
-    accessorKey: "reference",
+    accessorKey: "order_reference",
     header: "Reference",
   },
   {
-    accessorKey: "status",
+    accessorKey: "settlement_status",
     header: "Status",
     cell: (row: any) => {
       return (
@@ -114,7 +121,7 @@ export const TransactionTableColumns: ColumnDef<any, any>[] = [
   },
 ];
 
-export const CustomerTableColumns: ColumnDef<any, any>[] = [
+export const CustomersTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "checkbox",
     header: (<Checkbox />) as any,
@@ -124,11 +131,11 @@ export const CustomerTableColumns: ColumnDef<any, any>[] = [
   },
   {
     accessorKey: "customer_name",
-    header: "Customer name",
+    header: "Name",
   },
   {
     accessorKey: "email_address",
-    header: "Email address",
+    header: "Email",
   },
   {
     accessorKey: "mobile_number",
@@ -139,8 +146,49 @@ export const CustomerTableColumns: ColumnDef<any, any>[] = [
     header: "Country",
   },
   {
-    accessorKey: "transaction_count",
-    header: "Transaction count",
+    accessorKey: "status",
+    header: "Status",
+    cell: (row: any) => {
+      return (
+        <Chip
+          label={row.getValue()}
+          className={`chip ${row
+            .getValue()
+            ?.toLowerCase()
+            ?.replaceAll(" ", "-")}`}
+        />
+      );
+    },
+  },
+];
+
+export const ProductsTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "product_name",
+    header: "Product name",
+  },
+  {
+    accessorKey: "price",
+    header: "Price",
+  },
+  {
+    accessorKey: "stock_count",
+    header: "Stock count",
+  },
+  {
+    accessorKey: "sold",
+    header: "Sold",
+  },
+  {
+    accessorKey: "revenue",
+    header: "Revenue",
   },
   {
     accessorKey: "status",
@@ -559,6 +607,61 @@ export const AccountsTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "no_of_subsidiaries",
     header: "Subsidiaries",
+  },
+];
+
+export const AccountSettlementTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "business_name",
+    header: "Business name",
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "fee",
+    header: "Settlement fee type",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "currency",
+    header: "Currency",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: (row: any) => {
+      return (
+        <Chip
+          label={row.getValue()}
+          className={`chip ${row
+            .getValue()
+            ?.toLowerCase()
+            ?.replaceAll(" ", "-")}`}
+        />
+      );
+    },
   },
 ];
 

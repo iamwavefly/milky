@@ -1,19 +1,16 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import Styles from "../../styles.module.scss";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
-import { _businesses, _customers } from "@/mocks";
+import { _businesses, _customers, _invoices } from "@/mocks";
 import Header from "@/components/table/header";
 import Table from "@/components/table/table";
 import FilterTable from "@/components/table/filter";
-import {
-  CustomerTableColumns,
-  TransactionTableColumns,
-} from "@/components/table/columns";
+import { CustomersTableColumns } from "@/components/table/columns";
 import Router from "next/router";
-import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
+import useFetch from "@/hooks/useFetch";
 
-const CustomerTable = () => {
+const CustomersTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
@@ -21,7 +18,7 @@ const CustomerTable = () => {
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/customer/all/paginated?page=${currentPage}&limit=10&${Object.entries(
+    `${baseUrl}/fetch/customers?page=${currentPage}&limit=10&${Object.entries(
       filters
     )
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
@@ -37,7 +34,7 @@ const CustomerTable = () => {
     <div className={Styles.container}>
       <Header
         containerRef={containerRef}
-        columns={CustomerTableColumns}
+        columns={CustomersTableColumns}
         data={data?.items}
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
@@ -46,7 +43,7 @@ const CustomerTable = () => {
       <Table
         containerRef={containerRef}
         data={data?.items ?? []}
-        columns={CustomerTableColumns}
+        columns={CustomersTableColumns}
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.total_pages}
@@ -58,4 +55,4 @@ const CustomerTable = () => {
   );
 };
 
-export default CustomerTable;
+export default CustomersTable;

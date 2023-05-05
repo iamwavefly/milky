@@ -28,13 +28,13 @@
         font-size: 14px;
         line-height: 20px;
         &.active {
-          color: $secondary;
+          color: $secondary-color;
         }
         &:hover,
         &.active {
           width: max-content;
           transition: width 0.5s ease-in-out;
-          border-bottom: 2px solid $secondary;
+          border-bottom: 2px solid $secondary-color;
         }
         a {
         }

@@ -1,4 +1,5 @@
 import { Box, Stack, Typography } from "@mui/material";
+import { Blob } from "buffer";
 import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import UploadIcon from "remixicon-react/Upload2LineIcon";
@@ -6,15 +7,21 @@ import UploadIcon from "remixicon-react/Upload2LineIcon";
 export default function FileUpload({
   title,
   height,
+  update,
 }: {
   title: string;
   height?: number;
+  update: (file: any) => void;
 }) {
   const actualBtnRef = useRef(null);
   const [fileName, setFileName] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isImage, setIsImage] = useState(false);
+
+  useEffect(() => {
+    update && update(selectedFile);
+  }, [selectedFile]);
 
   const handleFileInputChange = (e: any) => {
     const imagePreview = e.target.files[0];
@@ -33,10 +40,6 @@ export default function FileUpload({
   const handleClick = (e: any) => {
     ref.current.click();
   };
-
-  useEffect(() => {
-    console.log({ selectedFile });
-  }, [selectedFile]);
 
   return (
     <>

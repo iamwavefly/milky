@@ -368,12 +368,14 @@ export const accountRegisterSetup = [
   {
     id: 1,
     title: "Verify your email address",
+    slug: "email",
     desc: "Click on the verification link sent to your email address. You can resend the link if you did not get it.",
   },
   {
     id: 2,
     title: "Contact Information",
     desc: "Please provide details for a contact person if we need to get in touch.",
+    slug: "personal_information",
     Component: ContactInformation,
     drawalTitle: "Contact Information",
   },
@@ -381,6 +383,7 @@ export const accountRegisterSetup = [
     id: 3,
     title: "Business Registration (KYC)",
     desc: "Please provide your business’ registration documents.",
+    slug: "business_compliance",
     Component: BusinessRegistration,
     drawalTitle: "Business Registration",
   },
@@ -389,6 +392,7 @@ export const accountRegisterSetup = [
     title: "Business Information",
     Component: BusinessInformation,
     drawalTitle: "Business Information",
+    slug: "business_information",
     desc: "Please provide a few details to help us verify your identity.",
   },
   {
@@ -396,6 +400,7 @@ export const accountRegisterSetup = [
     title: "Bank Details",
     desc: "Please provide bank details of your preferred settlement account.",
     Component: BankDetails,
+    slug: "bank_information",
     drawalTitle: "Bank Details",
   },
   {
@@ -403,6 +408,7 @@ export const accountRegisterSetup = [
     title: "Terms and Conditions",
     desc: "Read and agree to our terms and conditions of use.",
     Component: Legal,
+    slug: "terms_and_condition",
     drawalTitle: "Terms and Conditions",
   },
   {
@@ -415,40 +421,44 @@ export const accountRegisterSetup = [
 // account setup
 export const accountPersonalSetup = [
   {
-    id: 8,
+    id: 1,
     title: "Verify your email address",
     desc: "Click on the verification link sent to your email address. You can resend the link if you did not get it.",
   },
   {
-    id: 9,
+    id: 2,
     title: "Personal Information",
+    slug: "personal_information",
     desc: "Please provide a few details to help us verify your identity.",
     Component: PersonalInformation,
     drawalTitle: "Personal Information",
   },
   {
-    id: 10,
+    id: 3,
     title: "Business Information",
     Component: BusinessInformation,
+    slug: "business_information",
     drawalTitle: "Business Information",
     desc: "Please provide a few details to help us verify your identity.",
   },
   {
-    id: 11,
+    id: 4,
     title: "Bank Details",
     desc: "Please provide bank details of your preferred settlement account.",
     Component: BankDetails,
+    slug: "bank_information",
     drawalTitle: "Bank Details",
   },
   {
-    id: 12,
+    id: 5,
     title: "Terms and Conditions",
     desc: "Read and agree to our terms and conditions of use.",
     Component: Legal,
+    slug: "terms_and_condition",
     drawalTitle: "Terms and Conditions",
   },
   {
-    id: 13,
+    id: 6,
     title: "Take dashboard tour (optional)",
     desc: "Learn about the awesome things that you can do on your new dashboard.",
   },

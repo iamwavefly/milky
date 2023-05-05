@@ -3,7 +3,7 @@ const stringToCurrency = (number) => {
     style: "currency",
     currency: "USD",
   });
-  return formatter.format(number).replace("$", "NGN");
+  return formatter.format(number).replace("$", "");
 };
 
 export default stringToCurrency;

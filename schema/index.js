@@ -136,3 +136,43 @@ export const DocUploadSchema = () =>
       .string("Select company structure")
       .required("Company structure is required"),
   });
+
+// business registration
+export const bankDetails = () =>
+  yup.object({
+    accountType: yup.string().required("Account type is required"),
+    bankName: yup.string().required("Bank name is required"),
+    accountNumber: yup.string().required("Account number is required"),
+    accountName: yup.string().required("Account name is required"),
+  });
+
+// business information
+export const businessInformation = () =>
+  yup.object({
+    description: yup.string().required("Description is required"),
+    emailAddress: yup.string().required("Email address is required"),
+    phoneNumber: yup.string().required("Phone number is required"),
+    address: yup.string().required("Address is required"),
+    city: yup.string().required("City is required"),
+    state: yup.string().required("State is required"),
+    website: yup.string(),
+    facebook: yup.string(),
+    instagram: yup.string(),
+    twitter: yup.string(),
+  });
+// personal information
+export const personalInformation = () =>
+  yup.object({
+    firstName: yup.string().required("First name is required"),
+    lastName: yup.string().required("Last name is required"),
+    bvn: yup.string().required("BVN is required"),
+    gender: yup.string().required("Gender is required"),
+    dob: yup.string().required("Date of birth required"),
+    phoneNumber: yup.string().required("Phone number is required"),
+    identificationDocument: yup
+      .string()
+      .required("Identification document type is required"),
+    identificationNumber: yup
+      .string()
+      .required("Identification document number is required"),
+  });

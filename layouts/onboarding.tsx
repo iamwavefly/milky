@@ -28,7 +28,7 @@ const Onboarding = ({ children, title }: Props) => {
           </Box>
           <Box my="252px">
             <Typography fontWeight={700} fontSize="40px" lineHeight="48px">
-              Lorem. Ipsum. Dolor
+              Welcome to Alliance Pay
             </Typography>
             <Typography
               fontSize="16px"
@@ -36,7 +36,7 @@ const Onboarding = ({ children, title }: Props) => {
               mt="9px"
               color="#92959F"
             >
-              This is a tagline for the brand
+              The future of payments
             </Typography>
           </Box>
         </Box>

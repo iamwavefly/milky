@@ -1,8 +1,8 @@
 import { Box, Button, IconButton, Stack, Typography } from "@mui/material";
 import Router from "next/router";
 import React from "react";
-import ArrowLeftIcon from "../../public/assets/icons/arrow-left.svg";
-import DownloadIcon from "../../public/assets/icons/download.svg";
+import ArrowLeftIcon from "../../public/icons/arrow-left.svg";
+import DownloadIcon from "../../public/icons/download.svg";
 
 export default function Breadcrumb({
   title,

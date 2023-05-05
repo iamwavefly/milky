@@ -24,6 +24,7 @@ import baseUrl from "@/middleware/baseUrl";
 
 export default function Index() {
   const [labels, setLabels] = useState([]);
+  const [status, setStatus] = useState<any>({});
 
   const dispatch = useDispatch();
   const { is_email_verified, email_address, mobile_number } =
@@ -52,19 +53,27 @@ export default function Index() {
     );
   };
 
-  const isCompleted = (id: number) => {
-    if (id === 1 && is_email_verified) {
+  const isCompleted = (slug: string) => {
+    if (slug === "email" && is_email_verified) {
       return true;
     }
-    return false;
+    const result = status?.[slug] === 100 ? true : false;
+    console.log({ result }, status);
+    return result;
   };
 
   // text
-  const testRoute = useFetch(`${baseUrl}/onboarding/percentage`, "get");
+  const onboardingStatus = useFetch(`${baseUrl}/onboarding/percentage`, "get");
   // fetch business sizes
   useEffect(() => {
-    testRoute.handleSubmit();
+    onboardingStatus.handleSubmit();
   }, []);
+
+  useEffect(() => {
+    if (onboardingStatus?.data) {
+      setStatus(onboardingStatus?.data?.data);
+    }
+  }, [onboardingStatus?.data]);
 
   return (
     <AccountSetup
@@ -72,7 +81,7 @@ export default function Index() {
       desc="Comment from reviewer: Dear customer, provide the following to complete your profile"
     >
       <Stack spacing="17px">
-        {labels?.map(({ desc, title, Component, drawalTitle, id }) => (
+        {labels?.map(({ desc, title, Component, drawalTitle, id, slug }) => (
           <Box
             key={id}
             padding="20px"
@@ -95,7 +104,7 @@ export default function Index() {
               >
                 {title}
               </Typography>
-              <Checkbox checked={isCompleted(id)} />
+              <Checkbox checked={isCompleted(slug)} />
             </Stack>
             <Typography
               mt="4px"

@@ -11,6 +11,8 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  AreaChart,
+  Area,
 } from "recharts";
 
 const labelStyles = {
@@ -43,23 +45,47 @@ const data = [
     pv: 3908,
     amt: 2000,
   },
+  {
+    name: "Thurs",
+    uv: 2780,
+    pv: 3908,
+    amt: 2000,
+  },
+  {
+    name: "Thurs",
+    uv: 2780,
+    pv: 3908,
+    amt: 2000,
+  },
+  {
+    name: "Thurs",
+    uv: 2780,
+    pv: 3908,
+    amt: 2000,
+  },
+  {
+    name: "Thurs",
+    uv: 2780,
+    pv: 39208,
+    amt: 2000,
+  },
+  {
+    name: "Thurs",
+    uv: 2780,
+    pv: 3901,
+    amt: 2000,
+  },
 ];
 
-const LineChart = () => {
-  // const { loading, data, error, handleSubmit } = useFetch(
-  //   `${baseUrl}/metric/barchart/customer/payment/days`,
-  //   "get"
-  // );
+interface Props {
+  type?: "increase" | "decrease";
+  themeColor?: string;
+}
 
-  // useEffect(() => {
-  //   handleSubmit();
-  // }, []);
-
+const LineChart = ({ type, themeColor }: Props) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
-      <RechartLineChart
-        width={800}
-        height={500}
+      <AreaChart
         data={data}
         margin={{
           top: 5,
@@ -69,14 +95,31 @@ const LineChart = () => {
         }}
       >
         <Tooltip />
-        <Line
+        <defs>
+          <linearGradient
+            id={`colorUv${themeColor}`}
+            x1="0"
+            y1="0"
+            x2="0"
+            y2="1"
+          >
+            <stop
+              offset="10%"
+              stopColor={themeColor ?? "#304FFD"}
+              stopOpacity={0.3}
+            />
+            <stop offset="90%" stopColor="#fff" stopOpacity={0} />
+          </linearGradient>
+        </defs>
+        <Area
+          fill={`url(#colorUv${themeColor})`}
           type="monotone"
           dataKey="pv"
-          strokeWidth={2}
-          stroke="#6979F8"
-          activeDot={{ r: 8 }}
+          strokeWidth={2.2}
+          stroke={themeColor ?? "#304FFD"}
+          dot={false}
         />
-      </RechartLineChart>
+      </AreaChart>
     </ResponsiveContainer>
   );
 };

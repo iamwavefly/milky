@@ -1,12 +1,28 @@
+import useFetch from "@/hooks/useFetch";
+import baseUrl from "@/middleware/baseUrl";
 import { setDrawalState } from "@/store/appSlice";
+import { LoadingButton } from "@mui/lab";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
+import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
 export default function Legal() {
   const dispatch = useDispatch();
 
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/onboarding/accept/terms`
+  );
+
   const close = () => dispatch(setDrawalState({ active: false }));
+
+  useEffect(() => {
+    const { status, message } = data;
+    if (status === "success") {
+      toast.success(message);
+      close();
+    }
+  }, [data]);
 
   return (
     <Box>
@@ -64,9 +80,19 @@ export default function Legal() {
         egestas tristique aliquam diam risus. Ipsum massa augue ornare elementum
         pretium varius et quis.
       </Typography>
-      <Button onClick={close} variant="contained" fullWidth sx={{ mt: "60px" }}>
+      <LoadingButton
+        onClick={() =>
+          handleSubmit({
+            accepted: true,
+          })
+        }
+        loading={loading}
+        variant="contained"
+        fullWidth
+        sx={{ mt: "60px" }}
+      >
         Accept
-      </Button>
+      </LoadingButton>
       <Button onClick={close} variant="outlined" fullWidth sx={{ mt: "25px" }}>
         Decline
       </Button>

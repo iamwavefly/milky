@@ -1,6 +1,6 @@
 import React, { CSSProperties, ReactNode } from "react";
 import { Box, IconButton, Typography } from "@mui/material";
-import FilterIcon from "../../public/assets/icons/filter.svg";
+import FilterIcon from "../../public/icons/filter.svg";
 
 interface props {
   children: ReactNode;

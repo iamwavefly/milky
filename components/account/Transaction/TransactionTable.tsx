@@ -1,15 +1,14 @@
-import { useState, useEffect, useRef } from "react";
-import Styles from "./styles.module.scss";
-import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
-import { Box, Checkbox, Typography } from "@mui/material";
-import { _businesses } from "@/mocks";
-import Header from "../header";
-import FilterTable from "../filter";
-import Table from "../table";
-import Router from "next/router";
-import { BusinessTransactionTableColumns } from "../columns";
+import { TransactionTableColumns } from "@/components/table/columns";
+import FilterTable from "@/components/table/filter";
+import Header from "@/components/table/header";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
+import { _transactions } from "@/mocks";
+import { Checkbox } from "@material-ui/core";
+import Router from "next/router";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+import Styles from "../../table/business/styles.module.scss";
+import Table from "../../table/table";
 
 const TransactionTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -19,7 +18,7 @@ const TransactionTable = () => {
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/fetch/orders?page=${currentPage}&limit=10&${Object.entries(
+    `${baseUrl}/order/all/paginated?page=${currentPage}&limit=10&${Object.entries(
       filters
     )
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
@@ -32,27 +31,25 @@ const TransactionTable = () => {
   }, [currentPage, search, filters]);
 
   return (
-    <Box className={Styles.container}>
+    <div className={Styles.container}>
       <Header
         containerRef={containerRef}
-        columns={BusinessTransactionTableColumns}
+        columns={TransactionTableColumns}
         data={data?.items}
-        entries={`${data?.total_items ?? 0}`}
+        entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
       />
-
+      <FilterTable updateFilter={setFilters} />
       <Table
         containerRef={containerRef}
         data={data?.items ?? []}
-        columns={BusinessTransactionTableColumns}
+        columns={TransactionTableColumns}
         page={setCurrentPage}
         pageCount={data?.total_pages}
         isFetching={loading}
-        onClickRow={(e) =>
-          Router.push(`/business/transactions/${e?.row?.original?.id}`)
-        }
+        onClickRow={(e) => Router.push(`/transactions/${e?.row?.original?.id}`)}
       />
-    </Box>
+    </div>
   );
 };
 

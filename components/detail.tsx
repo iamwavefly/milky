@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Chip, IconButton, Stack, Typography } from "@mui/material";
 // icons
-import CopyIcon from "../public/assets/icons/copy.svg";
-import DownloadIcon from "../public/assets/icons/download-color.svg";
+import CopyIcon from "../public/icons/copy.svg";
+import DownloadIcon from "../public/icons/download-color.svg";
 
 interface props {
   title: string;

@@ -19,7 +19,8 @@ import FileUpload from "../FileUpload";
 import { serialize } from "object-to-formdata";
 
 export default function BusinessRegistration() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
+  const [form, setForm] = useState({});
   const dispatch = useDispatch();
 
   // submit registration information
@@ -30,6 +31,10 @@ export default function BusinessRegistration() {
   const fetchBusinessClasses = useFetch(`${baseUrl}/business/classes`, "get");
 
   const close = () => dispatch(setDrawalState({ active: false }));
+
+  const fileChangeHandler = (name: string, file: Blob) => {
+    setForm((prev) => ({ ...prev, [name]: file }));
+  };
 
   useEffect(() => {
     fetchBusinessClasses.handleSubmit();
@@ -69,12 +74,24 @@ export default function BusinessRegistration() {
         </Typography>
         <Stack mt="60px" gap="25px">
           <Stack direction="row" gap="25px">
-            <FileUpload title={"Means of identification"} />
-            <FileUpload title={"Upload proof of address"} />
+            <FileUpload
+              title={"Means of identification"}
+              update={(file: Blob) => fileChangeHandler("Identification", file)}
+            />
+            <FileUpload
+              title={"Upload proof of address"}
+              update={(file: Blob) => fileChangeHandler("ProofOfAddress", file)}
+            />
           </Stack>
           <Stack direction="row" gap="25px">
-            <FileUpload title={"Particulars of Directors (optional)"} />
-            <FileUpload title={"Statement of return on allotment of shares"} />
+            <FileUpload
+              title={"Particulars of Directors (optional)"}
+              update={(file: Blob) => fileChangeHandler("ParticularsOfDirectors", file)}
+            />
+            <FileUpload
+              title={"Statement of return on allotment of shares"}
+              update={(file: Blob) => fileChangeHandler("Identification", file)}
+            />
           </Stack>
         </Stack>
         <Typography
@@ -88,23 +105,46 @@ export default function BusinessRegistration() {
         </Typography>
         <Stack mt="25px" gap="25px">
           <Stack direction="row" gap="25px">
-            <FileUpload title={"Chairman 1"} />
-            <FileUpload title={"Chairman 2"} />
+            <FileUpload
+              title={"Chairman 1"}
+              update={(file: Blob) => fileChangeHandler("Identification", file)}
+            />
+            <FileUpload
+              title={"Chairman 2"}
+              update={(file: Blob) => fileChangeHandler("Identification", file)}
+            />
           </Stack>
           <Stack direction="row" gap="25px">
-            <FileUpload title={"Operating License (Optional)"} />
+            <FileUpload
+              title={"Operating License (Optional)"}
+              update={(file: Blob) => fileChangeHandler("OperatingLicense", file)}
+            />
           </Stack>
         </Stack>
         <Typography
-          fontSize="14px"
+          fontSize="12px"
           color="rgba(38, 43, 64, 0.8)"
           lineHeight="20px"
           mt="60px"
         >
-          1 out of 1 added
+          You have to add at least 1 stakeholder
+          <Typography component="span" fontSize="12px" color="#EA5851">
+            *
+          </Typography>
         </Typography>
         <Stack mt="14px">
-          <TextField variant="standard" label="Name of stakeholder" />
+          <Button
+            onClick={() => setStep(2)}
+            variant="outlined"
+            sx={{
+              color: "#2E3192",
+              opacity: 0.6,
+              width: "max-content",
+              fontSize: "12px",
+            }}
+          >
+            Add stakeholder
+          </Button>
         </Stack>
         <Button
           onClick={close}
@@ -188,12 +228,12 @@ export default function BusinessRegistration() {
         </LoadingButton>
       </form>
       <LoadingButton
-        onClick={close}
+        onClick={() => setStep(1)}
         variant="outlined"
         fullWidth
         sx={{ mt: "25px" }}
       >
-        Cancel
+        Back
       </LoadingButton>
     </Box>
   );

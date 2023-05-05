@@ -5,11 +5,7 @@ import { _businesses, _customers, _invoices } from "@/mocks";
 import Header from "@/components/table/header";
 import Table from "@/components/table/table";
 import FilterTable from "@/components/table/filter";
-import {
-  CustomerTableColumns,
-  InvoiceTableColumns,
-  TransactionTableColumns,
-} from "@/components/table/columns";
+import { InvoiceTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
@@ -22,7 +18,7 @@ const InvoiceTable = () => {
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/invoice/all/paginated?page=${currentPage}&limit=10&${Object.entries(
+    `${baseUrl}/invoice/all?page=${currentPage}&limit=10&${Object.entries(
       filters
     )
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
