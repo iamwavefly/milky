@@ -49,7 +49,9 @@ const TransactionTable = () => {
         pageCount={data?.total_pages}
         isFetching={loading}
         onClickRow={(e) =>
-          Router.push(`/business/transactions/${e?.row?.original?.id}`)
+          Router.push(
+            `/business/transactions/${e?.row?.original?.order_reference}`
+          )
         }
       />
     </Box>

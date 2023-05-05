@@ -161,7 +161,11 @@ const Dashboard = ({ children, title }: Props) => {
                         {nest?.map(({ key, link, name }) => (
                           <li key={key}>
                             <Link
-                              className={pathname === link ? Styles.active : ""}
+                              className={
+                                pathname.includes(link as string)
+                                  ? Styles.active
+                                  : ""
+                              }
                               href={link}
                               key={key}
                             >

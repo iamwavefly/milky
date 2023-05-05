@@ -14,13 +14,18 @@ interface props {
 export default function Detail({ title, full, variant, value }: props) {
   return (
     <Box width={full ? "100%" : "max-content"}>
-      <Typography color="#92959F" fontSize="12px">
+      <Typography
+        color="#6E7280"
+        fontSize="10px"
+        fontWeight={600}
+        lineHeight="16px"
+      >
         {title}
       </Typography>
-      <Box mt="8px">
+      <Box mt="2px">
         {variant === "copy" ? (
           <Stack direction="row" spacing="4px" alignItems="center">
-            <Typography color="#262B40" fontWeight={500} fontSize="12px">
+            <Typography color="#262B40" fontWeight={500} fontSize="14px">
               {value}
             </Typography>
             <IconButton>
@@ -29,7 +34,7 @@ export default function Detail({ title, full, variant, value }: props) {
           </Stack>
         ) : variant === "download" ? (
           <Stack direction="row" spacing="4px" alignItems="center">
-            <Typography color="#262B40" fontWeight={500} fontSize="12px">
+            <Typography color="#262B40" fontWeight={500} fontSize="14px">
               {value}
             </Typography>
             <IconButton>
