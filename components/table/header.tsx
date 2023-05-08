@@ -31,7 +31,9 @@ interface headerProps {
   containerRef?: any;
   data?: any;
   columns?: any[];
-  entries: string;
+  title?: string;
+  entries?: string;
+  transparent?: boolean;
   buttons?: ReactNode;
   entryOnly?: boolean;
   noButton?: boolean;
@@ -46,7 +48,9 @@ export default function Header({
   buttons,
   entryOnly,
   noButton,
+  transparent,
   setSearch,
+  title,
 }: headerProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [csvHeader, setCsvHeader] = useState<any>([]);
@@ -122,34 +126,42 @@ export default function Header({
       {/* menu ends */}
       <Stack
         direction="row"
-        height="91px"
+        height={"91px"}
         alignItems="center"
         justifyContent="space-between"
-        bgcolor="#FFFFFF"
-        padding="25px 28px"
+        bgcolor={transparent ? "" : "#FFFFFF"}
+        py="25px"
+        px={!transparent ? "28px" : 0}
         marginTop="35px"
         gap="19px"
+        mb={!transparent ? "10px" : 0}
       >
-        <TextField
-          variant="standard"
-          placeholder="Search transactions or enter keyword"
-          sx={{
-            width: "100%",
-            "& input": {
-              height: 0,
-            },
-          }}
-          onChange={(e) => setSearch && setSearch(e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <IconButton sx={{ border: 0, left: 20 }} edge="start">
-                  <SearchIcon color="#69696B" size={19} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
+        {title ? (
+          <Typography color="#262B40" fontSize="14px" fontWeight={500}>
+            {title}
+          </Typography>
+        ) : (
+          <TextField
+            variant="standard"
+            placeholder="Search transactions or enter keyword"
+            sx={{
+              width: "100%",
+              "& input": {
+                height: 0,
+              },
+            }}
+            onChange={(e) => setSearch && setSearch(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <IconButton sx={{ border: 0, left: 20 }} edge="start">
+                    <SearchIcon color="#69696B" size={19} />
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        )}
         <Stack direction="row" gap="10px" alignItems="center">
           <DropdownMenu title="NGN" />
           <Button

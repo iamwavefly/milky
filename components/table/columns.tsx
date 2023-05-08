@@ -162,6 +162,54 @@ export const CustomersTableColumns: ColumnDef<any, any>[] = [
   },
 ];
 
+export const CustomerDetailsTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "customer_name",
+    header: "Name",
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "payment_type",
+    header: "Channel",
+  },
+  {
+    accessorKey: "order_reference",
+    header: "Reference",
+  },
+  {
+    accessorKey: "order_status",
+    header: "Status",
+    cell: (row: any) => {
+      return (
+        <Chip
+          label={row.getValue()}
+          className={`chip ${row
+            .getValue()
+            ?.toLowerCase()
+            ?.replaceAll(" ", "-")}`}
+        />
+      );
+    },
+  },
+];
+
 export const ProductsTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "checkbox",

@@ -4,7 +4,7 @@ import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
 import DropdownMenu from "@/components/DropdownMenu";
 import CountChart from "@/components/CountChart";
 import Header from "@/components/table/header";
-import InvoiceTable from "@/components/transactions/invoices/InvoiceTable";
+import InvoiceTable from "@/components/business/invoices/InvoiceTable";
 
 export default function Index() {
   return (

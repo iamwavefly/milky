@@ -1,4 +1,4 @@
-import TransactionTable from "@/components/transactions/Transaction/TransactionTable";
+import TransactionTable from "@/components/business/Transaction/TransactionTable";
 import { Box } from "@mui/material";
 import React from "react";
 import DeuTable from "./DeuTable";

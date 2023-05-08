@@ -14,6 +14,7 @@ import { useRouter } from "next/router";
 import isObjEmpty from "@/helper/isObjEmpty";
 import stringToCurrency from "../../../../helper/formatCurrency";
 import moment from "moment";
+import CustomerDetailsTable from "@/components/business/customers/customerDetailsTable";
 
 export default function Index() {
   const [details, setDetails] = useState({});
@@ -21,7 +22,7 @@ export default function Index() {
   const { asPath } = useRouter();
   const id = +asPath.split("/").slice(-1)[0];
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/fetch/orders?OrderReference=${id}`,
+    `${baseUrl}/fetch/customers?id=${id}`,
     "get"
   );
 
@@ -34,12 +35,12 @@ export default function Index() {
   }, [data]);
 
   return (
-    <Dashboard title="Merchants">
+    <Dashboard title="Customer Details">
       <Box py="35px" px="30px">
         <Typography color="#2E3192" fontSize="16px">
-          Transaction Details
+          Customer Details
         </Typography>
-        {/* order information  */}
+        {/* customer details  */}
         <Box mt="35px">
           <OnlyHeader alignHeader="left" header="Order Details" size="12px">
             <Box my="auto">
@@ -50,44 +51,6 @@ export default function Index() {
                 rowGap="36px"
               >
                 <Detail
-                  title={"ORDER REFERENCE"}
-                  variant={"copy"}
-                  value={details?.order_reference}
-                />
-                <Detail
-                  title={"PAYMENT REFERENCE"}
-                  variant={"copy"}
-                  value={details?.payment_reference}
-                />
-                <Detail
-                  title={"PAYMENT RESPONSE CODE"}
-                  variant={"copy"}
-                  value={details?.payment_response_code}
-                />
-                <Detail
-                  title={"PAYMENT RESPONSE MESSAGE"}
-                  variant={"copy"}
-                  value={
-                    details?.payment_response_message !== ""
-                      ? details?.payment_response_message
-                      : "N/A"
-                  }
-                />
-              </Stack>
-            </Box>
-          </OnlyHeader>
-        </Box>
-        {/* Personal information  */}
-        <Box mt="15px">
-          <OnlyHeader alignHeader="left" header="Customer Details" size="12px">
-            <Box my="auto">
-              <Stack
-                direction="row"
-                flexWrap="wrap"
-                columnGap="112px"
-                rowGap="36px"
-              >
-                <Detail
                   title={"CUSTOMER NAME"}
                   variant={"copy"}
                   value={details?.customer_name}
@@ -95,110 +58,25 @@ export default function Index() {
                 <Detail
                   title={"CUSTOMER EMAIL"}
                   variant={"copy"}
-                  value={details?.customer_email}
+                  value={details?.email_address}
                 />
                 <Detail
-                  title={"CUSTOMER PHONE NUMBER"}
+                  title={"PHONE NUMBER"}
                   variant={"copy"}
-                  value={details?.customer_phone}
+                  value={details?.mobile_number}
                 />
-                {/* <Detail
-                  title={"CURRENCY"}
+                <Detail
+                  title={"COUNTRY"}
                   variant={"copy"}
-                  value={details?.currency}
-                /> */}
+                  value={details?.country_name}
+                />
               </Stack>
             </Box>
           </OnlyHeader>
         </Box>
-        {/* Business registration  */}
-        <Box mt="15px">
-          <OnlyHeader alignHeader="left" header="Payment Details" size="12px">
-            <Box my="auto">
-              <Stack
-                direction="row"
-                flexWrap="wrap"
-                columnGap="112px"
-                rowGap="36px"
-              >
-                <Detail
-                  title={"PAYMENT TYPE"}
-                  variant={"copy"}
-                  value={details?.payment_type}
-                />
-                <Detail
-                  title={"CURRENCY"}
-                  variant={"copy"}
-                  value={details?.currency}
-                />
-                <Detail
-                  title={"AMOUNT"}
-                  variant={"copy"}
-                  value={`${details?.currency} ${stringToCurrency(
-                    details?.amount
-                  )}`}
-                />
-                <Detail
-                  title={"STATUS"}
-                  variant={"copy"}
-                  value={details?.order_status}
-                />
-                <Detail
-                  title={"NARRATION"}
-                  variant={"copy"}
-                  value={details?.narration}
-                />
-                <Detail
-                  title={"REMARKS"}
-                  variant={"copy"}
-                  value={details?.remarks}
-                />
-                <Detail
-                  title={"FEE"}
-                  variant={"copy"}
-                  value={stringToCurrency(details?.fee)}
-                />
-                <Detail
-                  title={"SUBSIDIARY FEE"}
-                  variant={"copy"}
-                  value={stringToCurrency(details?.subsidiary_fee)}
-                />
-                <Detail
-                  title={"CUSTOMER FEE"}
-                  variant={"copy"}
-                  value={stringToCurrency(details?.customer_fee)}
-                />
-                <Detail
-                  title={"WHO BEARS FEE?"}
-                  variant={"copy"}
-                  value={details?.who_bears_fee}
-                />
-                <Detail
-                  title={"DATE CREATED"}
-                  variant={"copy"}
-                  value={moment(details?.date_created).format("L")}
-                />
-                <Detail
-                  title={"DATE UPDATED"}
-                  variant={"copy"}
-                  value={
-                    details?.date_updated
-                      ? moment(details?.date_updated).format("L")
-                      : "N/A"
-                  }
-                />
-                <Detail
-                  title={"DATE PAYMENT CONFIRMED"}
-                  variant={"copy"}
-                  value={
-                    details?.date_payment_confirmed
-                      ? moment(details?.date_payment_confirmed).format("L")
-                      : "N/A"
-                  }
-                />
-              </Stack>
-            </Box>
-          </OnlyHeader>
+        {/* Customer transaction */}
+        <Box>
+          <CustomerDetailsTable />
         </Box>
       </Box>
     </Dashboard>

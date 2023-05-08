@@ -9,6 +9,8 @@ import { CustomersTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
+import { Button } from "@mui/material";
+import AddBox from "remixicon-react/AddBoxFillIcon";
 
 const CustomersTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -38,8 +40,17 @@ const CustomersTable = () => {
         data={data?.items}
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
+        buttons={
+          <Button
+            variant="contained"
+            sx={{ height: "40px", fontSize: "12px" }}
+            onClick={() => Router.push("/business/customers/new")}
+          >
+            <AddBox size={16} />
+            Add New Customer
+          </Button>
+        }
       />
-      <FilterTable updateFilter={setFilters} />
       <Table
         containerRef={containerRef}
         data={data?.items ?? []}
@@ -48,7 +59,7 @@ const CustomersTable = () => {
         page={setCurrentPage}
         pageCount={data?.total_pages}
         onClickRow={(e) =>
-          Router.push(`/transactions/customers/${e?.row?.original?.id}`)
+          Router.push(`/business/customers/${e?.row?.original?.id}`)
         }
       />
     </div>
