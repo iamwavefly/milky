@@ -40,7 +40,6 @@ const TransactionTable = () => {
         entries={`${data?.total_items ?? 0}`}
         setSearch={setSearch}
       />
-
       <Table
         containerRef={containerRef}
         data={data?.items ?? []}

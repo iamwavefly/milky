@@ -189,3 +189,31 @@ export const personalInformation = () =>
       .string()
       .required("Identification document number is required"),
   });
+
+// getStarted
+export const invoiceBusinessDetails = () =>
+  yup.object({
+    companyName: yup.string().required("Company name is required"),
+    companyEmail: yup
+      .string()
+      .email()
+      .required("Company email address is required"),
+    customerName: yup.string().required("Customer name is required"),
+    customerEmail: yup
+      .string()
+      .email()
+      .required("Customer email address is required"),
+  });
+
+export const invoiceDetails = () =>
+  yup.object({
+    invoiceTitle: yup.string().required("Invoice title is required"),
+    dueDate: yup.date().required("Due date is required"),
+    currency: yup.string().required("Currency is required"),
+    note: yup.string(),
+    discount: yup.number(),
+    tax: yup.number(),
+    quantity: yup.number().required("Quantity is required"),
+    amount: yup.number().required("Amount is required"),
+    description: yup.string().required("Description is required"),
+  });

@@ -6,7 +6,7 @@ import React, {
   useEffect,
 } from "react";
 import DownloadIcon from "../../public/icons/download.svg";
-// import SearchIcon from "../../public/icons/search.svg";
+import CarretDownIcon from "../../public/icons/carret-down.svg";
 import {
   Box,
   Button,
@@ -153,17 +153,27 @@ export default function Header({
         <Stack direction="row" gap="10px" alignItems="center">
           <DropdownMenu title="NGN" />
           <Button
-            variant="contained"
+            variant={buttons ? "outlined" : "contained"}
             onClick={handleClick}
             sx={{
               border: 0,
               height: "38px",
-
+              py: "0 !important",
               fontSize: "12px",
             }}
           >
             Export
+            {/* <Stack
+              pl="10px"
+              ml="auto"
+              justifyContent="center"
+              borderLeft="1px solid #E4E8F2"
+              height="100%"
+            >
+              <CarretDownIcon />
+            </Stack> */}
           </Button>
+          {buttons}
         </Stack>
       </Stack>
     </>

@@ -9,6 +9,8 @@ import { InvoiceTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
+import { Button } from "@mui/material";
+import AddBox from "remixicon-react/AddBoxFillIcon";
 
 const InvoiceTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -36,6 +38,18 @@ const InvoiceTable = () => {
         containerRef={containerRef}
         columns={InvoiceTableColumns}
         data={data?.items}
+        buttons={
+          <>
+            <Button
+              sx={{ height: "40px", fontSize: "12px" }}
+              variant="contained"
+              onClick={() => Router.push("/business/invoice/new")}
+            >
+              <AddBox size={16} />
+              New Invoice
+            </Button>
+          </>
+        }
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
       />
@@ -48,7 +62,7 @@ const InvoiceTable = () => {
         page={setCurrentPage}
         pageCount={data?.total_pages}
         onClickRow={(e) =>
-          Router.push(`/transactions/invoices/${e?.row?.original?.id}`)
+          Router.push(`/business/invoice/${e?.row?.original?.id}`)
         }
       />
     </div>

@@ -410,6 +410,38 @@ const theme = createTheme({
         },
       },
     },
+    MuiStepper: {
+      styleOverrides: {},
+    },
+    Mui: {
+      styleOverrides: {
+        root: {
+          background: "#f00 !important",
+        },
+      },
+    },
+    MuiStepIcon: {
+      styleOverrides: {
+        root: {
+          position: "relative",
+          width: "20px",
+          height: "20px",
+          border: "5px solid",
+          borderRadius: "50%",
+          background: "#fff",
+          "&::before": {
+            content: '""',
+            left: 0,
+            top: 0,
+            zIndex: 99999,
+            width: "20px",
+            height: "20px",
+            background: "#f00",
+            position: "absolute",
+          },
+        },
+      },
+    },
   },
 } as ThemeOptions);
 
