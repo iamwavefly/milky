@@ -51,11 +51,11 @@ export default function Index() {
   };
 
   // business types
-  const fetchBusinessType = useFetch(`${baseUrl}/business/categories`, "get");
+  const fetchBusinessType = useFetch(`${baseUrl}/dashboard/business/categories`, "get");
   // business sizes
-  const fetchBusinessSizes = useFetch(`${baseUrl}/business/sizes`, "get");
+  const fetchBusinessSizes = useFetch(`${baseUrl}/dashboard/business/sizes`, "get");
   // business countries
-  const fetchCountries = useFetch(`${baseUrl}/service/countries`, "get");
+  const fetchCountries = useFetch(`${baseUrl}/dashboard/service/countries`, "get");
   // business countries
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/business/get-started`
