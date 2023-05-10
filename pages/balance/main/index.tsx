@@ -41,8 +41,9 @@ export default function Index() {
           <Box flex={1}>
             <CountChart
               title={"Dispute/Chargeback"}
-              value={metric?.count}
+              value={metric?.count ?? 100}
               change={metric?.count_change}
+              withCurrency
             />
           </Box>
           <Divider sx={{ border: "1px solid #E4E8F2" }} />
@@ -50,7 +51,7 @@ export default function Index() {
             <CountChart
               title={"Refunds"}
               themeColor="#EA5851"
-              value={metric?.volume}
+              value={metric?.volume ?? 1000}
               change={metric?.volume_change}
               withCurrency
             />
@@ -59,7 +60,7 @@ export default function Index() {
           <Box flex={1}>
             <CountChart
               title={"Non-Compliance Assessment"}
-              value={metric?.settlements}
+              value={metric?.settlements ?? 2300}
               change={metric?.settlement_change}
               withCurrency
             />

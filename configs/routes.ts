@@ -137,8 +137,39 @@ const routes = [
   {
     id: 8,
     name: "Chargeback",
-    link: "/chargeback",
     Icon: ArrowLeftRightIcon,
+    nest: [
+      {
+        key: 1,
+        name: "All chargebacks",
+        link: "/chargeback/all",
+      },
+      {
+        key: 2,
+        name: "Pending",
+        link: "/chargeback/pending",
+      },
+      {
+        key: 3,
+        name: "Awaiting response",
+        link: "/chargeback/awaiting-response",
+      },
+      {
+        key: 4,
+        name: "Won",
+        link: "/chargeback/won",
+      },
+      {
+        key: 5,
+        name: "Lost",
+        link: "/chargeback/lost",
+      },
+      {
+        key: 6,
+        name: "Assessment",
+        link: "/chargeback/assessment",
+      },
+    ],
   },
   {
     id: 9,
