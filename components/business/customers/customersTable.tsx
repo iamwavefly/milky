@@ -11,16 +11,31 @@ import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import { Button } from "@mui/material";
 import AddBox from "remixicon-react/AddBoxFillIcon";
+import { setDrawalState } from "@/store/appSlice";
+import { useDispatch } from "react-redux";
+import NewCustomer from "./newCustomer";
 
 const CustomersTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
 
+  const dispatch = useDispatch();
+  // close drawal
+  const openDrawal = () => {
+    dispatch(
+      setDrawalState({
+        active: true,
+        title: "Add a New Customer",
+        content: <NewCustomer />,
+      })
+    );
+  };
+
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/fetch/customers?page=${currentPage}&limit=10&${Object.entries(
+    `${baseUrl}/dashboard/fetch/customers?page=${currentPage}&limit=10&${Object.entries(
       filters
     )
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
@@ -44,7 +59,7 @@ const CustomersTable = () => {
           <Button
             variant="contained"
             sx={{ height: "40px", fontSize: "12px" }}
-            onClick={() => Router.push("/business/customers/new")}
+            onClick={openDrawal}
           >
             <AddBox size={16} />
             Add New Customer

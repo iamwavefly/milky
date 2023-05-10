@@ -15,7 +15,7 @@ export default function ContactInformation() {
   const close = () => dispatch(setDrawalState({ active: false }));
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/onboarding/contact/information`
+    `${baseUrl}/dashboard/onboarding/contact/information`
   );
 
   const formik = useFormik({

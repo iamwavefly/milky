@@ -9,6 +9,8 @@ import { ProductsTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
+import AddBox from "remixicon-react/AddBoxFillIcon";
+import { Button } from "@mui/material";
 
 const SettlementTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -18,7 +20,7 @@ const SettlementTable = () => {
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/product/all?page=${currentPage}&limit=10&${Object.entries(
+    `${baseUrl}/dashboard/product/all?page=${currentPage}&limit=10&${Object.entries(
       filters
     )
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
@@ -38,6 +40,16 @@ const SettlementTable = () => {
         data={data?.items}
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
+        buttons={
+          <Button
+            variant="contained"
+            sx={{ height: "40px", fontSize: "12px" }}
+            onClick={() => Router.push("/business/products/new")}
+          >
+            <AddBox size={16} />
+            Add New Product
+          </Button>
+        }
       />
       <FilterTable updateFilter={setFilters} />
       <Table

@@ -255,6 +255,75 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
   },
 ];
 
+export const BalanceReserveColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "settlement_amount",
+    header: "Settlement amount",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "settlement_date",
+    header: "Settlement date",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {moment(row.getValue()).format("L")}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "withheld_amount",
+    header: "Withheld amount",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "due_date",
+    header: "Due date",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {moment(row.getValue()).format("L")}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: (row: any) => {
+      return (
+        <Chip
+          label={row.getValue()}
+          className={`chip ${row
+            .getValue()
+            ?.toLowerCase()
+            ?.replaceAll(" ", "-")}`}
+        />
+      );
+    },
+  },
+];
+
 export const AccountCustomerTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "checkbox",
@@ -488,8 +557,8 @@ export const RefundTableColumns: ColumnDef<any, any>[] = [
     },
   },
   {
-    accessorKey: "due_date",
-    header: "Due date",
+    accessorKey: "amount",
+    header: "Amount",
     cell: (row: any) => {
       return (
         <Typography color="#92959F" fontSize="12px" width="max-content">
@@ -503,23 +572,16 @@ export const RefundTableColumns: ColumnDef<any, any>[] = [
     header: "Merchant ID",
   },
   {
-    accessorKey: "merchant_name",
-    header: "Business name",
+    accessorKey: "id",
+    header: "Customer ID",
   },
   {
-    accessorKey: "amount",
-    header: "Amount refunded",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
-  },
-  {
-    accessorKey: "transaction_reference",
+    accessorKey: "reference",
     header: "Transaction reference",
+  },
+  {
+    accessorKey: "date",
+    header: "Date",
   },
   {
     accessorKey: "status",
@@ -667,27 +729,27 @@ export const AccountSettlementTableColumns: ColumnDef<any, any>[] = [
     },
   },
   {
-    accessorKey: "business_name",
+    accessorKey: "subsidiary_name",
     header: "Business name",
   },
   {
-    accessorKey: "amount",
+    accessorKey: "transaction_amount",
     header: "Amount",
     cell: (row: any) => {
       return (
         <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
+          NGN {stringToCurrency(row.getValue())}
         </Typography>
       );
     },
   },
   {
     accessorKey: "fee",
-    header: "Settlement fee type",
+    header: "Settlement fee",
     cell: (row: any) => {
       return (
         <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
+          NGN {stringToCurrency(row.getValue())}
         </Typography>
       );
     },
@@ -697,7 +759,7 @@ export const AccountSettlementTableColumns: ColumnDef<any, any>[] = [
     header: "Currency",
   },
   {
-    accessorKey: "status",
+    accessorKey: "settlement_status",
     header: "Status",
     cell: (row: any) => {
       return (
@@ -857,6 +919,51 @@ export const AccountSettlementColumns: ColumnDef<any, any>[] = [
             .getValue()
             ?.toLowerCase()
             ?.replaceAll(" ", "-")}`}
+        />
+      );
+    },
+  },
+];
+
+export const PaymentLinkColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "Link name",
+  },
+  {
+    accessorKey: "payment_type",
+    header: "Type",
+  },
+  {
+    accessorKey: "limit",
+    header: "Limit",
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "is_active",
+    header: "Status",
+    cell: (row: any) => {
+      return (
+        <Chip
+          label={row?.getValue() ? "Active" : "Inactive"}
+          className={`chip ${row.getValue() ? "active" : "fail"}`}
         />
       );
     },

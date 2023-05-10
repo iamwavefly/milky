@@ -58,7 +58,7 @@ export default function Index() {
   const fetchCountries = useFetch(`${baseUrl}/service/countries`, "get");
   // business countries
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/business/get-started`
+    `${baseUrl}/dashboard/business/get-started`
   );
 
   // fetch business type

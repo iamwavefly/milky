@@ -25,7 +25,7 @@ export default function BusinessInformation() {
   const close = () => dispatch(setDrawalState({ active: false }));
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/onboarding/bank/details`
+    `${baseUrl}/dashboard/onboarding/bank/details`
   );
   const fetchBanks = useFetch(`${baseUrl}/banks`, "get");
 

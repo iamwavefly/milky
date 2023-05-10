@@ -87,7 +87,7 @@ const routes = [
       {
         key: 1,
         name: "Balance",
-        link: "/balance",
+        link: "/balance/main",
       },
       {
         key: 2,
@@ -97,7 +97,7 @@ const routes = [
       {
         key: 3,
         name: "Rolling Reserve History",
-        link: "/balance/history",
+        link: "/balance/reserve",
       },
     ],
   },
@@ -108,23 +108,23 @@ const routes = [
     nest: [
       {
         key: 1,
-        name: "Settlements",
-        link: "/settlements",
+        name: "Transfers",
+        link: "/payouts/transfers",
       },
       {
         key: 2,
-        name: "Reconciliation",
-        link: "/settlements/reconciliation",
+        name: "Pending Approval",
+        link: "/payouts/pending-approval",
       },
       {
         key: 3,
-        name: "Pending approval",
-        link: "/settlements/pending-approval",
+        name: "Beneficiaries",
+        link: "/payouts/beneficiaries",
       },
       {
-        key: 3,
-        name: "Reports",
-        link: "/settlements/reports",
+        key: 4,
+        name: "Funding History",
+        link: "/payouts/funding-history",
       },
     ],
   },

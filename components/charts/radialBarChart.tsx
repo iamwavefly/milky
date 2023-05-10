@@ -13,7 +13,7 @@ const COLORS = ["#D4D5D9", "#9BA6FA", "#9769F8", "#F8698B"];
 export default function RadialChart() {
   const [charts, setCharts] = useState([]);
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/metric/piechart/customer/devices`,
+    `${baseUrl}/dashboard/metric/piechart/customer/devices`,
     "get"
   );
 

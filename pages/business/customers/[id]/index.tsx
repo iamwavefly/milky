@@ -22,7 +22,7 @@ export default function Index() {
   const { asPath } = useRouter();
   const id = +asPath.split("/").slice(-1)[0];
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/fetch/customers?id=${id}`,
+    `${baseUrl}/dashboard/fetch/customers?id=${id}`,
     "get"
   );
 

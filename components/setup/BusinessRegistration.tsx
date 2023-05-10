@@ -25,7 +25,7 @@ export default function BusinessRegistration() {
 
   // submit registration information
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/onboarding/business/registration/add-or-update`
+    `${baseUrl}/dashboard/onboarding/business/registration/add-or-update`
   );
   // business classes
   const fetchBusinessClasses = useFetch(`${baseUrl}/business/classes`, "get");

@@ -187,7 +187,8 @@ const theme = createTheme({
           },
         },
         multiline: {
-          padding: "0 important",
+          paddingTop: "26px",
+          height: "61px",
         },
         root: {
           display: "flex",

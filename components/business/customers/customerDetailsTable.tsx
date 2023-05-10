@@ -24,7 +24,7 @@ const CustomerDetailsTable = () => {
   const id = +asPath.split("/").slice(-1)[0];
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/fetch/customers/orders?CustomerId=${id}&page=${currentPage}&limit=10&${Object.entries(
+    `${baseUrl}/dashboard/fetch/customers/orders?CustomerId=${id}&page=${currentPage}&limit=10&${Object.entries(
       filters
     )
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)

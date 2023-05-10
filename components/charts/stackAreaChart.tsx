@@ -139,7 +139,7 @@ const StackAreaChart = () => {
   const [totalCurrentBalance, setTotalCurrentBalance] = useState(0);
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/metric/inflow/outflow?fromdate=2020-10-10&todate=2023-10-10&type=year`,
+    `${baseUrl}/dashboard/metric/inflow/outflow?fromdate=2020-10-10&todate=2023-10-10&type=year`,
     "get"
   );
 

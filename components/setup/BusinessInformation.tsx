@@ -23,7 +23,7 @@ export default function BusinessInformation() {
 
   const close = () => dispatch(setDrawalState({ active: false }));
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/onboarding/business/information`
+    `${baseUrl}/dashboard/onboarding/business/information`
   );
 
   const ref = useRef<any>();

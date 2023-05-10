@@ -21,7 +21,7 @@ function App({ Component, pageProps }: AppProps) {
   const token = Cookies.get("token");
   // user profile req
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/me`,
+    `${baseUrl}/dashboard/me`,
     "get"
   );
 

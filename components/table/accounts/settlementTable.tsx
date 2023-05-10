@@ -25,7 +25,7 @@ const SettlementsTable = () => {
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/settlement/all`,
+    `${baseUrl}/dashboard/settlement/all`,
     "get"
   );
 

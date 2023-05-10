@@ -217,3 +217,12 @@ export const invoiceDetails = () =>
     amount: yup.number().required("Amount is required"),
     description: yup.string().required("Description is required"),
   });
+
+// new customer
+export const newCustomer = () =>
+  yup.object({
+    firstName: yup.string().required("First name is required"),
+    lastName: yup.string(),
+    emailAddress: yup.string().required("Email address is required"),
+    phoneNumber: yup.string(),
+  });

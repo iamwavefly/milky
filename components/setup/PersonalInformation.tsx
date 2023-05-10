@@ -45,7 +45,7 @@ export default function PersonalInformation() {
 
   const idTypes = useFetch(`${baseUrl}/onboarding/identification/types`, "get");
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/onboarding/personal/information`
+    `${baseUrl}/dashboard/onboarding/personal/information`
   );
 
   const fileChangeHandler = (name: string, file: Blob) => {

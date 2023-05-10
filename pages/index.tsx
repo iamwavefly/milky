@@ -27,7 +27,7 @@ export default function Index() {
   const [disabled, setDisabled] = useState(true);
   const [form, setForm] = useState({ email: "", password: "" });
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}${authReq ? "/login/complete" : "/login"}`
+    `${baseUrl}${authReq ? "/dashboard/login/complete" : "/dashboard/login"}`
   );
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);

@@ -22,7 +22,7 @@ const COLORS = ["#F7A4C2", "#CDD2FD", "#F8698B", "#6979F8"];
 
 export default function PieChart() {
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/metric/piechart/transaction/status`,
+    `${baseUrl}/dashboard/metric/piechart/transaction/status`,
     "get"
   );
 

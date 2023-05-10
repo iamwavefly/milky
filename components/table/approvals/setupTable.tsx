@@ -21,7 +21,7 @@ const SetupTable = () => {
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/pricing/provider?page=${currentPage}&limit=10`,
+    `${baseUrl}/dashboard/pricing/provider?page=${currentPage}&limit=10`,
     "get"
   );
 

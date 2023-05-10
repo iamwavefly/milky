@@ -117,7 +117,9 @@ fieldset {
     background-color: rgba(16, 96, 251, 0.05);
   }
   &.rejected,
-  &.suspended {
+  &.suspended,
+  &.due,
+  &.fail {
     color: #ea5851;
     background-color: rgba(255, 194, 191, 0.15);
   }

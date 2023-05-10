@@ -11,7 +11,7 @@ export default function Legal() {
   const dispatch = useDispatch();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/onboarding/accept/terms`
+    `${baseUrl}/dashboard/onboarding/accept/terms`
   );
 
   const close = () => dispatch(setDrawalState({ active: false }));

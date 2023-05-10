@@ -19,7 +19,7 @@ const InvoiceTable = () => {
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/subsidiary/all/paginated?page=${currentPage}&limit=10&${Object.entries(
+    `${baseUrl}/dashboard/subsidiary/all/paginated?page=${currentPage}&limit=10&${Object.entries(
       filters
     )
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)

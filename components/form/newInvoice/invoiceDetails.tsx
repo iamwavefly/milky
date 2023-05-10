@@ -36,7 +36,7 @@ export default function InvoiceDetails({ onSubmit, previous, form }: Props) {
   const [total, setTotal] = useState(0);
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/invoice/create`
+    `${baseUrl}/dashboard/invoice/create`
   );
   const currencies = useFetch(`${baseUrl}/service/currencies`, "get");
 

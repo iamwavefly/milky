@@ -31,7 +31,7 @@ export default function Index() {
     event.preventDefault();
   };
 
-  const { loading, data, error, handleSubmit } = useFetch(`${baseUrl}/signup`);
+  const { loading, data, error, handleSubmit } = useFetch(`${baseUrl}/dashboard/signup`);
 
   const formik = useFormik({
     initialValues: {

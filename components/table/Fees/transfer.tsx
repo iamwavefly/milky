@@ -8,7 +8,7 @@ import Header from "../header";
 
 export default function TransferFeesTable() {
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/pricing/payout`,
+    `${baseUrl}/dashboard/pricing/payout`,
     "get"
   );
 

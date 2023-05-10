@@ -34,7 +34,7 @@ const colors = ["#F7A4C2", "#A4ADF7", "#D2A4F7", "#F8698B"];
 
 export default function DataComposedChart() {
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/metric/piechart/transaction/method`,
+    `${baseUrl}/dashboard/metric/piechart/transaction/method`,
     "get"
   );
 

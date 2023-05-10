@@ -2,7 +2,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 
 const baseUrl =
-  "https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard";
+  "https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary";
 
 const token = Cookies.get("token");
 

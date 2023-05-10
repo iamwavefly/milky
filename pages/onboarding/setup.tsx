@@ -63,7 +63,10 @@ export default function Index() {
   };
 
   // text
-  const onboardingStatus = useFetch(`${baseUrl}/onboarding/percentage`, "get");
+  const onboardingStatus = useFetch(
+    `${baseUrl}/dashboard/onboarding/percentage`,
+    "get"
+  );
   // fetch business sizes
   useEffect(() => {
     onboardingStatus.handleSubmit();
