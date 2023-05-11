@@ -53,7 +53,6 @@ const InvoiceTable = () => {
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
       />
-      <FilterTable updateFilter={setFilters} />
       <Table
         containerRef={containerRef}
         data={data?.items ?? []}

@@ -100,8 +100,10 @@ fieldset {
   border-radius: 0;
   &.approved,
   &.active,
-  &.successful {
+  &.successful,
+  &.available {
     color: #097122;
+    background-color: rgba(9, 113, 33, 0.05);
   }
   &.pending-review,
   &.pending-verification,
