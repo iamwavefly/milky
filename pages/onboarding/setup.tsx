@@ -28,7 +28,7 @@ export default function Index() {
 
   const dispatch = useDispatch();
   const { is_email_verified, email_address, mobile_number } =
-    useSelector(selectUserState);
+    useSelector(selectUserState).user;
 
   const close = () => dispatch(setDrawalState({ active: false }));
 
