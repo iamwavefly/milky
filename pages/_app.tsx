@@ -43,7 +43,12 @@ function App({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     if (data?.user) {
-      dispatch(setUserState(data?.user));
+      dispatch(
+        setUserState({
+          user: data?.user,
+          subsidiaries: data?.subsidiary_details?.subsidiaries[0],
+        })
+      );
     }
   }, [data]);
 
@@ -51,7 +56,7 @@ function App({ Component, pageProps }: AppProps) {
     <>
       <ThemeProvider theme={theme}>
         <ProtectRoutes>
-          <Toaster  />
+          <Toaster />
           <Component {...pageProps} />
         </ProtectRoutes>
       </ThemeProvider>

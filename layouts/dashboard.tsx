@@ -12,6 +12,10 @@ import { faker } from "@faker-js/faker";
 import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import CarretDownIcon from "../public/icons/carret-down.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserState } from "@/store/authSlice";
+import baseUrl from "@/middleware/baseUrl";
+import useFetch from "@/hooks/useFetch";
 
 interface Props {
   children?: ReactNode;
@@ -22,9 +26,19 @@ const Dashboard = ({ children, title }: Props) => {
   const [showSidebar, setShowSidebar] = useState(true);
   const [openMenuId, setOpenMenuId] = useState(0);
 
+  const dispatch = useDispatch();
+
+  const { subsidiaries, user } = useSelector(selectUserState);
+
+  const { business_name, id } = subsidiaries;
+
   const toggleMenu = () => {
     setShowSidebar((prev) => !prev);
   };
+
+  useEffect(() => {
+    console.log(subsidiaries);
+  }, [subsidiaries]);
 
   // nested menu
   useEffect(() => {
@@ -99,7 +113,7 @@ const Dashboard = ({ children, title }: Props) => {
           >
             <Stack>
               <Typography fontWeight={500} fontSize="18px" lineHeight="24px">
-                Godson Limited
+                {business_name ?? "..."}
               </Typography>
               <Typography
                 fontWeight={400}
@@ -108,7 +122,7 @@ const Dashboard = ({ children, title }: Props) => {
                 fontSize="12px"
                 lineHeight="18px"
               >
-                Merchant ID : 123456789
+                Merchant ID : {id ?? 0}
               </Typography>
             </Stack>
             <IconButton

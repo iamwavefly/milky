@@ -8,6 +8,8 @@ import CalendarIcon from "remixicon-react/Calendar2LineIcon";
 import UploadIcon from "remixicon-react/Upload2LineIcon";
 import baseUrl from "@/middleware/baseUrl";
 import BarChart from "@/components/charts/barChart";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserState } from "@/store/authSlice";
 
 export default function Index() {
   const [metric, setMetric] = useState<any>({});
@@ -67,7 +69,7 @@ export default function Index() {
           <Box flex={1}>
             <CountChart
               title={"Transaction Count"}
-              value={metric?.count}
+              value={metric?.count ?? 0}
               change={metric?.count_change}
             />
           </Box>
@@ -76,7 +78,7 @@ export default function Index() {
             <CountChart
               title={"Transaction Volume"}
               themeColor="#EA5851"
-              value={metric?.volume}
+              value={metric?.volume ?? 0}
               change={metric?.volume_change}
               withCurrency
             />
@@ -85,7 +87,7 @@ export default function Index() {
           <Box flex={1}>
             <CountChart
               title={"Transaction Settlements"}
-              value={metric?.settlements}
+              value={metric?.settlements ?? 0}
               change={metric?.settlement_change}
               withCurrency
             />
@@ -102,7 +104,7 @@ export default function Index() {
           <Box flex={1}>
             <CountChart
               title={"Available Balance"}
-              value={metric?.available_balance}
+              value={metric?.available_balance ?? 0}
               change={metric?.available_balance_change}
               withCurrency
             />
@@ -111,7 +113,7 @@ export default function Index() {
           <Box flex={1}>
             <CountChart
               title={"Ledger Balance"}
-              value={metric?.ledger_balance}
+              value={metric?.ledger_balance ?? 0}
               change={metric?.ledger_balance_change}
               withCurrency
             />

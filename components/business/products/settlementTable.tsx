@@ -51,7 +51,6 @@ const SettlementTable = () => {
           </Button>
         }
       />
-      <FilterTable updateFilter={setFilters} />
       <Table
         containerRef={containerRef}
         data={data?.items ?? []}

@@ -4,7 +4,7 @@ import { _businesses, _customers, _invoices } from "@/mocks";
 import Header from "@/components/table/header";
 import Table from "@/components/table/table";
 import FilterTable from "@/components/table/filter";
-import { ProductsTableColumns } from "@/components/table/columns";
+import { BalanceHistoryColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
@@ -35,7 +35,7 @@ const BalanceHistoryTable = () => {
     <Box>
       <Header
         containerRef={containerRef}
-        columns={ProductsTableColumns}
+        columns={BalanceHistoryColumns}
         data={data?.items}
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
@@ -43,7 +43,7 @@ const BalanceHistoryTable = () => {
       <Table
         containerRef={containerRef}
         data={data?.items ?? []}
-        columns={ProductsTableColumns}
+        columns={BalanceHistoryColumns}
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.total_pages}

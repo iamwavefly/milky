@@ -255,6 +255,32 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
   },
 ];
 
+export const AccountVirtualTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "account_number",
+    header: "Account Number",
+  },
+  {
+    accessorKey: "bank_name",
+    header: "Bank Name",
+  },
+  {
+    accessorKey: "bvn",
+    header: "BVN",
+  },
+];
+
 export const BalanceReserveColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "checkbox",
@@ -319,6 +345,71 @@ export const BalanceReserveColumns: ColumnDef<any, any>[] = [
             ?.toLowerCase()
             ?.replaceAll(" ", "-")}`}
         />
+      );
+    },
+  },
+];
+
+export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "balance",
+    header: "Initial balance",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "amount",
+    header: "Transaction amount",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {moment(row.getValue()).format("L")}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "balance_after",
+    header: "Balance after",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "details",
+    header: "Transaction details",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "due_date",
+    header: "Due date",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {moment(row.getValue()).format("L")}
+        </Typography>
       );
     },
   },

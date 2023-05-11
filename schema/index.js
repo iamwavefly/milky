@@ -226,3 +226,29 @@ export const newCustomer = () =>
     emailAddress: yup.string().required("Email address is required"),
     phoneNumber: yup.string(),
   });
+
+// new payment link
+export const newPaymentLink = () =>
+  yup.object({
+    linkName: yup.string().required("Link name is required"),
+    description: yup.string(),
+    paymentType: yup.string().required("Payment type is required"),
+    amount: yup.string().required("Amount is required"),
+  });
+
+// new product
+export const newProduct = () =>
+  yup.object({
+    productName: yup.string().required("Product name is required"),
+    productDescription: yup
+      .string()
+      .required("Product description is required"),
+    price: yup.number().required("Price is required"),
+    quantity: yup.number().required("Quantity is required"),
+    containsPhysicalGoods: yup.boolean(),
+    deliveryAddressRequired: yup.boolean(),
+    deliveryNoteRequired: yup.boolean(),
+    onDeal: yup.boolean(),
+    dealPrice: yup.number(),
+    url: yup.string(),
+  });

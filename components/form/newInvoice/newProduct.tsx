@@ -1,3 +1,4 @@
+// @ts-nocheck
 import {
   Box,
   Button,
@@ -14,7 +15,7 @@ import {
 import PhotoUploadIcon from "../../../public/icons/photo-upload.svg";
 import React, { useEffect, useRef, useState } from "react";
 import { useFormik } from "formik";
-import { invoiceDetails } from "@/schema";
+import { invoiceDetails, newProduct } from "@/schema";
 import Router from "next/router";
 import FileUpload from "@/components/FileUpload";
 import Image from "next/image";
@@ -28,21 +29,22 @@ import DeleteIcon from "remixicon-react/DeleteBinLineIcon";
 import EditIcon from "remixicon-react/EditLineIcon";
 import AddBox from "remixicon-react/AddBoxFillIcon";
 import CheckboxIcon from "remixicon-react/CheckboxFillIcon";
+import { serialize } from "object-to-formdata";
 
 const deliveryTypes = [
   {
     id: 1,
-    name: "ContainsPhysicalGoods",
+    name: "containsPhysicalGoods",
     value: "This product contains one or more physical products",
   },
   {
     id: 2,
-    name: "DeliveryAddressRequired",
+    name: "deliveryAddressRequired",
     value: "Requires delivery address",
   },
   {
     id: 3,
-    name: "DeliveryNoteRequired",
+    name: "deliveryNoteRequired",
     value: "Requires delivery note",
   },
 ];
@@ -63,9 +65,9 @@ export default function NewProduct({}) {
   const [fees, setFees] = useState<any>([]);
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/invoice/create`
+    `${baseUrl}/dashboard/product/create`
   );
-  const currencies = useFetch(`${baseUrl}/service/currencies`, "get");
+  const currencies = useFetch(`${baseUrl}/dashboard/service/currencies`, "get");
 
   const onChange = (e: any) => {
     const { name, value } = e.target;
@@ -108,34 +110,42 @@ export default function NewProduct({}) {
       productDescription: "",
       price: "",
       quantity: 1,
-      invoiceTitle: "",
-      dueDate: "",
-      currency: "",
-      description: "",
-      amount: 0,
-      note: "",
-      discount: 0,
-      tax: 0,
+      containsPhysicalGoods: false,
+      deliveryAddressRequired: false,
+      deliveryNoteRequired: false,
+      onDeal: false,
+      dealPrice: "",
+      url: "",
     },
-    validationSchema: invoiceDetails,
+    validationSchema: newProduct,
     onSubmit: ({
-      currency,
-      description,
-      discount,
-      dueDate,
-      invoiceTitle,
-      amount,
-      tax,
-      note,
+      containsPhysicalGoods,
+      dealPrice,
+      deliveryAddressRequired,
+      deliveryNoteRequired,
+      onDeal,
+      price,
+      productDescription,
+      productName,
       quantity,
+      url,
     }) => {
-      const item = {
-        amount,
-        quantity,
-        item: description,
+      const payload = {
+        Name: productName,
+        Description: productDescription,
+        Price: price,
+        DealPrice: dealPrice,
+        OnDeal: onDeal,
+        ContainsPhysicalGoods: containsPhysicalGoods,
+        DeliveryAddressRequired: deliveryAddressRequired,
+        DeliveryNoteRequired: deliveryNoteRequired,
+        Fees: fees,
+        Stock: quantity,
+        Images: selectedFile,
+        Url: url,
       };
-      const payload = {};
-      handleSubmit(payload);
+      const formData = serialize(payload);
+      handleSubmit(formData);
     },
   });
 
@@ -226,7 +236,10 @@ export default function NewProduct({}) {
                   return (
                     <FormControlLabel
                       key={id}
-                      control={<Checkbox name={name} />}
+                      control={
+                        <Checkbox name={name} checked={formik.values[name]} />
+                      }
+                      onChange={formik.handleChange}
                       label={
                         <Typography color="#262B40" fontSize="12px" ml="8px">
                           {value}
@@ -309,7 +322,10 @@ export default function NewProduct({}) {
                 Sale
               </Typography>
               <FormControlLabel
-                control={<Checkbox name={"deal"} />}
+                control={
+                  <Checkbox name="onDeal" checked={formik.values.onDeal} />
+                }
+                onChange={formik.handleChange}
                 label={
                   <Typography color="#262B40" fontSize="12px" ml="8px">
                     This product is on sale
@@ -320,15 +336,15 @@ export default function NewProduct({}) {
                 label="Sales price"
                 variant="standard"
                 sx={{ flex: 1 }}
-                name="quantity"
+                name="dealPrice"
                 type="number"
-                value={formik.values.quantity}
+                value={formik.values.dealPrice}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={
-                  formik.touched.quantity && Boolean(formik.errors.quantity)
+                  formik.touched.dealPrice && Boolean(formik.errors.dealPrice)
                 }
-                helperText={formik.touched.quantity && formik.errors.quantity}
+                helperText={formik.touched.dealPrice && formik.errors.dealPrice}
               />
             </Stack>
             {/* product url */}
@@ -340,15 +356,12 @@ export default function NewProduct({}) {
                 label="Product URL"
                 variant="standard"
                 sx={{ flex: 1 }}
-                name="quantity"
-                type="number"
-                value={formik.values.quantity}
+                name="url"
+                value={formik.values.url}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
-                error={
-                  formik.touched.quantity && Boolean(formik.errors.quantity)
-                }
-                helperText={formik.touched.quantity && formik.errors.quantity}
+                error={formik.touched.url && Boolean(formik.errors.url)}
+                helperText={formik.touched.url && formik.errors.url}
               />
             </Stack>
           </Stack>

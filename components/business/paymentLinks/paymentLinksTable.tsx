@@ -23,6 +23,15 @@ const PaymentLinksTable = () => {
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
 
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/payment/link/subsidiary?page=${currentPage}&limit=10&${Object.entries(
+      filters
+    )
+      ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
+      .join("&")}`,
+    "get"
+  );
+
   const containerRef = useRef();
 
   const dispatch = useDispatch();
@@ -32,19 +41,10 @@ const PaymentLinksTable = () => {
       setDrawalState({
         active: true,
         title: "New Payment Link",
-        content: <NewPaymentLink />,
+        content: <NewPaymentLink reload={handleSubmit} />,
       })
     );
   };
-
-  const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/payment/link/subsidiary?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
-      ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
-      .join("&")}`,
-    "get"
-  );
 
   useEffect(() => {
     handleSubmit();

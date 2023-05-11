@@ -5,7 +5,7 @@ import { _businesses, _customers, _invoices } from "@/mocks";
 import Header from "@/components/table/header";
 import Table from "@/components/table/table";
 import FilterTable from "@/components/table/filter";
-import { ProductsTableColumns } from "@/components/table/columns";
+import { AccountVirtualTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
@@ -36,7 +36,7 @@ const VirtualAccountTable = () => {
     <div className={Styles.container}>
       <Header
         containerRef={containerRef}
-        columns={ProductsTableColumns}
+        columns={AccountVirtualTableColumns}
         data={data?.items}
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
@@ -51,11 +51,10 @@ const VirtualAccountTable = () => {
           </Button>
         }
       />
-      <FilterTable updateFilter={setFilters} />
       <Table
         containerRef={containerRef}
         data={data?.items ?? []}
-        columns={ProductsTableColumns}
+        columns={AccountVirtualTableColumns}
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.total_pages}

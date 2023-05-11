@@ -18,6 +18,26 @@ export interface AuthState {
     avatar: string;
     date_created: string;
   };
+  subsidiaries: {
+    id: number;
+    name: string;
+    business_id: number;
+    business_name: string;
+    description: null | string;
+    status: null | string;
+    verification_status: null | string;
+    support_email: string;
+    role: string;
+    subsidiary_logo: null | string;
+    subsidiary_settlement_option: string;
+    role_id: number;
+    default_env_id: number;
+    is_default: true;
+    country: string;
+    industry: null | string;
+    legal_business_name: string;
+    business_type: string;
+  };
 }
 
 // Initial state
@@ -36,6 +56,26 @@ const initialState: AuthState = {
     avatar: "",
     date_created: "",
   },
+  subsidiaries: {
+    id: 0,
+    name: "",
+    business_id: 0,
+    business_name: "",
+    description: null,
+    status: null,
+    verification_status: null,
+    support_email: "",
+    role: "",
+    subsidiary_logo: null,
+    subsidiary_settlement_option: "",
+    role_id: 0,
+    default_env_id: 0,
+    is_default: true,
+    country: "",
+    industry: null,
+    legal_business_name: "",
+    business_type: "",
+  },
 };
 
 // Actual Slice
@@ -45,7 +85,9 @@ export const authSlice = createSlice({
   reducers: {
     // Action to set the authentication status
     setUserState(state, action) {
-      state.user = action.payload;
+      console.log(state.subsidiaries, "asa");
+      state.subsidiaries = action.payload.subsidiaries;
+      state.user = action.payload.user;
     },
   },
 
@@ -62,6 +104,6 @@ export const authSlice = createSlice({
 
 export const { setUserState } = authSlice.actions;
 
-export const selectUserState = (state: AppState) => state.auth.user;
+export const selectUserState = (state: AppState) => state.auth;
 
 export default authSlice.reducer;

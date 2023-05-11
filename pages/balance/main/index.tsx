@@ -1,26 +1,36 @@
 import React, { useEffect, useState } from "react";
 import Dashboard from "@/layouts/dashboard";
-import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import BalanceTable from "@/components/balance/balanceHistoryTable";
 import CountChart from "@/components/CountChart";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
+import OnlyHeader from "@/components/cards/onlyHeader";
+import Detail from "@/components/detail";
+import ArrowIcon from "remixicon-react/ArrowRightUpLineIcon";
 
 export default function Index() {
   const [metric, setMetric] = useState<any>({});
 
-  const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/get/wallet/balance`,
-    "get"
-  );
+  // const { loading, data, error, handleSubmit } = useFetch(
+  //   `${baseUrl}/dashboard/fetch/all/wallets`,
+  //   "get"
+  // );
 
-  useEffect(() => {
-    handleSubmit();
-  }, []);
+  // useEffect(() => {
+  //   handleSubmit();
+  // }, []);
 
-  useEffect(() => {
-    console.log({ data });
-  }, [data]);
+  // useEffect(() => {
+  //   console.log({ data });
+  // }, [data]);
 
   return (
     <Dashboard title="Balance">
@@ -66,6 +76,44 @@ export default function Index() {
             />
           </Box>
         </Stack>
+        <OnlyHeader
+          mt="32px"
+          alignHeader="left"
+          header="NGN Balance"
+          size="12px"
+        >
+          <Box my="auto">
+            <Stack
+              direction="row"
+              flexWrap="wrap"
+              columnGap="106px"
+              rowGap="36px"
+            >
+              <Detail
+                title={"BANK NAME"}
+                variant={"copy"}
+                value={"Access Bank - 0983049582"}
+              />
+              <Detail
+                title={"AVAILABLE BALANCE"}
+                variant={"copy"}
+                value={"NGN 40,000"}
+              />
+              <Detail
+                title={"LEDGER BALANCE"}
+                variant={"copy"}
+                value={"NGN 25,000"}
+              />
+              <Button
+                sx={{ height: "40px", fontSize: "12px" }}
+                variant="contained"
+              >
+                <ArrowIcon size={20} />
+                Top-Up Balance
+              </Button>
+            </Stack>
+          </Box>
+        </OnlyHeader>
       </Box>
     </Dashboard>
   );

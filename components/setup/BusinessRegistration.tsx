@@ -28,7 +28,10 @@ export default function BusinessRegistration() {
     `${baseUrl}/dashboard/onboarding/business/registration/add-or-update`
   );
   // business classes
-  const fetchBusinessClasses = useFetch(`${baseUrl}/business/classes`, "get");
+  const fetchBusinessClasses = useFetch(
+    `${baseUrl}/dashboard/business/classes`,
+    "get"
+  );
 
   const close = () => dispatch(setDrawalState({ active: false }));
 
@@ -86,7 +89,9 @@ export default function BusinessRegistration() {
           <Stack direction="row" gap="25px">
             <FileUpload
               title={"Particulars of Directors (optional)"}
-              update={(file: Blob) => fileChangeHandler("ParticularsOfDirectors", file)}
+              update={(file: Blob) =>
+                fileChangeHandler("ParticularsOfDirectors", file)
+              }
             />
             <FileUpload
               title={"Statement of return on allotment of shares"}
@@ -117,7 +122,9 @@ export default function BusinessRegistration() {
           <Stack direction="row" gap="25px">
             <FileUpload
               title={"Operating License (Optional)"}
-              update={(file: Blob) => fileChangeHandler("OperatingLicense", file)}
+              update={(file: Blob) =>
+                fileChangeHandler("OperatingLicense", file)
+              }
             />
           </Stack>
         </Stack>

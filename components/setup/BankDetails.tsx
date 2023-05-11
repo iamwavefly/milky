@@ -27,7 +27,7 @@ export default function BusinessInformation() {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/onboarding/bank/details`
   );
-  const fetchBanks = useFetch(`${baseUrl}/banks`, "get");
+  const fetchBanks = useFetch(`${baseUrl}/dashboard/banks`, "get");
 
   useEffect(() => {
     const { status, message } = data;
