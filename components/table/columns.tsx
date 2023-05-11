@@ -210,6 +210,117 @@ export const CustomerDetailsTableColumns: ColumnDef<any, any>[] = [
   },
 ];
 
+export const TransactionDetailsTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "date_created",
+    header: "Date",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {moment(row.getValue()).format("L")}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "customer_email",
+    header: "Email",
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "payment_type",
+    header: "Channel",
+  },
+  {
+    accessorKey: "order_reference",
+    header: "Reference",
+  },
+  {
+    accessorKey: "order_status",
+    header: "Status",
+    cell: (row: any) => {
+      return (
+        <Chip
+          label={row.getValue()}
+          className={`chip ${row
+            .getValue()
+            ?.toLowerCase()
+            ?.replaceAll(" ", "-")}`}
+        />
+      );
+    },
+  },
+];
+
+export const ProductDetailsTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "Product name",
+  },
+  {
+    accessorKey: "price",
+    header: "Price",
+  },
+  {
+    accessorKey: "stock",
+    header: "Stock count",
+  },
+  {
+    accessorKey: "total_orders",
+    header: "Sold",
+  },
+  {
+    accessorKey: "total_amount",
+    header: "Revenue",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Availability",
+    cell: (row: any) => {
+      return (
+        <Chip
+          label={row.getValue()}
+          className={`chip ${row
+            .getValue()
+            ?.toLowerCase()
+            ?.replaceAll(" ", "-")}`}
+        />
+      );
+    },
+  },
+];
+
 export const ProductsTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "checkbox",
@@ -219,24 +330,38 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
     },
   },
   {
-    accessorKey: "product_name",
+    accessorKey: "name",
     header: "Product name",
   },
   {
     accessorKey: "price",
     header: "Price",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
   },
   {
-    accessorKey: "stock_count",
+    accessorKey: "stock",
     header: "Stock count",
   },
   {
-    accessorKey: "sold",
+    accessorKey: "total_orders",
     header: "Sold",
   },
   {
-    accessorKey: "revenue",
+    accessorKey: "total_amount",
     header: "Revenue",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
   },
   {
     accessorKey: "status",

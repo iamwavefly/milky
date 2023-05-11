@@ -100,7 +100,7 @@ export default function NewProduct({}) {
     const { status, message } = data;
     if (status === "success") {
       toast.success(message);
-      Router.push("/business/invoice");
+      Router.push("/business/products");
     }
   }, [data]);
 
@@ -131,19 +131,20 @@ export default function NewProduct({}) {
       url,
     }) => {
       const payload = {
-        Name: productName,
-        Description: productDescription,
-        Price: price,
-        DealPrice: dealPrice,
-        OnDeal: onDeal,
-        ContainsPhysicalGoods: containsPhysicalGoods,
-        DeliveryAddressRequired: deliveryAddressRequired,
-        DeliveryNoteRequired: deliveryNoteRequired,
-        Fees: fees,
-        Stock: quantity,
-        Images: selectedFile,
-        Url: url,
+        name: productName,
+        description: productDescription,
+        price,
+        dealprice: dealPrice,
+        ondeal: onDeal,
+        containsphysicalgoods: containsPhysicalGoods,
+        deliveryaddressrequired: deliveryAddressRequired,
+        deliverynoterequired: deliveryNoteRequired,
+        fee: JSON.stringify(fees),
+        stock: quantity,
+        images: selectedFile,
+        url,
       };
+
       const formData = serialize(payload);
       handleSubmit(formData);
     },
