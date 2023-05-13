@@ -236,6 +236,12 @@ export const newPaymentLink = () =>
     amount: yup.string().required("Amount is required"),
   });
 
+// new payment link
+export const newVirtualAccount = () =>
+  yup.object({
+    bvn: yup.string().required("BVN is required"),
+  });
+
 // new product
 export const newProduct = () =>
   yup.object({

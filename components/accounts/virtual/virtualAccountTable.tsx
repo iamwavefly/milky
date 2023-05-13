@@ -11,6 +11,10 @@ import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import AddBox from "remixicon-react/AddBoxFillIcon";
 import { Button } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { setDrawalState } from "@/store/appSlice";
+import NewPaymentLink from "@/components/business/paymentLinks/newPaymentLink";
+import NewVirtualAccount from "./newVirtualAccount";
 
 const VirtualAccountTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -18,6 +22,7 @@ const VirtualAccountTable = () => {
   const [filters, setFilters] = useState({});
 
   const containerRef = useRef();
+  const dispatch = useDispatch();
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/view/static/accounts?page=${currentPage}&limit=10&${Object.entries(
@@ -32,6 +37,16 @@ const VirtualAccountTable = () => {
     handleSubmit();
   }, [currentPage, search, filters]);
 
+  const openDrawal = () => {
+    dispatch(
+      setDrawalState({
+        active: true,
+        title: "New Virtual Account",
+        content: <NewVirtualAccount reload={handleSubmit} />,
+      })
+    );
+  };
+
   return (
     <div className={Styles.container}>
       <Header
@@ -44,7 +59,7 @@ const VirtualAccountTable = () => {
           <Button
             variant="contained"
             sx={{ height: "40px", fontSize: "12px" }}
-            onClick={() => Router.push("/business/products/new")}
+            onClick={openDrawal}
           >
             <AddBox size={16} />
             Create Virtual Account

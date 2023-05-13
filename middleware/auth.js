@@ -73,17 +73,11 @@ export const loginHandler = async (data, fundRefId) => {
     return Router.push("/onboarding");
   }
 
-  if (business_type && !verification_status) {
-    return Router.push(
-      `/onboarding/setup?type=${
-        business_type?.toLowerCase() === "company"
-          ? "registered"
-          : "unregistered"
-      }`
-    );
-  }
-
-  Router.push("/dashboard");
+  return Router.push(
+    `/onboarding/setup?type=${
+      business_type?.toLowerCase() === "company" ? "registered" : "unregistered"
+    }`
+  );
 };
 
 export const setSignUpToken = async (data, fundRefId) => {

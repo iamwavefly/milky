@@ -44,7 +44,13 @@ export default function FileUpload({
   return (
     <>
       <Box position="absolute">
-        <input hidden ref={ref} type="file" onChange={handleFileInputChange} />
+        <input
+          hidden
+          ref={ref}
+          type="file"
+          accept="application/pdf, image/*"
+          onChange={handleFileInputChange}
+        />
       </Box>
       <Stack
         overflow="hidden"

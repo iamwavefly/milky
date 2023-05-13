@@ -35,7 +35,7 @@ const PaymentLinksTable = () => {
   const containerRef = useRef();
 
   const dispatch = useDispatch();
-  // close drawal
+  // open drawal
   const openDrawal = () => {
     dispatch(
       setDrawalState({
