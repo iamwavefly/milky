@@ -15,6 +15,7 @@ import { Box, Button } from "@mui/material";
 import AddBox from "remixicon-react/LogoutCircleRLineIcon";
 import { setDrawalState } from "@/store/appSlice";
 import { useDispatch } from "react-redux";
+import NewRefund from "./newRefund";
 
 const RefundTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -28,6 +29,7 @@ const RefundTable = () => {
       setDrawalState({
         active: true,
         title: "Log a single refund",
+        content: <NewRefund />,
       })
     );
   };
@@ -73,9 +75,6 @@ const RefundTable = () => {
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.total_pages}
-        onClickRow={(e) =>
-          Router.push(`/business/customers/${e?.row?.original?.id}`)
-        }
       />
     </Box>
   );

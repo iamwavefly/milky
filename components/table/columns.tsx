@@ -778,29 +778,36 @@ export const RefundTableColumns: ColumnDef<any, any>[] = [
     cell: (row: any) => {
       return (
         <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "subsidiary_id",
+    header: "Merchant ID",
+  },
+  {
+    accessorKey: "customer_id",
+    header: "Customer ID",
+  },
+  {
+    accessorKey: "refund_reference",
+    header: "Transaction reference",
+  },
+  {
+    accessorKey: "date_created",
+    header: "Date",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
           {moment(row.getValue()).format("L")}
         </Typography>
       );
     },
   },
   {
-    accessorKey: "customer_id",
-    header: "Merchant ID",
-  },
-  {
-    accessorKey: "id",
-    header: "Customer ID",
-  },
-  {
-    accessorKey: "reference",
-    header: "Transaction reference",
-  },
-  {
-    accessorKey: "date",
-    header: "Date",
-  },
-  {
-    accessorKey: "status",
+    accessorKey: "refund_status",
     header: "Status",
     cell: (row: any) => {
       return (

@@ -108,7 +108,8 @@ fieldset {
   &.pending-review,
   &.pending-verification,
   &.pending-approval,
-  &.pending {
+  &.pending,
+  &.processing {
     color: #cd8a0a;
     background: rgba(184, 123, 8, 0.05);
   }

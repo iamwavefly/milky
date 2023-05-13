@@ -242,6 +242,14 @@ export const newVirtualAccount = () =>
     bvn: yup.string().required("BVN is required"),
   });
 
+// new refund
+export const newRefund = () =>
+  yup.object({
+    amount: yup.string().required("Amount is required"),
+    reference: yup.string().required("Transaction reference is required"),
+    reason: yup.string().required("Reason for refund is required"),
+  });
+
 // new product
 export const newProduct = () =>
   yup.object({
