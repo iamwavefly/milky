@@ -43,6 +43,7 @@ export default function FileUpload({
 
   return (
     <>
+      {/* hidden input file */}
       <Box position="absolute">
         <input
           hidden

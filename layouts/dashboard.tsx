@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserState } from "@/store/authSlice";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
+import substring from "@/helper/substring";
 
 interface Props {
   children?: ReactNode;
@@ -113,7 +114,7 @@ const Dashboard = ({ children, title }: Props) => {
           >
             <Stack>
               <Typography fontWeight={500} fontSize="18px" lineHeight="24px">
-                {business_name ?? "..."}
+                {substring(business_name, 15) ?? "..."}
               </Typography>
               <Typography
                 fontWeight={400}

@@ -269,6 +269,13 @@ const theme = createTheme({
         },
       },
     },
+    MuiRadio: {
+      styleOverrides: {
+        root: {
+          padding: 0,
+        },
+      },
+    },
     MuiCheckbox: {
       styleOverrides: {
         root: {
@@ -394,6 +401,8 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           margin: 0,
+          height: "max-height",
+          padding: 0,
         },
         label: {
           marginLeft: "10px",

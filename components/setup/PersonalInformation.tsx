@@ -43,7 +43,10 @@ export default function PersonalInformation() {
 
   const close = () => dispatch(setDrawalState({ active: false }));
 
-  const idTypes = useFetch(`${baseUrl}/onboarding/identification/types`, "get");
+  const idTypes = useFetch(
+    `${baseUrl}/dashboard/onboarding/identification/types`,
+    "get"
+  );
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/onboarding/personal/information`
   );

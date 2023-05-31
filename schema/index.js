@@ -266,3 +266,25 @@ export const newProduct = () =>
     dealPrice: yup.number(),
     url: yup.string(),
   });
+// business information settings
+export const settingBusiness = () =>
+  yup.object({
+    businessName: yup.string().required("Business name is required"),
+    businessEmail: yup.string().email().required("Business email is required"),
+    businessType: yup.string().required("Business type is required"),
+    country: yup.string().required("Country is required"),
+    industry: yup.string().required("Industry is required"),
+    legalName: yup.string().required("Legal business name is required"),
+    description: yup.string().required("Description is required"),
+  });
+// change password settings
+export const ChangePassword = () =>
+  yup.object({
+    oldPassword: yup.string().password().required("Old password is required"),
+    password: yup.string().password().required("Password is required"),
+    password2: yup
+      .string()
+      .password()
+      .required("Confirm password is required")
+      .oneOf([yup.ref("password"), null], "Passwords must match"),
+  });

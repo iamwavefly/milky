@@ -162,6 +162,77 @@ export const CustomersTableColumns: ColumnDef<any, any>[] = [
   },
 ];
 
+export const PayoutTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "bank_name",
+    header: "Bank Name",
+  },
+  {
+    accessorKey: "account_number",
+    header: "Account number",
+  },
+  {
+    accessorKey: "recipient_name",
+    header: "Account name",
+  },
+  {
+    accessorKey: "debit_currency",
+    header: "Currency",
+  },
+];
+
+export const UserTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorFn: (row) => `${row.first_name} ${row.last_name}`,
+    header: "Name",
+  },
+  {
+    accessorKey: "role",
+    header: "Role",
+  },
+  {
+    accessorKey: "email_address",
+    header: "Email",
+  },
+  {
+    accessorKey: "mobile_number",
+    header: "Phone number",
+  },
+  {
+    accessorKey: "debit_currency",
+    header: "Country",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: (row: any) => {
+      return (
+        <Chip
+          label={row.getValue()}
+          className={`chip ${row
+            .getValue()
+            ?.toLowerCase()
+            ?.replaceAll(" ", "-")}`}
+        />
+      );
+    },
+  },
+];
+
 export const CustomerDetailsTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "checkbox",

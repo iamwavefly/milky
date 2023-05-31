@@ -27,7 +27,6 @@ const SettingsTable = () => {
   return (
     <div>
       <Header entries={`${transactions?.length}`} noButton />
-      <FilterTable />
       <Table
         data={transactions}
         columns={SettingsTableColumns}

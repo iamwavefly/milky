@@ -174,8 +174,44 @@ const routes = [
   {
     id: 9,
     name: "Settings",
-    link: "/settings",
     Icon: SettingIcon,
+    nest: [
+      {
+        key: 1,
+        name: "Business",
+        link: "/settings/business",
+      },
+      {
+        key: 2,
+        name: "Payout Accounts",
+        link: "/settings/payout-accounts",
+      },
+      {
+        key: 3,
+        name: "Roles & Permissions",
+        link: "/settings/roles-permissions",
+      },
+      {
+        key: 4,
+        name: "Users & Subsidiaries",
+        link: "/settings/users-subsidiaries",
+      },
+      {
+        key: 5,
+        name: "Preferences",
+        link: "/settings/preferences",
+      },
+      {
+        key: 6,
+        name: "Audit Trails",
+        link: "/settings/audit-trails",
+      },
+      {
+        key: 7,
+        name: "API Keys & Webhooks",
+        link: "/settings/api-keys-webhooks",
+      },
+    ],
   },
   {
     id: 10,

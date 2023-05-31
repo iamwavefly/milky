@@ -164,27 +164,20 @@ export default function Header({
         )}
         <Stack direction="row" gap="10px" alignItems="center">
           <DropdownMenu title="NGN" />
-          <Button
-            variant={buttons ? "outlined" : "contained"}
-            onClick={handleClick}
-            sx={{
-              border: 0,
-              height: "38px",
-              py: "0 !important",
-              fontSize: "12px",
-            }}
-          >
-            Export
-            {/* <Stack
-              pl="10px"
-              ml="auto"
-              justifyContent="center"
-              borderLeft="1px solid #E4E8F2"
-              height="100%"
+          {!entryOnly && (
+            <Button
+              variant={buttons ? "outlined" : "contained"}
+              onClick={handleClick}
+              sx={{
+                border: 0,
+                height: "38px",
+                py: "0 !important",
+                fontSize: "12px",
+              }}
             >
-              <CarretDownIcon />
-            </Stack> */}
-          </Button>
+              Export
+            </Button>
+          )}
           {buttons}
         </Stack>
       </Stack>
