@@ -3,7 +3,7 @@ import SettingRoutes from "@/configs/links/SettingRoutes";
 import useFetch from "@/hooks/useFetch";
 import Dashboard from "@/layouts/dashboard";
 import baseUrl from "@/middleware/baseUrl";
-import { newChannel, userUpdate } from "@/schema";
+// import { newChannel, userUpdate } from "@/schema";
 import { setToastState } from "@/store/appSlice";
 import { AppState } from "@/store/store";
 import { faker } from "@faker-js/faker";
@@ -30,7 +30,7 @@ import React, {
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Image } from "semantic-ui-react";
-import EditIcon from "../../../public/assets/icons/edit.svg";
+import EditIcon from "../../../public/icons/edit.svg";
 // import { serialize } from "object-to-formdata";
 
 const defaultUser = {
@@ -67,7 +67,7 @@ const Index = () => {
 
   const formik = useFormik({
     initialValues: defaultUser,
-    validationSchema: userUpdate,
+    // validationSchema: userUpdate,
     onSubmit: ({ firstName, lastName, emailAddress, phoneNumber }) => {
       // const formData = serialize(payload);
       let formData = new FormData();

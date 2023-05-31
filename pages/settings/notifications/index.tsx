@@ -1,4 +1,4 @@
-import Dues from "@/components/table/settlements/dues/Dues";
+// import Dues from "@/components/table/settlements/dues/Dues";
 import TabHeader from "@/components/TabHeader";
 import RoleTable from "@/components/table/settings/roleTable";
 import SettingsTable from "@/components/table/settings/settingsTable";
@@ -78,7 +78,7 @@ const IOSSwitch = styled((props: SwitchProps) => (
   },
 }));
 
-const index = () => {
+const Index = () => {
   const [notification, setNotification] = useState([]);
 
   const { loading, data, error, handleSubmit } = useFetch(
@@ -198,4 +198,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
