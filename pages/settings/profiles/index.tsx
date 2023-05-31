@@ -40,7 +40,7 @@ const defaultUser = {
   phoneNumber: "",
 };
 
-const index = () => {
+const Index = () => {
   const [form, setForm] = useState(defaultUser);
   const [file, setFile] = useState("");
   const [avatar, setAvatar] = useState(null);
@@ -252,4 +252,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;
