@@ -1,16 +1,26 @@
 // @ts-nocheck
 import { useEffect, useState } from "react";
 import Dashboard from "@/layouts/dashboard";
-import { Box, Button, Checkbox, Grid, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Checkbox,
+  Grid,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import moment from "moment";
 import TransactionrDetailsTable from "@/components/business/paymentLinks/transactionDetailsTable";
 import EditIcon from "remixicon-react/EditLineIcon";
 import CopyIcon from "remixicon-react/FileCopyLineIcon";
 import clipboard from "@/helper/clipboard";
 import ProductDetailsTable from "@/components/business/paymentLinks/productDetailsTable";
+import BackArrowIcon from "remixicon-react/ArrowLeftSLineIcon";
+import truncate from "@/helper/truncate";
 
 export default function Index() {
   const [details, setDetails] = useState({});
@@ -38,9 +48,14 @@ export default function Index() {
           justifyContent="space-between"
           alignItems="center"
         >
-          <Typography color="#2E3192" fontSize="16px">
-            {details?.name ?? "..."}
-          </Typography>
+          <Stack direction="row" alignItems="center">
+            <IconButton onClick={() => Router.back()}>
+              <BackArrowIcon size={18} color="#2E3192" />
+            </IconButton>
+            <Typography color="#2E3192" fontSize="16px">
+              {details?.name ?? "..."}
+            </Typography>
+          </Stack>
           <Stack direction="row" spacing="10px">
             <Button
               variant="outlined"
@@ -51,7 +66,7 @@ export default function Index() {
             <Button
               variant="contained"
               sx={{ fontSize: "12px", height: "40px" }}
-              onClick={() => clipboard(details?.product_url ?? "N/A")}
+              onClick={() => clipboard(details?.payment_url ?? "...")}
             >
               <CopyIcon size={18} />
               Copy Link
@@ -107,7 +122,9 @@ export default function Index() {
             </Stack>
             <Box justifyContent="center" pl="48px" my="auto">
               <Typography color="#262B40" fontSize="14px">
-                {details?.product_url ?? "N/A"}
+                {details?.payment_url
+                  ? truncate(details?.payment_url, 30)
+                  : "..."}
               </Typography>
             </Box>
           </Stack>

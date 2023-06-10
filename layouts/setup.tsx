@@ -31,6 +31,7 @@ const AccountSetup = ({ children, title, desc, activePanel }: Props) => {
         <Stack
           mb="85px"
           mt="88px"
+          px="32px"
           direction="row"
           justifyContent="center"
           spacing="67px"

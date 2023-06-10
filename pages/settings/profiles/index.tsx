@@ -8,18 +8,7 @@ import { setToastState } from "@/store/appSlice";
 import { AppState } from "@/store/store";
 import { faker } from "@faker-js/faker";
 import { LoadingButton } from "@mui/lab";
-import {
-  Box,
-  Button,
-  Divider,
-  FormControlLabel,
-  FormGroup,
-  Stack,
-  Switch,
-  SwitchProps,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Button, Stack, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import React, {
   ChangeEvent,
