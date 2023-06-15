@@ -5,8 +5,6 @@ import React, {
   useRef,
   useEffect,
 } from "react";
-import DownloadIcon from "../../public/icons/download.svg";
-import CarretDownIcon from "../../public/icons/carret-down.svg";
 import {
   Box,
   Button,
@@ -26,6 +24,7 @@ import html2canvas from "html2canvas";
 import { CSVLink } from "react-csv";
 import SearchIcon from "remixicon-react/SearchLineIcon";
 import DropdownMenu from "../DropdownMenu";
+import Router from "next/router";
 
 interface headerProps {
   containerRef?: any;
@@ -33,6 +32,7 @@ interface headerProps {
   columns?: any[];
   title?: string;
   entries?: string;
+  searchText?: string;
   transparent?: boolean;
   buttons?: ReactNode;
   entryOnly?: boolean;
@@ -50,12 +50,19 @@ export default function Header({
   noButton,
   transparent,
   setSearch,
+  searchText,
   title,
 }: headerProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [csvHeader, setCsvHeader] = useState<any>([]);
+  const [searchTextName, setSearchTextName] = useState("");
 
   const open = Boolean(anchorEl);
+
+  useEffect(() => {
+    const lastPathname = Router.pathname.split("/").pop();
+    setSearchTextName(lastPathname?.replaceAll("-", " ") as string);
+  }, []);
 
   useEffect(() => {
     const newColumns = columns?.map(({ accessorKey, header }) => {
@@ -143,7 +150,9 @@ export default function Header({
         ) : (
           <TextField
             variant="standard"
-            placeholder="Search transactions or enter keyword"
+            placeholder={
+              searchText ?? `Search ${searchTextName} or enter keyword`
+            }
             sx={{
               width: "100%",
               "& input": {

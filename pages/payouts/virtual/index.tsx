@@ -6,7 +6,7 @@ import CountChart from "@/components/CountChart";
 import Header from "@/components/table/header";
 import InvoiceTable from "@/components/business/invoices/InvoiceTable";
 import CustomersTable from "@/components/business/customers/customersTable";
-import ProductsTable from "@/components/business/products/settlementTable";
+import ProductsTable from "@/components/business/products/productTable";
 import VirtualAccountTable from "@/components/accounts/virtual/virtualAccountTable";
 
 export default function Index() {

@@ -12,17 +12,66 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 
 const Index = () => {
+  const [enabled2FA, setEnabled2FaA] = useState(false);
+  const [whoBearFee, setWhoBearFee] = useState<string | undefined>(undefined);
   const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/payment/options/view`,
+    "get"
+  );
+  // 2fa authentication endpoint
+  const TwoFaReqEnabled = useFetch(
+    `${baseUrl}/dashboard/2fa/login/view`,
+    "get"
+  );
+  const Enable2faReq = useFetch(`${baseUrl}/dashboard/2fa/login/set`);
+  // fees bearer
+  const FeeBearerView = useFetch(
     `${baseUrl}/dashboard/payment/fees/view`,
     "get"
   );
+  const FeeBearerReq = useFetch(`${baseUrl}/dashboard/payment/fees/set`);
 
   useEffect(() => {
     handleSubmit();
   }, []);
+
+  useEffect(() => {
+    TwoFaReqEnabled?.handleSubmit();
+  }, []);
+
+  useEffect(() => {
+    return setWhoBearFee(
+      FeeBearerView?.data?.data?.who_bears_fee === "Customer" ? "CBF" : "SBF"
+    );
+  }, [FeeBearerView?.data?.data]);
+
+  useEffect(() => {
+    FeeBearerView.handleSubmit();
+  }, []);
+
+  useEffect(() => {
+    setEnabled2FaA(TwoFaReqEnabled?.data?.data?.is_two_fa_enabled);
+  }, [TwoFaReqEnabled?.data?.data]);
+
+  const toggle2FaHandler = (e: {
+    target: { checked: boolean | ((prevState: boolean) => boolean) };
+  }) => {
+    const { checked } = e.target;
+    setEnabled2FaA(checked);
+    Enable2faReq?.handleSubmit({ two_fa: checked ? "yes" : "no" });
+  };
+
+  const feeBearerHandler = (e: { target: { value: any } }) => {
+    const { value } = e.target;
+    setWhoBearFee(value);
+    FeeBearerReq?.handleSubmit({
+      fee_bearer: value,
+    });
+  };
 
   return (
     <Dashboard title="Settings">
@@ -48,14 +97,12 @@ const Index = () => {
           >
             <FormControl>
               <RadioGroup
-                aria-labelledby="demo-controlled-radio-buttons-group"
-                name="controlled-radio-buttons-group"
                 sx={{ gap: "16px" }}
-                // value={value}
-                // onChange={handleChange}
+                value={whoBearFee}
+                onChange={feeBearerHandler}
               >
                 <FormControlLabel
-                  value="female"
+                  value="SBF"
                   control={<Radio />}
                   label={
                     <Typography
@@ -64,12 +111,12 @@ const Index = () => {
                       color="#262B40"
                       ml="16px"
                     >
-                      Settle to Bank
+                      Charge me the transaction fees
                     </Typography>
                   }
                 />
                 <FormControlLabel
-                  value="male"
+                  value="CBF"
                   control={<Radio />}
                   label={
                     <Typography
@@ -78,7 +125,7 @@ const Index = () => {
                       color="#262B40"
                       ml="16px"
                     >
-                      Settle to Alliance Pay account
+                      Charge my customers the transaction fees
                     </Typography>
                   }
                 />
@@ -103,62 +150,23 @@ const Index = () => {
             minHeight="110px"
           >
             <FormControl sx={{ gap: "20px" }}>
-              <FormControlLabel
-                value="female"
-                control={<Checkbox />}
-                label={
-                  <Typography
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#262B40"
-                    ml="16px"
-                  >
-                    Enable card payment
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="male"
-                control={<Checkbox />}
-                label={
-                  <Typography
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#262B40"
-                    ml="16px"
-                  >
-                    Enable bank payment
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="male"
-                control={<Checkbox />}
-                label={
-                  <Typography
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#262B40"
-                    ml="16px"
-                  >
-                    Enable USSD
-                  </Typography>
-                }
-              />
-              <FormControlLabel
-                value="male"
-                control={<Checkbox />}
-                label={
-                  <Typography
-                    fontSize="12px"
-                    fontWeight={500}
-                    color="#262B40"
-                    ml="16px"
-                  >
-                    Enable bank transfer
-                  </Typography>
-                }
-              />
+              {data?.data?.map((option: string, index: number) => (
+                <FormControlLabel
+                  key={index}
+                  value="female"
+                  control={<Checkbox checked readOnly />}
+                  label={
+                    <Typography
+                      fontSize="12px"
+                      fontWeight={500}
+                      color="#262B40"
+                      ml="16px"
+                    >
+                      {option}
+                    </Typography>
+                  }
+                />
+              ))}
             </FormControl>
           </Stack>
         </Stack>
@@ -173,7 +181,9 @@ const Index = () => {
             <FormControl sx={{ gap: "20px" }}>
               <FormControlLabel
                 value="female"
-                control={<Checkbox />}
+                control={
+                  <Checkbox checked={enabled2FA} onChange={toggle2FaHandler} />
+                }
                 label={
                   <Typography
                     fontSize="12px"

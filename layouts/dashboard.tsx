@@ -26,20 +26,23 @@ interface Props {
 const Dashboard = ({ children, title }: Props) => {
   const [showSidebar, setShowSidebar] = useState(true);
   const [openMenuId, setOpenMenuId] = useState(0);
+  const [photo, setPhoto] = useState("");
 
   const dispatch = useDispatch();
 
   const { subsidiaries, user } = useSelector(selectUserState);
 
-  const { business_name, id } = subsidiaries;
+  const { business_name, id, subsidiary_logo } = subsidiaries;
+
+  useEffect(() => {
+    const imageUrl = `https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${subsidiary_logo}`;
+    setPhoto(imageUrl);
+    console.log(imageUrl);
+  }, [subsidiary_logo]);
 
   const toggleMenu = () => {
     setShowSidebar((prev) => !prev);
   };
-
-  useEffect(() => {
-    console.log(subsidiaries);
-  }, [subsidiaries]);
 
   // nested menu
   useEffect(() => {
@@ -211,10 +214,7 @@ const Dashboard = ({ children, title }: Props) => {
             <IconButton>
               <NotificationIcon />
             </IconButton>
-            <Avatar
-              src={faker.image.avatar()}
-              sx={{ width: "40px", height: "40px" }}
-            />
+            <Avatar src={photo} sx={{ width: "40px", height: "40px" }} />
           </Stack>
         </Stack>
         <Stack className={Styles.content}>

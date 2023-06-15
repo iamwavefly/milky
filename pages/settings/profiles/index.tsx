@@ -42,6 +42,10 @@ const Index = () => {
   );
 
   useEffect(() => {
+    console.log({ avatar });
+  }, [avatar]);
+
+  useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
       dispatch(
@@ -89,6 +93,7 @@ const Index = () => {
 
   const handleFileChange = (e: any) => {
     setFile(URL.createObjectURL(e.target.files[0]) as any);
+    console.log(e.target.files[0]);
     setAvatar(e.target.files[0]);
   };
 

@@ -85,7 +85,6 @@ export const authSlice = createSlice({
   reducers: {
     // Action to set the authentication status
     setUserState(state, action) {
-      console.log(state.subsidiaries, "asa");
       state.subsidiaries = action.payload.subsidiaries;
       state.user = action.payload.user;
     },

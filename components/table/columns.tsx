@@ -1,7 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
 import stringToCurrency from "../../helper/formatCurrency";
-import { Checkbox, Chip, Typography } from "@mui/material";
+import { Box, Checkbox, Chip, Stack, Typography } from "@mui/material";
 import moment from "moment";
+import { ProductMenu } from "./menu";
+import Image from "next/image";
 
 export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
   {
@@ -46,7 +48,7 @@ export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
     header: "Reference",
   },
   {
-    accessorKey: "settlement_status",
+    accessorKey: "order_status",
     header: "Status",
     cell: (row: any) => {
       return (
@@ -403,6 +405,21 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "name",
     header: "Product name",
+    cell: (props) => {
+      const { image, name } = props.row.original;
+      return (
+        <Stack direction="row" alignItems="center" spacing="7px">
+          <Image
+            src={`https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${image}`}
+            alt={name}
+            style={{ objectFit: "cover" }}
+            width={28}
+            height={28}
+          />
+          <span className="email">{name}</span>
+        </Stack>
+      );
+    },
   },
   {
     accessorKey: "price",
@@ -436,7 +453,7 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
   },
   {
     accessorKey: "status",
-    header: "Status",
+    header: "Availability",
     cell: (row: any) => {
       return (
         <Chip
@@ -448,6 +465,11 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
         />
       );
     },
+  },
+  {
+    header: " ",
+    accessorKey: "id",
+    cell: (row) => <ProductMenu id={row.getValue()} />,
   },
 ];
 

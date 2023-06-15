@@ -109,7 +109,8 @@ fieldset {
   &.pending-verification,
   &.pending-approval,
   &.pending,
-  &.processing {
+  &.processing,
+  &.archived {
     color: #cd8a0a;
     background: rgba(184, 123, 8, 0.05);
   }
@@ -122,7 +123,8 @@ fieldset {
   &.rejected,
   &.suspended,
   &.due,
-  &.fail {
+  &.fail,
+  &.failed {
     color: #ea5851;
     background-color: rgba(255, 194, 191, 0.15);
   }

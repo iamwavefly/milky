@@ -19,6 +19,8 @@ import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import { loginHandler } from "@/middleware/auth";
 import { LoadingButton } from "@mui/lab";
+import { setUserState } from "@/store/authSlice";
+import { useDispatch } from "react-redux";
 
 export default function Index() {
   const [authReq, setAuthReq] = useState(false);
@@ -29,6 +31,8 @@ export default function Index() {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}${authReq ? "/dashboard/login/complete" : "/dashboard/login"}`
   );
+
+  const dispatch = useDispatch();
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -58,6 +62,13 @@ export default function Index() {
   useEffect(() => {
     const { message, token } = data ?? {};
     if (token?.access_token) {
+      console.log(data, data?.user);
+      dispatch(
+        setUserState({
+          user: data?.user,
+          subsidiaries: data?.subsidiary_details?.subsidiaries[0],
+        })
+      );
       loginHandler(data);
     } else if (message && message.includes("otp")) {
       setAuthReq(true);

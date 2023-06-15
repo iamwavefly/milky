@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import Image from "next/image";
+import { serialize } from "object-to-formdata";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
@@ -23,7 +24,7 @@ import UploadIcon from "../../../public/icons/photo-upload.svg";
 export default function BusinessInformation() {
   const [fileName, setFileName] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isImage, setIsImage] = useState(false);
   const [countries, setCountries] = useState<any>([]);
 
@@ -42,6 +43,10 @@ export default function BusinessInformation() {
   // update business information endpoint
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/business/update`
+  );
+  // update logo
+  const logoUpdateReq = useFetch(
+    `${baseUrl}/dashboard/business/logos/add-or-update`
   );
 
   // fetch business type
@@ -62,6 +67,12 @@ export default function BusinessInformation() {
     setCountries(fileredCountries);
   }, [fetchCountries?.data]);
 
+  useEffect(() => {
+    if (logoUpdateReq?.data?.status === "success") {
+      setSelectedFile(null);
+    }
+  }, [logoUpdateReq?.data]);
+
   const handleFileInputChange = (e: any) => {
     const imagePreview = e.target.files[0];
     const { name, type } = imagePreview;
@@ -74,13 +85,6 @@ export default function BusinessInformation() {
         : name
     );
   };
-
-  useEffect(() => {
-    const { status, message } = data;
-    if (status === "success") {
-      toast.success(message);
-    }
-  }, [data]);
 
   const ref = useRef<any>();
   const handleClick = (e: any) => {
@@ -123,6 +127,12 @@ export default function BusinessInformation() {
         description,
       };
       handleSubmit(payload);
+      if (selectedFile) {
+        const formData = serialize({
+          Logo: selectedFile,
+        });
+        logoUpdateReq?.handleSubmit(formData);
+      }
     },
   });
 
@@ -135,6 +145,7 @@ export default function BusinessInformation() {
       industry,
       legal_business_name,
       business_type,
+      subsidiary_logo,
     } = subsidiaries;
 
     const newCountry = countries?.find(
@@ -151,7 +162,9 @@ export default function BusinessInformation() {
       description,
     };
     formik.setValues(payload as any);
-    console.log({ subsidiaries }, newCountry);
+    // set url
+    const imageUrl = `https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${subsidiary_logo}`;
+    setPreviewUrl(imageUrl);
   }, [subsidiaries, countries]);
 
   return (

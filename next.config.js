@@ -13,4 +13,14 @@ module.exports = {
     return config;
   },
   nextConfig,
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "subsidiary-dashboard-api-service-dev.eks-alliancepay.com",
+        port: "",
+        pathname: "/**",
+      },
+    ],
+  },
 };

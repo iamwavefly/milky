@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UploadIcon from "../../public/icons/photo-upload.svg";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
@@ -16,10 +16,13 @@ import { useFormik } from "formik";
 import { bankDetails } from "@/schema";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-hot-toast";
+import { selectUserState } from "@/store/authSlice";
 
 const accountTypes = ["Current", "Savings"];
 
 export default function BusinessInformation() {
+  const [banks, setBanks] = useState([]);
+
   const dispatch = useDispatch();
 
   const close = () => dispatch(setDrawalState({ active: false }));
@@ -28,6 +31,11 @@ export default function BusinessInformation() {
     `${baseUrl}/dashboard/onboarding/bank/details`
   );
   const fetchBanks = useFetch(`${baseUrl}/dashboard/banks`, "get");
+  const resolveAccount = useFetch(`${baseUrl}/payout/account/resolve`, "post");
+
+  useEffect(() => {
+    setBanks(fetchBanks?.data?.banks);
+  }, [fetchBanks?.data]);
 
   useEffect(() => {
     const { status, message } = data;
@@ -61,6 +69,25 @@ export default function BusinessInformation() {
       handleSubmit(payload);
     },
   });
+
+  // resolve account
+  useEffect(() => {
+    const { accountNumber, bankName } = formik.values;
+    if (accountNumber.length === 10 && bankName) {
+      const bank: any = banks.find((bank: any) => bank?.id === bankName);
+      resolveAccount.handleSubmit({
+        bank_code: bank?.bank_code,
+        account_number: accountNumber,
+      });
+    }
+  }, [formik.values.accountNumber, formik.values.bankName]);
+  // populate account name
+  useEffect(() => {
+    formik.setFieldValue(
+      "accountName",
+      resolveAccount.data?.data?.account_name
+    );
+  }, [resolveAccount.data]);
 
   return (
     <Box>
@@ -103,7 +130,7 @@ export default function BusinessInformation() {
             error={formik.touched.bankName && Boolean(formik.errors.bankName)}
             helperText={formik.touched.bankName && formik.errors.bankName}
           >
-            {fetchBanks?.data?.banks?.map(({ name, id }: any) => (
+            {banks?.map(({ name, id, bank_code }: any) => (
               <MenuItem value={id} key={id} sx={{ width: "100%" }}>
                 {name}
               </MenuItem>

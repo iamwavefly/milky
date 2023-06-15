@@ -51,21 +51,18 @@ const deliveryTypes = [
 
 const feeDefault = { name: "", fee: "" };
 
-export default function NewProduct({}) {
+export default function NewProduct({ product }: any) {
   const actualBtnRef = useRef(null);
   const [fileName, setFileName] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
   const [isImage, setIsImage] = useState(false);
-  const [Items, setItems] = useState<any>([]);
-  const [amount, setAmount] = useState(0);
-  const [total, setTotal] = useState(0);
   const [form, setForm] = useState(feeDefault);
   const [showFeeForm, setShowFeeForm] = useState(false);
   const [fees, setFees] = useState<any>([]);
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/product/create`
+    `${baseUrl}/dashboard/product/${product ? `edit/${product?.id}` : "create"}`
   );
   const currencies = useFetch(`${baseUrl}/dashboard/service/currencies`, "get");
 
@@ -99,7 +96,6 @@ export default function NewProduct({}) {
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      toast.success(message);
       Router.push("/business/products");
     }
   }, [data]);
@@ -149,6 +145,32 @@ export default function NewProduct({}) {
       handleSubmit(formData);
     },
   });
+
+  useEffect(() => {
+    formik.setFieldValue("productName", product?.name);
+    formik.setFieldValue("productDescription", product?.description);
+    formik.setFieldValue("price", product?.price);
+    formik.setFieldValue("dealprice", product?.deal_price);
+    formik.setFieldValue("ondeal", product?.is_on_deal);
+    formik.setFieldValue("containsphysicalgoods", product?.is_physical);
+    formik.setFieldValue("deliveryaddressrequired", product?.can_be_delivered);
+    formik.setFieldValue("deliverynoterequired", product?.is_delivery_note);
+    formik.setFieldValue("stock", product?.stock);
+    formik.setFieldValue("quantity", product?.stock);
+    formik.setFieldValue("url", product?.url);
+
+    // restructure fees
+    const newFees = product?.fees?.map(({ fee_name: name, amount: fee }) => ({
+      name,
+      fee,
+    }));
+    // update fees
+    setFees(newFees);
+    // update images
+    const imageUrl = `https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${product?.images?.[0]}`;
+    setSelectedFile(imageUrl);
+    setPreviewUrl(imageUrl);
+  }, [product]);
 
   const newFeeHandler = () => {
     setShowFeeForm(false);
@@ -218,6 +240,7 @@ export default function NewProduct({}) {
                 variant="standard"
                 sx={{ flex: 1 }}
                 name="quantity"
+                type="number"
                 value={formik.values.quantity}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
@@ -237,9 +260,8 @@ export default function NewProduct({}) {
                   return (
                     <FormControlLabel
                       key={id}
-                      control={
-                        <Checkbox name={name} checked={formik.values[name]} />
-                      }
+                      control={<Checkbox checked={formik.values[name]} />}
+                      name={name}
                       onChange={formik.handleChange}
                       label={
                         <Typography color="#262B40" fontSize="12px" ml="8px">
@@ -324,7 +346,11 @@ export default function NewProduct({}) {
               </Typography>
               <FormControlLabel
                 control={
-                  <Checkbox name="onDeal" checked={formik.values.onDeal} />
+                  <Checkbox
+                    name="onDeal"
+                    checked={formik.values.onDeal}
+                    defaultChecked={true}
+                  />
                 }
                 onChange={formik.handleChange}
                 label={
@@ -432,7 +458,7 @@ export default function NewProduct({}) {
                   }}
                 >
                   <CheckboxIcon size={20} />
-                  Save
+                  {product ? "Update" : "Save"}
                 </LoadingButton>
               </Stack>
             </Stack>

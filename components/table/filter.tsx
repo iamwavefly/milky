@@ -38,8 +38,8 @@ export default function FilterTable({
 
   const [selectedFilters, setSelectedFilters] = useState<any>({});
   const [previewFilters, setPreviewFilters] = useState({});
-  const [openDateRange, setOpenDateRange] = React.useState(false);
-  const [dateRange, setDateRange] = React.useState<DateRange>({});
+  const [openDateRange, setOpenDateRange] = useState(false);
+  const [dateRange, setDateRange] = useState<DateRange>({});
   const [email, setEmail] = useState("");
 
   const toggle = () => setOpenDateRange(!openDateRange);
@@ -59,7 +59,7 @@ export default function FilterTable({
     setSelectedFilters({ ...newFilters });
   };
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
