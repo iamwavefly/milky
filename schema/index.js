@@ -227,6 +227,22 @@ export const newCustomer = () =>
     phoneNumber: yup.string(),
   });
 
+// new user
+export const newUser = () =>
+  yup.object({
+    firstName: yup.string().required("First name is required"),
+    lastName: yup.string().required("Last name is required"),
+    emailAddress: yup.string().required("Email address is required"),
+    phoneNumber: yup.string().required("Phone number is required"),
+    country: yup.string().required("Country is required"),
+    role: yup.string().required("Role is required"),
+  });
+// new role
+export const newRole = () =>
+  yup.object({
+    name: yup.string().required("Role name is required"),
+  });
+
 // new payment link
 export const newPaymentLink = () =>
   yup.object({

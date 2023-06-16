@@ -124,7 +124,8 @@ fieldset {
   &.suspended,
   &.due,
   &.fail,
-  &.failed {
+  &.failed,
+  &.inactive {
     color: #ea5851;
     background-color: rgba(255, 194, 191, 0.15);
   }

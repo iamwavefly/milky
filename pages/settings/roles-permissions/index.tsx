@@ -18,6 +18,10 @@ import React, { useEffect, useState } from "react";
 import BoxPlusIcon from "remixicon-react/AddBoxLineIcon";
 import PenIcon from "remixicon-react/EditLineIcon";
 import CheckboxIcon from "remixicon-react/CheckboxLineIcon";
+import { useDispatch } from "react-redux";
+import NewSubsidiary from "@/components/form/newSubsidiary";
+import { setDrawalState } from "@/store/appSlice";
+import NewRole from "@/components/form/newRole";
 
 interface Props {
   id: number;
@@ -30,6 +34,7 @@ const Index = () => {
   const [permissions, setPermissions] = useState([]);
   const [users, setUsers] = useState([]);
 
+  const dispatch = useDispatch();
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/role/users`,
     "get"
@@ -67,6 +72,16 @@ const Index = () => {
     setActiveRole(newRole);
   };
 
+  const openDrawal = () => {
+    dispatch(
+      setDrawalState({
+        active: true,
+        title: "Add a New Role",
+        content: <NewRole reload={handleSubmit} />,
+      })
+    );
+  };
+
   return (
     <Dashboard title="Settings">
       <Stack px="30px" mt="20px">
@@ -94,6 +109,7 @@ const Index = () => {
           <Button
             sx={{ height: "40px", fontSize: "12px", fontWeight: 500 }}
             variant="outlined"
+            onClick={openDrawal}
           >
             <BoxPlusIcon size={18} />
             Create custom role

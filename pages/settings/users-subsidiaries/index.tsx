@@ -19,6 +19,7 @@ import BoxPlusIcon from "remixicon-react/AddBoxLineIcon";
 import PenIcon from "remixicon-react/EditLineIcon";
 import CheckboxIcon from "remixicon-react/CheckboxLineIcon";
 import UserTable from "@/components/settings/user-subsidiaries/userTable";
+import SubsidiaryTable from "@/components/settings/user-subsidiaries/subsidiaryTable";
 
 interface Props {
   id: number;
@@ -27,7 +28,7 @@ interface Props {
 }
 
 const Index = () => {
-  const [activeRole, setActiveRole] = useState("user");
+  const [activeRole, setActiveRole] = useState("users");
   const [permissions, setPermissions] = useState([]);
   const [users, setUsers] = useState([]);
 
@@ -60,11 +61,11 @@ const Index = () => {
           aria-label="text alignment"
           sx={{ mt: "32px" }}
         >
-          <ToggleButton value="user">Users</ToggleButton>
+          <ToggleButton value="users">Users</ToggleButton>
           <ToggleButton value="subsidiaries">Subsidiaries</ToggleButton>
         </ToggleButtonGroup>
         <Box>
-          <UserTable />
+          {activeRole === "users" ? <UserTable /> : <SubsidiaryTable />}
         </Box>
       </Stack>
     </Dashboard>

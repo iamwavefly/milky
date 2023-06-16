@@ -235,6 +235,36 @@ export const UserTableColumns: ColumnDef<any, any>[] = [
   },
 ];
 
+export const SubsidiaryTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "support_email",
+    header: "Email",
+  },
+  {
+    accessorKey: "country",
+    header: "Country",
+  },
+  {
+    accessorKey: "users",
+    header: "Number of users",
+  },
+  {
+    accessorKey: "business_type",
+    header: "Business type",
+  },
+];
+
 export const CustomerDetailsTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "checkbox",

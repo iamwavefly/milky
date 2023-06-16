@@ -27,11 +27,10 @@ const useFetch = (
         ? await axios[type](url, payload)
         : ((await axios.post(url, payload)) as any);
       if (status === 200) {
+        setData(data);
         if (data?.status?.toLowerCase() === "success" && type !== "get") {
           toast.success(data?.message);
-          close();
         }
-        setData(data);
       }
     } catch (error) {
       catchErrors(error, setError);

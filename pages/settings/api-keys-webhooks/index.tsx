@@ -67,7 +67,7 @@ const Index = () => {
               alignItems="center"
             >
               <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
-                {truncate(webhook?.data?.data?.callback_url, 30) ?? "N/A"}
+                {truncate(webhook?.data?.data?.callback_url ?? "N/A", 30)}
               </Typography>
               <Button
                 sx={{

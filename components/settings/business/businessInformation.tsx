@@ -35,7 +35,7 @@ export default function BusinessInformation() {
     `${baseUrl}/dashboard/business/categories`,
     "get"
   );
-  // business countries
+  // countries
   const fetchCountries = useFetch(
     `${baseUrl}/dashboard/service/countries`,
     "get"

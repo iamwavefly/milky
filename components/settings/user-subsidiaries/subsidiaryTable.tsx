@@ -5,7 +5,7 @@ import { _businesses, _customers, _invoices } from "@/mocks";
 import Header from "@/components/table/header";
 import Table from "@/components/table/table";
 import FilterTable from "@/components/table/filter";
-import { UserTableColumns } from "@/components/table/columns";
+import { SubsidiaryTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
@@ -13,35 +13,35 @@ import { Box, Button } from "@mui/material";
 import AddBox from "remixicon-react/AddBoxLineIcon";
 import { setDrawalState } from "@/store/appSlice";
 import { useDispatch } from "react-redux";
-import NewUser from "@/components/form/newUser";
+import NewSubsidiary from "@/components/form/newSubsidiary";
 
-const UserTable = () => {
+const SubsidiaryTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
 
   const dispatch = useDispatch();
 
+  const openDrawal = () => {
+    dispatch(
+      setDrawalState({
+        active: true,
+        title: "Add a New Subsidiary",
+        content: <NewSubsidiary reload={handleSubmit} />,
+      })
+    );
+  };
+
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/users?page=${currentPage}&limit=10&${Object.entries(
+    `${baseUrl}/dashboard/user/subsidiaries?page=${currentPage}&limit=10&${Object.entries(
       filters
     )
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
-
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Add a New Customer",
-        content: <NewUser reload={handleSubmit} />,
-      })
-    );
-  };
 
   useEffect(() => {
     handleSubmit();
@@ -51,11 +51,11 @@ const UserTable = () => {
     <Box>
       <Header
         containerRef={containerRef}
-        columns={UserTableColumns}
+        columns={SubsidiaryTableColumns}
         data={data?.users}
         entries={`${data?.page?.total_items ?? 0} Entries`}
         setSearch={setSearch}
-        searchText="Search users or enter keyword"
+        searchText="Search subsidiaries or enter keyword"
         buttons={
           <Button
             variant="contained"
@@ -63,14 +63,14 @@ const UserTable = () => {
             onClick={openDrawal}
           >
             <AddBox size={16} />
-            Add new user
+            Add new subsidiary
           </Button>
         }
       />
       <Table
         containerRef={containerRef}
-        data={data?.users ?? []}
-        columns={UserTableColumns}
+        data={data?.subsidiary_details?.subsidiaries ?? []}
+        columns={SubsidiaryTableColumns}
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.page?.total_pages}
@@ -79,4 +79,4 @@ const UserTable = () => {
   );
 };
 
-export default UserTable;
+export default SubsidiaryTable;
