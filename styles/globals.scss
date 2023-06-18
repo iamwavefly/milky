@@ -95,13 +95,14 @@ fieldset {
   align-items: center;
   padding: 6px 12px;
   width: max-content;
-  gap: 8px;
+  gap: 8px !important;
   background: rgba(0, 128, 55, 0.05);
-  border-radius: 0;
+  border-radius: 0 !important;
   &.approved,
   &.active,
   &.successful,
-  &.available {
+  &.available,
+  &.completed {
     color: #097122;
     background-color: rgba(9, 113, 33, 0.05);
   }
@@ -125,7 +126,8 @@ fieldset {
   &.due,
   &.fail,
   &.failed,
-  &.inactive {
+  &.inactive,
+  &.blacklisted {
     color: #ea5851;
     background-color: rgba(255, 194, 191, 0.15);
   }

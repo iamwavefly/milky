@@ -2,7 +2,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import stringToCurrency from "../../helper/formatCurrency";
 import { Box, Checkbox, Chip, Stack, Typography } from "@mui/material";
 import moment from "moment";
-import { ProductMenu } from "./menu";
+import { CustomerMenu, PaymentLinkMenu, ProductMenu } from "./menu";
 import Image from "next/image";
 
 export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
@@ -161,6 +161,11 @@ export const CustomersTableColumns: ColumnDef<any, any>[] = [
         />
       );
     },
+  },
+  {
+    header: " ",
+    accessorKey: "id",
+    cell: (row) => <CustomerMenu id={row.getValue()} />,
   },
 ];
 
@@ -1121,6 +1126,113 @@ export const AccountSettlementTableColumns: ColumnDef<any, any>[] = [
   },
 ];
 
+export const TransferTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "account_number",
+    header: "Account",
+  },
+  {
+    accessorKey: "bank_name",
+    header: "Bank",
+  },
+  {
+    accessorKey: "recipient_name",
+    header: "Recepient",
+  },
+  {
+    accessorKey: "payout_reference",
+    header: "Reference",
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "narration",
+    header: "Narration",
+  },
+  {
+    accessorKey: "date_initiated",
+    header: "Date",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {moment(row.getValue()).format("L")}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: (row: any) => {
+      return (
+        <Chip
+          label={row.getValue()}
+          className={`chip ${row
+            .getValue()
+            ?.toLowerCase()
+            ?.replaceAll(" ", "-")}`}
+        />
+      );
+    },
+  },
+];
+
+export const TransferPendingTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "narration",
+    header: "Narration",
+  },
+  {
+    accessorKey: "recipient_name",
+    header: "Recepient",
+  },
+  {
+    accessorKey: "date_initiated",
+    header: "Date",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {moment(row.getValue()).format("L")}
+        </Typography>
+      );
+    },
+  },
+];
+
 export const AccountsTxnTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "checkbox",
@@ -1313,6 +1425,11 @@ export const PaymentLinkColumns: ColumnDef<any, any>[] = [
         />
       );
     },
+  },
+  {
+    header: " ",
+    accessorKey: "id",
+    cell: (row) => <PaymentLinkMenu id={row.getValue()} />,
   },
 ];
 

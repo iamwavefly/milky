@@ -5,6 +5,7 @@ import baseUrl from "@/middleware/baseUrl";
 import {
   Box,
   Button,
+  Checkbox,
   FormControl,
   FormControlLabel,
   Radio,
@@ -33,20 +34,32 @@ const Index = () => {
   const [activeRole, setActiveRole] = useState("");
   const [permissions, setPermissions] = useState([]);
   const [users, setUsers] = useState([]);
+  const [userPermission, setUserPermission] = useState([]);
 
   const dispatch = useDispatch();
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/role/users`,
     "get"
   );
-
+  // fetch permission based on role
   const permApi = useFetch(
     `${baseUrl}/dashboard/role/details?roleid=${activeRole}`,
     "get"
   );
+  // permissions
+  const fetchPermissions = useFetch(
+    `${baseUrl}/dashboard/role/permissions`,
+    "get"
+  );
+  // update permission
+  const updatePermission = useFetch(`${baseUrl}/dashboard/role/edit`);
 
   useEffect(() => {
     handleSubmit();
+  }, []);
+
+  useEffect(() => {
+    fetchPermissions?.handleSubmit();
   }, []);
 
   useEffect(() => {
@@ -54,7 +67,11 @@ const Index = () => {
   }, [activeRole]);
 
   useEffect(() => {
-    setPermissions(permApi?.data?.data?.permission);
+    setUserPermission(permApi?.data?.data?.permission);
+  }, [permApi?.data]);
+  // all permission
+  useEffect(() => {
+    setPermissions(fetchPermissions?.data?.data);
   }, [permApi?.data]);
 
   useEffect(() => {
@@ -64,6 +81,13 @@ const Index = () => {
   useEffect(() => {
     setActiveRole(data?.data?.[0]?.id);
   }, [data?.data]);
+
+  useEffect(() => {
+    const { error } = updatePermission;
+    if (error) {
+      permApi?.handleSubmit();
+    }
+  }, [updatePermission?.error]);
 
   const handleRoleChange = (
     event: React.MouseEvent<HTMLElement>,
@@ -80,6 +104,24 @@ const Index = () => {
         content: <NewRole reload={handleSubmit} />,
       })
     );
+  };
+
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+    let newPermissions: string[] | null = null;
+    if (!checked) {
+      newPermissions = userPermission?.filter((permission: any) => {
+        if (permission.id !== +value) {
+          return permission;
+        }
+      });
+    }
+    updatePermission?.handleSubmit({
+      role_id: activeRole,
+      permissions: newPermissions?.map((permission: any) => permission.id) ?? [
+        value,
+      ],
+    });
   };
 
   return (
@@ -134,7 +176,51 @@ const Index = () => {
             Permissions
           </Typography>
           <Stack mt="22px" spacing="20px">
-            {permissions?.length ? (
+            {permissions?.map((perm: any) => {
+              const newPermission = userPermission?.find(
+                (fin: any) => fin.id === perm.id
+              ) as any;
+              if (newPermission) {
+                return (
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    key={newPermission?.id}
+                  >
+                    <Typography
+                      fontSize="14px"
+                      fontWeight={500}
+                      color="rgba(38, 43, 64, 0.8)"
+                    >
+                      {newPermission?.permission}
+                    </Typography>
+                    <Checkbox
+                      value={newPermission?.id}
+                      defaultChecked
+                      onChange={handleCheck}
+                    />
+                  </Stack>
+                );
+              } else {
+                return (
+                  <Stack
+                    direction="row"
+                    justifyContent="space-between"
+                    key={perm?.name}
+                  >
+                    <Typography
+                      fontSize="14px"
+                      fontWeight={500}
+                      color="rgba(38, 43, 64, 0.8)"
+                    >
+                      {perm?.name}
+                    </Typography>
+                    <Checkbox onChange={handleCheck} value={perm?.id} />
+                  </Stack>
+                );
+              }
+            })}
+            {/* {permissions?.length ? (
               permissions?.map(
                 ({ id, permission }: { id: number; permission: string }) => (
                   <Stack
@@ -161,10 +247,10 @@ const Index = () => {
               >
                 No result found
               </Typography>
-            )}
+            )} */}
           </Stack>
         </Box>
-        <Button
+        {/* <Button
           sx={{
             height: "40px",
             width: "max-content",
@@ -176,7 +262,7 @@ const Index = () => {
         >
           <PenIcon size={18} />
           Edit role
-        </Button>
+        </Button> */}
       </Stack>
     </Dashboard>
   );

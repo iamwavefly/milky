@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Dashboard from "@/layouts/dashboard";
 import {
   Box,
@@ -13,11 +13,9 @@ import SendIcon from "remixicon-react/SendPlane2LineIcon";
 import { useDispatch } from "react-redux";
 import { setDrawalState } from "@/store/appSlice";
 import TransferDetails from "@/components/payouts/transfers/transferDetails";
-import TransferTable from "@/components/payouts/transfers/transferTable";
-import MakeTransfer from "@/components/payouts/transfers/makeTransfer";
+import PendingTransferTable from "@/components/payouts/transfers/pendingTransferTable";
 
 export default function Index() {
-  const [reload, setReload] = useState(false);
   const dispatch = useDispatch();
   // open drawal
   const openDrawal = () => {
@@ -29,18 +27,9 @@ export default function Index() {
       })
     );
   };
-  const openTransferDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Make Transfer",
-        content: <MakeTransfer reload={() => setReload((prev) => !prev)} />,
-      })
-    );
-  };
 
   return (
-    <Dashboard title="Dashboard">
+    <Dashboard title="Pending Approval">
       <Stack
         px="30px"
         mt="20px"
@@ -49,13 +38,13 @@ export default function Index() {
         justifyContent="space-between"
       >
         <Typography fontSize="16px" color="#2E3192">
-          Transfers
+          Pending Approval
         </Typography>
         <Stack direction="row" alignItems="center" spacing="10px">
           <Button
             sx={{ fontSize: "12px", height: "40px" }}
             variant="outlined"
-            onClick={openTransferDrawal}
+            onClick={openDrawal}
           >
             <Box sx={{ transform: "rotate(-45deg)" }}>
               <SendIcon size={18} />
@@ -73,7 +62,7 @@ export default function Index() {
         </Stack>
       </Stack>
       <Box mt="20px" px="30px">
-        <TransferTable reload={reload} />
+        <PendingTransferTable />
       </Box>
     </Dashboard>
   );

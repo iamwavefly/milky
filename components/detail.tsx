@@ -3,6 +3,7 @@ import { Box, Chip, IconButton, Stack, Typography } from "@mui/material";
 // icons
 import CopyIcon from "../public/icons/copy.svg";
 import DownloadIcon from "../public/icons/download-color.svg";
+import clipboard from "@/helper/clipboard";
 
 interface props {
   title: string;
@@ -12,6 +13,10 @@ interface props {
 }
 
 export default function Detail({ title, full, variant, value }: props) {
+  const copyTextHandler = (text: string) => {
+    clipboard(text);
+  };
+
   return (
     <Box width={full ? "100%" : "max-content"}>
       <Typography
@@ -28,7 +33,7 @@ export default function Detail({ title, full, variant, value }: props) {
             <Typography color="#262B40" fontWeight={500} fontSize="14px">
               {value}
             </Typography>
-            <IconButton>
+            <IconButton onClick={() => copyTextHandler(value)}>
               <CopyIcon />
             </IconButton>
           </Stack>

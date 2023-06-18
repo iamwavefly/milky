@@ -9,7 +9,7 @@ import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-export default function NewCustomer() {
+export default function NewCustomer({ reload }: { reload: () => void }) {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/customer/create`
   );
@@ -20,8 +20,8 @@ export default function NewCustomer() {
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      toast.success(message);
       close();
+      reload();
     }
   }, [data]);
   // form controller
@@ -102,12 +102,7 @@ export default function NewCustomer() {
         >
           Add Customer
         </LoadingButton>
-        <LoadingButton
-          variant="outlined"
-          fullWidth
-          onClick={close}
-          disabled={!(formik.isValid && formik.dirty)}
-        >
+        <LoadingButton variant="outlined" fullWidth onClick={close}>
           Cancel
         </LoadingButton>
       </Stack>

@@ -20,7 +20,7 @@ const useFetch = (
   const dispatch = useDispatch();
   const close = () => dispatch(setDrawalState({ active: false }));
 
-  const handleSubmit = async (payload: any) => {
+  const handleSubmit = async (payload: any, noToast?: boolean) => {
     setLoading(true);
     try {
       const { status, data } = type
@@ -28,7 +28,11 @@ const useFetch = (
         : ((await axios.post(url, payload)) as any);
       if (status === 200) {
         setData(data);
-        if (data?.status?.toLowerCase() === "success" && type !== "get") {
+        if (
+          data?.status?.toLowerCase() === "success" &&
+          type !== "get" &&
+          !noToast
+        ) {
           toast.success(data?.message);
         }
       }
@@ -36,7 +40,7 @@ const useFetch = (
       catchErrors(error, setError);
       setError(error as any);
       let { errorMsg, errorCode } = resolveErrorMsg(error);
-      toast.error(errorMsg);
+      // toast.error(errorMsg);
       notifyErrorHandler({
         type: "error",
         title: errorMsg,

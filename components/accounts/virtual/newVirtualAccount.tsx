@@ -24,8 +24,7 @@ export default function NewVirtualAccount({ reload }: any) {
 
   useEffect(() => {
     const { status, message } = data;
-    if (status === "Success") {
-      toast.success(message);
+    if (status === "success") {
       reload();
       close();
     }

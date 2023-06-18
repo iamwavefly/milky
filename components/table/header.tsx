@@ -37,6 +37,7 @@ interface headerProps {
   buttons?: ReactNode;
   entryOnly?: boolean;
   noButton?: boolean;
+  exportBtn?: boolean;
   setSearch?: (term: string) => void;
 }
 
@@ -48,6 +49,7 @@ export default function Header({
   buttons,
   entryOnly,
   noButton,
+  exportBtn,
   transparent,
   setSearch,
   searchText,

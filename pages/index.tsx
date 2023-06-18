@@ -21,6 +21,24 @@ import { loginHandler } from "@/middleware/auth";
 import { LoadingButton } from "@mui/lab";
 import { setUserState } from "@/store/authSlice";
 import { useDispatch } from "react-redux";
+import ReactCodeInput from "react-code-input";
+
+const props = {
+  inputStyle: {
+    margin: "4px",
+    borderRadius: "6px",
+    fontSize: "14px",
+    width: "48px",
+    height: "48px",
+    textAlign: "center",
+    color: "#69696B",
+    border: "1px solid rgba(150, 152, 200, 0.2)",
+  },
+  inputStyleInvalid: {
+    fontFamily: "monospace",
+    margin: "4px",
+  },
+};
 
 export default function Index() {
   const [authReq, setAuthReq] = useState(false);
@@ -29,7 +47,7 @@ export default function Index() {
   const [disabled, setDisabled] = useState(true);
   const [form, setForm] = useState({ email: "", password: "" });
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}${authReq ? "/dashboard/login/complete" : "/dashboard/login"}`
+    `${baseUrl}${authReq ? "/dashboard/complete/login" : "/dashboard/login"}`
   );
 
   const dispatch = useDispatch();
@@ -62,7 +80,6 @@ export default function Index() {
   useEffect(() => {
     const { message, token } = data ?? {};
     if (token?.access_token) {
-      console.log(data, data?.user);
       dispatch(
         setUserState({
           user: data?.user,
@@ -70,7 +87,7 @@ export default function Index() {
         })
       );
       loginHandler(data);
-    } else if (message && message.includes("otp")) {
+    } else if (message && message?.toLowerCase().includes("otp")) {
       setAuthReq(true);
     } else {
       setAuthReq(false);
@@ -98,37 +115,53 @@ export default function Index() {
             )}*****${form.email?.substring(form.email.length - 5)})`
           : "Log in to your account to continue"}
       </Typography>
-      <Stack mt="34px" width="100%" spacing="14px">
-        <TextField
-          label="Email Address"
-          variant="standard"
-          value={form.email}
-          name="email"
-          onChange={onChangeHandler}
-        />
-        <TextField
-          type={showPassword ? "text" : "password"}
-          label="Password"
-          variant="standard"
-          value={form.password}
-          name="password"
-          onChange={onChangeHandler}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="start">
-                <IconButton
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  sx={{ border: 0 }}
-                  edge="start"
-                >
-                  {showPassword ? <EyeCloseIcon /> : <EyeIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Stack>
+      {authReq ? (
+        <Box mt="34px">
+          {/* @ts-ignore: package error */}
+          <ReactCodeInput
+            onChange={(text) => setotp(text)}
+            value={otp}
+            name="otp"
+            inputMode="numeric"
+            type="number"
+            fields={6}
+            {...props}
+          />
+        </Box>
+      ) : (
+        <Stack mt="34px" width="100%" spacing="14px">
+          <TextField
+            label="Email Address"
+            variant="standard"
+            value={form.email}
+            name="email"
+            onChange={onChangeHandler}
+          />
+          <TextField
+            type={showPassword ? "text" : "password"}
+            label="Password"
+            variant="standard"
+            value={form.password}
+            name="password"
+            onChange={onChangeHandler}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="start">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    sx={{ border: 0 }}
+                    edge="start"
+                  >
+                    {showPassword ? <EyeCloseIcon /> : <EyeIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Stack>
+      )}
+
       <Typography fontSize="12px" mr="auto" mt="15px" lineHeight="18px">
         Forgot Password? <Link href="/forgot-password">Reset here</Link>
       </Typography>

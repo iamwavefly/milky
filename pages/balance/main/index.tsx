@@ -15,22 +15,24 @@ import baseUrl from "@/middleware/baseUrl";
 import OnlyHeader from "@/components/cards/onlyHeader";
 import Detail from "@/components/detail";
 import ArrowIcon from "remixicon-react/ArrowRightUpLineIcon";
+import stringToCurrency from "@/helper/formatCurrency";
 
 export default function Index() {
   const [metric, setMetric] = useState<any>({});
+  const [balance, setBalance] = useState([]);
 
-  // const { loading, data, error, handleSubmit } = useFetch(
-  //   `${baseUrl}/dashboard/fetch/all/wallets`,
-  //   "get"
-  // );
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/get/wallet/balance`,
+    "get"
+  );
 
-  // useEffect(() => {
-  //   handleSubmit();
-  // }, []);
+  useEffect(() => {
+    handleSubmit();
+  }, []);
 
-  // useEffect(() => {
-  //   console.log({ data });
-  // }, [data]);
+  useEffect(() => {
+    setBalance(data?.wallets);
+  }, [data]);
 
   return (
     <Dashboard title="Balance">
@@ -76,44 +78,73 @@ export default function Index() {
             />
           </Box>
         </Stack>
-        <OnlyHeader
-          mt="32px"
-          alignHeader="left"
-          header="NGN Balance"
-          size="12px"
-        >
-          <Box my="auto">
-            <Stack
-              direction="row"
-              flexWrap="wrap"
-              columnGap="106px"
-              rowGap="36px"
-            >
-              <Detail
-                title={"BANK NAME"}
-                variant={"copy"}
-                value={"Access Bank - 0983049582"}
-              />
-              <Detail
-                title={"AVAILABLE BALANCE"}
-                variant={"copy"}
-                value={"NGN 40,000"}
-              />
-              <Detail
-                title={"LEDGER BALANCE"}
-                variant={"copy"}
-                value={"NGN 25,000"}
-              />
-              <Button
-                sx={{ height: "40px", fontSize: "12px" }}
-                variant="contained"
+        {balance?.map(
+          ({
+            wallet_id,
+            currency_short_name,
+            ledger_balance,
+            available_balance,
+            account_details: { bank_name, account_number },
+          }) => {
+            return (
+              <OnlyHeader
+                key={wallet_id}
+                mt="32px"
+                alignHeader="left"
+                header={`${currency_short_name} Balance`}
+                size="12px"
               >
-                <ArrowIcon size={20} />
-                Top-Up Balance
-              </Button>
-            </Stack>
-          </Box>
-        </OnlyHeader>
+                <Box my="auto">
+                  <Stack
+                    direction="row"
+                    flexWrap="wrap"
+                    columnGap="106px"
+                    rowGap="36px"
+                  >
+                    <Detail
+                      title={"BANK NAME"}
+                      variant={"copy"}
+                      value={
+                        bank_name || account_number
+                          ? `${bank_name} - ${account_number}`
+                          : "N/A"
+                      }
+                    />
+                    <Detail
+                      title={"LEDGER BALANCE"}
+                      variant={"copy"}
+                      value={
+                        ledger_balance
+                          ? `${currency_short_name} ${stringToCurrency(
+                              ledger_balance
+                            )}`
+                          : "0"
+                      }
+                    />
+                    <Detail
+                      title={"AVAILABLE BALANCE"}
+                      variant={"copy"}
+                      value={
+                        available_balance
+                          ? `${currency_short_name} ${stringToCurrency(
+                              available_balance
+                            )}`
+                          : "0"
+                      }
+                    />
+                    {/* <Button
+                      sx={{ height: "40px", fontSize: "12px" }}
+                      variant="contained"
+                    >
+                      <ArrowIcon size={20} />
+                      Top-Up Balance
+                    </Button> */}
+                  </Stack>
+                </Box>
+              </OnlyHeader>
+            );
+          }
+        )}
       </Box>
     </Dashboard>
   );

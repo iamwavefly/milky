@@ -63,7 +63,7 @@ export default function NewRole({ reload }: { reload: () => void }) {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/role/create`
   );
-  // countries
+  // permissions
   const fetchPermissions = useFetch(
     `${baseUrl}/dashboard/role/permissions`,
     "get"

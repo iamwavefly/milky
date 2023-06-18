@@ -73,9 +73,6 @@ const VirtualAccountTable = () => {
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.total_pages}
-        onClickRow={(e) =>
-          Router.push(`/transactions/customers/${e?.row?.original?.id}`)
-        }
       />
     </div>
   );
