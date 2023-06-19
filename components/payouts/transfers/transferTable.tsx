@@ -38,7 +38,7 @@ const TransferTable = ({ reload }: { reload: boolean }) => {
         containerRef={containerRef}
         columns={TransferTableColumns}
         data={data?.data?.items}
-        entries={`${data?.total_items ?? 0} Entries`}
+        entries={`${data?.data?.page?.size ?? 0}`}
         setSearch={setSearch}
       />
       <Table
@@ -47,7 +47,7 @@ const TransferTable = ({ reload }: { reload: boolean }) => {
         columns={TransferTableColumns}
         isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
+        pageCount={data?.data?.page?.total_page}
       />
     </div>
   );

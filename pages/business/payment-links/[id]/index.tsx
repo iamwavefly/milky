@@ -21,9 +21,15 @@ import clipboard from "@/helper/clipboard";
 import ProductDetailsTable from "@/components/business/paymentLinks/productDetailsTable";
 import BackArrowIcon from "remixicon-react/ArrowLeftSLineIcon";
 import truncate from "@/helper/truncate";
+import NewVirtualAccount from "@/components/accounts/virtual/newVirtualAccount";
+import { setDrawalState } from "@/store/appSlice";
+import { useDispatch } from "react-redux";
+import NewPaymentLink from "@/components/business/paymentLinks/newPaymentLink";
 
 export default function Index() {
   const [details, setDetails] = useState({});
+
+  const dispatch = useDispatch();
 
   const { asPath } = useRouter();
   const id = +asPath.split("/").slice(-1)[0];
@@ -39,6 +45,16 @@ export default function Index() {
   useEffect(() => {
     setDetails(data?.items?.[0]);
   }, [data]);
+
+  const openDrawal = () => {
+    dispatch(
+      setDrawalState({
+        active: true,
+        title: "Edit Payment Link",
+        content: <NewPaymentLink reload={handleSubmit} details={details} />,
+      })
+    );
+  };
 
   return (
     <Dashboard title={`${details?.name ?? "..."} | Payment Links`}>
@@ -60,6 +76,7 @@ export default function Index() {
             <Button
               variant="outlined"
               sx={{ fontSize: "12px", height: "40px" }}
+              onClick={openDrawal}
             >
               <EditIcon size={18} /> Edit Link
             </Button>

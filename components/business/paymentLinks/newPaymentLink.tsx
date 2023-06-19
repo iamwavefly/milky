@@ -9,9 +9,9 @@ import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-export default function NewPaymentLink({ reload }: any) {
+export default function NewPaymentLink({ reload, details }: any) {
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/payment/link/new`
+    `${baseUrl}/dashboard/payment/link/${details ? "edit" : "new"}`
   );
 
   const paymentTypes = useFetch(
@@ -29,7 +29,6 @@ export default function NewPaymentLink({ reload }: any) {
   useEffect(() => {
     const { status, message } = data;
     if (status === "Success") {
-      toast.success(message);
       reload();
       close();
     }
@@ -41,18 +40,33 @@ export default function NewPaymentLink({ reload }: any) {
       description: "",
       paymentType: "",
       amount: "",
+      limit: "",
     },
     validationSchema: newPaymentLink,
-    onSubmit: ({ linkName, description, amount, paymentType }) => {
+    onSubmit: ({ linkName, description, amount, paymentType, limit }) => {
       const payload = {
         name: linkName,
         description: description,
         amount,
+        limit,
         payment_type: paymentType,
+        payment_link_id: details ? details?.id : undefined,
       };
       handleSubmit(payload);
     },
   });
+
+  useEffect(() => {
+    if (details) {
+      const linkType = paymentTypes?.data?.payment_link_types?.find(
+        (type: any) => type.payment_link_name === details?.payment_type
+      )?.code;
+      formik.setFieldValue("linkName", details?.name);
+      formik.setFieldValue("paymentType", linkType);
+      formik.setFieldValue("amount", details?.amount);
+      formik.setFieldValue("limit", details?.limit);
+    }
+  }, [details, paymentTypes?.data]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -78,6 +92,17 @@ export default function NewPaymentLink({ reload }: any) {
             formik.touched.description && Boolean(formik.errors.description)
           }
           helperText={formik.touched.description && formik.errors.description}
+        />
+        <TextField
+          label="Limit"
+          variant="standard"
+          name="limit"
+          type="number"
+          value={formik.values.limit}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.limit && Boolean(formik.errors.limit)}
+          helperText={formik.touched.limit && formik.errors.limit}
         />
         <TextField
           label="Payment Type*"
@@ -119,7 +144,7 @@ export default function NewPaymentLink({ reload }: any) {
           loading={loading}
           disabled={!(formik.isValid && formik.dirty)}
         >
-          Add Payment Link
+          {details ? "Update" : "Add"} Payment Link
         </LoadingButton>
         <LoadingButton
           variant="outlined"

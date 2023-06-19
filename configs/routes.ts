@@ -22,6 +22,8 @@ const routes = [
     id: 2,
     name: "Home",
     Icon: HomeIcon,
+    link: "/dashboard",
+    header: true,
     nest: [
       {
         key: 1,
@@ -34,6 +36,8 @@ const routes = [
     id: 3,
     name: "Business",
     Icon: BriefcaseIcon,
+    link: "/business/transactions",
+    header: true,
     nest: [
       {
         key: 1,
@@ -66,6 +70,8 @@ const routes = [
     id: 4,
     name: "Account",
     Icon: FIleCopyIcon,
+    link: "/account/virtual",
+    header: true,
     nest: [
       {
         key: 1,
@@ -83,6 +89,8 @@ const routes = [
     id: 5,
     name: "Balance",
     Icon: MoneyBoxIcon,
+    link: "/balance/main",
+    header: true,
     nest: [
       {
         key: 1,
@@ -105,6 +113,8 @@ const routes = [
     id: 6,
     name: "Payouts",
     Icon: BankCardIcon,
+    link: "/payouts/transfers",
+    header: true,
     nest: [
       {
         key: 1,
@@ -138,6 +148,8 @@ const routes = [
     id: 8,
     name: "Chargeback",
     Icon: ArrowLeftRightIcon,
+    link: "/chargeback/all",
+    header: true,
     nest: [
       {
         key: 1,
@@ -175,6 +187,8 @@ const routes = [
     id: 9,
     name: "Settings",
     Icon: SettingIcon,
+    link: "/settings/business",
+    header: true,
     nest: [
       {
         key: 1,

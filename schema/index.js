@@ -248,6 +248,7 @@ export const newPaymentLink = () =>
   yup.object({
     linkName: yup.string().required("Link name is required"),
     description: yup.string(),
+    limit: yup.string(),
     paymentType: yup.string().required("Payment type is required"),
     amount: yup.string().required("Amount is required"),
   });
@@ -261,6 +262,15 @@ export const newTransfer = () =>
     beneficiaryName: yup.string().required("Beneficiary name is required"),
     bank: yup.string().required("Bank name is required"),
     narration: yup.string(),
+  });
+// new beneficiary
+export const beneficiary = () =>
+  yup.object({
+    currency: yup.string().required("Currency is required"),
+    accountNumber: yup.string().required("Account number is required"),
+    accountName: yup.string().required("Account name is required"),
+    bank: yup.string().required("Bank name is required"),
+    type: yup.string(),
   });
 
 // new payment link

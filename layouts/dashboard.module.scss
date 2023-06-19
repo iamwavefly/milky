@@ -15,6 +15,21 @@
   border-right: 1px solid #dde0e7;
   transition: all 0.4s ease;
   &:not(.active) {
+    & .navigations {
+      min-width: 59px !important;
+      & .nested,
+      & .nestedIcon,
+      & span {
+        display: none;
+      }
+      & li {
+        padding: 0;
+        & > div {
+          padding: 0;
+          justify-content: center;
+        }
+      }
+    }
     & > .logo {
       & p {
         display: none;

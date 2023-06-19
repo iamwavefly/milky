@@ -14,12 +14,23 @@ import { useDispatch } from "react-redux";
 import { setDrawalState } from "@/store/appSlice";
 import TransferDetails from "@/components/payouts/transfers/transferDetails";
 import PendingTransferTable from "@/components/payouts/transfers/pendingTransferTable";
+import BeneficiaryTable from "@/components/payouts/transfers/beneficiaryTable";
 
 export default function Index() {
   const dispatch = useDispatch();
+  // open drawal
+  const openDrawal = () => {
+    dispatch(
+      setDrawalState({
+        active: true,
+        title: "Fund Balance",
+        content: <TransferDetails />,
+      })
+    );
+  };
 
   return (
-    <Dashboard title="Pending Approval">
+    <Dashboard title="Beneficiaries">
       <Stack
         px="30px"
         mt="20px"
@@ -28,11 +39,11 @@ export default function Index() {
         justifyContent="space-between"
       >
         <Typography fontSize="16px" color="#2E3192">
-          Pending Approval
+          Beneficiaries
         </Typography>
       </Stack>
       <Box mt="20px" px="30px">
-        <PendingTransferTable />
+        <BeneficiaryTable />
       </Box>
     </Dashboard>
   );

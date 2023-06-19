@@ -1231,6 +1231,101 @@ export const TransferPendingTableColumns: ColumnDef<any, any>[] = [
       );
     },
   },
+  {
+    header: " ",
+    accessorKey: "id",
+    cell: (row) => <CustomerMenu id={row.getValue()} />,
+  },
+];
+
+export const FundingHistoryTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "",
+    header: "Method",
+  },
+  {
+    accessorKey: "fee",
+    header: "Fee",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          NGN {stringToCurrency(row.getValue())}
+        </Typography>
+      );
+    },
+  },
+  {
+    accessorKey: "date_initiated",
+    header: "Date",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {moment(row.getValue()).format("L")}
+        </Typography>
+      );
+    },
+  },
+  {
+    header: " ",
+    accessorKey: "id",
+    cell: (row) => <CustomerMenu id={row.getValue()} />,
+  },
+];
+
+export const BeneficiaryTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "Name",
+  },
+  {
+    accessorKey: "type",
+    header: "Type",
+  },
+  {
+    accessorKey: "recipient_name",
+    header: "Recepient",
+  },
+  {
+    accessorKey: "date_created",
+    header: "Date",
+    cell: (row: any) => {
+      return (
+        <Typography color="#92959F" fontSize="12px" width="max-content">
+          {moment(row.getValue()).format("L")}
+        </Typography>
+      );
+    },
+  },
+  {
+    header: " ",
+    accessorKey: "id",
+    cell: (row) => <CustomerMenu id={row.getValue()} />,
+  },
 ];
 
 export const AccountsTxnTableColumns: ColumnDef<any, any>[] = [
