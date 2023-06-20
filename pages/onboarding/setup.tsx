@@ -1,5 +1,3 @@
-import AccountTypePanel from "@/components/accountTypePanel";
-import Dashboard from "@/layouts/dashboard";
 import {
   Box,
   Button,
@@ -11,13 +9,11 @@ import {
   Typography,
 } from "@mui/material";
 import React, { ReactNode, useEffect, useLayoutEffect, useState } from "react";
-import UserIcon from "remixicon-react/User6LineIcon";
-import FileIcon from "remixicon-react/FileList2LineIcon";
 import AccountSetup from "@/layouts/setup";
 import { accountPersonalSetup, accountRegisterSetup } from "@/configs/labels";
 import { useDispatch, useSelector } from "react-redux";
 import { setDrawalState } from "@/store/appSlice";
-import { useRouter } from "next/router";
+import Router, { useRouter } from "next/router";
 import { selectUserState } from "@/store/authSlice";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
@@ -27,14 +23,26 @@ export default function Index() {
   const [status, setStatus] = useState<any>({});
 
   const dispatch = useDispatch();
-  const { is_email_verified, email_address, mobile_number } =
-    useSelector(selectUserState).user;
+  const { is_email_verified } = useSelector(selectUserState).user;
 
-  const close = () => dispatch(setDrawalState({ active: false }));
+  const { type, token } = useRouter().query;
 
-  const { type } = useRouter().query;
+  // percentage
+  const onboardingStatus = useFetch(
+    `${baseUrl}/dashboard/onboarding/percentage`,
+    "get"
+  );
 
-  // console.log({ user });
+  const verifyEmail = useFetch(
+    `${baseUrl}/dashboard/verify/business/email?token=${token}`,
+    "get"
+  );
+
+  useEffect(() => {
+    if (token) {
+      verifyEmail.handleSubmit();
+    }
+  }, [token]);
 
   useLayoutEffect(() => {
     if (type === "registered") {
@@ -58,15 +66,9 @@ export default function Index() {
       return true;
     }
     const result = status?.[slug] === 100 ? true : false;
-    console.log({ result }, status);
     return result;
   };
 
-  // text
-  const onboardingStatus = useFetch(
-    `${baseUrl}/dashboard/onboarding/percentage`,
-    "get"
-  );
   // fetch business sizes
   useEffect(() => {
     onboardingStatus.handleSubmit();

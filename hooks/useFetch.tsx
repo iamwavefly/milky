@@ -40,7 +40,7 @@ const useFetch = (
       catchErrors(error, setError);
       setError(error as any);
       let { errorMsg, errorCode } = resolveErrorMsg(error);
-      // toast.error(errorMsg);
+      // toast.error(errorMsg);     
       notifyErrorHandler({
         type: "error",
         title: errorMsg,
