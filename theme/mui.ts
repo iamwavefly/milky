@@ -451,6 +451,27 @@ const theme = createTheme({
         },
       },
     },
+    MuiTabs: {
+      styleOverrides: {
+        root: {
+          minHeight: "18px",
+          maxHeight: "18px",
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          padding: "0 !important",
+          minHeight: "18px",
+          fontSize: "12px",
+          textTransform: "capitalize",
+          color: "#92959F",
+          minWidth: "max-content ",
+          marginRight: "40px",
+        },
+      },
+    },
   },
 } as ThemeOptions);
 

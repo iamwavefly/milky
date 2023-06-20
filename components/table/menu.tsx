@@ -286,6 +286,8 @@ export const PaymentLinkMenu = ({ id }: { id: number }) => {
 
   const handleActionClick = (action: string, event: any) => {
     handleClose(event);
+    if (action === "open")
+      return window.open(details?.payment_url, "_blank", "noopener,noreferrer");
     if (action === "view") return Router.push(`/business/payment-links/${id}`);
     if (action === "copy") return copyPaymentLink();
     if (action === "update") return linkStatusUpdate();
@@ -314,7 +316,7 @@ export const PaymentLinkMenu = ({ id }: { id: number }) => {
           <MenuItem onClick={(event) => handleActionClick("copy", event)}>
             Copy link
           </MenuItem>
-          <MenuItem onClick={(event) => handleActionClick("view", event)}>
+          <MenuItem onClick={(event) => handleActionClick("open", event)}>
             Initiate payment
           </MenuItem>
         </Menu>

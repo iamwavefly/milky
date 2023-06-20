@@ -2,7 +2,7 @@
   height: 100vh !important;
   display: grid !important;
   grid-template-columns: auto 1fr !important;
-  grid-template-rows: 60px 1fr !important;
+  grid-template-rows: auto 1fr !important;
 }
 .sidebar {
   position: sticky !important;
@@ -54,6 +54,7 @@
   top: 0;
   left: 0;
   width: 100%;
+  min-height: 60px;
   border-bottom: 1px solid #dde0e7;
   background-color: #fff;
   padding: 0 30px;

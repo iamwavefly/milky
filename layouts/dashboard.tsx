@@ -15,7 +15,8 @@ import {
 } from "@mui/material";
 import Logo from "../public/images/icon.svg";
 import ArrowIcon from "../public/images/arrow.svg";
-import NotificationIcon from "../public/images/notification-active.svg";
+import NotificationActiveIcon from "../public/images/notification-active.svg";
+import NotificationIcon from "remixicon-react/Notification4LineIcon";
 import Drawal from "@/components/drawal/Drawal";
 import Head from "next/head";
 import Styles from "./dashboard.module.scss";
@@ -30,7 +31,8 @@ import { selectUserState } from "@/store/authSlice";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import substring from "@/helper/substring";
-import Notifications from "@/components/notifications";
+import Notifications from "@/components/notifications/notifications";
+import TestModeBadge from "@/components/testModeBadge";
 
 interface Props {
   children?: ReactNode;
@@ -45,7 +47,7 @@ const Dashboard = ({ children, title }: Props) => {
   const open = Boolean(anchorEl);
 
   const dispatch = useDispatch();
-  const { subsidiaries, user } = useSelector(selectUserState);
+  const { subsidiaries, user, notifications } = useSelector(selectUserState);
   const { business_name, id, subsidiary_logo } = subsidiaries;
 
   useEffect(() => {
@@ -236,22 +238,29 @@ const Dashboard = ({ children, title }: Props) => {
           </nav>
         </Stack>
         {/* header */}
-        <Stack
-          className={Styles.topbar}
-          direction="row"
-          justifyContent="space-between"
-          alignItems="center"
-        >
-          <IconButton onClick={toggleMenu}>
-            <MenuIcon size={18} color="rgba(38, 43, 64, 0.8)" />
-          </IconButton>
-          <Stack direction="row" spacing="18px">
-            <IconButton onClick={handleClick}>
-              <NotificationIcon />
+        <Box height="auto">
+          <TestModeBadge />
+          <Stack
+            className={Styles.topbar}
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+          >
+            <IconButton onClick={toggleMenu}>
+              <MenuIcon size={18} color="rgba(38, 43, 64, 0.8)" />
             </IconButton>
-            <Avatar src={photo} sx={{ width: "40px", height: "40px" }} />
+            <Stack direction="row" spacing="18px">
+              <IconButton onClick={handleClick}>
+                {notifications?.length ? (
+                  <NotificationActiveIcon />
+                ) : (
+                  <NotificationIcon color="#262B40" size={20} />
+                )}
+              </IconButton>
+              <Avatar src={photo} sx={{ width: "40px", height: "40px" }} />
+            </Stack>
           </Stack>
-        </Stack>
+        </Box>
         <Stack className={Styles.content}>
           <Drawal />
           <Box>{children}</Box>

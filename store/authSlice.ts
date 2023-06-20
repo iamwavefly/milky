@@ -38,6 +38,15 @@ export interface AuthState {
     legal_business_name: string;
     business_type: string;
   };
+  notifications: [
+    {
+      id: number;
+      message_text: string;
+      message_type: string;
+      date_created: string;
+      message_from: string;
+    }
+  ];
 }
 
 // Initial state
@@ -76,6 +85,15 @@ const initialState: AuthState = {
     legal_business_name: "",
     business_type: "",
   },
+  notifications: [
+    {
+      id: 0,
+      message_text: "",
+      message_type: "",
+      date_created: "",
+      message_from: "",
+    },
+  ],
 };
 
 // Actual Slice
@@ -87,6 +105,7 @@ export const authSlice = createSlice({
     setUserState(state, action) {
       state.subsidiaries = action.payload.subsidiaries;
       state.user = action.payload.user;
+      state.notifications = action.payload.notifications;
     },
   },
 

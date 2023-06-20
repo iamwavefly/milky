@@ -46,6 +46,7 @@ function App({ Component, pageProps }: AppProps) {
       dispatch(
         setUserState({
           user: data?.user,
+          notifications: data?.notifications,
           subsidiaries: data?.subsidiary_details?.subsidiaries[0],
         })
       );
