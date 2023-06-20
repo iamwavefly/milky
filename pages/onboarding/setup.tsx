@@ -62,9 +62,11 @@ export default function Index() {
   };
 
   const isCompleted = (slug: string) => {
-    if (slug === "email" && is_email_verified) {
-      return true;
-    }
+    // if (slug === "email" && is_email_verified) {
+    //   console.log(is_email_verified);
+    //   return true;
+    // }
+    console.log([slug]);
     const result = status?.[slug] === 100 ? true : false;
     return result;
   };
@@ -76,9 +78,12 @@ export default function Index() {
 
   useEffect(() => {
     if (onboardingStatus?.data) {
-      setStatus(onboardingStatus?.data?.data);
+      setStatus({
+        ...onboardingStatus?.data?.data,
+        email: is_email_verified ? 100 : 0,
+      });
     }
-  }, [onboardingStatus?.data]);
+  }, [onboardingStatus?.data, is_email_verified]);
 
   return (
     <AccountSetup

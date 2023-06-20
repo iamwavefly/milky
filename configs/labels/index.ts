@@ -423,6 +423,7 @@ export const accountPersonalSetup = [
   {
     id: 1,
     title: "Verify your email address",
+    slug: "email",
     desc: "Click on the verification link sent to your email address. You can resend the link if you did not get it.",
   },
   {

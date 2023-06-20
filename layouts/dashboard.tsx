@@ -149,7 +149,7 @@ const Dashboard = ({ children, title }: Props) => {
           >
             <Stack>
               <Typography fontWeight={500} fontSize="18px" lineHeight="24px">
-                {substring(business_name, 15) ?? "..."}
+                {substring(business_name, 12) ?? "..."}
               </Typography>
               <Typography
                 fontWeight={400}
