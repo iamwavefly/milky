@@ -1,6 +1,7 @@
 import React, { ReactNode, useEffect } from "react";
 import {
   Box,
+  Button,
   Collapse,
   Divider,
   IconButton,
@@ -12,15 +13,40 @@ import Logo from "../public/images/logo.svg";
 import BackArrow from "remixicon-react/ArrowDropLeftLineIcon";
 import Dashboard from "./dashboard";
 import Router from "next/router";
+import { LoadingButton } from "@mui/lab";
+import baseUrl from "@/middleware/baseUrl";
+import useFetch from "@/hooks/useFetch";
+import { toast } from "react-hot-toast";
 
 interface Props {
   children?: ReactNode;
   activePanel?: boolean;
+  isReady?: boolean;
   title?: string;
   desc?: string;
 }
 
-const AccountSetup = ({ children, title, desc, activePanel }: Props) => {
+const AccountSetup = ({
+  children,
+  title,
+  desc,
+  activePanel,
+  isReady,
+}: Props) => {
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/onboarding/complete`,
+    "get"
+  );
+
+  if (data?.status?.toLowerCase() === "success") {
+    toast.success(data?.message);
+    Router.push("/dashboard");
+  }
+
+  const requestLiveHandler = () => {
+    handleSubmit();
+  };
+
   return (
     <>
       <Head>
@@ -74,6 +100,16 @@ const AccountSetup = ({ children, title, desc, activePanel }: Props) => {
                 {desc ?? "A few more things to help us set up your dashboard"}
               </Typography>
             </Collapse>
+            {isReady && (
+              <LoadingButton
+                onClick={requestLiveHandler}
+                sx={{ mt: "49px !important", width: "max-content" }}
+                variant="contained"
+                loading={loading}
+              >
+                Request to go live
+              </LoadingButton>
+            )}
           </Stack>
           <Divider sx={{ height: "auto" }} orientation="vertical" />
           <Stack width="546px">{children}</Stack>

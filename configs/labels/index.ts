@@ -413,6 +413,7 @@ export const accountRegisterSetup = [
   },
   {
     id: 7,
+    slug: "tour",
     title: "Take dashboard tour (optional)",
     desc: "Learn about the awesome things that you can do on your new dashboard.",
   },
@@ -462,5 +463,6 @@ export const accountPersonalSetup = [
     id: 6,
     title: "Take dashboard tour (optional)",
     desc: "Learn about the awesome things that you can do on your new dashboard.",
+    slug: "tour",
   },
 ];

@@ -21,9 +21,12 @@ import baseUrl from "@/middleware/baseUrl";
 export default function Index() {
   const [labels, setLabels] = useState([]);
   const [status, setStatus] = useState<any>({});
+  const [isReady, setIsReady] = useState<undefined | boolean>(undefined);
 
   const dispatch = useDispatch();
-  const { is_email_verified } = useSelector(selectUserState).user;
+  const { user, subsidiaries } = useSelector(selectUserState);
+  const { is_email_verified } = user;
+  const { business_type } = subsidiaries;
 
   const { type, token } = useRouter().query;
 
@@ -62,16 +65,11 @@ export default function Index() {
   };
 
   const isCompleted = (slug: string) => {
-    // if (slug === "email" && is_email_verified) {
-    //   console.log(is_email_verified);
-    //   return true;
-    // }
-    console.log([slug]);
     const result = status?.[slug] === 100 ? true : false;
     return result;
   };
 
-  // fetch business sizes
+  // fetch business status
   useEffect(() => {
     onboardingStatus.handleSubmit();
   }, []);
@@ -83,12 +81,41 @@ export default function Index() {
         email: is_email_verified ? 100 : 0,
       });
     }
+    // check if ready to go live
+    const {
+      personal_information,
+      business_information,
+      business_compliance,
+      bank_information,
+      terms_and_condition,
+    } = onboardingStatus?.data?.data ?? {};
+    if (
+      personal_information === 100 &&
+      business_information === 100 &&
+      bank_information === 100 &&
+      terms_and_condition === 100
+    ) {
+      if (business_type?.toLowerCase() === "individual") {
+        return setIsReady(true);
+      } else {
+        if (business_compliance === 100) {
+          return setIsReady(true);
+        } else {
+          return setIsReady(false);
+        }
+      }
+    }
   }, [onboardingStatus?.data, is_email_verified]);
 
   return (
     <AccountSetup
-      title="We need more information"
-      desc="Comment from reviewer: Dear customer, provide the following to complete your profile"
+      isReady={isReady}
+      title={isReady ? "Welcome to your Dashboard" : "We need more information"}
+      desc={
+        isReady
+          ? "Your account is currently in test mode, so there are a few more things to do before you can go live and start receiving payments. Follow the steps to get activated."
+          : "Comment from reviewer: Dear customer, provide the following to complete your profile"
+      }
     >
       <Stack spacing="17px">
         {labels?.map(({ desc, title, Component, drawalTitle, id, slug }) => (
@@ -114,7 +141,7 @@ export default function Index() {
               >
                 {title}
               </Typography>
-              <Checkbox checked={isCompleted(slug)} />
+              {slug !== "tour" && <Checkbox checked={isCompleted(slug)} />}
             </Stack>
             <Typography
               mt="4px"

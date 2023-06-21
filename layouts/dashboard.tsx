@@ -48,7 +48,9 @@ const Dashboard = ({ children, title }: Props) => {
 
   const dispatch = useDispatch();
   const { subsidiaries, user, notifications } = useSelector(selectUserState);
-  const { business_name, id, subsidiary_logo } = subsidiaries;
+  const [verified, setVerified] = useState<undefined | boolean>(undefined);
+  const { business_name, id, subsidiary_logo, verification_status } =
+    subsidiaries;
 
   useEffect(() => {
     const imageUrl = `https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${subsidiary_logo}`;
@@ -77,6 +79,12 @@ const Dashboard = ({ children, title }: Props) => {
       return setOpenMenuId(+menuId);
     }
   }, [openMenuId]);
+  //
+  useEffect(() => {
+    if (verification_status) {
+      setVerified(verification_status?.toLowerCase() === "active");
+    }
+  }, [verification_status]);
 
   useEffect(() => {
     localStorage.setItem("sidebar", showSidebar ? "open" : "close");
@@ -185,12 +193,14 @@ const Dashboard = ({ children, title }: Props) => {
                           ? Styles.active
                           : !showSidebar && pathname.includes(link as string)
                           ? Styles.active
+                          : verified && id === 1
+                          ? Styles.disabled
                           : ""
                       }
                       onClick={() =>
                         func
                           ? func()
-                          : link && !nest
+                          : link && !nest && !verification_status
                           ? Router.push(link)
                           : setOpenMenuId(id)
                       }
@@ -239,7 +249,7 @@ const Dashboard = ({ children, title }: Props) => {
         </Stack>
         {/* header */}
         <Box height="auto">
-          <TestModeBadge />
+          {verified === false && <TestModeBadge />}
           <Stack
             className={Styles.topbar}
             direction="row"

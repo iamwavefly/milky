@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "@/styles/globals.scss";
 import theme from "@/theme/mui";
 import { ThemeProvider } from "@mui/material";

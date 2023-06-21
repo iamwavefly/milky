@@ -3,6 +3,7 @@ import baseUrl from "@/middleware/baseUrl";
 import { setDrawalState } from "@/store/appSlice";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import Router from "next/router";
 import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -19,8 +20,8 @@ export default function Legal() {
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      toast.success(message);
       close();
+      Router.reload();
     }
   }, [data]);
 
