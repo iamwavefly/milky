@@ -29,7 +29,7 @@ export const catchErrors = (error, displayError) => {
     errorMsg = error.message;
   }
   // Callback Handler to parent component so error messages can be propagated properly
-  displayError(errorMsg);
+  displayError && displayError(errorMsg);
 };
 
 export const notifyErrorHandler = ({ type, title, msg, duration }) => {

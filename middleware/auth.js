@@ -3,7 +3,11 @@ import Router from "next/router";
 import localforage from "localforage";
 import axios from "axios";
 
-import { catchErrors, notifyErrorHandler } from "./catchErrors";
+import {
+  catchErrors,
+  notifyErrorHandler,
+  resolveErrorMsg,
+} from "./catchErrors";
 import baseUrl from "./baseUrl";
 
 export const RedirectNonGenUser = (ctx) => {
@@ -142,9 +146,24 @@ export const clearCacheHandler = () => {
   localforage.removeItem("key");
 };
 
-export const logoutHandler = () => {
-  clearCacheHandler();
-  window.location = "/";
+export const logoutHandler = async () => {
+  try {
+    const url = `${baseUrl}/dashboard/logout`;
+    const { status } = await axios.post(url);
+    if (status === 200) {
+      clearCacheHandler();
+      window.location = "/";
+    }
+  } catch (error) {
+    catchErrors(error);
+    let { errorMsg } = resolveErrorMsg(error);
+    notifyErrorHandler({
+      type: "error",
+      title: errorMsg,
+      msg: error,
+      duration: 5000,
+    });
+  }
 };
 
 export const censor = (censor) => {
