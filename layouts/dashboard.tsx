@@ -82,7 +82,9 @@ const Dashboard = ({ children, title }: Props) => {
   //
   useEffect(() => {
     if (verification_status) {
-      setVerified(verification_status?.toLowerCase() === "active");
+      return setVerified(
+        verification_status?.toLowerCase() === "active" ? true : false
+      );
     }
   }, [verification_status]);
 
@@ -98,6 +100,63 @@ const Dashboard = ({ children, title }: Props) => {
   }, []);
 
   const { pathname } = useRouter();
+
+  const NavLink = ({ link, id, Icon, name, nest, header, func }: any) => {
+    return (
+      <li key={id}>
+        <Box
+          className={
+            pathname.includes(link as string) && !header
+              ? Styles.active
+              : !showSidebar && pathname.includes(link as string)
+              ? Styles.active
+              : ""
+          }
+          onClick={() =>
+            func
+              ? func()
+              : link && !nest && !verification_status
+              ? Router.push(link)
+              : setOpenMenuId(id)
+          }
+          key={id}
+        >
+          <Icon size={22} onClick={() => Router.push(link)} />
+          <Typography component="span">{name}</Typography>
+          {nest && (
+            <IconButton
+              className={Styles.nestedIcon}
+              sx={{ position: "absolute", right: "18px" }}
+            >
+              <CarretDownIcon />
+            </IconButton>
+          )}
+        </Box>
+        {nest && (
+          <ul
+            className={`${Styles.nested} ${
+              openMenuId === id ? Styles.active : ""
+            }`}
+          >
+            {nest?.map(({ key, link, name }: any) => (
+              <li key={key}>
+                <Link
+                  className={
+                    pathname.includes(link as string) ? Styles.active : ""
+                  }
+                  href={link}
+                  key={key}
+                >
+                  <Box></Box>
+                  <Typography component="span">{name}</Typography>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        )}
+      </li>
+    );
+  };
 
   return (
     <>
@@ -184,66 +243,19 @@ const Dashboard = ({ children, title }: Props) => {
           {/* navigation */}
           <nav className={Styles.navigations}>
             <ul>
-              {routes?.map(({ link, id, Icon, name, nest, header, func }) => {
-                return (
-                  <li key={id}>
-                    <Box
-                      className={
-                        pathname.includes(link as string) && !header
-                          ? Styles.active
-                          : !showSidebar && pathname.includes(link as string)
-                          ? Styles.active
-                          : verified && id === 1
-                          ? Styles.disabled
-                          : ""
-                      }
-                      onClick={() =>
-                        func
-                          ? func()
-                          : link && !nest && !verification_status
-                          ? Router.push(link)
-                          : setOpenMenuId(id)
-                      }
-                      key={id}
-                    >
-                      <Icon size={22} onClick={() => Router.push(link)} />
-                      <Typography component="span">{name}</Typography>
-                      {nest && (
-                        <IconButton
-                          className={Styles.nestedIcon}
-                          sx={{ position: "absolute", right: "18px" }}
-                        >
-                          <CarretDownIcon />
-                        </IconButton>
-                      )}
-                    </Box>
-                    {nest && (
-                      <ul
-                        className={`${Styles.nested} ${
-                          openMenuId === id ? Styles.active : ""
-                        }`}
-                      >
-                        {nest?.map(({ key, link, name }) => (
-                          <li key={key}>
-                            <Link
-                              className={
-                                pathname.includes(link as string)
-                                  ? Styles.active
-                                  : ""
-                              }
-                              href={link}
-                              key={key}
-                            >
-                              <Box></Box>
-                              <Typography component="span">{name}</Typography>
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </li>
-                );
-              })}
+              {routes
+                ?.filter((route) => {
+                  if (verified && route.id !== 1) {
+                    return route;
+                  } else if (verified === false) {
+                    return route;
+                  } else {
+                    return;
+                  }
+                })
+                .map((props) => (
+                  <NavLink key={props.id} {...props} />
+                ))}
             </ul>
           </nav>
         </Stack>

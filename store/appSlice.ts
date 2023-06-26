@@ -15,6 +15,9 @@ export interface AppProps {
     title: string;
     content: ReactNode;
   };
+  reload: {
+    percentage: boolean;
+  };
 }
 
 // Initial state
@@ -29,6 +32,9 @@ const initialState: AppProps = {
     title: "",
     content: undefined,
   },
+  reload: {
+    percentage: false,
+  },
 };
 
 // Actual Slice
@@ -41,6 +47,9 @@ export const appSlice = createSlice({
     },
     setDrawalState(state, action) {
       state.drawal = action.payload;
+    },
+    reloadPercentage(state) {
+      state.reload.percentage = !state.reload.percentage;
     },
   },
 
@@ -55,7 +64,8 @@ export const appSlice = createSlice({
   },
 });
 
-export const { setToastState, setDrawalState } = appSlice.actions;
+export const { setToastState, setDrawalState, reloadPercentage } =
+  appSlice.actions;
 
 export const selectAppState = (state: AppState) => state.app;
 

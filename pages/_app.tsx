@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import "@/styles/globals.scss";
+import "@/styles/global.scss";
 import theme from "@/theme/mui";
 import { ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";

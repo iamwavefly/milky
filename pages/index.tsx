@@ -80,10 +80,11 @@ export default function Index() {
   useEffect(() => {
     const { message, token } = data ?? {};
     if (token?.access_token) {
+      const subsidiaries = data?.subsidiary_details?.subsidiaries?.[0];
       dispatch(
         setUserState({
           user: data?.user,
-          subsidiaries: data?.subsidiary_details?.subsidiaries[0],
+          subsidiaries,
         })
       );
       loginHandler(data);
@@ -103,7 +104,7 @@ export default function Index() {
   }, [form]);
 
   return (
-    <Onboarding title="Welcome back">
+    <Onboarding title="Welcome back" my="72px">
       <Typography fontWeight={500} fontSize="20px" lineHeight="28px">
         {authReq ? "Two factor authentication" : " Welcome back to AlliancePay"}
       </Typography>

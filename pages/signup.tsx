@@ -20,9 +20,13 @@ import baseUrl from "@/middleware/baseUrl";
 import { useFormik } from "formik";
 import { getStarted, signup } from "@/schema";
 import { LoadingButton } from "@mui/lab";
+import { setUserState } from "@/store/authSlice";
+import { loginHandler } from "@/middleware/auth";
+import { useDispatch } from "react-redux";
 
 export default function Index() {
   const [showPassword, setShowPassword] = useState(false);
+  const [authReq, setAuthReq] = useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
   const handleMouseDownPassword = (
@@ -31,10 +35,15 @@ export default function Index() {
     event.preventDefault();
   };
 
-  const { loading, data, error, handleSubmit } = useFetch(`${baseUrl}/dashboard/signup`);
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/signup`
+  );
+
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
+      businessName: "",
       firstName: "",
       lastName: "",
       email: "",
@@ -42,8 +51,9 @@ export default function Index() {
       password2: "",
     },
     validationSchema: signup,
-    onSubmit: ({ firstName, lastName, email, password }) => {
+    onSubmit: ({ businessName, firstName, lastName, email, password }) => {
       const payload = {
+        business_name: businessName,
         first_name: firstName,
         last_name: lastName,
         user_email: email,
@@ -53,13 +63,26 @@ export default function Index() {
     },
   });
 
+  useEffect(() => {
+    const { token } = data ?? {};
+    if (token?.access_token) {
+      dispatch(
+        setUserState({
+          user: data?.user,
+          subsidiaries: data?.subsidiary_details?.subsidiaries[0],
+        })
+      );
+      loginHandler(data);
+    }
+  }, [data]);
+
   // go to next page if submission successful
   useEffect(() => {
     data?.status === "success" && Router.push("/onboarding");
   }, [data]);
 
   return (
-    <Onboarding title="Create an Account">
+    <Onboarding title="Create an Account" my="72px">
       <Typography fontWeight={500} fontSize="20px" lineHeight="28px">
         Create an Account
       </Typography>
@@ -68,6 +91,24 @@ export default function Index() {
       </Typography>
       <form onSubmit={formik.handleSubmit}>
         <Stack mt="34px" width="100%" spacing="14px">
+          <Stack spacing="20px" direction="row">
+            <TextField
+              label="Business Name"
+              variant="standard"
+              sx={{ flex: 1 }}
+              name="businessName"
+              value={formik.values.businessName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.businessName &&
+                Boolean(formik.errors.businessName)
+              }
+              helperText={
+                formik.touched.businessName && formik.errors.businessName
+              }
+            />
+          </Stack>
           <Stack spacing="20px" direction="row">
             <TextField
               label="First Name"

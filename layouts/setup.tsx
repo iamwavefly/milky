@@ -65,11 +65,11 @@ const AccountSetup = ({
           <Stack spacing="8px" maxWidth="415px">
             {title && (
               <Stack
-                onClick={() => Router.back()}
                 mb="30px"
                 direction="row"
                 alignItems="center"
                 spacing="4px"
+                onClick={() => Router.push("/onboarding")}
               >
                 <IconButton
                   sx={{

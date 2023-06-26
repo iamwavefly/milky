@@ -1,7 +1,7 @@
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import { businessInformation, personalInformation } from "@/schema";
-import { setDrawalState } from "@/store/appSlice";
+import { reloadPercentage, setDrawalState } from "@/store/appSlice";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -13,6 +13,7 @@ import {
 } from "@mui/material";
 import { Blob } from "buffer";
 import { useFormik } from "formik";
+import moment from "moment";
 import { serialize } from "object-to-formdata";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
@@ -50,6 +51,15 @@ export default function PersonalInformation() {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/onboarding/personal/information`
   );
+
+  const fetchPersonalInformation = useFetch(
+    `${baseUrl}/dashboard/onboarding/personal/information/view`,
+    "get"
+  );
+
+  useEffect(() => {
+    fetchPersonalInformation.handleSubmit();
+  }, []);
 
   const fileChangeHandler = (name: string, file: Blob) => {
     setForm((prev) => ({ ...prev, [name]: file }));
@@ -98,13 +108,38 @@ export default function PersonalInformation() {
   });
 
   useEffect(() => {
+    if (fetchPersonalInformation?.data?.data) {
+      const {
+        mobile_number,
+        first_name,
+        last_name,
+        bvn,
+        gender,
+        date_of_birth,
+        id_number,
+        id_type,
+      } = fetchPersonalInformation?.data?.data;
+      formik.setValues({
+        bvn,
+        dob: date_of_birth?.split?.("T")[0],
+        firstName: first_name,
+        lastName: last_name,
+        gender,
+        identificationDocument: id_type,
+        identificationNumber: id_number,
+        phoneNumber: mobile_number,
+      });
+    }
+  }, [fetchPersonalInformation?.data]);
+
+  useEffect(() => {
     idTypes.handleSubmit();
   }, []);
 
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      toast.success(message);
+      dispatch(reloadPercentage());
       close();
     }
   }, [data]);
@@ -208,6 +243,7 @@ export default function PersonalInformation() {
           onBlur={formik.handleBlur}
           error={formik.touched.bvn && Boolean(formik.errors.bvn)}
           helperText={formik.touched.bvn && formik.errors.bvn}
+          inputProps={{ maxLength: 11 }}
         />
         <Stack direction="row" spacing="25px">
           <TextField
@@ -249,6 +285,7 @@ export default function PersonalInformation() {
           value={formik.values.phoneNumber}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
+          placeholder="+2348000000000"
           error={
             formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
           }

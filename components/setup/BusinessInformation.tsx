@@ -1,6 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { setDrawalState } from "@/store/appSlice";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import { reloadPercentage, setDrawalState } from "@/store/appSlice";
+import {
+  Box,
+  Button,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useDispatch } from "react-redux";
 import UploadIcon from "../../public/icons/photo-upload.svg";
 import { businessInformation, contactInformation } from "@/schema";
@@ -11,6 +18,8 @@ import { LoadingButton } from "@mui/lab";
 import Image from "next/image";
 import { serialize } from "object-to-formdata";
 import { toast } from "react-hot-toast";
+import fileSizeLimit from "@/helper/fileSizeLimit";
+import states from "@/mocks/states";
 
 export default function BusinessInformation() {
   const [step, setStep] = useState(1);
@@ -34,15 +43,26 @@ export default function BusinessInformation() {
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      toast.success(message);
+      dispatch(reloadPercentage());
       close();
     }
   }, [data]);
 
+  const fetchBusinessInformation = useFetch(
+    `${baseUrl}/dashboard/onboarding/business/information/view`,
+    "get"
+  );
+
+  useEffect(() => {
+    fetchBusinessInformation.handleSubmit();
+  }, []);
+
   const handleFileInputChange = (e: any) => {
-    const imagePreview = e.target.files[0];
-    const { name, type } = imagePreview;
-    setSelectedFile(imagePreview);
+    const file = e.target.files[0];
+    // file checker
+    if (fileSizeLimit(file)) return;
+    const { name, type } = file;
+    setSelectedFile(file);
     setPreviewUrl(URL.createObjectURL(e.target.files[0]) as any);
     setIsImage(type?.includes("image") ? true : false);
     setFileName(
@@ -96,6 +116,36 @@ export default function BusinessInformation() {
       handleSubmit(formData);
     },
   });
+
+  useEffect(() => {
+    if (fetchBusinessInformation?.data?.data) {
+      const {
+        support_email,
+        description,
+        mobile_number,
+        address,
+        city,
+        state,
+        website,
+        facebook,
+        instagram,
+        twitter,
+        logo,
+      } = fetchBusinessInformation?.data?.data;
+      formik.setFieldValue("description", description);
+      formik.setFieldValue("emailAddress", support_email);
+      formik.setFieldValue("phoneNumber", mobile_number);
+      formik.setFieldValue("address", address);
+      formik.setFieldValue("city", city);
+      formik.setFieldValue("state", state);
+      // formik.setFieldValue("website", website);
+      // formik.setFieldValue("facebook", facebook);
+      // formik.setFieldValue("instagram", instagram);
+      // formik.setFieldValue("twitter", twitter);
+      setSelectedFile(logo);
+      setPreviewUrl(logo);
+    }
+  }, [fetchBusinessInformation?.data]);
 
   if (step === 2) {
     return (
@@ -225,7 +275,7 @@ export default function BusinessInformation() {
       </Typography>
       <Stack mt="60px" spacing="13px">
         <TextField
-          label="What you do at Alliance Pay"
+          label="What do you do?"
           variant="standard"
           name="description"
           value={formik.values.description}
@@ -252,6 +302,7 @@ export default function BusinessInformation() {
           label="Business phone number"
           variant="standard"
           name="phoneNumber"
+          placeholder="+2348000000000"
           value={formik.values.phoneNumber}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -292,7 +343,14 @@ export default function BusinessInformation() {
             onBlur={formik.handleBlur}
             error={formik.touched.state && Boolean(formik.errors.state)}
             helperText={formik.touched.state && formik.errors.state}
-          />
+            select
+          >
+            {states?.map((state, index) => (
+              <MenuItem sx={{ width: "100%" }} key={index} value={state}>
+                {state}
+              </MenuItem>
+            ))}
+          </TextField>
         </Stack>
       </Stack>
       <LoadingButton

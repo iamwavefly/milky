@@ -55,6 +55,7 @@ export default function NewVirtualAccount({ reload }: any) {
           onBlur={formik.handleBlur}
           error={formik.touched.bvn && Boolean(formik.errors.bvn)}
           helperText={formik.touched.bvn && formik.errors.bvn}
+          inputProps={{ maxLength: 11 }}
         />
       </Stack>
       <Stack spacing="25px" mt="60px">

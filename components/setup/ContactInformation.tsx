@@ -1,7 +1,7 @@
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import { contactInformation, getStarted } from "@/schema";
-import { setDrawalState } from "@/store/appSlice";
+import { reloadPercentage, setDrawalState } from "@/store/appSlice";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
@@ -38,7 +38,7 @@ export default function ContactInformation() {
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      toast.success(message);
+      dispatch(reloadPercentage());
       close();
     }
   }, [data]);

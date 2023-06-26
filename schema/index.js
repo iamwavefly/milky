@@ -1,12 +1,14 @@
 import * as yup from "yup";
 
 import YupPassword from "yup-password";
-import "yup-phone";
+
+const phoneRegExp = /^\+(?:[0-9]){1,3}[0-9]{8,10}$/;
 
 YupPassword(yup);
 // getStarted
 export const signup = () =>
   yup.object({
+    businessName: yup.string().required("Business name is required"),
     firstName: yup.string().required("First name is required"),
     lastName: yup.string().required("Last name is required"),
     email: yup.string().email().required("Email address is required"),
@@ -43,6 +45,7 @@ export const contactInformation = () =>
     lastName: yup.string("Enter last name").required("Last name is required"),
     phoneNumber: yup
       .string("Enter phone number")
+      .matches(phoneRegExp, "Phone number is not valid")
       .required("Phone number is required"),
   });
 // business registration
@@ -71,7 +74,7 @@ export const companyOwnershipSchema = () =>
       .required("Email address is required"),
     phoneNumber: yup
       .string("Enter phone number")
-      .phone("errorMessage", true, "Invalid phone number")
+      .matches(phoneRegExp, "Phone number is not valid")
       .required("Phone number is required"),
     address: yup.string("Enter address").required("address is required"),
     nationality: yup
@@ -121,7 +124,7 @@ export const personalInfoSchema = () =>
       .required("Email address is required"),
     phoneNumber: yup
       .string("Enter phone number")
-      .phone("errorMessage", true, "Invalid phone number")
+      .matches(phoneRegExp, "Phone number is not valid")
       .required("Phone number is required"),
     password: yup
       .string("Enter password")
@@ -164,7 +167,10 @@ export const businessInformation = () =>
   yup.object({
     description: yup.string().required("Description is required"),
     emailAddress: yup.string().required("Email address is required"),
-    phoneNumber: yup.string().required("Phone number is required"),
+    phoneNumber: yup
+      .string()
+      .matches(phoneRegExp, "Phone number is not valid")
+      .required("Phone number is required"),
     address: yup.string().required("Address is required"),
     city: yup.string().required("City is required"),
     state: yup.string().required("State is required"),
@@ -181,12 +187,16 @@ export const personalInformation = () =>
     bvn: yup.string().required("BVN is required"),
     gender: yup.string().required("Gender is required"),
     dob: yup.string().required("Date of birth required"),
-    phoneNumber: yup.string().required("Phone number is required"),
+    phoneNumber: yup
+      .string()
+      .matches(phoneRegExp, "Phone number is not valid")
+      .required("Phone number is required"),
     identificationDocument: yup
       .string()
       .required("Identification document type is required"),
     identificationNumber: yup
       .string()
+      .matches(/^[a-zA-Z0-9]+$/, "Document number is not valid")
       .required("Identification document number is required"),
   });
 
@@ -224,7 +234,7 @@ export const newCustomer = () =>
     firstName: yup.string().required("First name is required"),
     lastName: yup.string(),
     emailAddress: yup.string().required("Email address is required"),
-    phoneNumber: yup.string(),
+    phoneNumber: yup.string().matches(phoneRegExp, "Phone number is not valid"),
   });
 
 // new user
@@ -233,7 +243,10 @@ export const newUser = () =>
     firstName: yup.string().required("First name is required"),
     lastName: yup.string().required("Last name is required"),
     emailAddress: yup.string().required("Email address is required"),
-    phoneNumber: yup.string().required("Phone number is required"),
+    phoneNumber: yup
+      .string()
+      .matches(phoneRegExp, "Phone number is not valid")
+      .required("Phone number is required"),
     country: yup.string().required("Country is required"),
     role: yup.string().required("Role is required"),
   });

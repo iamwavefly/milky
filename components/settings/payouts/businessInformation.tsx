@@ -1,3 +1,4 @@
+import fileSizeLimit from "@/helper/fileSizeLimit";
 import useFetch from "@/hooks/useFetch";
 import { MenuProps } from "@/interfaces";
 import baseUrl from "@/middleware/baseUrl";
@@ -63,9 +64,10 @@ export default function BusinessInformation() {
   }, [fetchCountries?.data]);
 
   const handleFileInputChange = (e: any) => {
-    const imagePreview = e.target.files[0];
-    const { name, type } = imagePreview;
-    setSelectedFile(imagePreview);
+    const file = e.target.files[0];
+    const { name, type } = file;
+    if (fileSizeLimit(file)) return;
+    setSelectedFile(file);
     setPreviewUrl(URL.createObjectURL(e.target.files[0]) as any);
     setIsImage(type?.includes("image") ? true : false);
     setFileName(

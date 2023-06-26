@@ -12,7 +12,7 @@ import React, { ReactNode, useEffect, useLayoutEffect, useState } from "react";
 import AccountSetup from "@/layouts/setup";
 import { accountPersonalSetup, accountRegisterSetup } from "@/configs/labels";
 import { useDispatch, useSelector } from "react-redux";
-import { setDrawalState } from "@/store/appSlice";
+import { selectAppState, setDrawalState } from "@/store/appSlice";
 import Router, { useRouter } from "next/router";
 import { selectUserState } from "@/store/authSlice";
 import useFetch from "@/hooks/useFetch";
@@ -24,9 +24,10 @@ export default function Index() {
   const [isReady, setIsReady] = useState<undefined | boolean>(undefined);
 
   const dispatch = useDispatch();
+  const { percentage } = useSelector(selectAppState).reload;
   const { user, subsidiaries } = useSelector(selectUserState);
   const { is_email_verified } = user;
-  const { business_type } = subsidiaries;
+  const { business_type, verification_status } = subsidiaries;
 
   const { type, token } = useRouter().query;
 
@@ -71,8 +72,9 @@ export default function Index() {
 
   // fetch business status
   useEffect(() => {
+    console.log(percentage);
     onboardingStatus.handleSubmit();
-  }, []);
+  }, [percentage]);
 
   useEffect(() => {
     if (onboardingStatus?.data) {
@@ -109,7 +111,7 @@ export default function Index() {
 
   return (
     <AccountSetup
-      isReady={isReady}
+      isReady={isReady && verification_status?.toLowerCase() === "new"}
       title={isReady ? "Welcome to your Dashboard" : "We need more information"}
       desc={
         isReady

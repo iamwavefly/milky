@@ -1,5 +1,6 @@
 import TabHeader from "@/components/TabHeader";
 import SettingRoutes from "@/configs/links/SettingRoutes";
+import fileSizeLimit from "@/helper/fileSizeLimit";
 import useFetch from "@/hooks/useFetch";
 import Dashboard from "@/layouts/dashboard";
 import baseUrl from "@/middleware/baseUrl";
@@ -92,9 +93,10 @@ const Index = () => {
   };
 
   const handleFileChange = (e: any) => {
-    setFile(URL.createObjectURL(e.target.files[0]) as any);
-    console.log(e.target.files[0]);
-    setAvatar(e.target.files[0]);
+    const file = e.target.files[0];
+    if (fileSizeLimit(file)) return;
+    setFile(URL.createObjectURL(file) as any);
+    setAvatar(file);
   };
 
   return (

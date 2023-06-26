@@ -8,7 +8,7 @@ interface Props {
   title: string;
 }
 
-const Onboarding = ({ children, title }: Props) => {
+const Onboarding = ({ children, title, ...props }: any) => {
   return (
     <>
       <Head>
@@ -22,7 +22,7 @@ const Onboarding = ({ children, title }: Props) => {
         justifyContent="space-between"
         bgcolor="#F7F9FC"
       >
-        <Box>
+        <Box height="100vh">
           <Box mt="71px" maxWidth="140px" height="45px">
             <Logo />
           </Box>
@@ -40,22 +40,25 @@ const Onboarding = ({ children, title }: Props) => {
             </Typography>
           </Box>
         </Box>
-        <Stack
-          bgcolor="#fff"
-          width="513px"
-          maxWidth="513px"
-          height="auto"
-          my="auto"
-        >
+        <Box height="100vh" overflow="auto" className="noscroll-indicator">
           <Stack
-            flex={1}
-            padding="45px 36px"
-            alignItems="center"
-            width="-webkit-fill-available"
+            bgcolor="#fff"
+            width="513px"
+            maxWidth="513px"
+            height="auto"
+            my="auto"
+            {...props}
           >
-            {children}
+            <Stack
+              flex={1}
+              padding="45px 36px"
+              alignItems="center"
+              width="-webkit-fill-available"
+            >
+              {children}
+            </Stack>
           </Stack>
-        </Stack>
+        </Box>
       </Stack>
     </>
   );

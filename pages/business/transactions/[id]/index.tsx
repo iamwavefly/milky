@@ -19,15 +19,19 @@ export default function Index() {
   const [details, setDetails] = useState({});
 
   const { asPath } = useRouter();
-  const id = +asPath.split("/").slice(-1)[0];
+  const id = asPath.split("/").slice(-1)[0];
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/fetch/orders?OrderReference=${id}`,
     "get"
   );
 
   useEffect(() => {
-    typeof id === "number" && isNaN(id) === false && handleSubmit();
+    id && handleSubmit();
   }, [asPath, id]);
+
+  useEffect(() => {
+    console.log(id);
+  }, [id]);
 
   useEffect(() => {
     setDetails(data?.items?.[0]);

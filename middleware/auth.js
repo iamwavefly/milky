@@ -73,7 +73,11 @@ export const loginHandler = async (data, fundRefId) => {
     "Authorization"
   ] = `Bearer ${data.token.access_token}`;
 
-  if (data?.route_to_get_started) {
+  if (verification_status?.toLowerCase() === "active") {
+    return Router.push("/dashboard");
+  }
+
+  if (data?.route_to_get_started && !business_type) {
     return Router.push("/onboarding");
   }
 

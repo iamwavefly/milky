@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { setDrawalState } from "@/store/appSlice";
+import { reloadPercentage, setDrawalState } from "@/store/appSlice";
 import {
   Box,
   Button,
@@ -40,7 +40,7 @@ export default function BusinessInformation() {
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      toast.success(message);
+      dispatch(reloadPercentage());
       close();
     }
   }, [data]);
@@ -48,6 +48,15 @@ export default function BusinessInformation() {
   // fetch banks
   useEffect(() => {
     fetchBanks.handleSubmit();
+  }, []);
+
+  const fetchBankInformation = useFetch(
+    `${baseUrl}/dashboard/onboarding/bank/view`,
+    "get"
+  );
+
+  useEffect(() => {
+    fetchBankInformation.handleSubmit();
   }, []);
 
   // form controller
@@ -88,6 +97,20 @@ export default function BusinessInformation() {
       resolveAccount.data?.data?.account_name
     );
   }, [resolveAccount.data]);
+
+  useEffect(() => {
+    if (fetchBankInformation?.data?.data) {
+      const { id, bank_name, account_name, account_number } =
+        fetchBankInformation?.data?.data?.[0];
+      const bank: any = banks?.find((bk: any) => bk.name === bank_name);
+      formik.setValues({
+        accountType: "",
+        bankName: bank?.id,
+        accountNumber: account_number,
+        accountName: account_name,
+      });
+    }
+  }, [fetchBankInformation?.data]);
 
   return (
     <Box>
@@ -155,6 +178,7 @@ export default function BusinessInformation() {
             label="Account name"
             variant="standard"
             name="accountName"
+            disabled
             value={formik.values.accountName}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
