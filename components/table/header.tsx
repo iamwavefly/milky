@@ -4,6 +4,7 @@ import React, {
   MouseEvent,
   useRef,
   useEffect,
+  SetStateAction,
 } from "react";
 import {
   Box,
@@ -31,6 +32,7 @@ interface headerProps {
   data?: any;
   columns?: any[];
   title?: string;
+  selector?: string;
   entries?: string;
   searchText?: string;
   transparent?: boolean;
@@ -39,6 +41,7 @@ interface headerProps {
   noButton?: boolean;
   exportBtn?: boolean;
   setSearch?: (term: string) => void;
+  updateFilter?: React.Dispatch<SetStateAction<{}>>;
 }
 
 export default function Header({
@@ -54,6 +57,8 @@ export default function Header({
   setSearch,
   searchText,
   title,
+  updateFilter,
+  selector,
 }: headerProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [csvHeader, setCsvHeader] = useState<any>([]);
@@ -174,7 +179,11 @@ export default function Header({
           />
         )}
         <Stack direction="row" gap="10px" alignItems="center">
-          <DropdownMenu title="NGN" />
+          <DropdownMenu
+            title="NGN"
+            updateFilter={updateFilter}
+            selector={selector}
+          />
           {!entryOnly && (
             <Button
               variant={buttons ? "outlined" : "contained"}

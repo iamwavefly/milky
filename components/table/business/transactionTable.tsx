@@ -39,6 +39,8 @@ const TransactionTable = () => {
         data={data?.items}
         entries={`${data?.total_items ?? 0}`}
         setSearch={setSearch}
+        updateFilter={setFilters}
+        selector="orders"
       />
       <Table
         containerRef={containerRef}

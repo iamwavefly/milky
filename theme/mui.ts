@@ -358,6 +358,7 @@ const theme = createTheme({
           border: "1px solid #EDEDED",
           boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)",
           borderRadius: "0 !important",
+          position: "static",
         },
         list: {
           padding: "0",
