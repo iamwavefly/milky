@@ -269,7 +269,7 @@ export const newPaymentLink = () =>
 export const newTransfer = () =>
   yup.object({
     currency: yup.string().required("Currency is required"),
-    account: yup.string().required("Account is required"),
+    account: yup.string(),
     beneficiary: yup.string().required("Beneficiary is required"),
     amount: yup.string().required("Transfer amount is required"),
     beneficiaryName: yup.string().required("Beneficiary name is required"),

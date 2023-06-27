@@ -33,6 +33,7 @@ import useFetch from "@/hooks/useFetch";
 import substring from "@/helper/substring";
 import Notifications from "@/components/notifications/notifications";
 import TestModeBadge from "@/components/testModeBadge";
+import truncate from "@/helper/truncate";
 
 interface Props {
   children?: ReactNode;
@@ -115,7 +116,7 @@ const Dashboard = ({ children, title }: Props) => {
           onClick={() =>
             func
               ? func()
-              : link && !nest && !verification_status
+              : link && !nest
               ? Router.push(link)
               : setOpenMenuId(id)
           }
@@ -216,7 +217,7 @@ const Dashboard = ({ children, title }: Props) => {
           >
             <Stack>
               <Typography fontWeight={500} fontSize="18px" lineHeight="24px">
-                {substring(business_name, 12) ?? "..."}
+                {truncate(business_name, 15)}
               </Typography>
               <Typography
                 fontWeight={400}
@@ -225,7 +226,7 @@ const Dashboard = ({ children, title }: Props) => {
                 fontSize="12px"
                 lineHeight="18px"
               >
-                Merchant ID : {id ?? 0}
+                Merchant ID: {id ?? 0}
               </Typography>
             </Stack>
             <IconButton

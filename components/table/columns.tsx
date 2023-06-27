@@ -2,7 +2,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import stringToCurrency from "../../helper/formatCurrency";
 import { Box, Checkbox, Chip, Stack, Typography } from "@mui/material";
 import moment from "moment";
-import { CustomerMenu, PaymentLinkMenu, ProductMenu } from "./menu";
+import {
+  BeneficiaryMenu,
+  CustomerMenu,
+  PaymentLinkMenu,
+  ProductMenu,
+  TransferMenu,
+} from "./menu";
 import Image from "next/image";
 
 export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
@@ -517,7 +523,7 @@ export const AccountVirtualTableColumns: ColumnDef<any, any>[] = [
     },
   },
   {
-    accessorKey: "name",
+    accessorKey: "account_name",
     header: "Name",
   },
   {
@@ -1191,6 +1197,11 @@ export const TransferTableColumns: ColumnDef<any, any>[] = [
       );
     },
   },
+  {
+    header: " ",
+    accessorKey: "id",
+    cell: (row) => <TransferMenu id={row.getValue()} />,
+  },
 ];
 
 export const TransferPendingTableColumns: ColumnDef<any, any>[] = [
@@ -1307,8 +1318,8 @@ export const BeneficiaryTableColumns: ColumnDef<any, any>[] = [
     header: "Type",
   },
   {
-    accessorKey: "recipient_name",
-    header: "Recepient",
+    accessorKey: "account_number",
+    header: "Account number",
   },
   {
     accessorKey: "date_created",
@@ -1324,7 +1335,7 @@ export const BeneficiaryTableColumns: ColumnDef<any, any>[] = [
   {
     header: " ",
     accessorKey: "id",
-    cell: (row) => <CustomerMenu id={row.getValue()} />,
+    cell: (row) => <BeneficiaryMenu id={row.getValue()} />,
   },
 ];
 

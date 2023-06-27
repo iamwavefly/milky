@@ -203,6 +203,7 @@ export default function NewBeneficiary({ reload }: any) {
             sx={{ flex: 1 }}
             variant="standard"
             label="Account Name"
+            disabled
             name="accountName"
             value={formik.values.accountName}
             onChange={formik.handleChange}

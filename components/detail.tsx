@@ -4,6 +4,7 @@ import { Box, Chip, IconButton, Stack, Typography } from "@mui/material";
 import CopyIcon from "../public/icons/copy.svg";
 import DownloadIcon from "../public/icons/download-color.svg";
 import clipboard from "@/helper/clipboard";
+import truncate from "@/helper/truncate";
 
 interface props {
   title: string;
@@ -31,7 +32,7 @@ export default function Detail({ title, full, variant, value }: props) {
         {variant === "copy" ? (
           <Stack direction="row" spacing="4px" alignItems="center">
             <Typography color="#262B40" fontWeight={500} fontSize="14px">
-              {value}
+              {typeof value === "string" ? truncate(value, 50) : value}
             </Typography>
             <IconButton onClick={() => copyTextHandler(value)}>
               <CopyIcon />

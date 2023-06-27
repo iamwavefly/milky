@@ -213,7 +213,6 @@ export default function MakeTransfer({ reload }: any) {
         <Stack spacing="16px">
           {/* currencies */}
           <TextField
-            InputLabelProps={{ shrink: true }}
             select
             sx={{ flex: 1 }}
             variant="standard"
@@ -286,6 +285,7 @@ export default function MakeTransfer({ reload }: any) {
               value={formik.values.beneficiaryName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled
               error={
                 formik.touched.beneficiaryName &&
                 Boolean(formik.errors.beneficiaryName)

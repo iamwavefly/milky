@@ -26,27 +26,36 @@ export default function OnlyHeader({
       minHeight="171px"
       height="auto"
       display="grid"
-      gridTemplateRows="56px 1fr"
+      // gridTemplateRows="56px 1fr"
       {...props}
     >
+      {header && (
+        <Box
+          height="56px"
+          display="flex"
+          justifyContent={filter ? "space-between" : alignHeader ?? "center"}
+          alignItems="center"
+          borderBottom="1px solid #E9EBF2"
+          px="24px"
+        >
+          <Typography fontWeight={500} fontSize={size ?? "14px"}>
+            {header}
+          </Typography>
+          {filter && (
+            <IconButton sx={{ mr: "-5px" }}>
+              <FilterIcon />
+            </IconButton>
+          )}
+        </Box>
+      )}
       <Box
-        height="56px"
-        display="flex"
-        justifyContent={filter ? "space-between" : alignHeader ?? "center"}
-        alignItems="center"
-        borderBottom="1px solid #E9EBF2"
         px="24px"
+        py="33px"
+        alignItems="flex-start"
+        justifyContent="start"
+        height="auto"
+        display="flex"
       >
-        <Typography fontWeight={500} fontSize={size ?? "14px"}>
-          {header}
-        </Typography>
-        {filter && (
-          <IconButton sx={{ mr: "-5px" }}>
-            <FilterIcon />
-          </IconButton>
-        )}
-      </Box>
-      <Box px="24px" py="33px" alignItems="center" height="auto" display="flex">
         {children}
       </Box>
     </Box>

@@ -19,6 +19,14 @@ export default function NewVirtualAccount({ reload }: any) {
     `${baseUrl}/create/static/account`
   );
 
+  const fetchPersonalInformation = useFetch(
+    `${baseUrl}/dashboard/onboarding/personal/information/view`,
+    "get"
+  );
+  useEffect(() => {
+    fetchPersonalInformation.handleSubmit();
+  }, []);
+
   const dispatch = useDispatch();
   const close = () => dispatch(setDrawalState({ active: false }));
 
@@ -42,6 +50,15 @@ export default function NewVirtualAccount({ reload }: any) {
       handleSubmit(payload);
     },
   });
+
+  useEffect(() => {
+    if (fetchPersonalInformation?.data?.data) {
+      const { bvn } = fetchPersonalInformation?.data?.data;
+      formik.setValues({
+        bvn,
+      });
+    }
+  }, [fetchPersonalInformation?.data]);
 
   return (
     <form onSubmit={formik.handleSubmit}>
