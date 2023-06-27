@@ -68,6 +68,8 @@ const PaymentLinksTable = () => {
             Create New Link
           </Button>
         }
+        selector="paymentLinks"
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

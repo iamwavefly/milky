@@ -6,7 +6,10 @@ import { _businesses, _customers, _invoices } from "@/mocks";
 import Header from "@/components/table/header";
 import Table from "@/components/table/table";
 import FilterTable from "@/components/table/filter";
-import { CustomerDetailsTableColumns, CustomersTableColumns } from "@/components/table/columns";
+import {
+  CustomerDetailsTableColumns,
+  CustomersTableColumns,
+} from "@/components/table/columns";
 import Router, { useRouter } from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
@@ -46,6 +49,8 @@ const CustomerDetailsTable = () => {
         setSearch={setSearch}
         title="Transactions"
         transparent
+        selector="customers"
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

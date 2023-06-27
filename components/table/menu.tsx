@@ -62,7 +62,7 @@ const DeletePromptComp = ({ product }: any) => {
 };
 
 export const ProductMenu = ({ id }: { id?: number }) => {
-  const [product, setProduct] = useState({});
+  const [product, setProduct] = useState<any>({});
   const [anchorEl, setAnchorEl] = useState(null);
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/product/all?ProductId=${id}`,
@@ -76,10 +76,16 @@ export const ProductMenu = ({ id }: { id?: number }) => {
     "patch"
   );
 
-  const refreshData = () => router.replace(router.asPath);
+  const unArchiveProductReq = useFetch(
+    `${baseUrl}/dashboard/product/unarchive/${id}`,
+    "patch"
+  );
+
+  const refreshData = () => router.reload();
 
   useEffect(() => {
-    archiveProductReq.data.message && refreshData();
+    archiveProductReq.data.message ||
+      (unArchiveProductReq.data.message && refreshData());
   }, [archiveProductReq.data]);
 
   useEffect(() => {
@@ -116,7 +122,12 @@ export const ProductMenu = ({ id }: { id?: number }) => {
     handleClose(event);
     if (action === "edit") return Router.push(`/business/products/edit/${id}`);
     if (action === "delete") return openDeletePrompt();
-    if (action === "archive") return archiveProductReq?.handleSubmit();
+    if (action === "archive") {
+      if (product?.status !== "Archived") {
+        return archiveProductReq?.handleSubmit();
+      }
+      return unArchiveProductReq?.handleSubmit();
+    }
     // reolveDisputeDrawal();
   };
 
@@ -138,7 +149,7 @@ export const ProductMenu = ({ id }: { id?: number }) => {
             Edit
           </MenuItem>
           <MenuItem onClick={(event) => handleActionClick("archive", event)}>
-            Archieve
+            {product?.status !== "Archived" ? "Archieve" : "Unarchive"}
           </MenuItem>
           <MenuItem
             sx={{ color: "#EA5851" }}

@@ -50,6 +50,8 @@ const SettlementTable = () => {
             Add New Product
           </Button>
         }
+        selector="products"
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

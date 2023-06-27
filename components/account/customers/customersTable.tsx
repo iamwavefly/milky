@@ -38,6 +38,8 @@ const CustomersTable = () => {
         data={data?.items}
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
+        selector="customers"
+        updateFilter={setFilters}
       />
       <FilterTable updateFilter={setFilters} />
       <Table

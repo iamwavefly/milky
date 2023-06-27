@@ -39,6 +39,8 @@ const InvoiceTable = () => {
         data={data?.items}
         entries={`${data?.total_items ?? 0}`}
         setSearch={setSearch}
+        updateFilter={setFilters}
+        selector="invoice"
       />
 
       <Table
