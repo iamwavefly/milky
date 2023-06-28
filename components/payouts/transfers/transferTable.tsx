@@ -40,6 +40,8 @@ const TransferTable = ({ reload }: { reload: boolean }) => {
         data={data?.data?.items}
         entries={`${data?.data?.page?.size ?? 0}`}
         setSearch={setSearch}
+        selector="transfers"
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

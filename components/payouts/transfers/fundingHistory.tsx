@@ -66,6 +66,7 @@ const FundingHistory = () => {
             Fund Balance
           </Button>
         }
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

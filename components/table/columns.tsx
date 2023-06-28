@@ -1785,6 +1785,114 @@ export const ChargebackColumns: ColumnDef<any, any>[] = [
   },
 ];
 
+export const AwaitingResponseColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+  },
+  {
+    accessorKey: "ref",
+    header: "Transaction ref",
+  },
+  {
+    accessorKey: "email",
+    header: "Customer email",
+  },
+  {
+    accessorKey: "Date",
+    header: "Date",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: (row: any) => {
+      return (
+        <Chip
+          label={row.getValue()}
+          className={`chip ${row
+            .getValue()
+            ?.toLowerCase()
+            ?.replaceAll(" ", "-")}`}
+        />
+      );
+    },
+  },
+];
+
+export const WonChargebackColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+  },
+  {
+    accessorKey: "ref",
+    header: "Transaction ref",
+  },
+  {
+    accessorKey: "email",
+    header: "Customer email",
+  },
+  {
+    accessorKey: "Date",
+    header: "Date",
+  },
+  {
+    accessorKey: "status",
+    header: "Status",
+    cell: (row: any) => {
+      return (
+        <Chip
+          label={row.getValue()}
+          className={`chip ${row
+            .getValue()
+            ?.toLowerCase()
+            ?.replaceAll(" ", "-")}`}
+        />
+      );
+    },
+  },
+];
+
+export const AssessmentChargebackColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "checkbox",
+    header: (<Checkbox />) as any,
+    cell: (row: any) => {
+      return <Checkbox />;
+    },
+  },
+  {
+    accessorKey: "amount",
+    header: "Amount",
+  },
+  {
+    accessorKey: "ref",
+    header: "Reason for assessment",
+  },
+  {
+    accessorKey: "email",
+    header: "Wallet debited",
+  },
+  {
+    accessorKey: "Date",
+    header: "Date",
+  },
+];
+
 export const FeesTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "checkbox",

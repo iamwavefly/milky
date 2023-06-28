@@ -53,6 +53,8 @@ const AuditTable = () => {
         data={data?.users}
         entries={`${data?.page?.total_items ?? 0} Entries`}
         setSearch={setSearch}
+        selector="audits"
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

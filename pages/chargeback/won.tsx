@@ -7,6 +7,7 @@ import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import Chart from "@/components/chargeback/chart";
 import PendingChargebackTable from "@/components/chargeback/pendingTable";
+import WonChargebackTable from "@/components/chargeback/wonChargebackTable";
 
 export default function Index() {
   const [metric, setMetric] = useState<any>({});
@@ -29,7 +30,7 @@ export default function Index() {
       <Box px="30px" mt="20px">
         <Chart title="Won" />
         <Box mt="39px">
-          <PendingChargebackTable />
+          <WonChargebackTable />
         </Box>
       </Box>
     </Dashboard>

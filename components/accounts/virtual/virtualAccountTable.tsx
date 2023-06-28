@@ -65,6 +65,8 @@ const VirtualAccountTable = () => {
             Create Virtual Account
           </Button>
         }
+        selector="virtual"
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

@@ -66,6 +66,7 @@ const SubsidiaryTable = () => {
             Add new subsidiary
           </Button>
         }
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

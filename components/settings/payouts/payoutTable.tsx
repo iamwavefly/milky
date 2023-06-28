@@ -63,6 +63,8 @@ const PayoutTable = () => {
             Add bank account
           </Button>
         }
+        updateFilter={setFilters}
+        selector="payoutAccounts"
       />
       <Table
         containerRef={containerRef}

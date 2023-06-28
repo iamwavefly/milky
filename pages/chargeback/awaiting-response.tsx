@@ -7,6 +7,7 @@ import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import Chart from "@/components/chargeback/chart";
 import PendingChargebackTable from "@/components/chargeback/pendingTable";
+import AwaitingResponseTable from "@/components/chargeback/awaitingResponseTable";
 
 export default function Index() {
   const [metric, setMetric] = useState<any>({});
@@ -20,16 +21,12 @@ export default function Index() {
     handleSubmit();
   }, []);
 
-  useEffect(() => {
-    console.log({ data });
-  }, [data]);
-
   return (
     <Dashboard title="Awaiting Response">
       <Box px="30px" mt="20px">
         <Chart title="Awaiting Response" />
         <Box mt="39px">
-          <PendingChargebackTable />
+          <AwaitingResponseTable />
         </Box>
       </Box>
     </Dashboard>

@@ -39,6 +39,8 @@ const BalanceHistoryTable = () => {
         data={data?.items}
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
+        selector="balanceHistory"
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

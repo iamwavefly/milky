@@ -42,6 +42,8 @@ const BalanceReserveTable = () => {
         data={data?.data?.items}
         entries={`${data?.data?.size ?? 0} Entries`}
         setSearch={setSearch}
+        selector="rollingReserve"
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

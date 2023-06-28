@@ -66,6 +66,7 @@ const BeneficiaryTable = () => {
             Add new beneficiary
           </Button>
         }
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

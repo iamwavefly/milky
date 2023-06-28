@@ -52,6 +52,7 @@ const PendingTransferTable = () => {
             Approve all
           </Button>
         }
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

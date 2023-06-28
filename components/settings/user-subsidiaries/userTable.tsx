@@ -66,6 +66,8 @@ const UserTable = () => {
             Add new user
           </Button>
         }
+        selector="users"
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

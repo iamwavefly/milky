@@ -124,6 +124,8 @@ const RefundTable = () => {
             Log a refund
           </Button>
         }
+        selector="Refunds"
+        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}

@@ -36,6 +36,7 @@ interface FilterProps {
   type: string;
   options: [];
   key: string;
+  clear: boolean;
 }
 
 export default function FilterContent({
@@ -122,7 +123,7 @@ export default function FilterContent({
       <Stack position="static">
         {/* @ts-ignore */}
         {filterOptions?.[selector ?? "merchant"]?.map(
-          ({ id, title, type, options, key }: FilterProps) => {
+          ({ id, title, type, options, key, clear }: FilterProps) => {
             const fnName = title.replaceAll(" ", "");
             return (
               <Stack
@@ -151,7 +152,11 @@ export default function FilterContent({
                       onChange={(_, newAlignment) =>
                         handleFilterChange(fnName, newAlignment)
                       }
-                      value={selectedFilters[fnName]?.replaceAll(" ", "-")}
+                      value={
+                        clear
+                          ? selectedFilters[fnName]?.replaceAll(" ", "-")
+                          : selectedFilters[fnName]
+                      }
                       exclusive
                     >
                       {options.length &&
@@ -159,7 +164,9 @@ export default function FilterContent({
                           return (
                             <ToggleButton
                               key={index}
-                              value={option.replaceAll(" ", "-")}
+                              value={
+                                clear ? option.replaceAll(" ", "-") : option
+                              }
                             >
                               {option}
                             </ToggleButton>
@@ -205,25 +212,39 @@ export default function FilterContent({
         )}
       </Stack>
       {/* date range */}
-      <Box mt={selector ? "26px" : ""} position="static">
-        <Typography fontSize="14px" color="#262B40" fontWeight={500}>
-          Date Range
-        </Typography>
-        <TextField
-          fullWidth
-          InputLabelProps={{ shrink: true }}
-          variant="standard"
-          value={
-            dateRange.startDate &&
-            `${moment(dateRange.startDate).format("L")} - ${moment(
-              dateRange.endDate
-            ).format("L")}`
-          }
-          placeholder="03/18/2023 - 03/18/2023"
-          sx={{ maxHeight: "36px", mt: "16px" }}
-          name="datePicker"
-          onClick={toggle}
-        />
+      <Box position="static">
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+        >
+          <Typography fontSize="14px" color="#272501" fontWeight={500}>
+            Date Range
+          </Typography>
+          <IconButton
+            sx={{ padding: "2px" }}
+            onClick={() => updateActiveFilter(99)}
+          >
+            <ArrowDown size={20} />
+          </IconButton>
+        </Stack>
+        <Collapse in={!active.includes(99)}>
+          <TextField
+            fullWidth
+            InputLabelProps={{ shrink: true }}
+            variant="standard"
+            value={
+              dateRange.startDate &&
+              `${moment(dateRange.startDate).format("L")} - ${moment(
+                dateRange.endDate
+              ).format("L")}`
+            }
+            placeholder="03/18/2023 - 03/18/2023"
+            sx={{ maxHeight: "36px", mt: "16px" }}
+            name="datePicker"
+            onClick={toggle}
+          />
+        </Collapse>
         <Box
           position="fixed"
           top={"50%"}
