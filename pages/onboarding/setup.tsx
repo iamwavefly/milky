@@ -17,6 +17,8 @@ import Router, { useRouter } from "next/router";
 import { selectUserState } from "@/store/authSlice";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
+import Dashboard from "@/layouts/dashboard";
+import { toast } from "react-hot-toast";
 
 export default function Index() {
   const [labels, setLabels] = useState([]);
@@ -48,6 +50,16 @@ export default function Index() {
     }
   }, [token]);
 
+  useEffect(() => {
+    if (verifyEmail?.data?.status?.toLowerCase() === "success") {
+      toast.success(verifyEmail?.data?.message);
+      setTimeout(() => {
+        toast.success("You can now login to your account.");
+        Router.push("/");
+      }, 3000);
+    }
+  }, [verifyEmail?.data]);
+
   useLayoutEffect(() => {
     if (type === "registered") {
       return setLabels(accountRegisterSetup as []);
@@ -72,7 +84,6 @@ export default function Index() {
 
   // fetch business status
   useEffect(() => {
-    console.log(percentage);
     onboardingStatus.handleSubmit();
   }, [percentage]);
 
@@ -109,53 +120,61 @@ export default function Index() {
     }
   }, [onboardingStatus?.data, is_email_verified]);
 
-  return (
-    <AccountSetup
-      isReady={isReady && verification_status?.toLowerCase() === "new"}
-      title={isReady ? "Welcome to your Dashboard" : "We need more information"}
-      desc={
-        isReady
-          ? "Your account is currently in test mode, so there are a few more things to do before you can go live and start receiving payments. Follow the steps to get activated."
-          : "Comment from reviewer: Dear customer, provide the following to complete your profile"
-      }
-    >
-      <Stack spacing="17px">
-        {labels?.map(({ desc, title, Component, drawalTitle, id, slug }) => (
-          <Box
-            key={id}
-            padding="20px"
-            width="100%"
-            height="100px"
-            bgcolor="#FFFFFF"
-            sx={{ cursor: "pointer" }}
-            onClick={() => Component && drawalHandler(Component, drawalTitle)}
-          >
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
+  if (token) {
+    return <Dashboard title="Confirm Email Address"></Dashboard>;
+  }
+
+  if (token === undefined) {
+    return (
+      <AccountSetup
+        isReady={isReady && verification_status?.toLowerCase() === "new"}
+        title={
+          isReady ? "Welcome to your Dashboard" : "We need more information"
+        }
+        desc={
+          isReady
+            ? "Your account is currently in test mode, so there are a few more things to do before you can go live and start receiving payments. Follow the steps to get activated."
+            : "Comment from reviewer: Dear customer, provide the following to complete your profile"
+        }
+      >
+        <Stack spacing="17px">
+          {labels?.map(({ desc, title, Component, drawalTitle, id, slug }) => (
+            <Box
+              key={id}
+              padding="20px"
+              width="100%"
+              height="100px"
+              bgcolor="#FFFFFF"
+              sx={{ cursor: "pointer" }}
+              onClick={() => Component && drawalHandler(Component, drawalTitle)}
             >
-              <Typography
-                fontWeight={600}
-                component="h2"
-                fontSize="14px"
-                color="#262B40"
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
               >
-                {title}
+                <Typography
+                  fontWeight={600}
+                  component="h2"
+                  fontSize="14px"
+                  color="#262B40"
+                >
+                  {title}
+                </Typography>
+                {slug !== "tour" && <Checkbox checked={isCompleted(slug)} />}
+              </Stack>
+              <Typography
+                mt="4px"
+                fontSize="12px"
+                color="rgba(38, 43, 64, 0.8)"
+                component="p"
+              >
+                {desc}
               </Typography>
-              {slug !== "tour" && <Checkbox checked={isCompleted(slug)} />}
-            </Stack>
-            <Typography
-              mt="4px"
-              fontSize="12px"
-              color="rgba(38, 43, 64, 0.8)"
-              component="p"
-            >
-              {desc}
-            </Typography>
-          </Box>
-        ))}
-      </Stack>
-    </AccountSetup>
-  );
+            </Box>
+          ))}
+        </Stack>
+      </AccountSetup>
+    );
+  }
 }

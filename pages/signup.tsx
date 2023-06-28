@@ -77,9 +77,11 @@ export default function Index() {
   }, [data]);
 
   // go to next page if submission successful
-  // useEffect(() => {
-  //   data?.status === "success" && Router.push("/onboarding");
-  // }, [data]);
+  useEffect(() => {
+    if (data?.status === "success") {
+      formik.resetForm();
+    }
+  }, [data]);
 
   return (
     <Onboarding title="Create an Account" my="72px">

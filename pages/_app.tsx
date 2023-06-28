@@ -57,7 +57,11 @@ function App({ Component, pageProps }: AppProps) {
     <>
       <ThemeProvider theme={theme}>
         <ProtectRoutes>
-          <Toaster />
+          <Toaster
+            toastOptions={{
+              duration: 3000,
+            }}
+          />
           <Component {...pageProps} />
         </ProtectRoutes>
       </ThemeProvider>

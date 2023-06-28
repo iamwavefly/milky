@@ -8,6 +8,7 @@ import React, {
 import {
   Avatar,
   Box,
+  Collapse,
   IconButton,
   Menu,
   Stack,
@@ -204,43 +205,49 @@ const Dashboard = ({ children, title }: Props) => {
             </Stack>
           </Stack>
           {/* brand menu */}
-          <Stack
-            bgcolor="#F5F6FE"
-            width="226px"
-            height="76px"
-            mx="auto"
-            mt="20px"
-            direction="row"
-            justifyContent="space-between"
-            p="16px 14px"
-            className={Styles.brand}
-          >
-            <Stack>
-              <Typography fontWeight={500} fontSize="18px" lineHeight="24px">
-                {truncate(business_name, 15)}
-              </Typography>
-              <Typography
-                fontWeight={400}
-                mt="2px"
-                color="#5F616D"
-                fontSize="12px"
-                lineHeight="18px"
-              >
-                Merchant ID: {id ?? 0}
-              </Typography>
-            </Stack>
-            <IconButton
-              sx={{
-                width: "20px",
-                height: "20px",
-                p: "4px",
-                my: "auto",
-                color: "#92959F",
-              }}
+
+          {id ? (
+            <Stack
+              bgcolor="#F5F6FE"
+              width="226px"
+              height="76px"
+              mx="auto"
+              mt="20px"
+              direction="row"
+              justifyContent="space-between"
+              p="16px 14px"
+              className={Styles.brand}
             >
-              <ArrowIcon fill="#92959F" />
-            </IconButton>
-          </Stack>
+              <Stack>
+                <Typography fontWeight={500} fontSize="18px" lineHeight="24px">
+                  {truncate(business_name, 15)}
+                </Typography>
+                <Typography
+                  fontWeight={400}
+                  mt="2px"
+                  color="#5F616D"
+                  fontSize="12px"
+                  lineHeight="18px"
+                >
+                  Merchant ID: {id ?? 0}
+                </Typography>
+              </Stack>
+              <IconButton
+                sx={{
+                  width: "20px",
+                  height: "20px",
+                  p: "4px",
+                  my: "auto",
+                  color: "#92959F",
+                }}
+              >
+                <ArrowIcon fill="#92959F" />
+              </IconButton>
+            </Stack>
+          ) : (
+            ""
+          )}
+
           {/* navigation */}
           <nav className={Styles.navigations}>
             <ul>
