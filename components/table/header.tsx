@@ -180,7 +180,7 @@ export default function Header({
         )}
         <Stack direction="row" gap="10px" alignItems="center">
           <DropdownMenu
-            title="NGN"
+            title="Filter"
             updateFilter={updateFilter}
             selector={selector}
           />

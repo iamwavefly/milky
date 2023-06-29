@@ -112,7 +112,6 @@ export default function FilterTable({
                 aria-label="Channel"
               >
                 {FILTER_OPTIONS[category].map((option: any, index: number) => {
-                  console.log(selectedFilters[category]);
                   return (
                     <ToggleButton
                       key={index}
