@@ -2744,22 +2744,40 @@ export default function Legal() {
       </Stack>
       {/* ------––––––––––––––––– */}
       {/* ––––––– /content ------- */}
-      <LoadingButton
-        onClick={() =>
-          handleSubmit({
-            accepted: true,
-          })
-        }
-        loading={loading}
-        variant="contained"
-        fullWidth
-        sx={{ mt: "60px" }}
+      <Box
+        sx={{
+          position: "sticky",
+          bottom: 0,
+          left: 0,
+          bgcolor: "#fff",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          mt: "60px",
+          padding: "26px 0",
+        }}
       >
-        Accept
-      </LoadingButton>
-      <Button onClick={close} variant="outlined" fullWidth sx={{ mt: "25px" }}>
-        Decline
-      </Button>
+        <LoadingButton
+          onClick={() =>
+            handleSubmit({
+              accepted: true,
+            })
+          }
+          loading={loading}
+          variant="contained"
+          fullWidth
+        >
+          Accept
+        </LoadingButton>
+        <Button
+          onClick={close}
+          variant="outlined"
+          fullWidth
+          sx={{ mt: "25px" }}
+        >
+          Decline
+        </Button>
+      </Box>
     </Box>
   );
 }
