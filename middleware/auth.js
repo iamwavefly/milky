@@ -151,6 +151,11 @@ export const clearCacheHandler = () => {
 };
 
 export const logoutHandler = async () => {
+  clearCacheHandler();
+  window.location = "/";
+};
+
+export const logoutWTokenHandler = async () => {
   try {
     const url = `${baseUrl}/dashboard/logout`;
     const { status } = await axios.post(url);

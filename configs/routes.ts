@@ -1,4 +1,4 @@
-import { logoutHandler } from "@/middleware/auth";
+import { logoutHandler, logoutWTokenHandler } from "@/middleware/auth";
 // icons
 import RestartIcon from "remixicon-react/RestartLineIcon";
 import HomeIcon from "remixicon-react/Home4LineIcon";
@@ -231,7 +231,7 @@ const routes = [
     id: 10,
     name: "Sign Out",
     link: "/sign-out",
-    func: logoutHandler,
+    func: logoutWTokenHandler,
     Icon: LogoutIcon,
   },
 ];
