@@ -22,6 +22,8 @@ import baseUrl from "@/middleware/baseUrl";
 import { MenuProps } from "@/interfaces";
 import { getStarted } from "@/schema";
 import { LoadingButton } from "@mui/lab";
+import { selectUserState } from "@/store/authSlice";
+import { useSelector } from "react-redux";
 
 const panels = [
   {
@@ -42,6 +44,9 @@ export default function Index() {
   const [activePanel, setActivePanel] = useState<undefined | number>(undefined);
   const [countries, setCountries] = useState([]);
 
+  const { business_name, business_type, country } =
+    useSelector(selectUserState).subsidiaries;
+
   const nextRoute = () => {
     Router.push(
       `/onboarding/setup?type=${
@@ -49,18 +54,35 @@ export default function Index() {
       }`
     );
   };
-
+  // fetch business information
+  const fetchBusinessInformation = useFetch(
+    `${baseUrl}/dashboard/onboarding/business/information/view`,
+    "get"
+  );
   // business types
-  const fetchBusinessType = useFetch(`${baseUrl}/dashboard/business/categories`, "get");
+  const fetchBusinessType = useFetch(
+    `${baseUrl}/dashboard/business/categories`,
+    "get"
+  );
   // business sizes
-  const fetchBusinessSizes = useFetch(`${baseUrl}/dashboard/business/sizes`, "get");
+  const fetchBusinessSizes = useFetch(
+    `${baseUrl}/dashboard/business/sizes`,
+    "get"
+  );
   // business countries
-  const fetchCountries = useFetch(`${baseUrl}/dashboard/service/countries`, "get");
+  const fetchCountries = useFetch(
+    `${baseUrl}/dashboard/service/countries`,
+    "get"
+  );
   // business countries
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/business/get-started`
   );
 
+  // fetch business type
+  useEffect(() => {
+    fetchBusinessInformation.handleSubmit();
+  }, []);
   // fetch business type
   useEffect(() => {
     fetchBusinessType.handleSubmit();
@@ -116,6 +138,30 @@ export default function Index() {
       handleSubmit(payload);
     },
   });
+
+  useEffect(() => {
+    if (fetchBusinessInformation?.data?.data) {
+      const {
+        business_registered_name,
+        business_registered_category,
+        country_id,
+        business_size,
+        referal_code,
+      } = fetchBusinessInformation?.data?.data;
+      const findCountryName: any = countries?.find(
+        (res: { name: string }) => res?.name === country
+      );
+      console.log({ findCountryName });
+      formik.setFieldValue(
+        "businessName",
+        business_name ?? business_registered_name
+      );
+      formik.setFieldValue("businessLocation", findCountryName?.short_name);
+      formik.setFieldValue("businessSize", business_size);
+      formik.setFieldValue("businessCategory", business_registered_category);
+      formik.setFieldValue("referralCode", referal_code);
+    }
+  }, [fetchBusinessInformation.data, countries]);
 
   return (
     <AccountSetup activePanel={Boolean(activePanel !== undefined)}>
