@@ -19,6 +19,12 @@ export default function NewPaymentLink({ reload, details }: any) {
     "get"
   );
 
+  const currencies = useFetch(`${baseUrl}/dashboard/service/currencies`, "get");
+
+  useEffect(() => {
+    currencies?.handleSubmit();
+  }, []);
+
   const dispatch = useDispatch();
   const close = () => dispatch(setDrawalState({ active: false }));
 
@@ -40,15 +46,24 @@ export default function NewPaymentLink({ reload, details }: any) {
       description: "",
       paymentType: "",
       amount: "",
+      currency: "",
       limit: "",
     },
     validationSchema: newPaymentLink,
-    onSubmit: ({ linkName, description, amount, paymentType, limit }) => {
+    onSubmit: ({
+      linkName,
+      description,
+      amount,
+      paymentType,
+      limit,
+      currency,
+    }) => {
       const payload = {
         name: linkName,
         description: description,
         amount,
         limit,
+        currency,
         payment_type: paymentType,
         payment_link_id: details ? details?.id : undefined,
       };
@@ -125,6 +140,28 @@ export default function NewPaymentLink({ reload, details }: any) {
             )
           )}
         </TextField>
+        {/* currencies */}
+        <TextField
+          label="Currency"
+          variant="standard"
+          sx={{ flex: 1 }}
+          name="currency"
+          value={formik.values.currency}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.currency && Boolean(formik.errors.currency)}
+          helperText={formik.touched.currency && formik.errors.currency}
+          select
+        >
+          {currencies?.data?.data
+            ?.filter((cur: { is_allowed: boolean }) => cur.is_allowed)
+            .map(({ short_name, id }: any) => (
+              <MenuItem value={short_name} key={id} sx={{ width: "100%" }}>
+                {short_name}
+              </MenuItem>
+            ))}
+        </TextField>
+        {/* currencies */}
         <TextField
           label="Amount*"
           variant="standard"

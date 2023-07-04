@@ -19,7 +19,7 @@ export default function Detail({ title, full, variant, value }: props) {
   };
 
   return (
-    <Box width={full ? "100%" : "max-content"}>
+    <Box width={full ? "100%" : "max-content"} minWidth="180px">
       <Typography
         color="#6E7280"
         fontSize="10px"

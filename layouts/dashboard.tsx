@@ -47,10 +47,14 @@ const Dashboard = ({ children, title }: Props) => {
   const [openMenuId, setOpenMenuId] = useState(0);
   const [photo, setPhoto] = useState("");
   const open = Boolean(anchorEl);
+  const [labels, setLabels] = useState<any>([]);
 
   const dispatch = useDispatch();
   const { subsidiaries, user, notifications } = useSelector(selectUserState);
   const [verified, setVerified] = useState<undefined | boolean>(undefined);
+  const [pendingApproval, setPendingApproval] = useState<undefined | boolean>(
+    undefined
+  );
   const { business_name, id, subsidiary_logo, verification_status } =
     subsidiaries;
 
@@ -59,13 +63,19 @@ const Dashboard = ({ children, title }: Props) => {
     setPhoto(imageUrl);
   }, [subsidiary_logo]);
 
+  useEffect(() => {
+    if (verified || pendingApproval) {
+      return setLabels(routes.slice(1));
+    }
+    setLabels(routes);
+  }, [verified, pendingApproval]);
+
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-
   const toggleMenu = () => {
     setShowSidebar((prev) => !prev);
   };
@@ -84,8 +94,11 @@ const Dashboard = ({ children, title }: Props) => {
   //
   useEffect(() => {
     if (verification_status) {
-      return setVerified(
+      setVerified(
         verification_status?.toLowerCase() === "active" ? true : false
+      );
+      setPendingApproval(
+        verification_status?.toLowerCase() === "pending-approval" ? true : false
       );
     }
   }, [verification_status]);
@@ -205,7 +218,6 @@ const Dashboard = ({ children, title }: Props) => {
             </Stack>
           </Stack>
           {/* brand menu */}
-
           {id ? (
             <Stack
               bgcolor="#F5F6FE"
@@ -251,19 +263,9 @@ const Dashboard = ({ children, title }: Props) => {
           {/* navigation */}
           <nav className={Styles.navigations}>
             <ul>
-              {routes
-                ?.filter((route) => {
-                  if (verified && route.id !== 1) {
-                    return route;
-                  } else if (verified === false) {
-                    return route;
-                  } else {
-                    return;
-                  }
-                })
-                .map((props) => (
-                  <NavLink key={props.id} {...props} />
-                ))}
+              {labels?.map((props: any) => (
+                <NavLink key={props.id} {...props} />
+              ))}
             </ul>
           </nav>
         </Stack>

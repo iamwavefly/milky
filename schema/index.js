@@ -325,6 +325,7 @@ export const newPaymentLink = () =>
     limit: yup.string(),
     paymentType: yup.string().nullable().required("Payment type is required"),
     amount: yup.string().nullable().required("Amount is required"),
+    currency: yup.string().nullable().required("Currency is required"),
   });
 // new payment link
 export const newTransfer = () =>

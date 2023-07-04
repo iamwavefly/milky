@@ -1515,7 +1515,7 @@ export const PaymentLinkColumns: ColumnDef<any, any>[] = [
     cell: (row: any) => {
       return (
         <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
+          NGN{stringToCurrency(row.getValue())}
         </Typography>
       );
     },

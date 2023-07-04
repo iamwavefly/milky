@@ -76,7 +76,7 @@ export default function Index() {
                   value={`NGN${stringToCurrency(details?.amount)}`}
                 />
                 <Detail
-                  title={"AMOUNT"}
+                  title={"DISCOUNT"}
                   variant={"copy"}
                   value={`NGN${stringToCurrency(details?.discount)}`}
                 />

@@ -73,6 +73,7 @@ export default function NewVirtualAccount({ reload }: any) {
           error={formik.touched.bvn && Boolean(formik.errors.bvn)}
           helperText={formik.touched.bvn && formik.errors.bvn}
           inputProps={{ maxLength: 11 }}
+          disabled
         />
       </Stack>
       <Stack spacing="25px" mt="60px">

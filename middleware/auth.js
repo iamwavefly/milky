@@ -73,7 +73,10 @@ export const loginHandler = async (data, fundRefId) => {
     "Authorization"
   ] = `Bearer ${data.token.access_token}`;
 
-  if (verification_status?.toLowerCase() === "active") {
+  if (
+    verification_status?.toLowerCase() === "active" ||
+    verification_status?.toLowerCase() === "pending-approval"
+  ) {
     return Router.push("/dashboard");
   }
 
