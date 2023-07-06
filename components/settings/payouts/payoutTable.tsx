@@ -13,6 +13,7 @@ import { Box, Button } from "@mui/material";
 import AddBox from "remixicon-react/AddBoxFillIcon";
 import { setDrawalState } from "@/store/appSlice";
 import { useDispatch } from "react-redux";
+import BankDetails from "@/components/setup/BankDetails";
 
 const PayoutTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -20,26 +21,27 @@ const PayoutTable = () => {
   const [filters, setFilters] = useState({});
 
   const dispatch = useDispatch();
-  // close drawal
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Add a New Customer",
-      })
-    );
-  };
 
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/view/static/accounts?page=${currentPage}&limit=10&${Object.entries(
+    `${baseUrl}/dashboard/settlement/bank/get?page=${currentPage}&limit=10&${Object.entries(
       filters
     )
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
+
+  const openDrawal = () => {
+    dispatch(
+      setDrawalState({
+        active: true,
+        title: "Bank Details",
+        content: <BankDetails append reload={handleSubmit} />,
+      })
+    );
+  };
 
   useEffect(() => {
     handleSubmit();
@@ -50,7 +52,7 @@ const PayoutTable = () => {
       <Header
         containerRef={containerRef}
         columns={PayoutTableColumns}
-        data={data?.data?.items}
+        data={data?.data}
         entries={`${data?.page?.total_items ?? 0} Entries`}
         setSearch={setSearch}
         buttons={
@@ -68,7 +70,7 @@ const PayoutTable = () => {
       />
       <Table
         containerRef={containerRef}
-        data={data?.data?.items ?? []}
+        data={data?.data ?? []}
         columns={PayoutTableColumns}
         isFetching={loading}
         page={setCurrentPage}

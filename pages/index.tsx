@@ -46,6 +46,7 @@ export default function Index() {
   const [otp, setotp] = useState("");
   const [disabled, setDisabled] = useState(true);
   const [form, setForm] = useState({ email: "", password: "" });
+  const [subsidiaryId, setSubsidiaryId] = useState(0);
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}${authReq ? "/dashboard/complete/login" : "/dashboard/login"}`
   );
@@ -67,7 +68,8 @@ export default function Index() {
   const handleLogin = () => {
     // otp payload
     const payload = {
-      email: form.email,
+      email: form?.email,
+      subsidiary_id: subsidiaryId,
       otp,
     };
     // req
@@ -79,8 +81,9 @@ export default function Index() {
 
   useEffect(() => {
     const { message, token } = data ?? {};
+    const subsidiaries = data?.subsidiary_details?.subsidiaries?.[0];
+    setSubsidiaryId(subsidiaries?.id);
     if (token?.access_token) {
-      const subsidiaries = data?.subsidiary_details?.subsidiaries?.[0];
       dispatch(
         setUserState({
           user: data?.user,

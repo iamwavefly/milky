@@ -311,6 +311,26 @@ export const newUser = () =>
     country: yup.string().nullable().required("Country is required"),
     role: yup.string().nullable().required("Role is required"),
   });
+// new user
+export const newSubsidiary = () =>
+  yup.object({
+    name: yup.string().nullable().required("Subsidiary name is required"),
+    businessId: yup.number().nullable(),
+    emailAddress: yup
+      .string()
+      .email()
+      .nullable()
+      .required("Email address is required"),
+    phoneNumber: yup
+      .string()
+      .matches(phoneRegExp, "Phone number is not valid")
+      .nullable()
+      .required("Phone number is required"),
+    country: yup.string().nullable().required("Country is required"),
+    businessType: yup.string().nullable().required("Business type is required"),
+    description: yup.string().nullable().required("Description is required"),
+    default: yup.boolean().nullable(),
+  });
 // new role
 export const newRole = () =>
   yup.object({

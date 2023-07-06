@@ -114,6 +114,7 @@ export default function NewUser({ reload }: { reload: () => void }) {
           label="Phone Number"
           variant="standard"
           name="phoneNumber"
+          placeholder="+23480000000000"
           value={formik.values.phoneNumber}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}

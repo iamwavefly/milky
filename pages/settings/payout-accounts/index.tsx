@@ -1,5 +1,7 @@
 import PayoutTable from "@/components/settings/payouts/payoutTable";
+import useFetch from "@/hooks/useFetch";
 import Dashboard from "@/layouts/dashboard";
+import baseUrl from "@/middleware/baseUrl";
 import {
   Box,
   FormControl,
@@ -9,9 +11,38 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
-const index = () => {
+const Index = () => {
+  const [whoBearFee, setWhoBearFee] = useState<string | undefined>("");
+  // fees bearer
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/settlement/details/get`,
+    "get"
+  );
+
+  const FeeBearerReq = useFetch(
+    `${baseUrl}/dashboard/settlement/details`,
+    "post"
+  );
+
+  useEffect(() => {
+    const bearer = data?.data;
+    return setWhoBearFee(bearer);
+  }, [data?.data]);
+
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  const feeBearerHandler = (e: { target: { value: any } }) => {
+    const { value } = e.target;
+    setWhoBearFee(value);
+    FeeBearerReq?.handleSubmit({
+      settlement_type: value,
+    });
+  };
+
   return (
     <Dashboard title="Settings">
       <Stack px="30px" mt="20px">
@@ -38,11 +69,11 @@ const index = () => {
                 aria-labelledby="demo-controlled-radio-buttons-group"
                 name="controlled-radio-buttons-group"
                 sx={{ gap: "16px" }}
-                // value={value}
-                // onChange={handleChange}
+                value={whoBearFee}
+                onChange={feeBearerHandler}
               >
                 <FormControlLabel
-                  value="female"
+                  value="bank"
                   control={<Radio />}
                   label={
                     <Typography
@@ -56,7 +87,7 @@ const index = () => {
                   }
                 />
                 <FormControlLabel
-                  value="male"
+                  value="wallet"
                   control={<Radio />}
                   label={
                     <Typography
@@ -84,4 +115,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

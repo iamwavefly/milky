@@ -28,6 +28,7 @@ export default function BusinessInformation() {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [isImage, setIsImage] = useState(false);
   const [countries, setCountries] = useState<any>([]);
+  const [isReadOnly, setIsReadOnly] = useState(false);
 
   const { subsidiaries } = useSelector(selectUserState);
 
@@ -49,6 +50,15 @@ export default function BusinessInformation() {
   const logoUpdateReq = useFetch(
     `${baseUrl}/dashboard/business/logos/add-or-update`
   );
+
+  // fetch business type
+  useEffect(() => {
+    const { verification_status } = subsidiaries;
+    const status = verification_status?.toLowerCase();
+    if (status === "pending-approval" || status === "verified") {
+      return setIsReadOnly(true);
+    }
+  }, [subsidiaries]);
 
   // fetch business type
   useEffect(() => {
@@ -212,6 +222,7 @@ export default function BusinessInformation() {
             }}
             onClick={handleClick}
             variant="outlined"
+            disabled={isReadOnly}
           >
             Change Picture
           </Button>
@@ -226,6 +237,7 @@ export default function BusinessInformation() {
             }}
             variant="text"
             onClick={clearFile}
+            disabled={isReadOnly}
           >
             Remove
           </Button>
@@ -240,6 +252,7 @@ export default function BusinessInformation() {
               value={formik.values.businessName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
+              disabled={isReadOnly}
               sx={{ flex: 1 }}
               error={
                 formik.touched.businessName &&
@@ -253,6 +266,7 @@ export default function BusinessInformation() {
               label="Business email"
               variant="standard"
               name="businessEmail"
+              disabled={isReadOnly}
               value={formik.values.businessEmail}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -271,6 +285,7 @@ export default function BusinessInformation() {
               label="Business type"
               variant="standard"
               name="businessType"
+              disabled={isReadOnly}
               value={formik.values.businessType}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -295,6 +310,7 @@ export default function BusinessInformation() {
               variant="standard"
               name="country"
               value={formik.values.country}
+              disabled={isReadOnly}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               sx={{ flex: 1 }}
@@ -314,6 +330,7 @@ export default function BusinessInformation() {
               label="Industry"
               variant="standard"
               name="industry"
+              disabled={isReadOnly}
               value={formik.values.industry}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -332,6 +349,7 @@ export default function BusinessInformation() {
               label="Legal business name"
               variant="standard"
               name="legalName"
+              disabled={isReadOnly}
               value={formik.values.legalName}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
@@ -348,6 +366,7 @@ export default function BusinessInformation() {
               variant="standard"
               name="description"
               multiline
+              disabled={isReadOnly}
               rows={0}
               value={formik.values.description}
               onChange={formik.handleChange}
@@ -387,7 +406,7 @@ export default function BusinessInformation() {
               height: "40px",
               fontSize: "12px",
             }}
-            disabled={!(formik.isValid && formik.dirty)}
+            disabled={!(formik.isValid && formik.dirty) || isReadOnly}
           >
             Save Changes
           </LoadingButton>

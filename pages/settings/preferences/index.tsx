@@ -17,7 +17,7 @@ import { toast } from "react-hot-toast";
 
 const Index = () => {
   const [enabled2FA, setEnabled2FaA] = useState(false);
-  const [whoBearFee, setWhoBearFee] = useState<string | undefined>(undefined);
+  const [whoBearFee, setWhoBearFee] = useState<string | undefined>("");
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/payment/options/view`,
     "get"
@@ -44,9 +44,9 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    return setWhoBearFee(
-      FeeBearerView?.data?.data?.who_bears_fee === "Customer" ? "CBF" : "SBF"
-    );
+    const bearer =
+      FeeBearerView?.data?.data?.who_bears_fee === "Customer" ? "CBF" : "SBF";
+    return setWhoBearFee(bearer);
   }, [FeeBearerView?.data?.data]);
 
   useEffect(() => {

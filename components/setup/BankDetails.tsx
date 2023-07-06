@@ -20,7 +20,12 @@ import { selectUserState } from "@/store/authSlice";
 
 const accountTypes = ["Current", "Savings"];
 
-export default function BusinessInformation() {
+interface Props {
+  append?: boolean;
+  reload?: () => void;
+}
+
+export default function BankDetails({ append, reload }: Props) {
   const [banks, setBanks] = useState([]);
 
   const dispatch = useDispatch();
@@ -41,6 +46,7 @@ export default function BusinessInformation() {
     const { status, message } = data;
     if (status === "success") {
       dispatch(reloadPercentage());
+      reload && reload();
       close();
     }
   }, [data]);
@@ -114,15 +120,17 @@ export default function BusinessInformation() {
 
   return (
     <Box>
-      <Typography
-        fontSize="14px"
-        color="rgba(38, 43, 64, 0.8)"
-        lineHeight="20px"
-      >
-        This is the primary bank account we send your settlements to.
-      </Typography>
+      {!append && (
+        <Typography
+          fontSize="14px"
+          color="rgba(38, 43, 64, 0.8)"
+          lineHeight="20px"
+        >
+          This is the primary bank account we send your settlements to.
+        </Typography>
+      )}
       <form onSubmit={formik.handleSubmit}>
-        <Stack mt="60px" spacing="13px">
+        <Stack mt={!append ? "60px" : ""} spacing="13px">
           <TextField
             label="Account type"
             variant="standard"

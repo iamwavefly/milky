@@ -192,13 +192,13 @@ export const PayoutTableColumns: ColumnDef<any, any>[] = [
     header: "Account number",
   },
   {
-    accessorKey: "recipient_name",
+    accessorKey: "account_name",
     header: "Account name",
   },
-  {
-    accessorKey: "debit_currency",
-    header: "Currency",
-  },
+  // {
+  //   accessorKey: "debit_currency",
+  //   header: "Currency",
+  // },
 ];
 
 export const UserTableColumns: ColumnDef<any, any>[] = [

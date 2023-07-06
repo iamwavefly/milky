@@ -1,11 +1,20 @@
 import useFetch from "@/hooks/useFetch";
 import { MenuProps } from "@/interfaces";
 import baseUrl from "@/middleware/baseUrl";
-import { bankDetails, newCustomer, newUser } from "@/schema";
+import { bankDetails, newCustomer, newSubsidiary, newUser } from "@/schema";
 import { setDrawalState } from "@/store/appSlice";
 import { LoadingButton } from "@mui/lab";
-import { Box, MenuItem, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  Checkbox,
+  FormControlLabel,
+  MenuItem,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useFormik } from "formik";
+import { serialize } from "object-to-formdata";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
@@ -14,8 +23,13 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
   const [countries, setCountries] = useState<any>([]);
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/create-user`
+    `${baseUrl}/dashboard/create-subsidiary`
   );
+  // business types
+  // const fetchBusinessType = useFetch(
+  //   `${baseUrl}/dashboard/business/categories`,
+  //   "get"
+  // );
   // countries
   const fetchCountries = useFetch(
     `${baseUrl}/dashboard/service/countries`,
@@ -28,13 +42,20 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
   const close = () => dispatch(setDrawalState({ active: false }));
 
   useEffect(() => {
-    console.log({ data });
     const { status, message } = data;
-    if (status === "success") {
-      reload();
-      close();
+    if (message && status !== "success") {
+      toast.error(message);
+    } else {
+      if (status === "success") {
+        reload();
+        close();
+      }
     }
   }, [data]);
+  // fetch business type
+  // useEffect(() => {
+  //   fetchBusinessType.handleSubmit();
+  // }, []);
   // fetch countries
   useEffect(() => {
     fetchCountries.handleSubmit();
@@ -54,23 +75,28 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
   // form controller
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
+      name: "",
       emailAddress: "",
       phoneNumber: "",
       country: "",
+      businessType: "",
+      businessId: "",
       description: "",
+      default: false,
     },
-    validationSchema: newUser,
+    validationSchema: newSubsidiary,
     onSubmit: (form) => {
       const payload = {
-        first_name: form.firstName,
-        last_name: form.lastName,
         email: form.emailAddress,
-        mobile_number: form.phoneNumber,
+        name_of_subsidiary: form?.name,
         country: form.country,
+        description: form.description,
+        mobile_number: form.phoneNumber,
+        business_type: form.businessType,
+        is_Default: form.default,
       };
-      handleSubmit(payload);
+      const formData = serialize(payload);
+      handleSubmit(formData);
     },
   });
 
@@ -80,12 +106,23 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
         <TextField
           label="Name"
           variant="standard"
-          name="firstName"
-          value={formik.values.firstName}
+          name="name"
+          value={formik.values.name}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-          helperText={formik.touched.firstName && formik.errors.firstName}
+          error={formik.touched.name && Boolean(formik.errors.name)}
+          helperText={formik.touched.name && formik.errors.name}
+        />
+        <TextField
+          label="Business ID"
+          variant="standard"
+          name="businessId"
+          value={formik.values.businessId}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={formik.touched.businessId && Boolean(formik.errors.businessId)}
+          helperText={formik.touched.businessId && formik.errors.businessId}
+          type="number"
         />
         <TextField
           label="Email Address*"
@@ -103,6 +140,7 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
           label="Phone Number"
           variant="standard"
           name="phoneNumber"
+          placeholder="+23480000000000"
           value={formik.values.phoneNumber}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -131,23 +169,22 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
         <TextField
           label="Business type"
           variant="standard"
-          name="firstName"
-          value={formik.values.firstName}
+          name="businessType"
+          value={formik.values.businessType}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-          helperText={formik.touched.firstName && formik.errors.firstName}
-        />
-        <TextField
-          label="Business category"
-          variant="standard"
-          name="firstName"
-          value={formik.values.firstName}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-          helperText={formik.touched.firstName && formik.errors.firstName}
-        />
+          error={
+            formik.touched.businessType && Boolean(formik.errors.businessType)
+          }
+          helperText={formik.touched.businessType && formik.errors.businessType}
+          select
+        >
+          {["Individual", "Company"]?.map((name, index) => (
+            <MenuItem sx={{ width: "100%" }} key={index} value={name}>
+              {name}
+            </MenuItem>
+          ))}
+        </TextField>
         <TextField
           label="Description"
           variant="standard"
@@ -163,6 +200,25 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
           }
           helperText={formik.touched.description && formik.errors.description}
         />
+        <Box pt="4px" zIndex={99999}>
+          <FormControlLabel
+            control={
+              <Checkbox name="default" checked={formik.values.default} />
+            }
+            name="default"
+            onChange={formik.handleChange}
+            label={
+              <Typography
+                sx={{ cursor: "pointer" }}
+                color="#262B40"
+                fontSize="12px"
+                ml="8px"
+              >
+                Mark as Default
+              </Typography>
+            }
+          />
+        </Box>
       </Stack>
       <Stack spacing="25px" mt="60px">
         <LoadingButton
