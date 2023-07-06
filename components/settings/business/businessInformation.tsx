@@ -55,7 +55,7 @@ export default function BusinessInformation() {
   useEffect(() => {
     const { verification_status } = subsidiaries;
     const status = verification_status?.toLowerCase();
-    if (status === "pending-approval" || status === "verified") {
+    if (status === "pending-approval" || status === "active") {
       return setIsReadOnly(true);
     }
   }, [subsidiaries]);
