@@ -127,7 +127,10 @@ export default function Index() {
   if (token === undefined) {
     return (
       <AccountSetup
-        isReady={isReady && verification_status?.toLowerCase() === "new"}
+        isReady={
+          (isReady && verification_status?.toLowerCase() === "new") ||
+          verification_status?.toLowerCase() === "pending-verification"
+        }
         title={
           isReady ? "Welcome to your Dashboard" : "We need more information"
         }
