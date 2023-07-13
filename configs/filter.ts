@@ -276,12 +276,12 @@ const filterOptions = {
     },
   ],
   transfers: [
-    {
-      id: 1,
-      title: "ID",
-      key: "Id",
-      type: "input",
-    },
+    // {
+    //   id: 1,
+    //   title: "ID",
+    //   key: "Id",
+    //   type: "input",
+    // },
     {
       id: 2,
       title: "Transaction Reference",
@@ -294,18 +294,18 @@ const filterOptions = {
       key: "PaymentReference",
       type: "input",
     },
-    {
-      id: 4,
-      title: "Subsidiary ID",
-      key: "SubsidiaryId",
-      type: "input",
-    },
+    // {
+    //   id: 4,
+    //   title: "Subsidiary ID",
+    //   key: "SubsidiaryId",
+    //   type: "input",
+    // },
     {
       id: 5,
       title: "Status",
       key: "status",
       type: "list",
-      options: ["Approved", "Processing", "Failed"],
+      options: ["Approved", "Processing", "Rejected"],
     },
   ],
   Refunds: [

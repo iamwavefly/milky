@@ -73,6 +73,24 @@ const Index = () => {
     });
   };
 
+  const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
+    // const { value, checked } = event.target;
+    // let newPermissions: string[] | null = null;
+    // if (!checked) {
+    //   newPermissions = userPermission?.filter((permission: any) => {
+    //     if (permission.id !== +value) {
+    //       return permission;
+    //     }
+    //   });
+    // }
+    // updatePermission?.handleSubmit({
+    //   role_id: activeRole,
+    //   permissions: newPermissions?.map((permission: any) => permission.id) ?? [
+    //     value,
+    //   ],
+    // });
+  };
+
   return (
     <Dashboard title="Settings">
       <Stack px="30px" mt="20px">

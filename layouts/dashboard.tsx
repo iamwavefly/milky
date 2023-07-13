@@ -55,6 +55,9 @@ const Dashboard = ({ children, title }: Props) => {
   const [pendingApproval, setPendingApproval] = useState<undefined | boolean>(
     undefined
   );
+  const [pendingVerification, setPendingVerification] = useState<
+    undefined | boolean
+  >(undefined);
   const { business_name, id, subsidiary_logo, verification_status } =
     subsidiaries;
 
@@ -99,6 +102,11 @@ const Dashboard = ({ children, title }: Props) => {
       );
       setPendingApproval(
         verification_status?.toLowerCase() === "pending-approval" ? true : false
+      );
+      setPendingVerification(
+        verification_status?.toLowerCase() === "pending-verification"
+          ? true
+          : false
       );
     }
   }, [verification_status]);

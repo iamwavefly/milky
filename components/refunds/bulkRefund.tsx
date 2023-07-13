@@ -20,6 +20,7 @@ import UploadIcon from "remixicon-react/Upload2LineIcon";
 import DownloadIcon from "../../public/icons/download-alt.svg";
 import csvtojson from "csvtojson";
 import BulkRefundTable from "./bulkRefundTable";
+// import SampleBulkFile from "";
 
 export default function BulkRefund({ reload, updateCsvFile }: any) {
   const [jsonData, setJsonData] = useState<any[] | null>(null);
@@ -92,12 +93,19 @@ export default function BulkRefund({ reload, updateCsvFile }: any) {
           Upload the refund CSV file to begin
         </Typography>
       </Stack>
-      <Typography color="#262B40" fontWeight={500} mt="29px" fontSize="12px">
-        <IconButton>
-          <DownloadIcon />
-        </IconButton>
-        Download sample CSV file for bulk refund
-      </Typography>
+      <a
+        href={"../../mocks/refunds_sample.csv"}
+        download="Example-PDF-document"
+        target="_blank"
+        rel="noreferrer"
+      >
+        <Typography color="#262B40" fontWeight={500} mt="29px" fontSize="12px">
+          <IconButton>
+            <DownloadIcon />
+          </IconButton>
+          Download sample CSV file for bulk refund
+        </Typography>
+      </a>
     </Box>
   );
 }
