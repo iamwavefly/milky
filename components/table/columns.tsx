@@ -1511,14 +1511,8 @@ export const PaymentLinkColumns: ColumnDef<any, any>[] = [
   },
   {
     accessorKey: "amount",
-    header: "Amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN{stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
   },
   {
     accessorKey: "is_active",
