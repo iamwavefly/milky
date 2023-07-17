@@ -42,6 +42,7 @@ const TransferTable = ({ reload }: { reload: boolean }) => {
         setSearch={setSearch}
         selector="transfers"
         updateFilter={setFilters}
+        url="/payout/all"
       />
       <Table
         containerRef={containerRef}

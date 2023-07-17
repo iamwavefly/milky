@@ -53,6 +53,7 @@ const FundingHistory = () => {
         containerRef={containerRef}
         columns={FundingHistoryTableColumns}
         data={data?.items}
+        url="/payout/history"
         entries={`${data?.total_items ?? 0}`}
         setSearch={setSearch}
         entryOnly

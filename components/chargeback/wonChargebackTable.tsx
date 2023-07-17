@@ -38,6 +38,7 @@ const WonChargebackTable = () => {
         data={data?.items}
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
+        url="/dashboard/chargeback/all"
       />
       <Table
         containerRef={containerRef}

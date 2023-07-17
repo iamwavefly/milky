@@ -55,6 +55,7 @@ const VirtualAccountTable = () => {
         data={data?.items}
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
+        url="/view/static/accounts"
         buttons={
           <Button
             variant="contained"

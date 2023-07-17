@@ -41,6 +41,7 @@ const FeesTable = () => {
         entries={data?.data?.page.total ?? 0}
         setSearch={setSearch}
         buttons={<Button variant="contained">Add a new provider</Button>}
+        url="/dashboard/pricing/provider"
       />
       <Table
         containerRef={containerRef}

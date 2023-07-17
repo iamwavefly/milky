@@ -40,6 +40,7 @@ const InvoiceTable = () => {
         setSearch={setSearch}
         updateFilter={setFilters}
         selector="invoice"
+        url="/dashboard/invoice/all"
       />
       <FilterTable updateFilter={setFilters} />
       <Table

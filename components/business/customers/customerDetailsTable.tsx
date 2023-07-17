@@ -50,6 +50,7 @@ const CustomerDetailsTable = () => {
         title="Transactions"
         transparent
         selector="customers"
+        url="/dashboard/fetch/customers/orders"
         updateFilter={setFilters}
       />
       <Table

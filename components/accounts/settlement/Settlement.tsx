@@ -42,6 +42,7 @@ const SettlementTable = () => {
         setSearch={setSearch}
         selector="settlements"
         updateFilter={setFilters}
+        url="/dashboard/settlement/paginated"
       />
       <Table
         containerRef={containerRef}

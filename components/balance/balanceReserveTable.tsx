@@ -44,6 +44,7 @@ const BalanceReserveTable = () => {
         setSearch={setSearch}
         selector="rollingReserve"
         updateFilter={setFilters}
+        url="/dashboard/rolling/reserves"
       />
       <Table
         containerRef={containerRef}

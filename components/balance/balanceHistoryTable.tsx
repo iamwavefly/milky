@@ -41,6 +41,7 @@ const BalanceHistoryTable = () => {
         setSearch={setSearch}
         selector="balanceHistory"
         updateFilter={setFilters}
+        url="/dashboard/fetch/wallet/history"
       />
       <Table
         containerRef={containerRef}

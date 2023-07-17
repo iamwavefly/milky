@@ -56,6 +56,7 @@ const BeneficiaryTable = () => {
         data={data?.data?.items}
         entries={`${data?.data?.page?.size ?? 0}`}
         setSearch={setSearch}
+        url="/beneficiary/all"
         buttons={
           <Button
             sx={{ fontSize: "12px", height: "40px" }}

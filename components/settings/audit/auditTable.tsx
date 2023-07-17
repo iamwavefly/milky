@@ -55,6 +55,7 @@ const AuditTable = () => {
         setSearch={setSearch}
         selector="audits"
         updateFilter={setFilters}
+        url="/dashboard/audit/trails"
       />
       <Table
         containerRef={containerRef}

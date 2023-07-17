@@ -261,6 +261,7 @@ const DisputeTable = () => {
         containerRef={containerRef}
         columns={DisputeColumns}
         data={data?.items}
+        url="/chargeback/all"
         entries={`${data?.data?.page?.total ?? 0}`}
         setSearch={setSearch}
         buttons={

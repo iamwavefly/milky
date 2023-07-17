@@ -56,6 +56,7 @@ const PaymentLinksTable = () => {
         containerRef={containerRef}
         columns={PaymentLinkColumns}
         data={data?.items}
+        url="/dashboard/payment/link/subsidiary"
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
         buttons={

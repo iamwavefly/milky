@@ -41,6 +41,7 @@ const InvoiceTable = () => {
         setSearch={setSearch}
         updateFilter={setFilters}
         selector="invoice"
+        url="/dashboard/subsidiary/all/paginated"
       />
 
       <Table

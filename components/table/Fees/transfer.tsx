@@ -19,6 +19,7 @@ export default function TransferFeesTable() {
   return (
     <Box mt="36px">
       <Header
+        url="/dashboard/pricing/payout"
         entries={`${data?.data?.page.total ?? 0} Entries`}
         buttons={<Button variant="contained">Add a new fee</Button>}
       />

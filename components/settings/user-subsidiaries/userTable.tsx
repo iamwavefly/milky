@@ -53,6 +53,7 @@ const UserTable = () => {
         containerRef={containerRef}
         columns={UserTableColumns}
         data={data?.users}
+        url="/dashboard/users"
         entries={`${data?.page?.total_items ?? 0} Entries`}
         setSearch={setSearch}
         searchText="Search users or enter keyword"

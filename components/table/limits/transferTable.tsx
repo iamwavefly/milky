@@ -43,6 +43,7 @@ const TransferLimitTable = () => {
         containerRef={containerRef}
         columns={LimitTransferTableColumns}
         data={data?.data?.items}
+        url="/dashboard/limits/payout"
         entries={`${data?.data?.page.total ?? 0}`}
         setSearch={setSearch}
         buttons={<Button variant="contained">Add a new transfer limit</Button>}

@@ -42,6 +42,7 @@ const CollectionLimitTable = () => {
         data={data?.data?.items}
         entries={`${data?.data?.page.total ?? 0} Entries`}
         setSearch={setSearch}
+        url="/dashboard/limits/collection"
         buttons={
           <Button variant="contained">Add a new collection limit</Button>
         }

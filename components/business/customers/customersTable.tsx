@@ -55,6 +55,7 @@ const CustomersTable = () => {
         data={data?.items}
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
+        url="/dashboard/fetch/customers"
         buttons={
           <Button
             variant="contained"

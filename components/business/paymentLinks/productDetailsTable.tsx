@@ -45,6 +45,7 @@ const ProductDetailsTable = () => {
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
         title="Product"
+        url={`/dashboard/product/all?PaymentLinkId=${id}`}
         noButton
         buttons={
           <Button

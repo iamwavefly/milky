@@ -38,6 +38,7 @@ const InvoiceTable = () => {
         containerRef={containerRef}
         columns={InvoiceTableColumns}
         data={data?.items}
+        url="/dashboard/invoice/all"
         buttons={
           <>
             <Button

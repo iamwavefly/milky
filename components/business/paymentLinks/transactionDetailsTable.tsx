@@ -46,6 +46,7 @@ const TransactionrDetailsTable = () => {
         setSearch={setSearch}
         title="Transactions"
         transparent
+        url={`/dashboard/fetch/orders?PaymentLinkId=${id}`}
       />
       <Table
         containerRef={containerRef}

@@ -42,6 +42,7 @@ const FeesTable = () => {
         data={data?.data?.items}
         entries={`${data?.data?.page.total ?? 0} Entries`}
         setSearch={setSearch}
+        url="/pricing/collection"
         buttons={<Button variant="contained">Add a new fee</Button>}
       />
       <Table

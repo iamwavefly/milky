@@ -63,6 +63,7 @@ const DisputeTable = () => {
         data={data?.items}
         entries={`${data?.data?.page?.total ?? 0}`}
         setSearch={setSearch}
+        url="/dashboard/chargeback/all"
         buttons={
           <Stack direction="row" spacing="16px">
             <Button variant="outlined">

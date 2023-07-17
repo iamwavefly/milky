@@ -40,6 +40,7 @@ const SettlementTable = () => {
         data={data?.items}
         entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
+        url="/dashboard/product/all"
         buttons={
           <Button
             variant="contained"

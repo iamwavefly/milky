@@ -42,6 +42,7 @@ const PendingTransferTable = () => {
         entries={`${data?.data?.page?.size ?? 0}`}
         setSearch={setSearch}
         entryOnly
+        url="/payout/pending/approval"
         buttons={
           <Button
             sx={{ fontSize: "12px", height: "40px" }}

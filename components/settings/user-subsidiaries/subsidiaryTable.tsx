@@ -55,6 +55,7 @@ const SubsidiaryTable = () => {
         data={data?.users}
         entries={`${data?.page?.total_items ?? 0} Entries`}
         setSearch={setSearch}
+        url="/dashboard/user/subsidiaries"
         searchText="Search subsidiaries or enter keyword"
         buttons={
           <Button

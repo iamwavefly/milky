@@ -55,6 +55,7 @@ const PayoutTable = () => {
         data={data?.data}
         entries={`${data?.page?.total_items ?? 0} Entries`}
         setSearch={setSearch}
+        url="/dashboard/settlement/bank/get"
         buttons={
           <Button
             variant="contained"
