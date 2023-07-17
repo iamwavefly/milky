@@ -25,7 +25,9 @@ import html2canvas from "html2canvas";
 import { CSVLink } from "react-csv";
 import SearchIcon from "remixicon-react/SearchLineIcon";
 import DropdownMenu from "../DropdownMenu";
-import Router from "next/router";
+import Router, { useRouter } from "next/router";
+import useFetch from "@/hooks/useFetch";
+import baseUrl from "@/middleware/baseUrl";
 
 interface headerProps {
   containerRef?: any;
@@ -40,13 +42,13 @@ interface headerProps {
   entryOnly?: boolean;
   noButton?: boolean;
   exportBtn?: boolean;
+  url?: string;
   setSearch?: (term: string) => void;
   updateFilter?: React.Dispatch<SetStateAction<{}>>;
 }
 
 export default function Header({
   containerRef,
-  data,
   columns,
   entries,
   buttons,
@@ -54,17 +56,36 @@ export default function Header({
   noButton,
   exportBtn,
   transparent,
+  title,
+  url,
   setSearch,
   searchText,
-  title,
   updateFilter,
   selector,
 }: headerProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [csvHeader, setCsvHeader] = useState<any>([]);
   const [searchTextName, setSearchTextName] = useState("");
+  const [data, setdata] = useState([]);
+  const [pageName, setPageName] = useState("");
+
+  const { pathname } = useRouter();
 
   const open = Boolean(anchorEl);
+  const fetchData = useFetch(`${baseUrl}${url}`, "get");
+
+  useEffect(() => {
+    setPageName(pathname?.slice(1)?.replaceAll("/", "-"));
+  }, [pathname]);
+
+  useEffect(() => {
+    fetchData?.handleSubmit();
+  }, []);
+
+  useEffect(() => {
+    const data = fetchData?.data;
+    setdata(data?.items ?? data?.data);
+  }, [fetchData?.data]);
 
   useEffect(() => {
     const lastPathname = Router.pathname.split("/").pop();
@@ -106,15 +127,16 @@ export default function Header({
       });
       if (target === "pdf") {
         pdf.addImage(imgData, "JPEG", 0, 0, width, height);
-        pdf.save("download.pdf");
+        pdf.save(`${pageName}.pdf`);
       }
       if (target === "png") {
         const downloadLink = document.createElement("a");
         downloadLink.href = imgData;
-        downloadLink.download = "component.png";
+        downloadLink.download = `${pageName}.png`;
         downloadLink.click();
       }
     });
+    handleClose();
   };
 
   return (
@@ -132,7 +154,7 @@ export default function Header({
         <MenuItem onClick={() => downloadPNG("png")}>Export as .png</MenuItem>
         <MenuItem onClick={() => downloadPNG("pdf")}>Export as .pdf</MenuItem>
         <MenuItem>
-          <CSVLink data={data} headers={csvHeader}>
+          <CSVLink filename={pageName} data={data} headers={csvHeader}>
             Export as .csv
           </CSVLink>
         </MenuItem>

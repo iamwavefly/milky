@@ -41,6 +41,7 @@ const TransactionTable = () => {
         setSearch={setSearch}
         updateFilter={setFilters}
         selector="orders"
+        url="/dashboard/fetch/orders"
       />
       <Table
         containerRef={containerRef}
