@@ -37,7 +37,10 @@ export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
     header: "Amount",
   },
   {
@@ -96,7 +99,10 @@ export const TransactionTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "amount",
     header: "Amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "payment_type",
@@ -281,7 +287,10 @@ export const CustomerDetailsTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
     header: "Amount",
   },
   {
@@ -335,7 +344,10 @@ export const TransactionDetailsTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
     header: "Amount",
   },
   {
@@ -391,7 +403,7 @@ export const ProductDetailsTableColumns: ColumnDef<any, any>[] = [
     header: "Revenue",
     accessorKey: "revenue",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.total_amount).replace(
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.total_amount).replace(
         "NGN",
         ""
       )}`,
@@ -444,7 +456,10 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "price",
     header: "Price",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.price).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.price).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "stock",
@@ -458,7 +473,7 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "total_amount",
     header: "Revenue",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.total_amount).replace(
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.total_amount).replace(
         "NGN",
         ""
       )}`,
@@ -523,10 +538,9 @@ export const BalanceReserveColumns: ColumnDef<any, any>[] = [
     accessorKey: "settlement_amount",
     header: "Settlement amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.settlement_amount).replace(
-        "NGN",
-        ""
-      )}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(
+        row.settlement_amount
+      ).replace("NGN", "")}`,
   },
   {
     accessorKey: "settlement_date",
@@ -543,7 +557,7 @@ export const BalanceReserveColumns: ColumnDef<any, any>[] = [
     accessorKey: "withheld_amount",
     header: "Withheld amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.withheld_amount).replace(
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.withheld_amount).replace(
         "NGN",
         ""
       )}`,
@@ -588,7 +602,10 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
     accessorKey: "balance",
     header: "Initial balance",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.balance).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.balance).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "amount",
@@ -605,7 +622,7 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
     accessorKey: "balance_after",
     header: "Balance after",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.balance_after).replace(
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.balance_after).replace(
         "NGN",
         ""
       )}`,
@@ -614,7 +631,10 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
     accessorKey: "details",
     header: "Transaction details",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.details).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.details).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "due_date",
@@ -683,7 +703,10 @@ export const InvoiceTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "amount",
     header: "Amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "date_created",
@@ -860,7 +883,10 @@ export const RefundTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "amount",
     header: "Amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "subsidiary_id",
@@ -1038,16 +1064,18 @@ export const AccountSettlementTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "transaction_amount",
     header: "Amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.transaction_amount).replace(
-        "NGN",
-        ""
-      )}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(
+        row.transaction_amount
+      ).replace("NGN", "")}`,
   },
   {
     accessorKey: "fee",
     header: "Settlement fee",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.fee).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.fee).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "currency",
@@ -1098,7 +1126,10 @@ export const TransferTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "amount",
     header: "Amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "narration",
@@ -1149,7 +1180,10 @@ export const TransferPendingTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "amount",
     header: "Amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "narration",
@@ -1189,7 +1223,10 @@ export const FundingHistoryTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "amount",
     header: "Amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "",
@@ -1199,7 +1236,10 @@ export const FundingHistoryTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "fee",
     header: "Fee",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.fee).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.fee).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "date_initiated",
@@ -1430,7 +1470,10 @@ export const PaymentLinkColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
     header: "Amount",
   },
   {
@@ -1532,7 +1575,10 @@ export const DisputeColumns: ColumnDef<any, any>[] = [
     accessorKey: "amount",
     header: "Transaction amount",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "date_created",
@@ -1847,7 +1893,7 @@ export const LimitCollectionTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "minimum_amount",
     header: "Min. amount/txn",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.minimum_amount).replace(
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.minimum_amount).replace(
         "NGN",
         ""
       )}`,
@@ -1856,7 +1902,7 @@ export const LimitCollectionTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "maximum_amount",
     header: "Max. amount/txn",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.maximum_amount).replace(
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.maximum_amount).replace(
         "NGN",
         ""
       )}`,
@@ -1865,7 +1911,10 @@ export const LimitCollectionTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "cumm_daily",
     header: "Cumulative daily",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.cumm_daily).replace("NGN", "")}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.cumm_daily).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "risk_category",
@@ -1912,7 +1961,7 @@ export const LimitTransferTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "Transfer limit",
     header: "transfer_limit",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.transfer_limit).replace(
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.transfer_limit).replace(
         "NGN",
         ""
       )}`,
@@ -1921,10 +1970,9 @@ export const LimitTransferTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "cummulative_daily",
     header: "Cumulative daily",
     accessorFn: (row) =>
-      `${row.currency} ${stringToCurrency(row.cummulative_daily).replace(
-        "NGN",
-        ""
-      )}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(
+        row.cummulative_daily
+      ).replace("NGN", "")}`,
   },
 ];
 
