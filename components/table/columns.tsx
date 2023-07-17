@@ -36,14 +36,9 @@ export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
   },
   {
     accessorKey: "amount",
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
     header: "Amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
   },
   {
     accessorKey: "payment_type",
@@ -100,13 +95,8 @@ export const TransactionTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     header: "Amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
   },
   {
     accessorKey: "payment_type",
@@ -290,14 +280,9 @@ export const CustomerDetailsTableColumns: ColumnDef<any, any>[] = [
   },
   {
     accessorKey: "amount",
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
     header: "Amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
   },
   {
     accessorKey: "payment_type",
@@ -349,14 +334,9 @@ export const TransactionDetailsTableColumns: ColumnDef<any, any>[] = [
   },
   {
     accessorKey: "amount",
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
     header: "Amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
   },
   {
     accessorKey: "payment_type",
@@ -408,15 +388,13 @@ export const ProductDetailsTableColumns: ColumnDef<any, any>[] = [
     header: "Sold",
   },
   {
-    accessorKey: "total_amount",
     header: "Revenue",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorKey: "revenue",
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.total_amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "status",
@@ -465,13 +443,8 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "price",
     header: "Price",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.price).replace("NGN", "")}`,
   },
   {
     accessorKey: "stock",
@@ -484,13 +457,11 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "total_amount",
     header: "Revenue",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.total_amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "status",
@@ -551,13 +522,11 @@ export const BalanceReserveColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "settlement_amount",
     header: "Settlement amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.settlement_amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "settlement_date",
@@ -573,13 +542,11 @@ export const BalanceReserveColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "withheld_amount",
     header: "Withheld amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.withheld_amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "due_date",
@@ -620,13 +587,8 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "balance",
     header: "Initial balance",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.balance).replace("NGN", "")}`,
   },
   {
     accessorKey: "amount",
@@ -642,24 +604,17 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "balance_after",
     header: "Balance after",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.balance_after).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "details",
     header: "Transaction details",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.details).replace("NGN", "")}`,
   },
   {
     accessorKey: "due_date",
@@ -727,13 +682,8 @@ export const InvoiceTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     header: "Amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
   },
   {
     accessorKey: "date_created",
@@ -909,13 +859,8 @@ export const RefundTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     header: "Amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
   },
   {
     accessorKey: "subsidiary_id",
@@ -1092,24 +1037,17 @@ export const AccountSettlementTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "transaction_amount",
     header: "Amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.transaction_amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "fee",
     header: "Settlement fee",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.fee).replace("NGN", "")}`,
   },
   {
     accessorKey: "currency",
@@ -1159,13 +1097,8 @@ export const TransferTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     header: "Amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
   },
   {
     accessorKey: "narration",
@@ -1215,13 +1148,8 @@ export const TransferPendingTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     header: "Amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
   },
   {
     accessorKey: "narration",
@@ -1260,13 +1188,8 @@ export const FundingHistoryTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     header: "Amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
   },
   {
     accessorKey: "",
@@ -1275,13 +1198,8 @@ export const FundingHistoryTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "fee",
     header: "Fee",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          NGN {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.fee).replace("NGN", "")}`,
   },
   {
     accessorKey: "date_initiated",
@@ -1513,6 +1431,7 @@ export const PaymentLinkColumns: ColumnDef<any, any>[] = [
     accessorKey: "amount",
     accessorFn: (row) =>
       `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
+    header: "Amount",
   },
   {
     accessorKey: "is_active",
@@ -1612,13 +1531,8 @@ export const DisputeColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     header: "Transaction amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.amount).replace("NGN", "")}`,
   },
   {
     accessorKey: "date_created",
@@ -1932,35 +1846,26 @@ export const LimitCollectionTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "minimum_amount",
     header: "Min. amount/txn",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.minimum_amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "maximum_amount",
     header: "Max. amount/txn",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.maximum_amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "cumm_daily",
     header: "Cumulative daily",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.cumm_daily).replace("NGN", "")}`,
   },
   {
     accessorKey: "risk_category",
@@ -2006,24 +1911,20 @@ export const LimitTransferTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "Transfer limit",
     header: "transfer_limit",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.transfer_limit).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "cummulative_daily",
     header: "Cumulative daily",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {stringToCurrency(row.getValue())}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency} ${stringToCurrency(row.cummulative_daily).replace(
+        "NGN",
+        ""
+      )}`,
   },
 ];
 
