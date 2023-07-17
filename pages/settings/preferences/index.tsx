@@ -1,4 +1,5 @@
 import PayoutTable from "@/components/settings/payouts/payoutTable";
+import PaymentMethods from "@/components/settings/preferences/paymentMethods";
 import useFetch from "@/hooks/useFetch";
 import Dashboard from "@/layouts/dashboard";
 import baseUrl from "@/middleware/baseUrl";
@@ -18,10 +19,6 @@ import { toast } from "react-hot-toast";
 const Index = () => {
   const [enabled2FA, setEnabled2FaA] = useState(false);
   const [whoBearFee, setWhoBearFee] = useState<string | undefined>("");
-  const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/payment/options/view`,
-    "get"
-  );
   // 2fa authentication endpoint
   const TwoFaReqEnabled = useFetch(
     `${baseUrl}/dashboard/2fa/login/view`,
@@ -35,9 +32,6 @@ const Index = () => {
   );
   const FeeBearerReq = useFetch(`${baseUrl}/dashboard/payment/fees/set`);
 
-  useEffect(() => {
-    handleSubmit();
-  }, []);
 
   useEffect(() => {
     TwoFaReqEnabled?.handleSubmit();
@@ -167,25 +161,7 @@ const Index = () => {
             width="682px"
             minHeight="110px"
           >
-            <FormControl sx={{ gap: "20px" }}>
-              {data?.data?.map((option: string, index: number) => (
-                <FormControlLabel
-                  key={index}
-                  value="female"
-                  control={<Checkbox checked readOnly />}
-                  label={
-                    <Typography
-                      fontSize="12px"
-                      fontWeight={500}
-                      color="#262B40"
-                      ml="16px"
-                    >
-                      {option}
-                    </Typography>
-                  }
-                />
-              ))}
-            </FormControl>
+            <PaymentMethods />
           </Stack>
         </Stack>
         {/* Other preferences */}
