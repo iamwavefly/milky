@@ -88,8 +88,8 @@ export default function BankDetails({ append, reload }: Props) {
   // resolve account
   useEffect(() => {
     const { accountNumber, bankName } = formik.values;
-    if (accountNumber.length === 10 && bankName) {
-      const bank: any = banks.find((bank: any) => bank?.id === bankName);
+    if (accountNumber?.length === 10 && bankName) {
+      const bank: any = banks?.find((bank: any) => bank?.id === bankName);
       resolveAccount.handleSubmit({
         bank_code: bank?.bank_code,
         account_number: accountNumber,
@@ -100,14 +100,14 @@ export default function BankDetails({ append, reload }: Props) {
   useEffect(() => {
     formik.setFieldValue(
       "accountName",
-      resolveAccount.data?.data?.account_name
+      resolveAccount?.data?.data?.account_name
     );
-  }, [resolveAccount.data]);
+  }, [resolveAccount?.data]);
 
   useEffect(() => {
     if (fetchBankInformation?.data?.data) {
       const { id, bank_name, account_name, account_number } =
-        fetchBankInformation?.data?.data?.[0];
+        fetchBankInformation?.data?.data?.[0] ?? {};
       const bank: any = banks?.find((bk: any) => bk.name === bank_name);
       formik.setValues({
         accountType: "",

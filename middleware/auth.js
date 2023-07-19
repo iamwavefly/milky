@@ -80,7 +80,7 @@ export const loginHandler = async (data, fundRefId) => {
     return Router.push("/dashboard");
   }
 
-  if (data?.route_to_get_started && !business_type) {
+  if (data?.route_to_get_started) {
     return Router.push("/onboarding");
   }
 
