@@ -44,12 +44,10 @@ interface Props {
 const Dashboard = ({ children, title }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [showSidebar, setShowSidebar] = useState(true);
-  const [openMenuId, setOpenMenuId] = useState(0);
+  const [openMenuId, setOpenMenuId] = useState<number | undefined>(0);
   const [photo, setPhoto] = useState("");
   const open = Boolean(anchorEl);
   const [labels, setLabels] = useState<any>([]);
-
-  const dispatch = useDispatch();
   const { subsidiaries, user, notifications } = useSelector(selectUserState);
   const [verified, setVerified] = useState<undefined | boolean>(undefined);
   const [pendingApproval, setPendingApproval] = useState<undefined | boolean>(
@@ -81,6 +79,11 @@ const Dashboard = ({ children, title }: Props) => {
   };
   const toggleMenu = () => {
     setShowSidebar((prev) => !prev);
+  };
+
+  const toggleNavMenu = (id: number) => {
+    if (id === openMenuId) return setOpenMenuId(undefined);
+    setOpenMenuId(id);
   };
 
   // nested menu
@@ -140,7 +143,7 @@ const Dashboard = ({ children, title }: Props) => {
               ? func()
               : link && !nest
               ? Router.push(link)
-              : setOpenMenuId(id)
+              : toggleNavMenu(id)
           }
           key={id}
         >
@@ -148,7 +151,9 @@ const Dashboard = ({ children, title }: Props) => {
           <Typography component="span">{name}</Typography>
           {nest && (
             <IconButton
-              className={Styles.nestedIcon}
+              className={`${Styles.nestedIcon} ${
+                openMenuId === id ? Styles.active : ""
+              }`}
               sx={{ position: "absolute", right: "18px" }}
             >
               <CarretDownIcon />
