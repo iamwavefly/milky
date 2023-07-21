@@ -25,6 +25,11 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/create-subsidiary`
   );
+  // business information view
+  const fetchBusinessInformation = useFetch(
+    `${baseUrl}/dashboard/onboarding/business/information/view`,
+    "get"
+  );
   // business types
   // const fetchBusinessType = useFetch(
   //   `${baseUrl}/dashboard/business/categories`,
@@ -94,6 +99,7 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
         mobile_number: form.phoneNumber,
         business_type: form.businessType,
         is_Default: form.default,
+        business_id: fetchBusinessInformation?.data?.data?.business_id,
       };
       const formData = serialize(payload);
       handleSubmit(formData);
@@ -112,17 +118,6 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
           onBlur={formik.handleBlur}
           error={formik.touched.name && Boolean(formik.errors.name)}
           helperText={formik.touched.name && formik.errors.name}
-        />
-        <TextField
-          label="Business ID"
-          variant="standard"
-          name="businessId"
-          value={formik.values.businessId}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.businessId && Boolean(formik.errors.businessId)}
-          helperText={formik.touched.businessId && formik.errors.businessId}
-          type="number"
         />
         <TextField
           label="Email Address*"

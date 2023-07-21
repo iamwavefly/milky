@@ -315,7 +315,6 @@ export const newUser = () =>
 export const newSubsidiary = () =>
   yup.object({
     name: yup.string().nullable().required("Subsidiary name is required"),
-    businessId: yup.number().nullable(),
     emailAddress: yup
       .string()
       .email()

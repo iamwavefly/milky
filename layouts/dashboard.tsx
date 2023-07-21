@@ -10,9 +10,11 @@ import {
   Box,
   Button,
   Collapse,
+  Dialog,
   Divider,
   IconButton,
   Menu,
+  Slide,
   Stack,
   Typography,
 } from "@mui/material";
@@ -37,6 +39,18 @@ import substring from "@/helper/substring";
 import Notifications from "@/components/notifications/notifications";
 import TestModeBadge from "@/components/testModeBadge";
 import truncate from "@/helper/truncate";
+import { TransitionProps } from "@mui/material/transitions";
+import NewSubsidiary from "@/components/form/newSubsidiary";
+import NewBusiness from "@/components/form/newBusiness";
+
+const Transition = React.forwardRef(function Transition(
+  props: TransitionProps & {
+    children: React.ReactElement<any, any>;
+  },
+  ref: React.Ref<unknown>
+) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 interface Props {
   children?: ReactNode;
@@ -45,6 +59,7 @@ interface Props {
 
 const Dashboard = ({ children, title }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [openBizModal, setOpenBizModal] = useState(false);
   const [showSidebar, setShowSidebar] = useState(true);
   const [openMenuId, setOpenMenuId] = useState<number | undefined>(0);
   const [activeBizMenu, setActiveBizMenu] = useState(false);
@@ -74,6 +89,14 @@ const Dashboard = ({ children, title }: Props) => {
     }
     setLabels(routes);
   }, [verified, pendingApproval]);
+
+  const handleClickBizModal = () => {
+    setOpenBizModal(true);
+  };
+
+  const handleCloseBizModal = () => {
+    setOpenBizModal(false);
+  };
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -205,7 +228,17 @@ const Dashboard = ({ children, title }: Props) => {
       >
         <Notifications />
       </Menu>
-      {/* notification menu ends */}
+      {/* New Business Modal */}
+      <Dialog
+        open={openBizModal}
+        TransitionComponent={Transition}
+        onClose={handleCloseBizModal}
+      >
+        <Box width="398px" padding="32px">
+          <NewBusiness closeHandler={handleCloseBizModal} />
+        </Box>
+      </Dialog>
+
       <Stack className={Styles.container}>
         <Stack
           className={`${Styles.sidebar} ${showSidebar ? Styles.active : ""}`}
@@ -287,6 +320,7 @@ const Dashboard = ({ children, title }: Props) => {
                   <Button
                     sx={{ mt: "20px", height: "36px" }}
                     variant="contained"
+                    onClick={handleClickBizModal}
                   >
                     Add new business
                   </Button>
