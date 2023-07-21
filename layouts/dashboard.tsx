@@ -8,7 +8,9 @@ import React, {
 import {
   Avatar,
   Box,
+  Button,
   Collapse,
+  Divider,
   IconButton,
   Menu,
   Stack,
@@ -45,6 +47,7 @@ const Dashboard = ({ children, title }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [showSidebar, setShowSidebar] = useState(true);
   const [openMenuId, setOpenMenuId] = useState<number | undefined>(0);
+  const [activeBizMenu, setActiveBizMenu] = useState(false);
   const [photo, setPhoto] = useState("");
   const open = Boolean(anchorEl);
   const [labels, setLabels] = useState<any>([]);
@@ -56,6 +59,7 @@ const Dashboard = ({ children, title }: Props) => {
   const [pendingVerification, setPendingVerification] = useState<
     undefined | boolean
   >(undefined);
+
   const { business_name, id, subsidiary_logo, verification_status } =
     subsidiaries;
 
@@ -197,7 +201,7 @@ const Dashboard = ({ children, title }: Props) => {
         anchorEl={anchorEl}
         open={open}
         onClose={handleClose}
-        PaperProps={{ sx: { padding: 0 } }}
+        slotProps={{ paper: { sx: { padding: 0 } } }}
       >
         <Notifications />
       </Menu>
@@ -235,39 +239,59 @@ const Dashboard = ({ children, title }: Props) => {
             <Stack
               bgcolor="#F5F6FE"
               width="226px"
-              height="76px"
+              height="auto"
               mx="auto"
               mt="20px"
-              direction="row"
-              justifyContent="space-between"
               p="16px 14px"
+              border="1px solid #E4E8F2"
               className={Styles.brand}
             >
-              <Stack>
-                <Typography fontWeight={500} fontSize="18px" lineHeight="24px">
-                  {truncate(business_name, 15)}
-                </Typography>
-                <Typography
-                  fontWeight={400}
-                  mt="2px"
-                  color="#5F616D"
-                  fontSize="12px"
-                  lineHeight="18px"
+              {/* default business */}
+              <Stack direction="row" justifyContent="space-between">
+                <Stack>
+                  <Typography
+                    fontWeight={500}
+                    fontSize="18px"
+                    lineHeight="24px"
+                  >
+                    {truncate(business_name, 15)}
+                  </Typography>
+                  <Typography
+                    fontWeight={400}
+                    mt="2px"
+                    color="#5F616D"
+                    fontSize="12px"
+                    lineHeight="18px"
+                  >
+                    Merchant ID: {id ?? 0}
+                  </Typography>
+                </Stack>
+                <IconButton
+                  onClick={() => setActiveBizMenu((prev) => !prev)}
+                  sx={{
+                    width: "25px",
+                    height: "25px",
+                    p: "6px",
+                    my: "auto",
+                    color: "#92959F",
+                  }}
+                  className={activeBizMenu ? Styles.active : ""}
                 >
-                  Merchant ID: {id ?? 0}
-                </Typography>
+                  <ArrowIcon fill="#92959F" />
+                </IconButton>
               </Stack>
-              <IconButton
-                sx={{
-                  width: "20px",
-                  height: "20px",
-                  p: "4px",
-                  my: "auto",
-                  color: "#92959F",
-                }}
-              >
-                <ArrowIcon fill="#92959F" />
-              </IconButton>
+              {/* other businesses */}
+              <Collapse in={activeBizMenu}>
+                <Stack>
+                  <Divider sx={{ mt: "14px" }} />
+                  <Button
+                    sx={{ mt: "20px", height: "36px" }}
+                    variant="contained"
+                  >
+                    Add new business
+                  </Button>
+                </Stack>
+              </Collapse>
             </Stack>
           ) : (
             ""
