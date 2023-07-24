@@ -23,6 +23,7 @@ import { LoadingButton } from "@mui/lab";
 import { setUserState } from "@/store/authSlice";
 import { loginHandler } from "@/middleware/auth";
 import { useDispatch } from "react-redux";
+import Cookies from "js-cookie";
 
 export default function Index() {
   const [showPassword, setShowPassword] = useState(false);
@@ -59,6 +60,10 @@ export default function Index() {
         user_email: email,
         password,
       };
+
+      const tempToken = Cookies.get("token");
+      if (tempToken) Cookies.remove("token");
+
       handleSubmit(payload);
     },
   });

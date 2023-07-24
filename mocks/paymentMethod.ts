@@ -1,11 +1,9 @@
 const paymentMethod = [
-  "Mobile Money",
-  "USSD",
-  "Bank Account",
   "Card Payment",
-  "Bank Transfer",
-  "Pay With Bank Transfer",
+  "USSD",
   "QR Code Payment",
+  "Bank Transfer",
+  "Bank Account",
 ];
 
 export default paymentMethod;
