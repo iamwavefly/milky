@@ -22,6 +22,7 @@ import { LoadingButton } from "@mui/lab";
 import { setUserState } from "@/store/authSlice";
 import { useDispatch } from "react-redux";
 import ReactCodeInput from "react-code-input";
+import Cookies from "js-cookie";
 
 const props = {
   inputStyle: {
@@ -72,6 +73,9 @@ export default function Index() {
       subsidiary_id: subsidiaryId,
       otp,
     };
+    // check and remove token
+    const tempToken = Cookies.get("token");
+    if (tempToken) Cookies.remove("token");
     // req
     if (!authReq) {
       return handleSubmit(form);
