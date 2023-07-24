@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import "@/styles/global.scss";
 import theme from "@/theme/mui";
 import { ThemeProvider } from "@mui/material";
@@ -16,6 +16,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "../styles/colors.scss";
 import { Toaster } from "react-hot-toast";
+import Router from "next/router";
 
 function App({ Component, pageProps }: AppProps) {
   const token = Cookies.get("token");
@@ -33,6 +34,12 @@ function App({ Component, pageProps }: AppProps) {
       mirror: false,
     });
   }, []);
+
+  useLayoutEffect(() => {
+    if ((Router?.pathname === "/" || Router?.pathname === "/signup") && token) {
+      Router?.push("/dashboard");
+    }
+  }, [token]);
 
   useEffect(() => {
     const fetchUserProfile = () => {

@@ -107,6 +107,11 @@ export const authSlice = createSlice({
       state.user = action.payload.user;
       state.notifications = action.payload.notifications;
     },
+    setLogout(state) {
+      state.subsidiaries = initialState.subsidiaries;
+      state.user = initialState.user;
+      state.notifications = initialState.notifications;
+    },
   },
 
   // Special reducer for hydrating the state. Special case for next-redux-wrapper
@@ -120,7 +125,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setUserState } = authSlice.actions;
+export const { setUserState, setLogout } = authSlice.actions;
 
 export const selectUserState = (state: AppState) => state.auth;
 

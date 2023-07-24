@@ -130,8 +130,6 @@ export const fundingHandler = (data) => {
     if (counterBar) counterBar.style.background = "#f8f5ff";
     if (counterIndicator) counterIndicator.innerHTML = "1";
     // Router.push('/complete-request')
-
-    console.log("successful...");
   }, 5500);
 };
 

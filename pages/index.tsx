@@ -17,9 +17,14 @@ import EyeCloseIcon from "../public/images/eye-close.svg";
 import Router from "next/router";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
-import { loginHandler } from "@/middleware/auth";
+import {
+  clearCacheHandler,
+  loginHandler,
+  logoutHandler,
+  logoutWTokenHandler,
+} from "@/middleware/auth";
 import { LoadingButton } from "@mui/lab";
-import { setUserState } from "@/store/authSlice";
+import { setLogout, setUserState } from "@/store/authSlice";
 import { useDispatch } from "react-redux";
 import ReactCodeInput from "react-code-input";
 import Cookies from "js-cookie";
@@ -75,7 +80,11 @@ export default function Index() {
     };
     // check and remove token
     const tempToken = Cookies.get("token");
-    if (tempToken) Cookies.remove("token");
+    if (tempToken) {
+      clearCacheHandler();
+      return logoutWTokenHandler();
+    }
+
     // req
     if (!authReq) {
       return handleSubmit(form);
@@ -85,13 +94,15 @@ export default function Index() {
 
   useEffect(() => {
     const { message, token } = data ?? {};
-    const subsidiaries = data?.subsidiary_details?.subsidiaries?.[0];
-    setSubsidiaryId(subsidiaries?.id);
+    const defaultBusiness = data?.subsidiary_details?.subsidiaries?.find(
+      (business: { is_default: boolean }) => business?.is_default
+    );
+    setSubsidiaryId(defaultBusiness?.id);
     if (token?.access_token) {
       dispatch(
         setUserState({
           user: data?.user,
-          subsidiaries,
+          subsidiaries: defaultBusiness,
         })
       );
       loginHandler(data);
