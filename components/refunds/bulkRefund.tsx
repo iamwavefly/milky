@@ -19,8 +19,30 @@ import { useDispatch } from "react-redux";
 import UploadIcon from "remixicon-react/Upload2LineIcon";
 import DownloadIcon from "../../public/icons/download-alt.svg";
 import csvtojson from "csvtojson";
-import BulkRefundTable from "./bulkRefundTable";
-// import SampleBulkFile from "";
+import { CSVLink } from "react-csv";
+
+const headers = [
+  { label: "Payment references", key: "references" },
+  { label: "Amount to refund", key: "amount" },
+  { label: "Comments", key: "comments" },
+];
+const sampleBulkDownload = [
+  {
+    references: "ALLI-MOCK-RECURR-81a68bad83b3130b96389abd23c3431f",
+    amount: "5000",
+    comments: "Customer got no value for his money",
+  },
+  {
+    references: "ALLI-MOCK-8db33f13922e19d0ea423126d8304dde",
+    amount: "2.99",
+    comments: "Customer got no value for his money",
+  },
+  {
+    references: "ALLI-MOCK-RECURR-5c7ad5d2c2cbbc16887fe8aad8fa99de",
+    amount: "2000",
+    comments: "Customer got no value for his money",
+  },
+];
 
 export default function BulkRefund({ reload, updateCsvFile }: any) {
   const [jsonData, setJsonData] = useState<any[] | null>(null);
@@ -93,19 +115,18 @@ export default function BulkRefund({ reload, updateCsvFile }: any) {
           Upload the refund CSV file to begin
         </Typography>
       </Stack>
-      <a
-        href={"../../mocks/refunds_sample.csv"}
-        download="Example-PDF-document"
-        target="_blank"
-        rel="noreferrer"
+      <CSVLink
+        data={sampleBulkDownload}
+        headers={headers}
+        filename={"refunds_sample.csv"}
       >
         <Typography color="#262B40" fontWeight={500} mt="29px" fontSize="12px">
-          <IconButton>
+          <IconButton sx={{ top: -2 }}>
             <DownloadIcon />
           </IconButton>
           Download sample CSV file for bulk refund
         </Typography>
-      </a>
+      </CSVLink>
     </Box>
   );
 }
