@@ -79,8 +79,8 @@ export default function Header({
   }, [pathname]);
 
   useEffect(() => {
-    fetchData?.handleSubmit();
-  }, []);
+    url && fetchData?.handleSubmit();
+  }, [url]);
 
   useEffect(() => {
     const data = fetchData?.data;

@@ -22,25 +22,25 @@ import csvtojson from "csvtojson";
 import { CSVLink } from "react-csv";
 
 const headers = [
-  { label: "Payment references", key: "references" },
-  { label: "Amount to refund", key: "amount" },
-  { label: "Comments", key: "comments" },
+  { key: "transaction_reference", label: "Transaction references" },
+  { key: "amount", label: "Amount to refund" },
+  { key: "reason", label: "Comments" },
 ];
 const sampleBulkDownload = [
   {
-    references: "ALLI-MOCK-RECURR-81a68bad83b3130b96389abd23c3431f",
+    transaction_reference: "ALLI-MOCK-RECURR-81a68bad83b3130b96389abd23c3431f",
     amount: "5000",
-    comments: "Customer got no value for his money",
+    reason: "Customer got no value for his money",
   },
   {
-    references: "ALLI-MOCK-8db33f13922e19d0ea423126d8304dde",
+    transaction_reference: "ALLI-MOCK-8db33f13922e19d0ea423126d8304dde",
     amount: "2.99",
-    comments: "Customer got no value for his money",
+    reason: "Customer got no value for his money",
   },
   {
-    references: "ALLI-MOCK-RECURR-5c7ad5d2c2cbbc16887fe8aad8fa99de",
+    transaction_reference: "ALLI-MOCK-RECURR-5c7ad5d2c2cbbc16887fe8aad8fa99de",
     amount: "2000",
-    comments: "Customer got no value for his money",
+    reason: "Customer got no value for his money",
   },
 ];
 
@@ -57,7 +57,10 @@ export default function BulkRefund({ reload, updateCsvFile }: any) {
 
     if (file) {
       const csvData = await file.text();
-      const jsonArray = await csvtojson().fromString(csvData);
+      const jsonArray = await csvtojson({
+        headers: ["transaction_reference", "amount", "reason"],
+      }).fromString(csvData);
+      console.log({ jsonArray }, csvData);
       const tableColumns = Object.keys(jsonArray[0]).map((col) => {
         return {
           accessorKey: col,
