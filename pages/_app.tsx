@@ -51,7 +51,8 @@ function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     if (data?.user) {
       const defaultBusiness = data?.subsidiary_details?.subsidiaries?.find(
-        (business: { is_default: boolean }) => business?.is_default
+        // (business: { is_default: boolean }) => business?.is_default
+        (business: { is_default: boolean }) => business
       );
       dispatch(
         setUserState({

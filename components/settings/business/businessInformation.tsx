@@ -53,7 +53,7 @@ export default function BusinessInformation() {
 
   // fetch business type
   useEffect(() => {
-    const { verification_status } = subsidiaries;
+    const { verification_status } = subsidiaries ?? {};
     const status = verification_status?.toLowerCase();
     if (status === "pending-approval" || status === "active") {
       return setIsReadOnly(true);
@@ -158,7 +158,7 @@ export default function BusinessInformation() {
       legal_business_name,
       business_type,
       subsidiary_logo,
-    } = subsidiaries;
+    } = subsidiaries ?? {};
 
     const newCountry = countries?.find(
       (coun: any) => coun?.name === country

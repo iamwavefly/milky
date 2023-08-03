@@ -32,7 +32,7 @@ import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import CarretDownIcon from "../public/icons/carret-down.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUserState } from "@/store/authSlice";
+import { selectUserState, setUserState } from "@/store/authSlice";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import substring from "@/helper/substring";
@@ -66,6 +66,7 @@ const Dashboard = ({ children, title }: Props) => {
   const [photo, setPhoto] = useState("");
   const open = Boolean(anchorEl);
   const [labels, setLabels] = useState<any>([]);
+  const [otherSubsidiaries, setOtherSubsidiaries] = useState([]);
   const { subsidiaries, user, notifications } = useSelector(selectUserState);
   const [verified, setVerified] = useState<undefined | boolean>(undefined);
   const [pendingApproval, setPendingApproval] = useState<undefined | boolean>(
@@ -76,7 +77,61 @@ const Dashboard = ({ children, title }: Props) => {
   >(undefined);
 
   const { business_name, id, subsidiary_logo, verification_status } =
-    subsidiaries;
+    subsidiaries ?? {};
+
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/user/subsidiaries`,
+    "get"
+  );
+
+  const changeSettlementApi = useFetch(
+    `${baseUrl}/dashboard/session/set-subsidiary`,
+    "post"
+  );
+  // user profile api
+  const userApi = useFetch(`${baseUrl}/dashboard/me`, "get");
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  useEffect(() => {
+    const { status } = changeSettlementApi?.data;
+    if (status === "success") {
+      userApi.handleSubmit();
+      setActiveBizMenu(false);
+    }
+  }, [changeSettlementApi?.data]);
+
+  useEffect(() => {
+    if (userApi?.data?.subsidiary_details) {
+      const defaultBusiness =
+        userApi?.data?.subsidiary_details?.subsidiaries?.find(
+          // (business: { is_default: boolean }) => business?.is_default
+          (business: { is_default: boolean }) => business
+        );
+      dispatch(
+        setUserState({
+          notifications: userApi?.data?.notifications,
+          subsidiaries: defaultBusiness,
+        })
+      );
+    }
+  }, [userApi?.data]);
+
+  useEffect(() => {
+    const allSubsidiaries = data?.subsidiary_details?.subsidiaries;
+    const fnSubsidiaries = allSubsidiaries?.filter(
+      (subsidiary: { id: number }) => subsidiary?.id !== id
+    );
+    setOtherSubsidiaries(fnSubsidiaries);
+  }, [data, id]);
+
+  useEffect(() => {
+    console.log(id);
+  }, [id]);
 
   useEffect(() => {
     const imageUrl = `https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${subsidiary_logo}`;
@@ -111,6 +166,13 @@ const Dashboard = ({ children, title }: Props) => {
   const toggleNavMenu = (id: number) => {
     if (id === openMenuId) return setOpenMenuId(undefined);
     setOpenMenuId(id);
+  };
+
+  const toggleSettlement = (id: number) => {
+    changeSettlementApi.handleSubmit({
+      subsidiary_id: id,
+      set_as_default: true,
+    });
   };
 
   // nested menu
@@ -316,6 +378,25 @@ const Dashboard = ({ children, title }: Props) => {
               {/* other businesses */}
               <Collapse in={activeBizMenu}>
                 <Stack>
+                  <Stack mt="14px" spacing="8px">
+                    {otherSubsidiaries?.map(
+                      ({
+                        business_name,
+                        business_id,
+                        id,
+                      }: typeof subsidiaries) => (
+                        <Box
+                          onClick={() => toggleSettlement(id)}
+                          key={id}
+                          className={Styles.subsidiary}
+                        >
+                          <Typography fontSize="14px" color="#1D2A23">
+                            {business_name}
+                          </Typography>
+                        </Box>
+                      )
+                    )}
+                  </Stack>
                   <Divider sx={{ mt: "14px" }} />
                   <Button
                     sx={{ mt: "20px", height: "36px" }}

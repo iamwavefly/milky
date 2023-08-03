@@ -7,7 +7,7 @@ import ArrowRight from "remixicon-react/ArrowRightSLineIcon";
 
 export default function TestModeBadge() {
   const [url, setUrl] = useState("/onboarding");
-  const { business_type } = useSelector(selectUserState).subsidiaries;
+  const { business_type } = useSelector(selectUserState)?.subsidiaries ?? {};
 
   useEffect(() => {
     if (business_type) {

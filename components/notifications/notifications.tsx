@@ -79,7 +79,7 @@ export default function Notifications() {
                       ml="4px"
                       color="#EA5851"
                     >
-                      {notifications.length > 9 ? "9+" : notifications.length}
+                      {notifications?.length > 9 ? "9+" : notifications?.length}
                     </Typography>
                   </Stack>
                 }
@@ -105,7 +105,7 @@ export default function Notifications() {
               />
             </Tabs>
           </Box>
-          {notifications.length ? (
+          {notifications?.length ? (
             notifications?.map((notif, index) => (
               <TabPanel key={notif?.id} value={value} index={index}>
                 <Notification details={notif} />
