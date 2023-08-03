@@ -42,6 +42,7 @@ import truncate from "@/helper/truncate";
 import { TransitionProps } from "@mui/material/transitions";
 import NewSubsidiary from "@/components/form/newSubsidiary";
 import NewBusiness from "@/components/form/newBusiness";
+import { selectAppState, setMenuState } from "@/store/appSlice";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -67,7 +68,6 @@ const Dashboard = ({ children, title }: Props) => {
   const open = Boolean(anchorEl);
   const [labels, setLabels] = useState<any>([]);
   const [otherSubsidiaries, setOtherSubsidiaries] = useState([]);
-  const { subsidiaries, user, notifications } = useSelector(selectUserState);
   const [verified, setVerified] = useState<undefined | boolean>(undefined);
   const [pendingApproval, setPendingApproval] = useState<undefined | boolean>(
     undefined
@@ -75,6 +75,9 @@ const Dashboard = ({ children, title }: Props) => {
   const [pendingVerification, setPendingVerification] = useState<
     undefined | boolean
   >(undefined);
+
+  const { subsidiaries, user, notifications } = useSelector(selectUserState);
+  const { menu } = useSelector(selectAppState);
 
   const { business_name, id, subsidiary_logo, verification_status } =
     subsidiaries ?? {};
@@ -92,6 +95,10 @@ const Dashboard = ({ children, title }: Props) => {
   const userApi = useFetch(`${baseUrl}/dashboard/me`, "get");
 
   const dispatch = useDispatch();
+  // toggle menu state
+  useEffect(() => {
+    dispatch(setMenuState(activeBizMenu));
+  }, [activeBizMenu]);
 
   useEffect(() => {
     handleSubmit();
@@ -413,7 +420,11 @@ const Dashboard = ({ children, title }: Props) => {
           )}
 
           {/* navigation */}
-          <nav className={Styles.navigations}>
+          <nav
+            className={`${Styles.navigations} ${
+              menu?.disabled ? Styles.disabled : ""
+            }`}
+          >
             <ul>
               {labels?.map((props: any) => (
                 <NavLink key={props.id} {...props} />

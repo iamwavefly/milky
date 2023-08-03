@@ -72,6 +72,20 @@
   min-width: 250px;
   overflow-y: auto;
   margin-top: 20px;
+  &.disabled {
+    overflow: hidden;
+    &::after {
+      opacity: 0.4;
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      background-color: #fff;
+      width: 100%;
+      min-height: 100%;
+      z-index: 999;
+    }
+  }
   & > ul {
     list-style: none;
     display: flex;

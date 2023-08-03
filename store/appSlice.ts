@@ -18,6 +18,9 @@ export interface AppProps {
   reload: {
     percentage: boolean;
   };
+  menu: {
+    disabled: boolean;
+  };
 }
 
 // Initial state
@@ -35,6 +38,9 @@ const initialState: AppProps = {
   reload: {
     percentage: false,
   },
+  menu: {
+    disabled: false,
+  },
 };
 
 // Actual Slice
@@ -51,6 +57,9 @@ export const appSlice = createSlice({
     reloadPercentage(state) {
       state.reload.percentage = !state.reload.percentage;
     },
+    setMenuState(state, action) {
+      state.menu.disabled = action.payload;
+    },
   },
 
   // Special reducer for hydrating the state. Special case for next-redux-wrapper
@@ -64,7 +73,7 @@ export const appSlice = createSlice({
   },
 });
 
-export const { setToastState, setDrawalState, reloadPercentage } =
+export const { setToastState, setDrawalState, reloadPercentage, setMenuState } =
   appSlice.actions;
 
 export const selectAppState = (state: AppState) => state.app;
