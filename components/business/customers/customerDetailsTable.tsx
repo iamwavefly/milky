@@ -13,8 +13,10 @@ import {
 import Router, { useRouter } from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
-import { Button } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import AddBox from "remixicon-react/AddBoxFillIcon";
+import Export from "@/components/Export";
+import DropdownMenu from "@/components/DropdownMenu";
 
 const CustomerDetailsTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -45,9 +47,27 @@ const CustomerDetailsTable = () => {
         containerRef={containerRef}
         columns={CustomerDetailsTableColumns}
         data={data?.items}
-        entries={`${data?.total_items ?? 0} Entries`}
         setSearch={setSearch}
-        title="Transactions"
+        title={
+          <Typography fontSize="15px" fontWeight={600}>
+            Transactions
+          </Typography>
+        }
+        actions={
+          <>
+            <DropdownMenu
+              title="Filter"
+              updateFilter={setFilters}
+              selector="orders"
+            />
+            <Export
+              columns={CustomerDetailsTableColumns}
+              data={data?.items}
+              title="order"
+              variant="outlinedSmall"
+            />
+          </>
+        }
         transparent
         selector="customers"
         url="/dashboard/fetch/customers/orders"

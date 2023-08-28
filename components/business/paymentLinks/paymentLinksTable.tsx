@@ -12,16 +12,23 @@ import {
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
-import AddBox from "remixicon-react/AddBoxFillIcon";
-import { Button } from "@mui/material";
+import AddBox from "@/public/icons/link.svg";
+import { Box, Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setDrawalState } from "@/store/appSlice";
 import NewPaymentLink from "./newPaymentLink";
+import DropdownMenu from "@/components/DropdownMenu";
+import Export from "@/components/Export";
+import Modal from "@/components/modal/modal";
 
 const PaymentLinksTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/payment/link/subsidiary?page=${currentPage}&limit=10&${Object.entries(
@@ -51,23 +58,44 @@ const PaymentLinksTable = () => {
   }, [currentPage, search, filters]);
 
   return (
-    <div className={Styles.container}>
+    <Box>
+      <Modal
+        title="New Payment Link"
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <NewPaymentLink reload={handleSubmit} close={handleCloseModal} />
+      </Modal>
       <Header
         containerRef={containerRef}
         columns={PaymentLinkColumns}
         data={data?.items}
         url="/dashboard/payment/link/subsidiary"
-        entries={`${data?.total_items ?? 0} Entries`}
+        entries={`${data?.total_items ?? 0}`}
         setSearch={setSearch}
-        buttons={
-          <Button
-            variant="contained"
-            sx={{ height: "40px", fontSize: "12px" }}
-            onClick={openDrawal}
-          >
-            <AddBox size={16} />
-            Create New Link
-          </Button>
+        actions={
+          <>
+            <DropdownMenu
+              title="Filter"
+              updateFilter={setFilters}
+              selector={"paymentLinks"}
+            />
+            <Export
+              title={"payment link"}
+              data={data?.items}
+              columns={PaymentLinkColumns}
+              containerRef={containerRef}
+            />
+            <Button
+              variant="contained"
+              sx={{ height: "40px", fontSize: "12px" }}
+              onClick={handleOpenModal}
+            >
+              <AddBox width="18px" height="18px" fill="#fff" />
+              Create New Link
+            </Button>
+          </>
         }
         selector="paymentLinks"
         updateFilter={setFilters}
@@ -83,7 +111,7 @@ const PaymentLinksTable = () => {
           Router.push(`/business/payment-links/${e?.row?.original?.id}`)
         }
       />
-    </div>
+    </Box>
   );
 };
 

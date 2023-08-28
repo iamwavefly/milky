@@ -7,10 +7,10 @@ import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import Chart from "@/components/chargeback/chart";
 import ChargebackTable from "@/components/chargeback/chargebackTable";
+import Tabs from "@/components/Tabs";
+import OverviewCard from "@/components/cards/OverviewCard";
 
 export default function Index() {
-  const [metric, setMetric] = useState<any>({});
-
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/get/wallet/balance`,
     "get"
@@ -20,17 +20,11 @@ export default function Index() {
     handleSubmit();
   }, []);
 
-  useEffect(() => {
-    console.log({ data });
-  }, [data]);
-
   return (
     <Dashboard title="All Chargebacks">
-      <Box px="30px" mt="20px">
-        <Chart title="All Chargebacks" />
-        <Box mt="39px">
-          <ChargebackTable />
-        </Box>
+      <Chart />
+      <Box>
+        <ChargebackTable />
       </Box>
     </Dashboard>
   );

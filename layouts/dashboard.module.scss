@@ -46,7 +46,7 @@
     }
   }
   &.active {
-    width: 250px;
+    width: 260px;
   }
 }
 .topbar {
@@ -54,13 +54,13 @@
   top: 0;
   left: 0;
   width: 100%;
-  min-height: 60px;
-  border-bottom: 1px solid #dde0e7;
+  min-height: 64px;
+  border-bottom: 1px solid #e8eaed;
   background-color: #fff;
-  padding: 0 30px;
+  padding: 0 32px;
 }
 .content {
-  background-color: #f7f9fc;
+  background-color: #f6f6f9;
   overflow: auto;
 }
 
@@ -68,10 +68,10 @@
   position: relative;
   grid-column: 1 / 2 !important;
   grid-row: 1 / -1 !important;
-  border-right: 1px solid #e9ebf2;
-  min-width: 250px;
-  overflow-y: auto;
-  margin-top: 20px;
+  width: 100%;
+  max-width: 260px;
+  // overflow-y: auto;
+  margin-top: 40px;
   &.disabled {
     overflow: hidden;
     &::after {
@@ -102,24 +102,39 @@
         align-items: center;
         min-height: 44px;
         cursor: pointer;
-        padding: 0 24px;
-        & path {
-          fill: rgba(38, 43, 64, 0.8);
+        padding-left: 20px;
+        padding-right: 16px;
+        transition: all 3s ease;
+
+        &::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          width: 4px;
+          height: 44px;
+          border-radius: 80px;
         }
         &.active,
         &:hover {
-          background: #f3f3f9;
-          & path {
-            fill: #2e3192;
+          background: #f0f9ff;
+          transition: all 0.4s ease;
+          & > span {
+            color: #070f1c;
+          }
+        }
+        &.active {
+          &::before {
+            background-color: #0048b1;
           }
           & > span {
-            color: #2e3192;
+            font-weight: 600;
           }
         }
         & > span {
-          font-size: 14px;
-          color: rgba(38, 43, 64, 0.8);
-          margin-left: 15px;
+          font-size: 15px;
+          color: #162031;
+          margin-left: 12px;
+          font-weight: 500;
         }
       }
       &:last-child {
@@ -128,7 +143,23 @@
         background-color: #fff;
         bottom: 0;
         left: 0;
-        max-width: 250px;
+        padding-bottom: 24px;
+        &::before {
+          content: "";
+          width: 100%;
+          height: 1px;
+          background-color: #dadce2;
+          margin-top: 24px;
+          margin-bottom: 24px;
+        }
+        & > div {
+          & path {
+            fill: #e84a5f;
+          }
+          & > span {
+            color: #e84a5f;
+          }
+        }
       }
     }
   }
@@ -141,6 +172,9 @@
   visibility: hidden;
   transition: all 0.2s ease-in;
   transform: translateY(-10%);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
   &.active {
     height: auto;
     opacity: 1;
@@ -155,36 +189,26 @@
     & > a {
       display: flex;
       align-items: center;
-      min-height: 44px;
+      min-height: 40px;
       cursor: pointer;
       padding: 0 48px;
-      & > div {
-        width: 4px;
-        height: 4px;
-        background: #b9badb;
-        border-radius: 100px;
-      }
-      & path {
-        fill: rgba(38, 43, 64, 0.8);
-      }
       &.active,
       &:hover {
-        background: #f3f3f9;
-        & path {
-          fill: #2e3192;
-        }
+        background: #f0f9ff;
         & > span {
-          color: #2e3192;
+          color: #0048b1;
         }
-        & > div {
-          background: #2e3192;
-          transition: all 0.3s ease;
+      }
+      &.active {
+        & > span {
+          font-weight: 600;
         }
       }
       & > span {
         font-size: 14px;
-        color: rgba(38, 43, 64, 0.8);
-        margin-left: 15px;
+        color: #162031;
+        margin-left: 8px;
+        font-weight: 500;
       }
     }
   }
@@ -194,15 +218,16 @@
   cursor: not-allowed !important;
 }
 .nestedIcon {
-  width: 30px;
-  height: 30px;
+  width: 18px;
+  height: 18px;
+  padding: 0;
   transition: all 0.4s ease;
   transform: rotate(0deg);
-}
-.active {
-  & > svg {
-    transform: rotate(-180deg);
-    transition: all 0.2s ease;
+  &.active {
+    & > svg {
+      transform: rotate(-180deg);
+      transition: all 0.2s ease;
+    }
   }
 }
 

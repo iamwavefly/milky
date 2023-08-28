@@ -1,87 +1,60 @@
-import {
-  Box,
-  Button,
-  ButtonGroup,
-  Divider,
-  Stack,
-  ToggleButton,
-  ToggleButtonGroup,
-  Typography,
-} from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
 import React, { useState } from "react";
-import CountChart from "../CountChart";
+import OverviewCard from "../cards/OverviewCard";
 
-export default function Chart({ title }: { title: string }) {
-  const [metric, setMetric] = useState<any>({});
-  const [activeChart, setActiveChart] = useState<string | null>("overview");
+import CoinsIcon from "@/public/icons/coins.svg";
+import ReportIcon from "@/public/icons/report.svg";
+import ChargebackIcon from "@/public/icons/chargeback.svg";
+import Tabs from "../Tabs";
 
-  const handleAlignment = (
-    event: React.MouseEvent<HTMLElement>,
-    newAlignment: string | null
-  ) => {
-    setActiveChart(newAlignment);
-  };
+const OverviewCharts = ({ currentTab }: { currentTab: number }) => {
+  return (
+    <Box pt="30px" pb="32px">
+      <Typography fontSize="14px" letterSpacing="0.14px" lineHeight="24px">
+        This is the chargeback{" "}
+        {currentTab === 1 ? "overview" : "holding balance"} information
+      </Typography>
+      <Stack direction="row" gap="16px" mt="28px">
+        <OverviewCard
+          title="75%"
+          subtitle={"Remaining of your Threshold"}
+          icon={<ReportIcon />}
+          variant="error"
+        />
+        <OverviewCard
+          title="2,000,000"
+          subtitle={"Chargeback Value"}
+          currency="NGN"
+          icon={<CoinsIcon />}
+        />
+        <OverviewCard
+          title="22"
+          subtitle={"Chargeback Count"}
+          icon={<ChargebackIcon />}
+        />
+      </Stack>
+    </Box>
+  );
+};
 
+const tabs = [
+  {
+    id: 1,
+    tab: "Overview",
+    Form: OverviewCharts,
+  },
+  {
+    id: 2,
+    tab: "Holding Balance",
+    Form: OverviewCharts,
+  },
+];
+
+export default function Chart() {
+  const [currentTab, setCurrentTab] = useState(0);
   return (
     <Box>
-      <Stack>
-        <Typography fontSize="16px" color="#2E3192">
-          {title}
-        </Typography>
-      </Stack>
-      {/* button group */}
-      <ToggleButtonGroup
-        sx={{ mt: "32px" }}
-        value={activeChart}
-        exclusive
-        onChange={handleAlignment}
-        aria-label="text alignment"
-      >
-        <ToggleButton value="overview">Overview</ToggleButton>
-        <ToggleButton value="balance">Holding Balance</ToggleButton>
-      </ToggleButtonGroup>
-      {/*  */}
-      <Typography mt="20px" fontSize="12px" color="rgba(38, 43, 64, 0.8)">
-        This is the chargeback overview information
-      </Typography>
-      {/* balance charts */}
-      <Box mt="20px">
-        <Stack
-          direction="row"
-          bgcolor="#F3F3F9"
-          padding="25px 39px 25px 32px"
-          gap="45px"
-          minHeight="105px"
-        >
-          <Box flex={1}>
-            <CountChart
-              title={"Remaining of your threshold"}
-              value={metric?.count ?? 3000}
-              change={metric?.count_change}
-              withCurrency
-            />
-          </Box>
-          <Divider sx={{ border: "1px solid #E4E8F2" }} />
-          <Box flex={1}>
-            <CountChart
-              title={"Chargeback Value"}
-              themeColor="#EA5851"
-              value={metric?.volume ?? 5000}
-              change={metric?.volume_change}
-              withCurrency
-            />
-          </Box>
-          <Divider sx={{ border: "1px solid #E4E8F2" }} />
-          <Box flex={1}>
-            <CountChart
-              title={"Chargeback Count"}
-              value={metric?.settlements ?? 4500}
-              change={metric?.settlement_change}
-              withCurrency
-            />
-          </Box>
-        </Stack>
-      </Box>
+      <Tabs tabs={tabs} updateTab={setCurrentTab} />
     </Box>
   );
 }

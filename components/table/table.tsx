@@ -89,7 +89,14 @@ const Table: FC<TableProps> = ({
   };
 
   return (
-    <Paper elevation={0} style={{ padding: "1rem 0px" }}>
+    <Paper
+      elevation={0}
+      sx={{
+        border: "1px solid #E8EAED",
+        borderRadius: "8px",
+        overflow: "hidden",
+      }}
+    >
       <Box paddingX="1rem">
         {memoisedHeaderComponent && <Box>{memoisedHeaderComponent}</Box>}
         {search && (

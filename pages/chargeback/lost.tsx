@@ -26,11 +26,9 @@ export default function Index() {
 
   return (
     <Dashboard title="Lost">
-      <Box px="30px" mt="20px">
-        <Chart title="Lost" />
-        <Box mt="39px">
-          <PendingChargebackTable />
-        </Box>
+      <Chart />
+      <Box>
+        <PendingChargebackTable />
       </Box>
     </Dashboard>
   );

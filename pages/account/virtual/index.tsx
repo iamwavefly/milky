@@ -11,15 +11,8 @@ import VirtualAccountTable from "@/components/accounts/virtual/virtualAccountTab
 
 export default function Index() {
   return (
-    <Dashboard title="Virtual Account">
-      <Stack px="30px" mt="20px">
-        <Typography fontSize="16px" color="#2E3192">
-          Virtual Account
-        </Typography>
-      </Stack>
-      <Box mt="20px" px="30px">
-        <VirtualAccountTable />
-      </Box>
+    <Dashboard title="Virtual account">
+      <VirtualAccountTable />
     </Dashboard>
   );
 }

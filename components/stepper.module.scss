@@ -1,0 +1,20 @@
+.activeStepIcon,
+.currentStepIcon,
+.completedStepIcon {
+  display: flex;
+  width: 25px;
+  height: 25px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50px;
+  border: 1px solid var(--primary-40, #0089e7);
+  background: #fff;
+}
+.currentStepIcon {
+  border-color: #dadce2;
+}
+.completedStepIcon {
+  background-color: #0048b1;
+  border-color: transparent;
+  padding: 0;
+}

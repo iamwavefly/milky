@@ -20,6 +20,43 @@ import MoreIcon from "../../public/icons/more.svg";
 import BlacklistCustomer from "../business/customers/blacklistCustomer";
 import Modal from "../modal/modal";
 
+export const ViewTransaction = ({ id }: { id?: number }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const handleClick = (event: any) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (event: any) => {
+    event.stopPropagation();
+    setAnchorEl(null);
+  };
+
+  return (
+    <>
+      <Box>
+        <IconButton
+          sx={{ width: "40px", height: "40px" }}
+          onClick={handleClick}
+        >
+          <MoreIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem
+            onClick={(event) => Router.push(`/business/transactions/${id}`)}
+          >
+            View details
+          </MenuItem>
+        </Menu>
+      </Box>
+    </>
+  );
+};
+
 const DeletePromptComp = ({ product }: any) => {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/product/delete/${product?.id}`,
@@ -145,17 +182,20 @@ export const ProductMenu = ({ id }: { id?: number }) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={(event) => handleActionClick("edit", event)}>
-            Edit
-          </MenuItem>
           <MenuItem onClick={(event) => handleActionClick("archive", event)}>
             {product?.status !== "Archived" ? "Archieve" : "Unarchive"}
           </MenuItem>
+          <MenuItem onClick={(event) => handleActionClick("edit", event)}>
+            Duplicate product
+          </MenuItem>
+          <MenuItem onClick={(event) => handleActionClick("edit", event)}>
+            Edit
+          </MenuItem>
           <MenuItem
-            sx={{ color: "#EA5851" }}
+            sx={{ color: "#E84A5F" }}
             onClick={(event) => handleActionClick("delete", event)}
           >
-            Delete
+            Delete product
           </MenuItem>
         </Menu>
       </Box>
@@ -216,6 +256,8 @@ export const CustomerMenu = ({ id }: { id: number }) => {
     if (action === "blacklist") return openDrawal();
   };
 
+  const activeCustomer = customer?.status?.toLowerCase() === "active";
+
   return (
     <>
       <Box>
@@ -230,12 +272,55 @@ export const CustomerMenu = ({ id }: { id: number }) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={(event) => handleActionClick("blacklist", event)}>
-            {customer?.status?.toLowerCase() === "active"
-              ? "Blacklist"
-              : "Whitelist"}{" "}
-            customer
+          <MenuItem onClick={(event) => handleActionClick("view", event)}>
+            View Details
           </MenuItem>
+          <MenuItem
+            sx={{
+              color: activeCustomer ? "#E84A5F" : "",
+            }}
+            onClick={(event) => handleActionClick("blacklist", event)}
+          >
+            {activeCustomer ? "Blacklist" : "Whitelist"} customer
+          </MenuItem>
+        </Menu>
+      </Box>
+    </>
+  );
+};
+
+export const VirtualAccountMenu = ({ id }: { id: number }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event: any) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (event: any) => {
+    event.stopPropagation();
+    setAnchorEl(null);
+  };
+
+  const handleActionClick = (action: string, event: any) => {
+    handleClose(event);
+    if (action === "view") return Router.push(`/business/customers/${id}`);
+  };
+
+  return (
+    <>
+      <Box>
+        <IconButton
+          sx={{ width: "40px", height: "40px" }}
+          onClick={handleClick}
+        >
+          <MoreIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
           <MenuItem onClick={(event) => handleActionClick("view", event)}>
             View Details
           </MenuItem>
@@ -319,17 +404,20 @@ export const PaymentLinkMenu = ({ id }: { id: number }) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={(event) => handleActionClick("update", event)}>
-            {details?.is_active ? "Deactivate" : "Activate"} link
+          <MenuItem onClick={(event) => handleActionClick("copy", event)}>
+            Copy link
           </MenuItem>
           <MenuItem onClick={(event) => handleActionClick("view", event)}>
             View details
           </MenuItem>
-          <MenuItem onClick={(event) => handleActionClick("copy", event)}>
-            Copy link
-          </MenuItem>
           <MenuItem onClick={(event) => handleActionClick("open", event)}>
             Initiate payment
+          </MenuItem>
+          <MenuItem
+            sx={{ color: details?.is_active ? "#E84A5F" : "" }}
+            onClick={(event) => handleActionClick("update", event)}
+          >
+            {details?.is_active ? "Deactivate" : "Activate"} link
           </MenuItem>
         </Menu>
       </Box>

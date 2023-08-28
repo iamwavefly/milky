@@ -36,7 +36,7 @@ const AssessmentChargebackTable = () => {
         containerRef={containerRef}
         columns={AssessmentChargebackColumns}
         data={data?.items}
-        entries={`${data?.total_items ?? 0} Entries`}
+        entries={`${data?.total_items ?? 0}`}
         setSearch={setSearch}
         url="/dashboard/chargeback/all"
       />

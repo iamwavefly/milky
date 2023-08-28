@@ -15,65 +15,73 @@ import { setDrawalState } from "@/store/appSlice";
 import TransferDetails from "@/components/payouts/transfers/transferDetails";
 import TransferTable from "@/components/payouts/transfers/transferTable";
 import MakeTransfer from "@/components/payouts/transfers/makeTransfer";
+import Tabs from "@/components/Tabs";
+import LandscapeCard from "@/components/cards/LandscapeCard";
+
+import CoinsIcon from "@/public/icons/coins.svg";
+import ReportIcon from "@/public/icons/report.svg";
+import SemdIcon from "@/public/icons/send.svg";
+
+
+const TransferCurrency = ({ currentTab }: { currentTab: number }) => {
+  return (
+    <Box pt="30px" pb="32px">
+      <Stack direction="row" gap="16px" mt="20px">
+        <LandscapeCard
+          title="2,500,000"
+          subtitle={"Available Balance"}
+          currency="NGN"
+          icon={<CoinsIcon />}
+          variant="error"
+        />
+        <LandscapeCard
+          title="2,000,000"
+          subtitle={"Total Transfers"}
+          currency="NGN"
+          icon={<SemdIcon />}
+        />
+        <LandscapeCard
+          title="120"
+          subtitle={"Successful transfers"}
+          icon={<ReportIcon />}
+        />
+      </Stack>
+    </Box>
+  );
+};
+
+const tabs = [
+  {
+    id: 1,
+    tab: "Naira",
+    Form: TransferCurrency,
+  },
+  {
+    id: 2,
+    tab: "USD",
+    Form: TransferCurrency,
+  },
+  {
+    id: 3,
+    tab: "GBP",
+    Form: TransferCurrency,
+  },
+  {
+    id: 4,
+    tab: "EUR",
+    Form: TransferCurrency,
+  },
+];
 
 export default function Index() {
-  const [reload, setReload] = useState(false);
-  const dispatch = useDispatch();
-  // open drawal
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Fund Balance",
-        content: <TransferDetails />,
-      })
-    );
-  };
-  const openTransferDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Make Transfer",
-        content: <MakeTransfer reload={() => setReload((prev) => !prev)} />,
-      })
-    );
-  };
-
+  const [currentTab, setCurrentTab] = useState(0);
   return (
     <Dashboard title="Dashboard">
-      <Stack
-        px="30px"
-        mt="20px"
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Typography fontSize="16px" color="#2E3192">
-          Transfers
-        </Typography>
-        <Stack direction="row" alignItems="center" spacing="10px">
-          <Button
-            sx={{ fontSize: "12px", height: "40px" }}
-            variant="outlined"
-            onClick={openTransferDrawal}
-          >
-            <Box sx={{ transform: "rotate(-45deg)" }}>
-              <SendIcon size={18} />
-            </Box>
-            Make Transfer
-          </Button>
-          <Button
-            sx={{ fontSize: "12px", height: "40px" }}
-            variant="contained"
-            onClick={openDrawal}
-          >
-            <FundIcon size={18} />
-            Fund Balance
-          </Button>
-        </Stack>
-      </Stack>
-      <Box mt="20px" px="30px">
-        <TransferTable reload={reload} />
+      {/* tabs */}
+      <Tabs tabs={tabs} updateTab={setCurrentTab} />
+      {/* table */}
+      <Box>
+        <TransferTable />
       </Box>
     </Dashboard>
   );

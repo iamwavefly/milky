@@ -27,11 +27,9 @@ export default function Index() {
 
   return (
     <Dashboard title="Assessment">
-      <Box px="30px" mt="20px">
-        <Chart title="Assessment" />
-        <Box mt="39px">
-          <AssessmentChargebackTable />
-        </Box>
+      <Chart />
+      <Box>
+        <AssessmentChargebackTable />
       </Box>
     </Dashboard>
   );

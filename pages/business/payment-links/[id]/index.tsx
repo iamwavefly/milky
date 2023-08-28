@@ -15,8 +15,8 @@ import baseUrl from "@/middleware/baseUrl";
 import Router, { useRouter } from "next/router";
 import moment from "moment";
 import TransactionrDetailsTable from "@/components/business/paymentLinks/transactionDetailsTable";
-import EditIcon from "remixicon-react/EditLineIcon";
-import CopyIcon from "remixicon-react/FileCopyLineIcon";
+import EditIcon from "@/public/icons/edit.svg";
+import CopyIcon from "@/public/icons/copy.svg";
 import clipboard from "@/helper/clipboard";
 import ProductDetailsTable from "@/components/business/paymentLinks/productDetailsTable";
 import BackArrowIcon from "remixicon-react/ArrowLeftSLineIcon";
@@ -25,6 +25,7 @@ import NewVirtualAccount from "@/components/accounts/virtual/newVirtualAccount";
 import { setDrawalState } from "@/store/appSlice";
 import { useDispatch } from "react-redux";
 import NewPaymentLink from "@/components/business/paymentLinks/newPaymentLink";
+import BackArrow from "@/components/headers/BackArrow";
 
 export default function Index() {
   const [details, setDetails] = useState({});
@@ -58,35 +59,28 @@ export default function Index() {
 
   return (
     <Dashboard title={`${details?.name ?? "..."} | Payment Links`}>
-      <Box py="35px" px="30px">
+      <Box>
         <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="center"
         >
-          <Stack direction="row" alignItems="center">
-            <IconButton onClick={() => Router.back()}>
-              <BackArrowIcon size={18} color="#2E3192" />
-            </IconButton>
-            <Typography color="#2E3192" fontSize="16px">
-              {details?.name ?? "..."}
-            </Typography>
-          </Stack>
+          <BackArrow title="Payment Link Details" mb={0} />
           <Stack direction="row" spacing="10px">
+            <Button
+              variant="outlined"
+              sx={{ fontSize: "12px", height: "40px" }}
+              onClick={() => clipboard(details?.payment_url ?? "...")}
+            >
+              <CopyIcon size={18} />
+              Copy Link
+            </Button>
             <Button
               variant="outlined"
               sx={{ fontSize: "12px", height: "40px" }}
               onClick={openDrawal}
             >
               <EditIcon size={18} /> Edit Link
-            </Button>
-            <Button
-              variant="contained"
-              sx={{ fontSize: "12px", height: "40px" }}
-              onClick={() => clipboard(details?.payment_url ?? "...")}
-            >
-              <CopyIcon size={18} />
-              Copy Link
             </Button>
           </Stack>
         </Stack>

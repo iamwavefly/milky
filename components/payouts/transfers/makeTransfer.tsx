@@ -1,3 +1,4 @@
+import Footer from "@/components/form/Footer";
 import Modal from "@/components/modal/modal";
 import clipboard from "@/helper/clipboard";
 import stringToCurrency from "@/helper/formatCurrency";
@@ -26,7 +27,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-export default function MakeTransfer({ reload }: any) {
+export default function MakeTransfer({ reload, close }: any) {
   const [accounts, setAccounts] = useState<[]>([]);
   const [banks, setBanks] = useState([]);
   const [currencies, setCurrencies] = useState([]);
@@ -77,7 +78,6 @@ export default function MakeTransfer({ reload }: any) {
   }, [fetchCurrencies?.data]);
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   useEffect(() => {
     setBanks(fetchBanks?.data?.banks);
@@ -182,7 +182,7 @@ export default function MakeTransfer({ reload }: any) {
         {/* beneficiaries */}
         <Stack>
           <TextField
-            variant="standard"
+            variant="outlined"
             name="account"
             label="Beneficiary"
             value={formik.values.account}
@@ -209,147 +209,146 @@ export default function MakeTransfer({ reload }: any) {
           Continue
         </Button>
       </Modal>
-      <form onSubmit={formik.handleSubmit}>
-        <Stack spacing="16px">
-          {/* currencies */}
-          <TextField
-            select
-            sx={{ flex: 1 }}
-            variant="standard"
-            label="Currency"
-            defaultValue="NGN"
-            name="currency"
-            value={formik.values.currency}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.currency && Boolean(formik.errors.currency)}
-            helperText={formik.touched.currency && formik.errors.currency}
-          >
-            {currencies?.map(({ short_name, id }: any) => (
-              <MenuItem value={short_name} key={id} sx={{ width: "100%" }}>
-                {short_name}
-              </MenuItem>
-            ))}
-          </TextField>
-          {/* amount */}
-          <TextField
-            sx={{ flex: 1 }}
-            variant="standard"
-            label="Transfer Amount"
-            name="amount"
-            value={formik.values.amount}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.amount && Boolean(formik.errors.amount)}
-            helperText={formik.touched.amount && formik.errors.amount}
-          />
-          {/* bank */}
-          <TextField
-            label="Bank name"
-            variant="standard"
-            select
-            name="bank"
-            value={formik.values.bank}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.bank && Boolean(formik.errors.bank)}
-            helperText={formik.touched.bank && formik.errors.bank}
-          >
-            {banks?.map(({ name, id, bank_code }: any) => (
-              <MenuItem value={bank_code} key={id} sx={{ width: "100%" }}>
-                {name}
-              </MenuItem>
-            ))}
-          </TextField>
-          {/* beneficiary account */}
-          <TextField
-            sx={{ flex: 1 }}
-            variant="standard"
-            label="Beneficiary Account Number"
-            name="beneficiary"
-            value={formik.values.beneficiary}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.beneficiary && Boolean(formik.errors.beneficiary)
-            }
-            helperText={formik.touched.beneficiary && formik.errors.beneficiary}
-          />
-          {/* Beneficiary Name */}
-          <Stack position="relative">
+      <Box>
+        <form onSubmit={formik.handleSubmit}>
+          <Stack spacing="16px" px="40px" mt="32px">
+            {/* currencies */}
             <TextField
+              select
               sx={{ flex: 1 }}
-              variant="standard"
-              label="Beneficiary Name"
-              name="beneficiaryName"
-              value={formik.values.beneficiaryName}
+              variant="outlined"
+              label="Currency"
+              defaultValue="NGN"
+              name="currency"
+              value={formik.values.currency}
               onChange={formik.handleChange}
               onBlur={formik.handleBlur}
-              disabled
+              error={formik.touched.currency && Boolean(formik.errors.currency)}
+              helperText={formik.touched.currency && formik.errors.currency}
+            >
+              {currencies?.map(({ short_name, id }: any) => (
+                <MenuItem value={short_name} key={id} sx={{ width: "100%" }}>
+                  {short_name}
+                </MenuItem>
+              ))}
+            </TextField>
+            {/* amount */}
+            <TextField
+              sx={{ flex: 1 }}
+              variant="outlined"
+              label="Transfer Amount"
+              name="amount"
+              value={formik.values.amount}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.amount && Boolean(formik.errors.amount)}
+              helperText={formik.touched.amount && formik.errors.amount}
+            />
+            {/* bank */}
+            <TextField
+              label="Bank name"
+              variant="outlined"
+              select
+              name="bank"
+              value={formik.values.bank}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.bank && Boolean(formik.errors.bank)}
+              helperText={formik.touched.bank && formik.errors.bank}
+            >
+              {banks?.map(({ name, id, bank_code }: any) => (
+                <MenuItem value={bank_code} key={id} sx={{ width: "100%" }}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
+            {/* beneficiary account */}
+            <TextField
+              sx={{ flex: 1 }}
+              variant="outlined"
+              label="Beneficiary Account Number"
+              name="beneficiary"
+              value={formik.values.beneficiary}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
               error={
-                formik.touched.beneficiaryName &&
-                Boolean(formik.errors.beneficiaryName)
+                formik.touched.beneficiary && Boolean(formik.errors.beneficiary)
               }
               helperText={
-                <Stack
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
-                  <Typography
-                    sx={{
-                      fontWeight: 400,
-                      cursor: "pointer",
-                      fontSize: "12px",
-                    }}
+                formik.touched.beneficiary && formik.errors.beneficiary
+              }
+            />
+            {/* Beneficiary Name */}
+            <Stack position="relative">
+              <TextField
+                sx={{ flex: 1 }}
+                variant="outlined"
+                label="Beneficiary Name"
+                name="beneficiaryName"
+                value={formik.values.beneficiaryName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                disabled
+                error={
+                  formik.touched.beneficiaryName &&
+                  Boolean(formik.errors.beneficiaryName)
+                }
+                helperText={
+                  <Stack
+                    direction="row"
+                    alignItems="center"
+                    justifyContent="space-between"
                   >
-                    {formik.touched.beneficiaryName &&
-                      formik.errors.beneficiaryName}
-                  </Typography>
-                  {beneficiaries?.length && (
                     <Typography
                       sx={{
                         fontWeight: 400,
                         cursor: "pointer",
                         fontSize: "12px",
-                        color: "#69696B",
                       }}
-                      onClick={handleOpenModal}
                     >
-                      Choose Beneficiary
+                      {formik.touched.beneficiaryName &&
+                        formik.errors.beneficiaryName}
                     </Typography>
-                  )}
-                </Stack>
+                    {beneficiaries?.length && (
+                      <Typography
+                        sx={{
+                          fontWeight: 400,
+                          cursor: "pointer",
+                          fontSize: "12px",
+                          color: "#69696B",
+                        }}
+                        onClick={handleOpenModal}
+                      >
+                        Choose Beneficiary
+                      </Typography>
+                    )}
+                  </Stack>
+                }
+              />
+            </Stack>
+            {/* narration */}
+            <TextField
+              sx={{ flex: 1 }}
+              variant="outlined"
+              label="Narration (Optional)"
+              name="narration"
+              value={formik.values.narration}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.narration && Boolean(formik.errors.narration)
               }
+              helperText={formik.touched.narration && formik.errors.narration}
             />
           </Stack>
-          {/* narration */}
-          <TextField
-            sx={{ flex: 1 }}
-            variant="standard"
-            label="Narration (Optional)"
-            name="narration"
-            value={formik.values.narration}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.narration && Boolean(formik.errors.narration)}
-            helperText={formik.touched.narration && formik.errors.narration}
-          />
-        </Stack>
-        <Stack spacing="25px" mt="60px">
-          <LoadingButton
-            loading={initiatePayout?.loading}
-            variant="contained"
-            type="submit"
+          <Footer
             disabled={!(formik.isValid && formik.dirty)}
+            loading={initiatePayout?.loading}
           >
-            Transfer
-          </LoadingButton>
-          <Button variant="outlined" fullWidth onClick={close}>
-            Cancel
-          </Button>
-        </Stack>
-      </form>
+            Pay
+          </Footer>
+        </form>
+      </Box>
     </>
   );
 }

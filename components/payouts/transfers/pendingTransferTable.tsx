@@ -10,8 +10,9 @@ import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import AddBox from "remixicon-react/AddBoxFillIcon";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import FundIcon from "remixicon-react/FundsBoxLineIcon";
+import Export from "@/components/Export";
 
 const PendingTransferTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -34,24 +35,30 @@ const PendingTransferTable = () => {
   }, [currentPage, search, filters]);
 
   return (
-    <div className={Styles.container}>
+    <Box>
       <Header
         containerRef={containerRef}
         columns={TransferPendingTableColumns}
         data={data?.data?.items}
         entries={`${data?.data?.page?.size ?? 0}`}
         setSearch={setSearch}
-        entryOnly
+        pageName="Pending Approvals"
         url="/payout/pending/approval"
-        buttons={
-          <Button
-            sx={{ fontSize: "12px", height: "40px" }}
-            variant="contained"
-            // onClick={openDrawal}
-          >
-            <FundIcon size={18} />
-            Approve all
-          </Button>
+        actions={
+          <>
+            <Export
+              columns={TransferPendingTableColumns}
+              data={data?.items}
+              title="Pending Approvals"
+              variant="outlinedSmall"
+            />
+            <Button
+              sx={{ fontSize: "14px", height: "40px" }}
+              variant="contained"
+            >
+              Approve all
+            </Button>
+          </>
         }
         updateFilter={setFilters}
       />
@@ -63,7 +70,7 @@ const PendingTransferTable = () => {
         page={setCurrentPage}
         pageCount={data?.data?.page?.total_page}
       />
-    </div>
+    </Box>
   );
 };
 

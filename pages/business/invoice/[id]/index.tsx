@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import OnlyHeader from "@/components/cards/onlyHeader";
 import Detail from "@/components/detail";
-import Breadcrumb from "@/components/headers/breadcrumb";
+import Breadcrumb from "@/components/headers/BackArrow";
 import { merchants } from "@/configs/labels";
 import Dashboard from "@/layouts/dashboard";
 import { Box, Checkbox, Grid, Stack, Typography } from "@mui/material";
@@ -15,6 +15,7 @@ import isObjEmpty from "@/helper/isObjEmpty";
 import stringToCurrency from "../../../../helper/formatCurrency";
 import moment from "moment";
 import substring from "@/helper/substring";
+import BackArrow from "@/components/headers/BackArrow";
 
 export default function Index() {
   const [details, setDetails] = useState({});
@@ -35,11 +36,9 @@ export default function Index() {
   }, [data]);
 
   return (
-    <Dashboard title="Merchants">
-      <Box py="35px" px="30px">
-        <Typography color="#2E3192" fontSize="16px">
-          Invoice Details
-        </Typography>
+    <Dashboard title="Invoice">
+      <BackArrow title="Invoice Details" />
+      <Box>
         {/* order information  */}
         <Box mt="35px">
           <OnlyHeader alignHeader="left" size="12px">

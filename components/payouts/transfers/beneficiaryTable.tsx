@@ -10,16 +10,22 @@ import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import AddBox from "remixicon-react/AddBoxFillIcon";
-import { Button } from "@mui/material";
-import FundIcon from "remixicon-react/FundsBoxLineIcon";
+import { Box, Button } from "@mui/material";
+import FundIcon from "@/public/icons/add-white.svg";
 import { useDispatch } from "react-redux";
 import { setDrawalState } from "@/store/appSlice";
 import NewBeneficiary from "../newBeneficiary";
+import Export from "@/components/Export";
+import Modal from "@/components/modal/modal";
 
 const BeneficiaryTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const containerRef = useRef();
   const dispatch = useDispatch();
@@ -49,7 +55,15 @@ const BeneficiaryTable = () => {
   };
 
   return (
-    <div className={Styles.container}>
+    <Box>
+      <Modal
+        title="Add New Beneficiary"
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <NewBeneficiary reload={handleSubmit} close={handleCloseModal} />
+      </Modal>
       <Header
         containerRef={containerRef}
         columns={BeneficiaryTableColumns}
@@ -57,15 +71,23 @@ const BeneficiaryTable = () => {
         entries={`${data?.data?.page?.size ?? 0}`}
         setSearch={setSearch}
         url="/beneficiary/all"
-        buttons={
-          <Button
-            sx={{ fontSize: "12px", height: "40px" }}
-            variant="contained"
-            onClick={openDrawal}
-          >
-            <FundIcon size={18} />
-            Add new beneficiary
-          </Button>
+        actions={
+          <>
+            <Export
+              columns={BeneficiaryTableColumns}
+              data={data?.data?.items}
+              title="beneficiary"
+              variant="outlinedSmall"
+            />
+            <Button
+              sx={{ fontSize: "14px", height: "40px" }}
+              variant="contained"
+              onClick={handleOpenModal}
+            >
+              <FundIcon width="18px" height="18px" />
+              Add new beneficiary
+            </Button>
+          </>
         }
         updateFilter={setFilters}
       />
@@ -77,7 +99,7 @@ const BeneficiaryTable = () => {
         page={setCurrentPage}
         pageCount={data?.data?.page?.total_page}
       />
-    </div>
+    </Box>
   );
 };
 

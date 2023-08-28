@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { DateRange } from "materialui-daterange-picker";
 import React, { SetStateAction, useState } from "react";
-import CarretIcon from "../public/icons/carret-down.svg";
+import CarretIcon from "../public/icons/arrow-down.svg";
 import FilterContent from "./filterContent";
 
 interface Props {
@@ -32,7 +32,7 @@ export default function DropdownMenu({ updateFilter, title, selector }: Props) {
   };
 
   return (
-    <Box>
+    <Box width="max-content">
       <Menu
         id="basic-menu"
         anchorEl={anchorEl}
@@ -55,32 +55,34 @@ export default function DropdownMenu({ updateFilter, title, selector }: Props) {
         />
       </Menu>
       <Stack
+        width="max-content"
         minWidth="103px"
-        height="40px"
+        minHeight="40px"
         bgcolor="#fff"
-        border="1px solid #E4E8F2"
+        border="1px solid #DADCE2"
         direction="row"
+        borderRadius="8px"
       >
         <Box
-          width="67px"
+          px="16px"
           display="flex"
           justifyContent="center"
           alignItems="center"
-          borderRight="1px solid #E4E8F2"
+          borderRight="1px solid #DADCE2"
         >
-          <Typography fontSize="12px" color="#262B40">
+          <Typography fontSize="14px" color="#162031" fontWeight={500}>
             {title}
           </Typography>
         </Box>
         <IconButton
-          sx={{ flex: 1 }}
+          sx={{ flex: 1, minWidth: "35px" }}
           id="basic-button"
           aria-controls={open ? "basic-menu" : undefined}
           aria-haspopup="true"
           aria-expanded={open ? "true" : undefined}
           onClick={handleClick}
         >
-          <CarretIcon />
+          <CarretIcon height="18px" width="18px" fill="#586379" />
         </IconButton>
       </Stack>
     </Box>

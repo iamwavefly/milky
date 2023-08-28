@@ -18,31 +18,39 @@ export default function AccountTypePanel({
   return (
     <Stack
       className={`${Styles.container} ${active ? Styles.active : ""}`}
-      height="87px"
-      padding="19px 16px 19px 21px"
+      height="79px"
+      padding="16px"
       alignItems="center"
       direction="row"
-      gap="10px"
+      gap="12px"
       onClick={clickHandler}
-      sx={{ cursor: "pointer" }}
     >
-      <Box width="30px" height="35px" display="flex" alignItems="center">
+      <Box
+        className={Styles.icon}
+        width="30px"
+        height="35px"
+        display="flex"
+        alignItems="center"
+      >
         {icon}
       </Box>
-      <Stack spacing="5px">
+      <Stack>
         <Typography
-          color="#262B40"
+          color="#070F1C"
           fontWeight={500}
-          fontSize="16px"
+          fontSize="15px"
           component="h2"
+          lineHeight="26px"
         >
           {title}
         </Typography>
         <Typography
-          color="rgba(38, 43, 64, 0.8)"
-          fontSize="14px"
-          lineHeight="20px"
+          color="#3C4453"
+          fontSize="13px"
+          lineHeight="21px"
+          letterSpacing="0.195px"
           component="p"
+          whiteSpace="nowrap"
         >
           {subtitle}
         </Typography>

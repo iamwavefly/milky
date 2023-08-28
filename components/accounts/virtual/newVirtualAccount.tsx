@@ -14,7 +14,7 @@ import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-export default function NewVirtualAccount({ reload }: any) {
+export default function NewVirtualAccount({ reload, close }: any) {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/create/static/account`
   );
@@ -28,7 +28,6 @@ export default function NewVirtualAccount({ reload }: any) {
   }, []);
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   useEffect(() => {
     const { status, message } = data;
@@ -62,10 +61,10 @@ export default function NewVirtualAccount({ reload }: any) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack spacing="13px">
+      <Stack spacing="13px" px="40px" mt="32px">
         <TextField
-          label="BVN*"
-          variant="standard"
+          label="Bank Verification Number (BVN)"
+          variant="outlined"
           name="bvn"
           value={formik.values.bvn}
           onChange={formik.handleChange}
@@ -76,23 +75,29 @@ export default function NewVirtualAccount({ reload }: any) {
           disabled
         />
       </Stack>
-      <Stack spacing="25px" mt="60px">
+      <Stack
+        position="sticky"
+        bottom={0}
+        left={0}
+        direction="row"
+        spacing="28px"
+        px="40px"
+        py="16px"
+        mt="44px"
+        borderTop="1px solid #E8EAED"
+        alignItems="center"
+        justifyContent="flex-end"
+      >
+        <LoadingButton variant="text" onClick={close}>
+          Cancel
+        </LoadingButton>
         <LoadingButton
           variant="contained"
-          fullWidth
           type="submit"
           loading={loading}
           disabled={!(formik.isValid && formik.dirty)}
         >
-          Create Virtual Account
-        </LoadingButton>
-        <LoadingButton
-          variant="outlined"
-          fullWidth
-          onClick={close}
-          disabled={!(formik.isValid && formik.dirty)}
-        >
-          Cancel
+          Create virtual account
         </LoadingButton>
       </Stack>
     </form>

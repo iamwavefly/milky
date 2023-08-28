@@ -176,7 +176,7 @@ export default function FilterContent({
                   ) : type === "select" ? (
                     <TextField
                       fullWidth
-                      variant="standard"
+                      variant="outlined"
                       value={form?.[key ?? fnName]}
                       placeholder=""
                       onChange={handleInputChange}
@@ -198,7 +198,7 @@ export default function FilterContent({
                   ) : (
                     <TextField
                       fullWidth
-                      variant="standard"
+                      variant="outlined"
                       value={form?.[key]}
                       placeholder=""
                       onChange={handleInputChange}
@@ -232,7 +232,7 @@ export default function FilterContent({
           <TextField
             fullWidth
             InputLabelProps={{ shrink: true }}
-            variant="standard"
+            variant="outlined"
             value={
               dateRange.startDate &&
               `${moment(dateRange.startDate).format("L")} - ${moment(

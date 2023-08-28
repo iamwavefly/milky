@@ -10,7 +10,9 @@ import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import AddBox from "remixicon-react/AddBoxFillIcon";
-import { Button } from "@mui/material";
+import { Box, Button } from "@mui/material";
+import Export from "@/components/Export";
+import DropdownMenu from "@/components/DropdownMenu";
 
 const SettlementTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -33,12 +35,27 @@ const SettlementTable = () => {
   }, [currentPage, search, filters]);
 
   return (
-    <div className={Styles.container}>
+    <Box>
       <Header
         containerRef={containerRef}
         columns={AccountSettlementTableColumns}
         data={data?.items}
-        entries={`${data?.total_items ?? 0} Entries`}
+        entries={data?.total_items ?? 0}
+        actions={
+          <>
+            <DropdownMenu
+              title="Filter"
+              updateFilter={setFilters}
+              selector="settlements"
+            />
+            <Export
+              columns={AccountSettlementTableColumns}
+              data={data?.items}
+              title="settlements"
+              variant="outlinedSmall"
+            />
+          </>
+        }
         setSearch={setSearch}
         selector="settlements"
         updateFilter={setFilters}
@@ -51,11 +68,8 @@ const SettlementTable = () => {
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.total_pages}
-        // onClickRow={(e) =>
-        //   Router.push(`/transactions/customers/${e?.row?.original?.id}`)
-        // }
       />
-    </div>
+    </Box>
   );
 };
 

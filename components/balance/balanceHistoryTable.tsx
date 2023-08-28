@@ -10,6 +10,8 @@ import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import AddBox from "remixicon-react/AddBoxFillIcon";
 import { Box, Button } from "@mui/material";
+import DropdownMenu from "../DropdownMenu";
+import Export from "../Export";
 
 const BalanceHistoryTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -37,11 +39,28 @@ const BalanceHistoryTable = () => {
         containerRef={containerRef}
         columns={BalanceHistoryColumns}
         data={data?.items}
-        entries={`${data?.total_items ?? 0} Entries`}
+        entries={data?.total_items ?? 0}
+        pageName="Balance History"
         setSearch={setSearch}
         selector="balanceHistory"
         updateFilter={setFilters}
         url="/dashboard/fetch/wallet/history"
+        actions={
+          <>
+            <DropdownMenu
+              title="Filter"
+              updateFilter={setFilters}
+              selector={"balanceHistory"}
+            />
+            <Export
+              title={"Balance history"}
+              data={data?.items}
+              columns={BalanceHistoryColumns}
+              containerRef={containerRef}
+              variant="containedSmall"
+            />
+          </>
+        }
       />
       <Table
         containerRef={containerRef}

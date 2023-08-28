@@ -9,16 +9,23 @@ import { CustomersTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
-import { Button } from "@mui/material";
-import AddBox from "remixicon-react/AddBoxFillIcon";
+import { Box, Button } from "@mui/material";
+import AddBox from "@/public/icons/add.svg";
 import { setDrawalState } from "@/store/appSlice";
 import { useDispatch } from "react-redux";
 import NewCustomer from "./newCustomer";
+import Export from "@/components/Export";
+import DropdownMenu from "@/components/DropdownMenu";
+import Modal from "@/components/modal/modal";
 
 const CustomersTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/fetch/customers?page=${currentPage}&limit=10&${Object.entries(
@@ -30,16 +37,6 @@ const CustomersTable = () => {
   );
 
   const dispatch = useDispatch();
-  // close drawal
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Add a New Customer",
-        content: <NewCustomer reload={handleSubmit} />,
-      })
-    );
-  };
 
   const containerRef = useRef();
 
@@ -48,23 +45,44 @@ const CustomersTable = () => {
   }, [currentPage, search, filters]);
 
   return (
-    <div className={Styles.container}>
+    <Box>
+      <Modal
+        title="New customer"
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <NewCustomer reload={handleSubmit} close={handleCloseModal} />
+      </Modal>
       <Header
         containerRef={containerRef}
         columns={CustomersTableColumns}
         data={data?.items}
-        entries={`${data?.total_items ?? 0} Entries`}
+        entries={`${data?.total_items ?? 0}`}
         setSearch={setSearch}
         url="/dashboard/fetch/customers"
-        buttons={
-          <Button
-            variant="contained"
-            sx={{ height: "40px", fontSize: "12px" }}
-            onClick={openDrawal}
-          >
-            <AddBox size={16} />
-            Add New Customer
-          </Button>
+        actions={
+          <>
+            <DropdownMenu
+              title="Filter"
+              updateFilter={setFilters}
+              selector="customers"
+            />
+            <Export
+              columns={CustomersTableColumns}
+              data={data?.items}
+              title="customer"
+              variant="outlinedSmall"
+            />
+            <Button
+              variant="contained"
+              sx={{ height: "40px", fontSize: "12px" }}
+              onClick={handleOpenModal}
+            >
+              <AddBox width={"18px"} height="18px" fill="#fff" />
+              Add new customer
+            </Button>
+          </>
         }
         selector="customers"
         updateFilter={setFilters}
@@ -80,7 +98,7 @@ const CustomersTable = () => {
           Router.push(`/business/customers/${e?.row?.original?.id}`)
         }
       />
-    </div>
+    </Box>
   );
 };
 

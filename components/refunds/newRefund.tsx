@@ -8,14 +8,14 @@ import { useFormik } from "formik";
 import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import Footer from "../form/Footer";
 
-export default function NewRefund({ reload }: any) {
+export default function NewRefund({ reload, close }: any) {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/refund`
   );
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   useEffect(() => {
     const { status, message } = data;
@@ -47,10 +47,10 @@ export default function NewRefund({ reload }: any) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack spacing="13px">
+      <Stack spacing="24px" px="40px" mt="32px">
         <TextField
           label="Amount"
-          variant="standard"
+          variant="outlined"
           name="amount"
           value={formik.values.amount}
           onChange={formik.handleChange}
@@ -60,7 +60,7 @@ export default function NewRefund({ reload }: any) {
         />
         <TextField
           label="Transaction reference"
-          variant="standard"
+          variant="outlined"
           name="reference"
           value={formik.values.reference}
           onChange={formik.handleChange}
@@ -70,7 +70,7 @@ export default function NewRefund({ reload }: any) {
         />
         <TextField
           label="Reason for refund"
-          variant="standard"
+          variant="outlined"
           name="reason"
           value={formik.values.reason}
           onChange={formik.handleChange}
@@ -79,25 +79,9 @@ export default function NewRefund({ reload }: any) {
           helperText={formik.touched.reason && formik.errors.reason}
         />
       </Stack>
-      <Stack spacing="25px" mt="60px">
-        <LoadingButton
-          variant="contained"
-          fullWidth
-          type="submit"
-          loading={loading}
-          disabled={!(formik.isValid && formik.dirty)}
-        >
-          Continue
-        </LoadingButton>
-        <LoadingButton
-          variant="outlined"
-          fullWidth
-          onClick={close}
-          disabled={!(formik.isValid && formik.dirty)}
-        >
-          Cancel
-        </LoadingButton>
-      </Stack>
+      <Footer disabled={!(formik.isValid && formik.dirty)}>
+        Confirm refund
+      </Footer>
     </form>
   );
 }

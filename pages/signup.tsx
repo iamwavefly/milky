@@ -5,6 +5,7 @@ import {
   Divider,
   IconButton,
   InputAdornment,
+  MenuItem,
   Stack,
   TextField,
   Typography,
@@ -24,212 +25,32 @@ import { setUserState } from "@/store/authSlice";
 import { loginHandler } from "@/middleware/auth";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
+import Stepper from "@/components/stepper";
+import { accountTypes, formComponents, formStepLabel } from "@/utils/signup";
+import AccountTypePanel from "@/components/accountTypePanel";
 
 export default function Index() {
-  const [showPassword, setShowPassword] = useState(false);
-  const [authReq, setAuthReq] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
+  const { Form } = formComponents[activeStep];
 
-  const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/signup`
-  );
-
-  const dispatch = useDispatch();
-
-  const formik = useFormik({
-    initialValues: {
-      businessName: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      password2: "",
-    },
-    validationSchema: signup,
-    onSubmit: ({ businessName, firstName, lastName, email, password }) => {
-      const payload = {
-        business_name: businessName,
-        first_name: firstName,
-        last_name: lastName,
-        user_email: email,
-        password,
-      };
-
-      const tempToken = Cookies.get("token");
-      if (tempToken) Cookies.remove("token");
-
-      handleSubmit(payload);
-    },
-  });
-
-  useEffect(() => {
-    const { token } = data ?? {};
-    if (token?.access_token) {
-      dispatch(
-        setUserState({
-          user: data?.user,
-          subsidiaries: data?.subsidiary_details?.subsidiaries[0],
-        })
-      );
-      loginHandler(data);
-    }
-  }, [data]);
-
-  // go to next page if submission successful
-  useEffect(() => {
-    if (data?.status === "success") {
-      formik.resetForm();
-    }
-  }, [data]);
+  const nextStepHandler = () => setActiveStep((prev) => prev + 1);
 
   return (
-    <Onboarding title="Create an Account" my="72px">
-      <Typography fontWeight={500} fontSize="20px" lineHeight="28px">
-        Create an Account
-      </Typography>
-      <Typography fontSize="14px" lineHeight="20px" color="#92959F" mt="5px">
-        Enter your personal details to get started
-      </Typography>
-      <form onSubmit={formik.handleSubmit}>
-        <Stack mt="34px" width="100%" spacing="14px">
-          <Stack spacing="20px" direction="row">
-            <TextField
-              label="Business Name"
-              variant="standard"
-              sx={{ flex: 1 }}
-              name="businessName"
-              value={formik.values.businessName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.businessName &&
-                Boolean(formik.errors.businessName)
-              }
-              helperText={
-                formik.touched.businessName && formik.errors.businessName
-              }
-            />
-          </Stack>
-          <Stack spacing="20px" direction="row">
-            <TextField
-              label="First Name"
-              variant="standard"
-              sx={{ flex: 1 }}
-              name="firstName"
-              value={formik.values.firstName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={
-                formik.touched.firstName && Boolean(formik.errors.firstName)
-              }
-              helperText={formik.touched.firstName && formik.errors.firstName}
-            />
-            <TextField
-              label="Last Name"
-              variant="standard"
-              sx={{ flex: 1 }}
-              name="lastName"
-              value={formik.values.lastName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-              helperText={formik.touched.lastName && formik.errors.lastName}
-            />
-          </Stack>
-          <TextField
-            label="Email Address"
-            variant="standard"
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
-          />
-          <TextField
-            type={showPassword ? "text" : "password"}
-            label="Password"
-            variant="standard"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <IconButton
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    sx={{ border: 0 }}
-                    edge="start"
-                  >
-                    {showPassword ? <EyeCloseIcon /> : <EyeIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
-          />
-          <TextField
-            type={showPassword ? "text" : "password"}
-            label="Confirm Password"
-            variant="standard"
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="start">
-                  <IconButton
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    sx={{ border: 0 }}
-                    edge="start"
-                  >
-                    {showPassword ? <EyeCloseIcon /> : <EyeIcon />}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-            name="password2"
-            value={formik.values.password2}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.password2 && Boolean(formik.errors.password2)}
-            helperText={formik.touched.password2 && formik.errors.password2}
-          />
-        </Stack>
-        <Stack mt="36px" spacing="25px" width="100%">
-          <LoadingButton
-            loading={loading}
-            type="submit"
-            variant="contained"
-            fullWidth
-            disabled={!(formik.isValid && formik.dirty)}
-          >
-            Next
-          </LoadingButton>
-          <Stack
-            width="100%"
-            direction="row"
-            spacing="28px"
-            alignItems="center"
-          >
-            <Divider sx={{ flex: 1 }} />
-            <Typography fontSize="14px" fontWeight={500} lineHeight="20px">
-              or
-            </Typography>
-            <Divider sx={{ flex: 1 }} />
-          </Stack>
-          <Button onClick={() => Router.push("/")} variant="outlined" fullWidth>
-            Log In to your account
-          </Button>
-        </Stack>
-      </form>
+    <Onboarding title="Create an Account" my="72px" fullWidth>
+      {/* stepper */}
+      <Box
+        padding="32px 120px"
+        position="sticky"
+        top={0}
+        left={0}
+        bgcolor="#F6F6F9"
+      >
+        <Stepper activeStep={activeStep} steps={formStepLabel} />
+      </Box>
+      <Box mx="auto" overflow="auto">
+        {Form && <Form nextStep={nextStepHandler} />}
+      </Box>
     </Onboarding>
   );
 }

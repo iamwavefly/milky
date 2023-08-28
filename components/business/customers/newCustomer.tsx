@@ -9,13 +9,17 @@ import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-export default function NewCustomer({ reload }: { reload: () => void }) {
+interface Props {
+  reload: () => void;
+  close: () => void;
+}
+
+export default function NewCustomer({ reload, close }: Props) {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/customer/create`
   );
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   useEffect(() => {
     const { status, message } = data;
@@ -45,67 +49,86 @@ export default function NewCustomer({ reload }: { reload: () => void }) {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <Stack spacing="13px">
-        <TextField
-          label="First Name*"
-          variant="standard"
-          name="firstName"
-          value={formik.values.firstName}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-          helperText={formik.touched.firstName && formik.errors.firstName}
-        />
-        <TextField
-          label="Last name"
-          variant="standard"
-          name="lastName"
-          value={formik.values.lastName}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-          helperText={formik.touched.lastName && formik.errors.lastName}
-        />
-        <TextField
-          label="Email Address*"
-          variant="standard"
-          name="emailAddress"
-          value={formik.values.emailAddress}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={
-            formik.touched.emailAddress && Boolean(formik.errors.emailAddress)
-          }
-          helperText={formik.touched.emailAddress && formik.errors.emailAddress}
-        />
-        <TextField
-          label="Phone Number"
-          variant="standard"
-          name="phoneNumber"
-          value={formik.values.phoneNumber}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={
-            formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
-          }
-          helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
-        />
-      </Stack>
-      <Stack spacing="25px" mt="60px">
-        <LoadingButton
-          variant="contained"
-          fullWidth
-          type="submit"
-          loading={loading}
-          disabled={!(formik.isValid && formik.dirty)}
+    <Box position="relative" height="100%">
+      <form onSubmit={formik.handleSubmit}>
+        <Stack spacing="24px" pt="32px" px="40px">
+          <Stack direction="row" alignItems="center" spacing="24px">
+            <TextField
+              label="First Name"
+              variant="outlined"
+              name="firstName"
+              fullWidth
+              value={formik.values.firstName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.firstName && Boolean(formik.errors.firstName)
+              }
+              helperText={formik.touched.firstName && formik.errors.firstName}
+            />
+            <TextField
+              label="Last name"
+              variant="outlined"
+              name="lastName"
+              fullWidth
+              value={formik.values.lastName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+              helperText={formik.touched.lastName && formik.errors.lastName}
+            />
+          </Stack>
+          <TextField
+            label="Email Address"
+            variant="outlined"
+            name="emailAddress"
+            value={formik.values.emailAddress}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.emailAddress && Boolean(formik.errors.emailAddress)
+            }
+            helperText={
+              formik.touched.emailAddress && formik.errors.emailAddress
+            }
+          />
+          <TextField
+            label="Phone Number"
+            variant="outlined"
+            name="phoneNumber"
+            placeholder="+2348000000000"
+            value={formik.values.phoneNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+            }
+            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+          />
+        </Stack>
+        <Stack
+          direction="row"
+          spacing="28px"
+          px="40px"
+          py="16px"
+          mt="44px"
+          borderTop="1px solid #E8EAED"
+          alignItems="center"
+          justifyContent="flex-end"
         >
-          Add Customer
-        </LoadingButton>
-        <LoadingButton variant="outlined" fullWidth onClick={close}>
-          Cancel
-        </LoadingButton>
-      </Stack>
-    </form>
+          <LoadingButton variant="text" onClick={close}>
+            Cancel
+          </LoadingButton>
+          <LoadingButton
+            variant="contained"
+            type="submit"
+            loading={loading}
+            disabled={!(formik.isValid && formik.dirty)}
+          >
+            Add Customer
+          </LoadingButton>
+        </Stack>
+      </form>
+    </Box>
   );
 }

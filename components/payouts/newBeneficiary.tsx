@@ -25,6 +25,7 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import Footer from "../form/Footer";
 
 const benType = [
   { id: 1, name: "Bank Account", value: "Bank" },
@@ -32,7 +33,7 @@ const benType = [
   { id: 3, name: "Alliance Merchant", value: "Merchant" },
 ];
 
-export default function NewBeneficiary({ reload }: any) {
+export default function NewBeneficiary({ reload, close }: any) {
   const [banks, setBanks] = useState([]);
   const [currencies, setCurrencies] = useState([]);
 
@@ -62,7 +63,6 @@ export default function NewBeneficiary({ reload }: any) {
   }, [fetchCurrencies?.data]);
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   useEffect(() => {
     setBanks(fetchBanks?.data?.banks);
@@ -121,13 +121,13 @@ export default function NewBeneficiary({ reload }: any) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack spacing="16px">
+      <Stack spacing="24px" px="40px" mt="32px">
         {/* currencies */}
         <TextField
           InputLabelProps={{ shrink: true }}
           select
           sx={{ flex: 1 }}
-          variant="standard"
+          variant="outlined"
           label="Type"
           name="type"
           value={formik.values.type}
@@ -147,7 +147,7 @@ export default function NewBeneficiary({ reload }: any) {
           InputLabelProps={{ shrink: true }}
           select
           sx={{ flex: 1 }}
-          variant="standard"
+          variant="outlined"
           label="Currency"
           defaultValue="NGN"
           name="currency"
@@ -166,7 +166,7 @@ export default function NewBeneficiary({ reload }: any) {
         {/* bank */}
         <TextField
           label="Bank name"
-          variant="standard"
+          variant="outlined"
           select
           name="bank"
           value={formik.values.bank}
@@ -184,7 +184,7 @@ export default function NewBeneficiary({ reload }: any) {
         {/* beneficiary account */}
         <TextField
           sx={{ flex: 1 }}
-          variant="standard"
+          variant="outlined"
           label="Account Number"
           name="accountNumber"
           value={formik.values.accountNumber}
@@ -201,7 +201,7 @@ export default function NewBeneficiary({ reload }: any) {
         <Stack position="relative">
           <TextField
             sx={{ flex: 1 }}
-            variant="standard"
+            variant="outlined"
             label="Account Name"
             disabled
             name="accountName"
@@ -214,19 +214,7 @@ export default function NewBeneficiary({ reload }: any) {
           />
         </Stack>
       </Stack>
-      <Stack spacing="25px" mt="60px">
-        <LoadingButton
-          loading={createBeneficiary?.loading}
-          variant="contained"
-          type="submit"
-          disabled={!(formik.isValid && formik.dirty)}
-        >
-          Add Beneficiary
-        </LoadingButton>
-        <Button variant="outlined" fullWidth onClick={close}>
-          Cancel
-        </Button>
-      </Stack>
+      <Footer>Add beneficiary</Footer>
     </form>
   );
 }

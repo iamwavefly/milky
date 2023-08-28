@@ -1,11 +1,11 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
 
 html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
   background-color: #f7f9fc;
-  color: #262b40;
+  color: #070f1c;
   padding: 0;
   margin: 0;
 }
@@ -13,7 +13,7 @@ form {
   width: 100%;
 }
 * {
-  font-family: "Poppins", sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   box-sizing: border-box;
 }
 .noscroll-indicator::-webkit-scrollbar {
@@ -21,7 +21,7 @@ form {
 }
 /* custom scrollbar */
 ::-webkit-scrollbar {
-  width: 20px;
+  width: 0;
 }
 
 ::-webkit-scrollbar-track {
@@ -61,20 +61,10 @@ hr {
   border: 1px solid #e4e8f2;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-a {
-  font-family: "Poppins";
-}
-
 a {
   color: inherit;
   text-decoration: none;
-  color: #2e3192;
+  font-size: inherit;
 }
 
 fieldset {
@@ -117,19 +107,26 @@ fieldset {
   display: flex;
   flex-direction: row;
   align-items: center;
-  padding: 6px 12px;
+  padding: 4px 8px !important;
   width: max-content;
+  height: 27px;
   gap: 8px !important;
   background: rgba(0, 128, 55, 0.05);
-  border-radius: 0 !important;
+  border-radius: 16px;
+  & > span {
+    padding: 0;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 21px;
+  }
   &.approved,
   &.active,
   &.successful,
   &.available,
   &.completed,
   &.paid {
-    color: #097122;
-    background-color: rgba(9, 113, 33, 0.05);
+    color: #0e9a4c;
+    background-color: #ebfff4;
   }
   &.pending-review,
   &.pending-verification,
@@ -137,8 +134,8 @@ fieldset {
   &.pending,
   &.processing,
   &.archived {
-    color: #cd8a0a;
-    background: rgba(184, 123, 8, 0.05);
+    color: #F59300;
+    background: #FFF8F0;
   }
   &.in-review,
   &.new,
@@ -153,8 +150,8 @@ fieldset {
   &.failed,
   &.inactive,
   &.blacklisted {
-    color: #ea5851;
-    background-color: rgba(255, 194, 191, 0.15);
+    color: #e84a5f;
+    background-color: #fff5f5;
   }
 }
 

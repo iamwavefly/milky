@@ -1,22 +1,22 @@
 import { logoutHandler, logoutWTokenHandler } from "@/middleware/auth";
 // icons
-import RestartIcon from "remixicon-react/RestartLineIcon";
-import HomeIcon from "remixicon-react/Home4LineIcon";
-import BriefcaseIcon from "remixicon-react/Briefcase3LineIcon";
-import FIleCopyIcon from "remixicon-react/FileCopy2LineIcon";
-import MoneyBoxIcon from "remixicon-react/MoneyDollarBoxLineIcon";
-import BankCardIcon from "remixicon-react/BankCardLineIcon";
-import NewspaperIcon from "remixicon-react/NewspaperLineIcon";
-import ArrowLeftRightIcon from "remixicon-react/ArrowLeftRightLineIcon";
-import SettingIcon from "remixicon-react/Settings2LineIcon";
-import LogoutIcon from "remixicon-react/LogoutBoxLineIcon";
+import GetStartedIcon from "@/public/icons/briefcase.svg";
+import HomeIcon from "@/public/icons/home.svg";
+import BusinessIcon from "@/public/icons/shop.svg";
+import AccountIcon from "@/public/icons/user.svg";
+import MoneyBoxIcon from "@/public/icons/card.svg";
+import BankCardIcon from "@/public/icons/payout.svg";
+import NewspaperIcon from "@/public/icons/refund.svg";
+import ArrowLeftRightIcon from "@/public/icons/chargeback.svg";
+import SettingIcon from "@/public/icons/setting.svg";
+import LogoutIcon from "@/public/icons/signout.svg";
 
 const routes = [
   {
     id: 1,
     name: "Get Started",
     link: "/onboarding",
-    Icon: RestartIcon,
+    Icon: GetStartedIcon,
   },
   {
     id: 2,
@@ -35,7 +35,7 @@ const routes = [
   {
     id: 3,
     name: "Business",
-    Icon: BriefcaseIcon,
+    Icon: BusinessIcon,
     link: "/business/transactions",
     header: true,
     nest: [
@@ -69,7 +69,7 @@ const routes = [
   {
     id: 4,
     name: "Account",
-    Icon: FIleCopyIcon,
+    Icon: AccountIcon,
     link: "/account/virtual",
     header: true,
     nest: [

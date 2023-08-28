@@ -2,63 +2,70 @@ import React, { ReactNode, useEffect } from "react";
 import { Box, Stack, Typography } from "@mui/material";
 import Head from "next/head";
 import Logo from "../public/images/logo.svg";
+import Header from "@/components/onboarding/Header";
 
 interface Props {
   children?: ReactNode;
   title: string;
+  fullWidth?: boolean;
+  subtitle?: string;
 }
 
-const Onboarding = ({ children, title, ...props }: any) => {
+const Onboarding = ({
+  children,
+  title,
+  subtitle,
+  fullWidth,
+  ...props
+}: any) => {
   return (
     <>
       <Head>
-        <title>{title} | alliancepay</title>
+        <title>{title} | ARCA</title>
         <meta name="description" content="Alliancepay Merchant" />
       </Head>
-      <Stack
-        px="106px"
-        direction="row"
-        height="100vh"
-        justifyContent="space-between"
-        bgcolor="#F7F9FC"
-      >
-        <Box height="100vh">
-          <Box mt="71px" maxWidth="140px" height="45px">
-            <Logo />
-          </Box>
-          <Box my="252px">
-            <Typography fontWeight={700} fontSize="40px" lineHeight="48px">
-              Welcome to Alliance Pay
-            </Typography>
-            <Typography
-              fontSize="16px"
-              lineHeight="24px"
-              mt="9px"
-              color="#92959F"
-            >
-              The future of payments
-            </Typography>
-          </Box>
-        </Box>
-        <Box height="100vh" overflow="auto" className="noscroll-indicator">
-          <Stack
+      <Stack height="100vh" overflow="auto" bgcolor="rgba(246, 246, 249, 1)">
+        <Header />
+        {fullWidth ? (
+          <Box pb="136px">{children}</Box>
+        ) : (
+          <Box
             bgcolor="#fff"
-            width="513px"
-            maxWidth="513px"
-            height="auto"
-            my="auto"
-            {...props}
+            width={"400px"}
+            overflow="auto"
+            borderRadius="8px"
+            mt="48px"
+            mx="auto"
+            padding="40px"
+            className="noscroll-indicator"
           >
-            <Stack
-              flex={1}
-              padding="45px 36px"
-              alignItems="center"
-              width="-webkit-fill-available"
+            <Typography
+              fontSize="15px"
+              textTransform="uppercase"
+              mx="auto"
+              fontWeight={500}
+              textAlign="center"
+              color="#070F1C"
+              letterSpacing="0.3px"
             >
-              {children}
-            </Stack>
-          </Stack>
-        </Box>
+              {title}
+            </Typography>
+            {subtitle && (
+              <Typography
+                fontSize="13px"
+                mx="auto"
+                mt="4px"
+                textAlign="center"
+                color="#586379"
+                lineHeight="21px"
+                letterSpacing="0.195px"
+              >
+                {subtitle}
+              </Typography>
+            )}
+            <Box mt="24px">{children}</Box>
+          </Box>
+        )}
       </Stack>
     </>
   );

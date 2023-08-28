@@ -20,6 +20,7 @@ export const StyledPagination = styled(Pagination)`
   border-top: 1px solid #e9ebf2;
   margin-top: 2rem;
   padding: 0 24px;
+  padding-bottom: 10px;
   li {
     borderradius: 0;
     margin-right: 8px;

@@ -20,20 +20,7 @@ export default function Index() {
 
   return (
     <Dashboard title="Pending Approval">
-      <Stack
-        px="30px"
-        mt="20px"
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Typography fontSize="16px" color="#2E3192">
-          Pending Approval
-        </Typography>
-      </Stack>
-      <Box mt="20px" px="30px">
-        <PendingTransferTable />
-      </Box>
+      <PendingTransferTable />
     </Dashboard>
   );
 }

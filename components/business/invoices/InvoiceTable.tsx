@@ -10,13 +10,20 @@ import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import { Button } from "@mui/material";
-import AddBox from "remixicon-react/AddBoxFillIcon";
+import AddBox from "@/public/icons/add.svg";
+import Filter from "@/components/Filter";
+import Export from "@/components/Export";
+import DropdownMenu from "@/components/DropdownMenu";
+import { setDrawalState } from "@/store/appSlice";
+import { useDispatch } from "react-redux";
+import NewInvoice from "./NewInvoice";
 
 const InvoiceTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
 
+  const dispatch = useDispatch();
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
@@ -32,6 +39,16 @@ const InvoiceTable = () => {
     handleSubmit();
   }, [currentPage, search, filters]);
 
+  const newInvoiceDrawal = () => {
+    dispatch(
+      setDrawalState({
+        active: true,
+        title: "New Invoice",
+        content: <NewInvoice />,
+      })
+    );
+  };
+
   return (
     <div className={Styles.container}>
       <Header
@@ -39,14 +56,25 @@ const InvoiceTable = () => {
         columns={InvoiceTableColumns}
         data={data?.items}
         url="/dashboard/invoice/all"
-        buttons={
+        actions={
           <>
+            <DropdownMenu
+              title="Filter"
+              updateFilter={setFilters}
+              selector="invoice"
+            />
+            <Export
+              columns={InvoiceTableColumns}
+              data={data?.items}
+              title="invoice"
+              variant="outlinedSmall"
+            />
             <Button
               sx={{ height: "40px", fontSize: "12px" }}
               variant="contained"
-              onClick={() => Router.push("/business/invoice/new")}
+              onClick={newInvoiceDrawal}
             >
-              <AddBox size={16} />
+              <AddBox width="18px" height="18px" fill="#fff" />
               New Invoice
             </Button>
           </>

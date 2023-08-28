@@ -1,19 +1,27 @@
 import fileSizeLimit from "@/helper/fileSizeLimit";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, IconButton, Stack, Typography } from "@mui/material";
 import { Blob } from "buffer";
 import Image from "next/image";
-import React, { useEffect, useRef, useState } from "react";
-import UploadIcon from "remixicon-react/Upload2LineIcon";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
+import UploadIcon from "@/public/icons/folder.svg";
+import ReloadIcon from "@/public/icons/reload.svg";
+import AddIcon from "@/public/icons/add-circle.svg";
+
+interface FileUploadProps {
+  title?: string;
+  acceptType?: string;
+  update?: (file: any) => void;
+  multiple?: boolean;
+  icon?: ReactNode;
+}
 
 export default function FileUpload({
   title,
-  height,
+  acceptType,
+  multiple,
+  icon,
   update,
-}: {
-  title: string;
-  height?: number;
-  update: (file: any) => void;
-}) {
+}: FileUploadProps) {
   const actualBtnRef = useRef(null);
   const [fileName, setFileName] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -21,7 +29,7 @@ export default function FileUpload({
   const [isImage, setIsImage] = useState(false);
 
   useEffect(() => {
-    update && update(selectedFile);
+    update && selectedFile && update(selectedFile);
   }, [selectedFile]);
 
   const handleFileInputChange = (e: any) => {
@@ -51,47 +59,88 @@ export default function FileUpload({
           hidden
           ref={ref}
           type="file"
-          accept="application/pdf, image/*"
+          accept={acceptType ?? "application/pdf, image/*"}
           onChange={handleFileInputChange}
         />
       </Box>
-      <Stack
-        overflow="hidden"
-        border="1px dashed #92959F"
-        height={`${height}px` ?? "100px"}
-        width="100%"
-        padding="32px 51px"
-        direction="row"
-        spacing="14px"
-        alignItems="center"
-        justifyContent="center"
-        sx={{ cursor: "pointer" }}
-        onClick={handleClick}
-      >
-        {previewUrl && isImage ? (
-          <Image
-            src={previewUrl}
-            alt="Preview"
-            width={100}
-            height={100}
-            style={{ width: "100%", objectFit: "cover" }}
-          />
-        ) : (
-          <>
-            <Box width="17px" height="17px">
-              <UploadIcon color="rgba(38, 43, 64, 0.6)" size={18} />
-            </Box>
-            <Typography
-              color="rgba(38, 43, 64, 0.8)"
-              fontSize="12px"
-              textAlign="center"
-              lineHeight="18px"
+      <Box>
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          mb="12px"
+        >
+          <Typography fontSize="14px" fontWeight={500} lineHeight="24px">
+            {title}
+          </Typography>
+          {multiple && (
+            <Stack
+              direction="row"
+              spacing="6px"
+              alignItems="center"
+              sx={{ cursor: "pointer" }}
             >
-              {fileName ?? title}
+              <AddIcon width="18px" height="18px" fill="#0048B1" />
+              <Typography
+                color="#0048B1"
+                fontSize="13px"
+                fontWeight={600}
+                lineHeight="22px"
+              >
+                Add another
+              </Typography>
+            </Stack>
+          )}
+        </Stack>
+        <Stack
+          overflow="hidden"
+          border="1px dashed #8F97A8"
+          bgcolor="#F6F6F9"
+          borderRadius="8px"
+          height={"124px"}
+          width="100%"
+          padding="32px 51px"
+          spacing="6px"
+          alignItems="center"
+          justifyContent="center"
+          sx={{ cursor: "pointer" }}
+          onClick={handleClick}
+        >
+          <IconButton sx={{ bgcolor: "#EAEAF1" }}>
+            {icon ?? <UploadIcon color="rgba(38, 43, 64, 0.6)" size={18} />}
+          </IconButton>
+          <Typography
+            color="#162031"
+            fontSize="13px"
+            textAlign="center"
+            lineHeight="21px"
+            letterSpacing="0.195px"
+          >
+            {fileName ?? "Drag and drop file here, or"}
+          </Typography>
+          <Stack
+            direction="row"
+            mt="23px"
+            spacing="6px"
+            alignItems="center"
+            sx={{ cursor: "pointer" }}
+          >
+            {previewUrl ? (
+              <ReloadIcon width="18px" height="18px" fill="#0048B1" />
+            ) : (
+              <AddIcon width="18px" height="18px" fill="#0048B1" />
+            )}
+            <Typography
+              color="#0048B1"
+              fontSize="13px"
+              fontWeight={600}
+              lineHeight="22px"
+            >
+              {previewUrl ? "Change file" : "Browse file"}
             </Typography>
-          </>
-        )}
-      </Stack>
+          </Stack>
+        </Stack>
+      </Box>
     </>
   );
 }

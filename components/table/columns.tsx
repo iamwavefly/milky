@@ -3,31 +3,22 @@ import stringToCurrency from "../../helper/formatCurrency";
 import { Box, Checkbox, Chip, Stack, Typography } from "@mui/material";
 import moment from "moment";
 import {
+  ViewTransaction,
   BeneficiaryMenu,
   CustomerMenu,
   PaymentLinkMenu,
   ProductMenu,
   TransferMenu,
+  VirtualAccountMenu,
 } from "./menu";
 import Image from "next/image";
 
 export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "date_created",
     header: "Date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {
@@ -66,16 +57,14 @@ export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
       );
     },
   },
+  {
+    accessorKey: "order_reference",
+    header: "actions",
+    cell: (row) => <ViewTransaction id={row.getValue()} />,
+  },
 ];
 
 export const TransactionTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "date_created",
     header: "Date",
@@ -127,19 +116,12 @@ export const TransactionTableColumns: ColumnDef<any, any>[] = [
 
 export const CustomersTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "customer_name",
-    header: "Name",
+    header: "Customer name",
   },
   {
     accessorKey: "email_address",
-    header: "Email",
+    header: "Customer email address",
   },
   {
     accessorKey: "mobile_number",
@@ -173,13 +155,6 @@ export const CustomersTableColumns: ColumnDef<any, any>[] = [
 
 export const PayoutTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "bank_name",
     header: "Bank Name",
   },
@@ -198,13 +173,6 @@ export const PayoutTableColumns: ColumnDef<any, any>[] = [
 ];
 
 export const UserTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorFn: (row) => `${row.first_name} ${row.last_name}`,
     header: "Name",
@@ -244,13 +212,6 @@ export const UserTableColumns: ColumnDef<any, any>[] = [
 
 export const SubsidiaryTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "name",
     header: "Name",
   },
@@ -274,13 +235,6 @@ export const SubsidiaryTableColumns: ColumnDef<any, any>[] = [
 
 export const CustomerDetailsTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "customer_name",
     header: "Name",
   },
@@ -295,7 +249,7 @@ export const CustomerDetailsTableColumns: ColumnDef<any, any>[] = [
   },
   {
     accessorKey: "payment_type",
-    header: "Channel",
+    header: "Payment type",
   },
   {
     accessorKey: "order_reference",
@@ -319,13 +273,6 @@ export const CustomerDetailsTableColumns: ColumnDef<any, any>[] = [
 ];
 
 export const TransactionDetailsTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "date_created",
     header: "Date",
@@ -377,13 +324,6 @@ export const TransactionDetailsTableColumns: ColumnDef<any, any>[] = [
 
 export const ProductDetailsTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "name",
     header: "Product name",
   },
@@ -427,25 +367,18 @@ export const ProductDetailsTableColumns: ColumnDef<any, any>[] = [
 
 export const ProductsTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "name",
     header: "Product name",
     cell: (props) => {
       const { image, name } = props.row.original;
       return (
-        <Stack direction="row" alignItems="center" spacing="7px">
+        <Stack direction="row" alignItems="center" spacing="12px">
           <Image
             src={`https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${image}`}
             alt={name}
-            style={{ objectFit: "cover" }}
-            width={28}
-            height={28}
+            style={{ objectFit: "cover", borderRadius: "8px" }}
+            width={44}
+            height={44}
           />
           <span className="email">{name}</span>
         </Stack>
@@ -457,23 +390,6 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
     header: "Price",
     accessorFn: (row) =>
       `${row.currency ?? "NGN"} ${stringToCurrency(row.price).replace(
-        "NGN",
-        ""
-      )}`,
-  },
-  {
-    accessorKey: "stock",
-    header: "Stock count",
-  },
-  {
-    accessorKey: "total_orders",
-    header: "Sold",
-  },
-  {
-    accessorKey: "total_amount",
-    header: "Revenue",
-    accessorFn: (row) =>
-      `${row.currency ?? "NGN"} ${stringToCurrency(row.total_amount).replace(
         "NGN",
         ""
       )}`,
@@ -494,20 +410,30 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
     },
   },
   {
-    header: " ",
+    accessorKey: "stock",
+    header: "Stock count",
+  },
+  {
+    accessorKey: "total_orders",
+    header: "Sold",
+  },
+  {
+    accessorKey: "total_amount",
+    header: "Revenue",
+    accessorFn: (row) =>
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.total_amount).replace(
+        "NGN",
+        ""
+      )}`,
+  },
+  {
+    header: "Actions",
     accessorKey: "id",
     cell: (row) => <ProductMenu id={row.getValue()} />,
   },
 ];
 
 export const AccountVirtualTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "account_name",
     header: "Name",
@@ -524,16 +450,14 @@ export const AccountVirtualTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "bvn",
     header: "BVN",
   },
+  {
+    header: "Actions",
+    accessorKey: "id",
+    cell: (row) => <VirtualAccountMenu id={row.getValue()} />,
+  },
 ];
 
 export const BalanceReserveColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "settlement_amount",
     header: "Settlement amount",
@@ -588,16 +512,14 @@ export const BalanceReserveColumns: ColumnDef<any, any>[] = [
       );
     },
   },
+  {
+    header: "Actions",
+    accessorKey: "id",
+    cell: (row) => <VirtualAccountMenu id={row.getValue()} />,
+  },
 ];
 
 export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "balance",
     header: "Initial balance",
@@ -647,16 +569,14 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
       );
     },
   },
+  {
+    header: "Actions",
+    accessorKey: "id",
+    cell: (row) => <VirtualAccountMenu id={row.getValue()} />,
+  },
 ];
 
 export const AccountCustomerTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "name",
     header: "Customer name",
@@ -680,13 +600,6 @@ export const AccountCustomerTableColumns: ColumnDef<any, any>[] = [
 ];
 
 export const InvoiceTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "customer_name",
     header: "Customer name",
@@ -712,22 +625,14 @@ export const InvoiceTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Date issued",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {
     accessorKey: "due_date",
     header: "Due date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {
@@ -748,13 +653,6 @@ export const InvoiceTableColumns: ColumnDef<any, any>[] = [
 ];
 
 export const SettlementTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "name",
     header: "Business name",
@@ -794,13 +692,6 @@ export const SettlementTableColumns: ColumnDef<any, any>[] = [
 
 export const ReportTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "id",
     header: "Transaction reference",
   },
@@ -839,13 +730,6 @@ export const ReportTableColumns: ColumnDef<any, any>[] = [
 
 export const PendingApprovalTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "amount",
     header: "Amount due",
   },
@@ -873,13 +757,6 @@ export const PendingApprovalTableColumns: ColumnDef<any, any>[] = [
 
 export const RefundTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "amount",
     header: "Amount",
     accessorFn: (row) =>
@@ -887,10 +764,6 @@ export const RefundTableColumns: ColumnDef<any, any>[] = [
         "NGN",
         ""
       )}`,
-  },
-  {
-    accessorKey: "subsidiary_id",
-    header: "Merchant ID",
   },
   {
     accessorKey: "customer_id",
@@ -904,11 +777,7 @@ export const RefundTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {
@@ -926,16 +795,14 @@ export const RefundTableColumns: ColumnDef<any, any>[] = [
       );
     },
   },
+  {
+    header: "Actions",
+    accessorKey: "id",
+    cell: (row) => <VirtualAccountMenu id={row.getValue()} />,
+  },
 ];
 
 export const DebitTransferTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "name",
     header: "Business name",
@@ -975,13 +842,6 @@ export const DebitTransferTableColumns: ColumnDef<any, any>[] = [
 
 export const SettlementDetailsTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "id",
     header: "Customer ID",
   },
@@ -1020,13 +880,6 @@ export const SettlementDetailsTableColumns: ColumnDef<any, any>[] = [
 
 export const AccountsTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "business_name",
     header: "Business name",
   },
@@ -1049,13 +902,6 @@ export const AccountsTableColumns: ColumnDef<any, any>[] = [
 ];
 
 export const AccountSettlementTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "subsidiary_name",
     header: "Business name",
@@ -1099,13 +945,6 @@ export const AccountSettlementTableColumns: ColumnDef<any, any>[] = [
 ];
 
 export const TransferTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "account_number",
     header: "Account",
@@ -1170,13 +1009,6 @@ export const TransferTableColumns: ColumnDef<any, any>[] = [
 
 export const TransferPendingTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "amount",
     header: "Amount",
     accessorFn: (row) =>
@@ -1205,20 +1037,13 @@ export const TransferPendingTableColumns: ColumnDef<any, any>[] = [
     },
   },
   {
-    header: " ",
+    header: "Actions",
     accessorKey: "id",
     cell: (row) => <CustomerMenu id={row.getValue()} />,
   },
 ];
 
 export const FundingHistoryTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "amount",
     header: "Amount",
@@ -1245,28 +1070,17 @@ export const FundingHistoryTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_initiated",
     header: "Date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {
-    header: " ",
+    header: "Actions",
     accessorKey: "id",
     cell: (row) => <CustomerMenu id={row.getValue()} />,
   },
 ];
 
 export const BeneficiaryTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "name",
     header: "Name",
@@ -1291,20 +1105,13 @@ export const BeneficiaryTableColumns: ColumnDef<any, any>[] = [
     },
   },
   {
-    header: " ",
+    header: "Actions",
     accessorKey: "id",
     cell: (row) => <BeneficiaryMenu id={row.getValue()} />,
   },
 ];
 
 export const AccountsTxnTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "name",
     header: "Business name",
@@ -1340,13 +1147,6 @@ export const AccountsTxnTableColumns: ColumnDef<any, any>[] = [
 
 export const AccountSubsidiariesColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "name",
     header: "Business name",
   },
@@ -1374,13 +1174,6 @@ export const AccountSubsidiariesColumns: ColumnDef<any, any>[] = [
 
 export const AccountSubDetailsColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "name",
     header: "Subsidiary name",
   },
@@ -1403,13 +1196,6 @@ export const AccountSubDetailsColumns: ColumnDef<any, any>[] = [
 ];
 
 export const AccountSettlementColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "name",
     header: "Business name",
@@ -1449,13 +1235,6 @@ export const AccountSettlementColumns: ColumnDef<any, any>[] = [
 
 export const PaymentLinkColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "name",
     header: "Link name",
   },
@@ -1489,20 +1268,13 @@ export const PaymentLinkColumns: ColumnDef<any, any>[] = [
     },
   },
   {
-    header: " ",
+    header: "Actions",
     accessorKey: "id",
     cell: (row) => <PaymentLinkMenu id={row.getValue()} />,
   },
 ];
 
 export const PayoutCreditColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "type",
     header: "Payment type",
@@ -1527,13 +1299,6 @@ export const PayoutCreditColumns: ColumnDef<any, any>[] = [
 
 export const DebiTansfertColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "type",
     header: "Payment type",
   },
@@ -1556,13 +1321,6 @@ export const DebiTansfertColumns: ColumnDef<any, any>[] = [
 ];
 
 export const DisputeColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "merchant_name",
     header: "Business name",
@@ -1621,13 +1379,6 @@ export const DisputeColumns: ColumnDef<any, any>[] = [
 
 export const CreditSummaryColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "date",
     header: "Date",
   },
@@ -1646,13 +1397,6 @@ export const CreditSummaryColumns: ColumnDef<any, any>[] = [
 ];
 
 export const ProviderSummaryColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "due_date",
     header: "Due date",
@@ -1696,13 +1440,6 @@ export const ProviderSummaryColumns: ColumnDef<any, any>[] = [
 
 export const ChargebackColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "amount",
     header: "Amount",
   },
@@ -1741,13 +1478,6 @@ export const ChargebackColumns: ColumnDef<any, any>[] = [
 
 export const AwaitingResponseColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "amount",
     header: "Amount",
   },
@@ -1781,13 +1511,6 @@ export const AwaitingResponseColumns: ColumnDef<any, any>[] = [
 ];
 
 export const WonChargebackColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "amount",
     header: "Amount",
@@ -1823,13 +1546,6 @@ export const WonChargebackColumns: ColumnDef<any, any>[] = [
 
 export const AssessmentChargebackColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "amount",
     header: "Amount",
   },
@@ -1849,13 +1565,6 @@ export const AssessmentChargebackColumns: ColumnDef<any, any>[] = [
 
 export const FeesTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "country",
     header: "Country",
   },
@@ -1874,13 +1583,6 @@ export const FeesTableColumns: ColumnDef<any, any>[] = [
 ];
 
 export const LimitCollectionTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "business_type",
     header: "Business type",
@@ -1939,13 +1641,6 @@ export const LimitCollectionTableColumns: ColumnDef<any, any>[] = [
 
 export const LimitTransferTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "transaction_type",
     header: "Transaction type",
   },
@@ -1978,13 +1673,6 @@ export const LimitTransferTableColumns: ColumnDef<any, any>[] = [
 
 export const ProviderTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "provider",
     header: "Provider name",
   },
@@ -1999,13 +1687,6 @@ export const ProviderTableColumns: ColumnDef<any, any>[] = [
 ];
 
 export const ApprovalSetupTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "provider",
     header: "Provider name",
@@ -2044,13 +1725,6 @@ export const ApprovalFeesTableColumns: ColumnDef<any, any>[] = [
 
 export const SettingsTableColumns: ColumnDef<any, any>[] = [
   {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
-  {
     accessorKey: "name",
     header: "Name",
   },
@@ -2080,13 +1754,6 @@ export const SettingsTableColumns: ColumnDef<any, any>[] = [
 ];
 
 export const SettingRoleTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "name",
     header: "Name",
@@ -2133,13 +1800,6 @@ export const SettingRoleTableColumns: ColumnDef<any, any>[] = [
 ];
 
 export const MerchantTableColumns: ColumnDef<any, any>[] = [
-  {
-    accessorKey: "checkbox",
-    header: (<Checkbox />) as any,
-    cell: (row: any) => {
-      return <Checkbox />;
-    },
-  },
   {
     accessorKey: "id",
     header: "ID",

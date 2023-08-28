@@ -3,7 +3,6 @@ import Styles from "./styles.module.scss";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import axios from "axios";
 import moment from "moment";
-import { Divider, Image } from "semantic-ui-react";
 import Link from "next/link";
 import { Box, Checkbox, Typography } from "@mui/material";
 import { _accounts, _main } from "@/mocks";

@@ -9,17 +9,24 @@ import { AccountVirtualTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
-import AddBox from "remixicon-react/AddBoxFillIcon";
-import { Button } from "@mui/material";
+import AddBox from "@/public/icons/folder-plus.svg";
+import { Box, Button } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { setDrawalState } from "@/store/appSlice";
 import NewPaymentLink from "@/components/business/paymentLinks/newPaymentLink";
 import NewVirtualAccount from "./newVirtualAccount";
+import DropdownMenu from "@/components/DropdownMenu";
+import Export from "@/components/Export";
+import Modal from "@/components/modal/modal";
 
 const VirtualAccountTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const containerRef = useRef();
   const dispatch = useDispatch();
@@ -37,34 +44,50 @@ const VirtualAccountTable = () => {
     handleSubmit();
   }, [currentPage, search, filters]);
 
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "New Virtual Account",
-        content: <NewVirtualAccount reload={handleSubmit} />,
-      })
-    );
-  };
+  // const openDrawal = () => {
+  //   dispatch(
+  //     setDrawalState({
+  //       active: true,
+  //       title: "New Virtual Account",
+  //       content: <NewVirtualAccount reload={handleSubmit} />,
+  //     })
+  //   );
+  // };
 
   return (
-    <div className={Styles.container}>
+    <Box>
+      <Modal
+        title="New Virtual Account"
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <NewVirtualAccount reload={handleSubmit} close={handleCloseModal} />
+      </Modal>
       <Header
         containerRef={containerRef}
         columns={AccountVirtualTableColumns}
         data={data?.items}
-        entries={`${data?.total_items ?? 0} Entries`}
-        setSearch={setSearch}
+        entries={`${data?.total_items ?? 0}`}
+        pageName="Virtual Accounts"
         url="/view/static/accounts"
-        buttons={
-          <Button
-            variant="contained"
-            sx={{ height: "40px", fontSize: "12px" }}
-            onClick={openDrawal}
-          >
-            <AddBox size={16} />
-            Create Virtual Account
-          </Button>
+        actions={
+          <>
+            <Export
+              columns={AccountVirtualTableColumns}
+              data={data?.items}
+              title="virtual account"
+              variant="outlinedSmall"
+            />
+            <Button
+              variant="contained"
+              sx={{ height: "40px", fontSize: "12px" }}
+              onClick={handleOpenModal}
+            >
+              <AddBox size={16} />
+              Create Virtual Account
+            </Button>
+          </>
         }
         selector="virtual"
         updateFilter={setFilters}
@@ -77,7 +100,7 @@ const VirtualAccountTable = () => {
         page={setCurrentPage}
         pageCount={data?.total_pages}
       />
-    </div>
+    </Box>
   );
 };
 

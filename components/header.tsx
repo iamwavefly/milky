@@ -1,9 +1,31 @@
-import React from 'react'
+import { Box, Stack, Typography } from "@mui/material";
+import React, { ReactNode } from "react";
 
-const header = () => {
-  return (
-    <div>header</div>
-  )
+interface Props {
+  children: ReactNode;
+  title: string;
 }
 
-export default header
+const Header = ({ children, title }: Props) => {
+  return (
+    <Stack
+      height="40px"
+      direction="row"
+      justifyContent="space-between"
+      alignItems="flex-end"
+    >
+      <Typography
+        variant="h4"
+        fontSize="18px"
+        color="#070F1C"
+        fontWeight={600}
+        lineHeight="26px"
+      >
+        {title}
+      </Typography>
+      <Box>{children}</Box>
+    </Stack>
+  );
+};
+
+export default Header;

@@ -23,11 +23,9 @@ export default function Index() {
 
   return (
     <Dashboard title="Awaiting Response">
-      <Box px="30px" mt="20px">
-        <Chart title="Awaiting Response" />
-        <Box mt="39px">
-          <AwaitingResponseTable />
-        </Box>
+      <Chart />
+      <Box>
+        <AwaitingResponseTable />
       </Box>
     </Dashboard>
   );

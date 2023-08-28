@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from "react";
 import Dashboard from "@/layouts/dashboard";
-import { Box, Divider, IconButton, Stack, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  IconButton,
+  Stack,
+  Typography,
+} from "@mui/material";
+import Grid from "@mui/material/Unstable_Grid2";
 import DropdownMenu from "@/components/DropdownMenu";
 import CountChart from "@/components/CountChart";
 import useFetch from "@/hooks/useFetch";
@@ -11,6 +19,14 @@ import BarChart from "@/components/charts/barChart";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserState } from "@/store/authSlice";
 import { CSVLink } from "react-csv";
+import Header from "@/components/header";
+import LandscapeCard from "@/components/cards/LandscapeCard";
+import DataIcon from "@/public/icons/data.svg";
+import DropIcon from "@/public/icons/drop.svg";
+import ReportIcon from "@/public/icons/report.svg";
+import ArrowIcon from "@/public/icons/arrow-down.svg";
+import ColorBop from "@/components/colorBop";
+import LineChart from "@/components/charts/lineChart";
 
 export default function Index() {
   const [metric, setMetric] = useState<any>({});
@@ -41,100 +57,120 @@ export default function Index() {
 
   return (
     <Dashboard title="Dashboard">
-      <Stack
-        px="30px"
-        mt="20px"
-        height="40px"
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-      >
-        <Typography fontSize="16px" color="#2E3192">
-          Dashboard
-        </Typography>
+      <Header title="Overview">
         <Stack direction="row" gap="10px">
-          <DropdownMenu title="NGN" />
-          <DropdownMenu title="7days" />
+          <DropdownMenu title="Filter currency" />
         </Stack>
-      </Stack>
-      <Box mt="20px" px="30px">
-        <Stack
-          direction="row"
-          bgcolor="#F3F3F9"
-          padding="25px 39px 25px 32px"
-          gap="45px"
-          minHeight="105px"
-        >
-          <Box flex={1}>
-            <CountChart
-              title={"Transaction Count"}
-              value={metric?.count ?? 0}
-              change={metric?.count_change}
-            />
-          </Box>
-          <Divider sx={{ border: "1px solid #E4E8F2" }} />
-          <Box flex={1}>
-            <CountChart
-              title={"Transaction Volume"}
-              themeColor="#EA5851"
-              value={metric?.volume ?? 0}
-              change={metric?.volume_change}
-              withCurrency
-            />
-          </Box>
-          <Divider sx={{ border: "1px solid #E4E8F2" }} />
-          <Box flex={1}>
-            <CountChart
-              title={"Transaction Settlements"}
-              value={metric?.settlements ?? 0}
-              change={metric?.settlement_change}
-              withCurrency
-            />
-          </Box>
-        </Stack>
-        <Stack
-          direction="row"
-          bgcolor="#F3F3F9"
-          padding="25px 39px 25px 32px"
-          gap="45px"
-          minHeight="105px"
-          borderTop="1px solid #E4E8F2"
-        >
-          <Box flex={1}>
-            <CountChart
-              title={"Available Balance"}
-              value={metric?.available_balance ?? 0}
-              change={metric?.available_balance_change}
-              withCurrency
-            />
-          </Box>
-          <Divider sx={{ border: "1px solid #E4E8F2" }} />
-          <Box flex={1}>
-            <CountChart
-              title={"Ledger Balance"}
-              value={metric?.ledger_balance ?? 0}
-              change={metric?.ledger_balance_change}
-              withCurrency
-            />
-          </Box>
-          <Box flex={1}></Box>
-        </Stack>
-      </Box>
+      </Header>
       {/* group charts */}
-      <Stack direction="row" spacing="30px" px="30px" mt="30px">
-        {/* chart box */}
-        <BarChart
-          data={inflowOutflowChart?.data?.data}
-          dataKey="inflow"
-          updateDate={setDateRange}
-        />
-        {/* chart box */}
-        <BarChart
-          data={inflowOutflowChart?.data?.data}
-          dataKey="outflow"
-          updateDate={setDateRange}
-        />
-      </Stack>
+      <Grid container spacing="16px" mt="20px">
+        <Grid xs>
+          <LandscapeCard
+            title="12,500"
+            subtitle={"Total Transaction count"}
+            icon={<DataIcon />}
+          />
+        </Grid>
+        <Grid xs>
+          <LandscapeCard
+            title="1,500,000"
+            subtitle={"Total Transaction Volume"}
+            variant="error"
+            currency="NGN"
+            icon={<DropIcon />}
+          />
+        </Grid>
+        <Grid xs>
+          <LandscapeCard
+            title="1,000,000"
+            subtitle={"Total Transaction Settlements"}
+            currency="NGN"
+            icon={<ReportIcon />}
+          />
+        </Grid>
+      </Grid>
+      <Grid container spacing="16px" mt="24px">
+        <Grid xs={8}>
+          <Box
+            bgcolor="#fff"
+            height="456px"
+            borderRadius="8px"
+            border="1px solid #E8EAED"
+            padding="24px"
+          >
+            {/* header */}
+            <Stack direction="row" justifyContent="space-between">
+              <Box>
+                <Typography
+                  color="#162031"
+                  fontSize="15px"
+                  fontWeight={600}
+                  lineHeight="26px"
+                >
+                  Analytics
+                </Typography>
+                <Typography color="#586379" fontSize="13px" lineHeight="21px">
+                  Track inflow and outflow of money overtime
+                </Typography>
+              </Box>
+              <Stack direction="row" spacing="16px">
+                <Button variant="outlinedSmall">
+                  This week{" "}
+                  <ArrowIcon width="18px" height="18px" fill="#0048B1" />
+                </Button>
+                <Button variant="containedSmall">
+                  This week <ArrowIcon width="18px" height="18px" fill="#fff" />
+                </Button>
+              </Stack>
+            </Stack>
+            {/* chart */}
+            <Box height="310px" mt="19px">
+              <LineChart />
+            </Box>
+            {/* footer */}
+            <Stack
+              direction="row"
+              justifyContent="center"
+              mb="24px"
+              mt="13px"
+              height="21px"
+              spacing="32px"
+            >
+              <Stack direction="row" alignItems="center" spacing="8px">
+                <ColorBop color="#0069D0" />
+                <Typography color="#162031" fontSize="13px" lineHeight="21px">
+                  Inflow
+                </Typography>
+              </Stack>
+              <Stack direction="row" alignItems="center" spacing="8px">
+                <ColorBop color="#FF4F79" />
+                <Typography color="#162031" fontSize="13px" lineHeight="21px">
+                  Outflow
+                </Typography>
+              </Stack>
+            </Stack>
+          </Box>
+        </Grid>
+        <Grid xs>
+          <Stack spacing="24px">
+            <LandscapeCard
+              title="2,500,000"
+              subtitle={"Available Balance"}
+              currency="NGN"
+              variant="error"
+              icon={<ReportIcon />}
+              linkTo="/balance"
+            />
+            <LandscapeCard
+              title="2,000,000"
+              subtitle={"Ledger Balance"}
+              currency="NGN"
+              icon={<ReportIcon />}
+              linkTo="/balance"
+            />
+          </Stack>
+        </Grid>
+      </Grid>
     </Dashboard>
   );
 }

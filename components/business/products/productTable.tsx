@@ -9,8 +9,13 @@ import { ProductsTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
-import AddBox from "remixicon-react/AddBoxFillIcon";
-import { Button } from "@mui/material";
+import AddBox from "@/public/icons/add.svg";
+import { Box, Button } from "@mui/material";
+import Filter from "@/components/Filter";
+import DropdownMenu from "@/components/DropdownMenu";
+import { useDispatch } from "react-redux";
+import { setDrawalState } from "@/store/appSlice";
+import NewProduct from "./NewProduct";
 
 const SettlementTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -18,6 +23,7 @@ const SettlementTable = () => {
   const [filters, setFilters] = useState({});
 
   const containerRef = useRef();
+  const dispatch = useDispatch();
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/product/all?page=${currentPage}&limit=10&${Object.entries(
@@ -28,28 +34,45 @@ const SettlementTable = () => {
     "get"
   );
 
+  const newProductDrawal = () => {
+    dispatch(
+      setDrawalState({
+        active: true,
+        title: "New Product",
+        content: <NewProduct />,
+      })
+    );
+  };
+
   useEffect(() => {
     handleSubmit();
   }, [currentPage, search, filters]);
 
   return (
-    <div className={Styles.container}>
+    <Box>
       <Header
         containerRef={containerRef}
         columns={ProductsTableColumns}
         data={data?.items}
-        entries={`${data?.total_items ?? 0} Entries`}
+        entries={`${data?.total_items ?? 0}`}
         setSearch={setSearch}
         url="/dashboard/product/all"
-        buttons={
-          <Button
-            variant="contained"
-            sx={{ height: "40px", fontSize: "12px" }}
-            onClick={() => Router.push("/business/products/new")}
-          >
-            <AddBox size={16} />
-            Add New Product
-          </Button>
+        actions={
+          <>
+            <DropdownMenu
+              title="Filter"
+              updateFilter={setFilters}
+              selector={"products"}
+            />
+            <Button
+              variant="contained"
+              sx={{ height: "40px", fontSize: "12px" }}
+              onClick={newProductDrawal}
+            >
+              <AddBox width="18px" height="18px" fill="#fff" />
+              Add new product
+            </Button>
+          </>
         }
         selector="products"
         updateFilter={setFilters}
@@ -62,7 +85,7 @@ const SettlementTable = () => {
         page={setCurrentPage}
         pageCount={data?.total_pages}
       />
-    </div>
+    </Box>
   );
 };
 

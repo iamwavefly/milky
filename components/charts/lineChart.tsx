@@ -19,62 +19,14 @@ const labelStyles = {
   color: "#9E9E9E",
   fontSize: 14,
 };
-
 const data = [
-  {
-    name: "Mon",
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: "Tues",
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: "Wed",
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: "Thurs",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Thurs",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Thurs",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Thurs",
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: "Thurs",
-    uv: 2780,
-    pv: 39208,
-    amt: 2000,
-  },
-  {
-    name: "Thurs",
-    uv: 2780,
-    pv: 3901,
-    amt: 2000,
-  },
+  { name: "Mar 01", inflow: 90, outflow: 80 },
+  { name: "Mar 01", inflow: 82, outflow: 38 },
+  { name: "Mar 03", inflow: 78, outflow: 80 },
+  { name: "Mar 04", inflow: 95, outflow: 20 },
+  { name: "Mar 05", inflow: 30, outflow: 60 },
+  { name: "Mar 06", inflow: 30, outflow: 10 },
+  { name: "Mar 07", inflow: 30, outflow: 0 },
 ];
 
 interface Props {
@@ -87,37 +39,32 @@ const LineChart = ({ type, themeColor }: Props) => {
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
         data={data}
-        margin={{
-          top: 5,
-          right: 5,
-          left: 5,
-          bottom: 5,
-        }}
+        margin={{ top: 5, right: 5, left: -28, bottom: 5 }}
       >
-        <Tooltip />
         <defs>
-          <linearGradient
-            id={`colorUv${themeColor}`}
-            x1="0"
-            y1="0"
-            x2="0"
-            y2="1"
-          >
-            <stop
-              offset="10%"
-              stopColor={themeColor ?? "#304FFD"}
-              stopOpacity={0.3}
-            />
-            <stop offset="90%" stopColor="#fff" stopOpacity={0} />
+          <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="5%" stopColor="rgba(65, 105, 225, 0.12)" />
+            <stop offset="95%" stopColor="rgba(65, 105, 225, 0.01)" />
           </linearGradient>
         </defs>
+        <CartesianGrid vertical={false} stroke="#AFB4C1" strokeWidth={0.5} />
+        <XAxis dataKey="name" axisLine={false} fontSize={12} color="#3C4453" />
+        <YAxis tickCount={10} axisLine={false} fontSize={12} color="#3C4453" />
+        <Tooltip />
         <Area
-          fill={`url(#colorUv${themeColor})`}
-          type="monotone"
-          dataKey="pv"
-          strokeWidth={2.2}
-          stroke={themeColor ?? "#304FFD"}
-          dot={false}
+          type="natural"
+          dataKey="inflow"
+          stroke="#0069D0"
+          fill="url(#areaGradient)"
+          strokeWidth={1.8}
+        />
+        <Area
+          type="natural"
+          dataKey="outflow"
+          stroke="#FF4F79"
+          fill="transparent"
+          strokeWidth={1.8}
+          strokeDasharray="3 3"
         />
       </AreaChart>
     </ResponsiveContainer>

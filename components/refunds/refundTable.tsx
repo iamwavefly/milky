@@ -18,6 +18,10 @@ import { useDispatch } from "react-redux";
 import NewRefund from "./newRefund";
 import BulkRefund from "./bulkRefund";
 import BulkRefundTable from "./bulkRefundTable";
+import Export from "../Export";
+import FundBalance from "../payouts/transfers/fundBalance";
+import FundIcon from "@/public/icons/edit-square.svg";
+import Modal from "../modal/modal";
 
 const RefundTable = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -25,8 +29,9 @@ const RefundTable = () => {
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
   const [csvFile, setCsvFile] = useState<null | {}>(null);
+  const [modalState, setModalState] = useState<null | string>(null);
+  const [openModal, setOpenModal] = useState(false);
 
-  const close = () => dispatch(setDrawalState({ active: false }));
   const open = Boolean(anchorEl);
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -38,28 +43,22 @@ const RefundTable = () => {
     setCsvFile(file);
   };
 
+  const handleOpenModal = (type: "single" | "bulk" | "csv") => {
+    setOpenModal(true);
+    setModalState(type);
+    handleClose();
+  };
+  const handleCloseModal = () => {
+    handleClose();
+    setOpenModal(false);
+  };
+
   const dispatch = useDispatch();
   // open single refund
-  const openSingleRefund = () => {
-    handleClose();
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Log a single refund",
-        content: <NewRefund />,
-      })
-    );
-  };
   // open bulk refund
   const openBulkRefund = () => {
     handleClose();
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Log bulk refund",
-        content: <BulkRefund updateCsvFile={updateCsvFile} />,
-      })
-    );
+    handleOpenModal("bulk");
   };
 
   const containerRef = useRef();
@@ -77,22 +76,45 @@ const RefundTable = () => {
     handleSubmit();
   }, [currentPage, search, filters]);
 
-  const resetTable = () => setCsvFile(null);
+  useEffect(() => {
+    if (csvFile) {
+      handleCloseModal();
+      handleOpenModal("csv");
+    }
+  }, [csvFile]);
 
-  if (csvFile) {
-    close();
-    return (
-      <BulkRefundTable
-        csvFile={csvFile}
-        openRefund={openBulkRefund}
-        reload={handleSubmit}
-        reset={resetTable}
-      />
-    );
-  }
+  const resetTable = () => setCsvFile(null);
 
   return (
     <Box>
+      <Modal
+        width={modalState === "csv" ? "80vw" : undefined}
+        title={
+          modalState === "single"
+            ? "Log a Single Refund"
+            : modalState === "bulk"
+            ? "Log Bulk Refund"
+            : "Review Refund Entries"
+        }
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        {modalState === "single" ? (
+          <NewRefund reload={handleSubmit} close={handleCloseModal} />
+        ) : modalState === "bulk" ? (
+          <BulkRefund updateCsvFile={updateCsvFile} />
+        ) : modalState === "csv" ? (
+          <BulkRefundTable
+            csvFile={csvFile}
+            openRefund={openBulkRefund}
+            reload={handleSubmit}
+            reset={resetTable}
+          />
+        ) : (
+          ""
+        )}
+      </Modal>
       <Menu
         anchorEl={anchorEl}
         open={open}
@@ -101,10 +123,10 @@ const RefundTable = () => {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={openSingleRefund} sx={{ fontSize: "12px" }}>
+        <MenuItem onClick={() => handleOpenModal("single")}>
           Log a single refund
         </MenuItem>
-        <MenuItem onClick={openBulkRefund} sx={{ fontSize: "12px" }}>
+        <MenuItem onClick={() => handleOpenModal("bulk")}>
           Log bulk refunds
         </MenuItem>
       </Menu>
@@ -112,18 +134,26 @@ const RefundTable = () => {
         containerRef={containerRef}
         columns={RefundTableColumns}
         data={data?.items}
-        entries={`${data?.total_items ?? 0} Entries`}
+        entries={data?.total_items ?? 0}
         setSearch={setSearch}
         url="/dashboard/refund/all"
-        buttons={
-          <Button
-            variant="contained"
-            sx={{ height: "40px", fontSize: "12px" }}
-            onClick={handleClick}
-          >
-            <AddBox size={16} />
-            Log a refund
-          </Button>
+        actions={
+          <>
+            <Export
+              columns={RefundTableColumns}
+              data={data?.items}
+              title="beneficiary"
+              variant="outlinedSmall"
+            />
+            <Button
+              variant="contained"
+              onClick={handleClick}
+              sx={{ height: "40px", fontSize: "14px" }}
+            >
+              <FundIcon width="18px" height="18px" fill="#fff" />
+              Log a refund
+            </Button>
+          </>
         }
         selector="Refunds"
         updateFilter={setFilters}

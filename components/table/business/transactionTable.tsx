@@ -10,6 +10,8 @@ import Router from "next/router";
 import { BusinessTransactionTableColumns } from "../columns";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
+import Export from "@/components/Export";
+import DropdownMenu from "@/components/DropdownMenu";
 
 const TransactionTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -32,7 +34,7 @@ const TransactionTable = () => {
   }, [currentPage, search, filters]);
 
   return (
-    <Box className={Styles.container}>
+    <Box>
       <Header
         containerRef={containerRef}
         columns={BusinessTransactionTableColumns}
@@ -42,6 +44,21 @@ const TransactionTable = () => {
         updateFilter={setFilters}
         selector="orders"
         url="/dashboard/fetch/orders"
+        actions={
+          <>
+            <DropdownMenu
+              title="Filter"
+              updateFilter={setFilters}
+              selector={"orders"}
+            />
+            <Export
+              title={"transactions"}
+              data={data?.items}
+              columns={BusinessTransactionTableColumns}
+              containerRef={containerRef}
+            />
+          </>
+        }
       />
       <Table
         containerRef={containerRef}

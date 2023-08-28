@@ -26,8 +26,10 @@ export default function OnlyHeader({
       minHeight="171px"
       height="auto"
       display="grid"
-      // gridTemplateRows="56px 1fr"
+      border="1px solid #E8EAED"
+      borderRadius="8px"
       {...props}
+      overflow="hidden"
     >
       {header && (
         <Box
@@ -37,8 +39,14 @@ export default function OnlyHeader({
           alignItems="center"
           borderBottom="1px solid #E9EBF2"
           px="24px"
+          bgcolor="#F9FAFB"
         >
-          <Typography fontWeight={500} fontSize={size ?? "14px"}>
+          <Typography
+            fontWeight={600}
+            fontSize={size ?? "15px"}
+            lineHeight="26px"
+            color="#162031"
+          >
             {header}
           </Typography>
           {filter && (
@@ -50,7 +58,7 @@ export default function OnlyHeader({
       )}
       <Box
         px="24px"
-        py="33px"
+        py="32px"
         alignItems="flex-start"
         justifyContent="start"
         height="auto"

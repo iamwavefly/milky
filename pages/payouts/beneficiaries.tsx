@@ -31,20 +31,7 @@ export default function Index() {
 
   return (
     <Dashboard title="Beneficiaries">
-      <Stack
-        px="30px"
-        mt="20px"
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Typography fontSize="16px" color="#2E3192">
-          Beneficiaries
-        </Typography>
-      </Stack>
-      <Box mt="20px" px="30px">
-        <BeneficiaryTable />
-      </Box>
+      <BeneficiaryTable />
     </Dashboard>
   );
 }

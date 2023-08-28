@@ -1,3 +1,4 @@
+import Footer from "@/components/form/Footer";
 import clipboard from "@/helper/clipboard";
 import stringToCurrency from "@/helper/formatCurrency";
 import useFetch from "@/hooks/useFetch";
@@ -23,7 +24,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-export default function TransferDetails({ reload }: any) {
+export default function TransferDetails({ reload, close }: any) {
   const [accounts, setAccounts] = useState<[]>([]);
   const [seletedAccount, setSeletedAccount] = useState<any>({});
   const [selectedId, setSelectedId] = useState("");
@@ -33,7 +34,6 @@ export default function TransferDetails({ reload }: any) {
   );
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   const handleChange = (event: SelectChangeEvent<typeof selectedId>) => {
     const { value } = event.target;
@@ -80,126 +80,11 @@ export default function TransferDetails({ reload }: any) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack>
-        <Typography
-          color="rgba(38, 43, 64, 0.8)"
-          fontSize="14px"
-          fontWeight={500}
-          maxWidth="401px"
-        >
-          To fund your naira wallet, make a transfer to the account details
-          below:
-        </Typography>
-        {/* account details */}
-        <Stack
-          mt="25px"
-          gap="13px"
-          bgcolor="#F3F3F9"
-          padding="22px 26px"
-          height="130px"
-        >
-          <Stack direction="row" alignItems="center">
-            <Typography
-              width="50%"
-              color="rgba(38, 43, 64, 0.8)"
-              fontSize="14px"
-            >
-              Bank name:
-            </Typography>
-            <Typography
-              color="rgba(38, 43, 64, 0.8)"
-              fontSize="14px"
-              fontWeight={500}
-            >
-              {seletedAccount?.bank_name?.length
-                ? seletedAccount?.bank_name
-                : "N/A"}
-            </Typography>
-          </Stack>
-          <Stack direction="row" alignItems="center">
-            <Typography
-              width="50%"
-              color="rgba(38, 43, 64, 0.8)"
-              fontSize="14px"
-            >
-              Account number:
-            </Typography>
-            <Stack direction="row" alignItems="center" spacing="14px">
-              <Typography
-                color="rgba(38, 43, 64, 0.8)"
-                fontSize="14px"
-                fontWeight={500}
-              >
-                {seletedAccount?.account_number?.length
-                  ? seletedAccount?.account_number
-                  : "N/A"}
-              </Typography>
-              <Button
-                sx={{
-                  color: "rgba(38, 43, 64, 0.8)",
-                  fontSize: "10px",
-                  width: "35px",
-                  height: "20px",
-                  padding: "2px 4px",
-                  borderRadius: 0,
-                }}
-                onClick={() =>
-                  clipboard(seletedAccount?.account_number ?? "...")
-                }
-              >
-                Copy
-              </Button>
-            </Stack>
-          </Stack>
-          <Stack direction="row" alignItems="center">
-            <Typography
-              width="50%"
-              color="rgba(38, 43, 64, 0.8)"
-              fontSize="14px"
-            >
-              Account name:
-            </Typography>
-            <Typography
-              color="rgba(38, 43, 64, 0.8)"
-              fontSize="14px"
-              fontWeight={500}
-            >
-              {seletedAccount?.account_name?.length
-                ? seletedAccount?.account_name
-                : "N/A"}
-            </Typography>
-          </Stack>
-        </Stack>
-        {/* account type */}
-        <InputLabel sx={{ mt: "14px", mb: "4px", left: 0 }}>
-          Which balance do you want to fund?
-        </InputLabel>
-        <Select
-          label="Link Name*"
-          variant="standard"
-          name="linkName"
-          value={selectedId}
-          onChange={handleChange}
-        >
-          {accounts?.map(
-            ({ currency_short_name, wallet_id, available_balance }: any) => (
-              <MenuItem
-                sx={{ width: "100%" }}
-                key={wallet_id}
-                value={wallet_id}
-              >
-                {currency_short_name} Balance:{" "}
-                {stringToCurrency(available_balance)}
-              </MenuItem>
-            )
-          )}
-        </Select>
+      <Stack px="40px" mt="32px" gap="24px">
+        <TextField variant="outlined" label="Account name" />
+        <TextField variant="outlined" label="Account number" type="number" />
       </Stack>
-      <Stack spacing="25px" mt="60px">
-        <LoadingButton variant="outlined" fullWidth onClick={close}>
-          Close
-        </LoadingButton>
-      </Stack>
+      <Footer>Top-up</Footer>
     </form>
   );
 }

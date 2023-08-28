@@ -9,7 +9,7 @@ import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-export default function NewPaymentLink({ reload, details }: any) {
+export default function NewPaymentLink({ reload, details, close }: any) {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/payment/link/${details ? "edit" : "new"}`
   );
@@ -26,7 +26,6 @@ export default function NewPaymentLink({ reload, details }: any) {
   }, []);
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   useEffect(() => {
     paymentTypes?.handleSubmit();
@@ -36,7 +35,6 @@ export default function NewPaymentLink({ reload, details }: any) {
     const { status, message } = data;
     if (status === "Success") {
       reload();
-      close();
     }
   }, [data]);
   // form controller
@@ -85,10 +83,10 @@ export default function NewPaymentLink({ reload, details }: any) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack spacing="13px">
+      <Stack spacing="24px" px="40px" mt="32px">
         <TextField
-          label="Link Name*"
-          variant="standard"
+          label="Link Name"
+          variant="outlined"
           name="linkName"
           value={formik.values.linkName}
           onChange={formik.handleChange}
@@ -98,8 +96,10 @@ export default function NewPaymentLink({ reload, details }: any) {
         />
         <TextField
           label="Description"
-          variant="standard"
+          variant="outlined"
           name="description"
+          multiline
+          rows={5}
           value={formik.values.description}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -110,7 +110,7 @@ export default function NewPaymentLink({ reload, details }: any) {
         />
         <TextField
           label="Limit"
-          variant="standard"
+          variant="outlined"
           name="limit"
           type="number"
           value={formik.values.limit}
@@ -120,8 +120,8 @@ export default function NewPaymentLink({ reload, details }: any) {
           helperText={formik.touched.limit && formik.errors.limit}
         />
         <TextField
-          label="Payment Type*"
-          variant="standard"
+          label="Payment Type"
+          variant="outlined"
           name="paymentType"
           value={formik.values.paymentType}
           onChange={formik.handleChange}
@@ -143,7 +143,7 @@ export default function NewPaymentLink({ reload, details }: any) {
         {/* currencies */}
         <TextField
           label="Currency"
-          variant="standard"
+          variant="outlined"
           sx={{ flex: 1 }}
           name="currency"
           value={formik.values.currency}
@@ -163,8 +163,8 @@ export default function NewPaymentLink({ reload, details }: any) {
         </TextField>
         {/* currencies */}
         <TextField
-          label="Amount*"
-          variant="standard"
+          label="Amount"
+          variant="outlined"
           name="amount"
           value={formik.values.amount}
           onChange={formik.handleChange}
@@ -173,23 +173,28 @@ export default function NewPaymentLink({ reload, details }: any) {
           helperText={formik.touched.amount && formik.errors.amount}
         />
       </Stack>
-      <Stack spacing="25px" mt="60px">
+      <Stack
+        direction="row"
+        spacing="28px"
+        px="40px"
+        py="16px"
+        mt="44px"
+        borderTop="1px solid #E8EAED"
+        alignItems="center"
+        justifyContent="flex-end"
+        bgcolor="#fff"
+        zIndex={2}
+      >
+        <LoadingButton variant="text" onClick={close}>
+          Cancel
+        </LoadingButton>
         <LoadingButton
           variant="contained"
-          fullWidth
           type="submit"
           loading={loading}
           disabled={!(formik.isValid && formik.dirty)}
         >
-          {details ? "Update" : "Add"} Payment Link
-        </LoadingButton>
-        <LoadingButton
-          variant="outlined"
-          fullWidth
-          onClick={close}
-          disabled={!(formik.isValid && formik.dirty)}
-        >
-          Cancel
+          {details ? "Update" : "Create new"} Link
         </LoadingButton>
       </Stack>
     </form>

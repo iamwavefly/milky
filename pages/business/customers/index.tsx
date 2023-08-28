@@ -9,15 +9,8 @@ import CustomersTable from "@/components/business/customers/customersTable";
 
 export default function Index() {
   return (
-    <Dashboard title="Dashboard">
-      <Stack px="30px" mt="20px">
-        <Typography fontSize="16px" color="#2E3192">
-          Customers
-        </Typography>
-      </Stack>
-      <Box mt="20px" px="30px">
-        <CustomersTable />
-      </Box>
+    <Dashboard title="Customers">
+      <CustomersTable />
     </Dashboard>
   );
 }
