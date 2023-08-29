@@ -21,32 +21,28 @@ export default function Index() {
   };
 
   return (
-    <Dashboard title="Settings | Business">
+    <Dashboard title="Business">
       <Stack px="30px" mt="20px">
-        <Typography fontSize="16px" color="#2E3192">
-          Business
-        </Typography>
-        {/* button group */}
-        <ToggleButtonGroup
-          sx={{ mt: "32px" }}
-          value={activeTab}
-          exclusive
-          onChange={handleTabChange}
-        >
-          <ToggleButton value="business">Business Information</ToggleButton>
-          <ToggleButton value="password">Password</ToggleButton>
-        </ToggleButtonGroup>
-        <Typography fontSize="12px" color="rgba(38, 43, 64, 0.8)" mt="20px">
-          Enter your business information to ensure they are correct
-        </Typography>
-        <Stack maxWidth="788px" mt="35px" bgcolor="#FFFFFF" p="25px 34px">
-          {activeTab === "business" ? (
+        <Stack direction="row" spacing="88px" width="100%">
+          <Box width="342px">
+            <Typography fontSize="18px" fontWeight={600} lineHeight="26px">
+              Business Information
+            </Typography>
+            <Typography
+              fontSize="14px"
+              mt="16px"
+              lineHeight="26px"
+              letterSpacing="0.14px"
+            >
+              Enter your business information and ensure they are correct
+            </Typography>
+          </Box>
+          <Box width="648px">
             <BusinessInformation />
-          ) : (
-            <PasswordForm />
-          )}
+          </Box>
         </Stack>
       </Stack>
+      <PasswordForm />
     </Dashboard>
   );
 }

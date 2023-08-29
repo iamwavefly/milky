@@ -21,6 +21,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import UploadIcon from "../../../public/icons/photo-upload.svg";
+import Footer from "@/components/form/Footer";
 
 export default function BusinessInformation() {
   const [fileName, setFileName] = useState(null);
@@ -180,237 +181,222 @@ export default function BusinessInformation() {
   }, [subsidiaries, countries]);
 
   return (
-    <Box>
+    <Box bgcolor="#fff" border="1px solid #E8EAED" borderRadius="8px">
       <form onSubmit={formik.handleSubmit}>
-        {/* file upload */}
-        <Stack direction="row" alignItems="center">
-          {/* hidden input file */}
-          <Box position="absolute">
-            <input
-              hidden
-              ref={ref}
-              type="file"
-              accept="image/*"
-              onChange={handleFileInputChange}
-            />
-          </Box>
-          <Stack
-            height="94px"
-            width="94px"
-            bgcolor="#F5F5F5"
-            justifyContent="center"
-            alignItems="center"
-          >
-            {previewUrl ? (
-              <Image
-                src={previewUrl}
-                alt="Preview"
-                width={94}
-                height={94}
-                style={{ width: "100%", objectFit: "cover" }}
+        <Box padding="48px 40px">
+          {/* file upload */}
+          <Stack direction="row" alignItems="center" gap="28px">
+            {/* hidden input file */}
+            <Box position="absolute">
+              <input
+                hidden
+                ref={ref}
+                type="file"
+                accept="image/*"
+                onChange={handleFileInputChange}
               />
-            ) : (
-              <UploadIcon />
-            )}
-          </Stack>
-          <Button
-            sx={{
-              ml: "20px",
-              height: "40px",
-              fontSize: "12px",
-              fontWeight: 500,
-            }}
-            onClick={handleClick}
-            variant="outlined"
-            disabled={isReadOnly}
-          >
-            Change Picture
-          </Button>
-          <Button
-            sx={{
-              ml: "10px",
-              height: "40px",
-              fontSize: "12px",
-              borderRadius: 0,
-              fontWeight: 500,
-              color: "#2E3192",
-            }}
-            variant="text"
-            onClick={clearFile}
-            disabled={isReadOnly}
-          >
-            Remove
-          </Button>
-        </Stack>
-        {/* form fields */}
-        <Stack mt="34px" spacing="20px">
-          <Stack direction="row" flex={1} spacing="18px">
-            <TextField
-              label="Business name"
-              variant="standard"
-              name="businessName"
-              value={formik.values.businessName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              disabled={isReadOnly}
-              sx={{ flex: 1 }}
-              error={
-                formik.touched.businessName &&
-                Boolean(formik.errors.businessName)
-              }
-              helperText={
-                formik.touched.businessName && formik.errors.businessName
-              }
-            />
-            <TextField
-              label="Business email"
-              variant="standard"
-              name="businessEmail"
-              disabled={isReadOnly}
-              value={formik.values.businessEmail}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              sx={{ flex: 1 }}
-              error={
-                formik.touched.businessEmail &&
-                Boolean(formik.errors.businessEmail)
-              }
-              helperText={
-                formik.touched.businessEmail && formik.errors.businessEmail
-              }
-            />
-          </Stack>
-          <Stack direction="row" flex={1} spacing="18px">
-            <TextField
-              label="Business type"
-              variant="standard"
-              name="businessType"
-              disabled={isReadOnly}
-              value={formik.values.businessType}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              sx={{ flex: 1 }}
-              error={
-                formik.touched.businessType &&
-                Boolean(formik.errors.businessType)
-              }
-              helperText={
-                formik.touched.businessType && formik.errors.businessType
-              }
-              select
+            </Box>
+            <Stack
+              height="64px"
+              width="64px"
+              borderRadius="100%"
+              bgcolor="#F5F5F5"
+              justifyContent="center"
+              alignItems="center"
+              overflow="hidden"
             >
-              {["Individual", "Company"]?.map((name, index) => (
-                <MenuItem sx={{ width: "100%" }} key={index} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              label="Country"
-              variant="standard"
-              name="country"
-              value={formik.values.country}
+              {previewUrl ? (
+                <Image
+                  src={previewUrl}
+                  alt="Preview"
+                  width={94}
+                  height={94}
+                  style={{ width: "100%", objectFit: "cover" }}
+                />
+              ) : (
+                <UploadIcon />
+              )}
+            </Stack>
+            <Stack direction="row" spacing="28px">
+              <Button variant="text">Update</Button>
+            </Stack>
+            {/* <Button
+              sx={{
+                ml: "20px",
+                height: "40px",
+                fontSize: "12px",
+                fontWeight: 500,
+              }}
+              onClick={handleClick}
+              variant="outlined"
               disabled={isReadOnly}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              sx={{ flex: 1 }}
-              error={formik.touched.country && Boolean(formik.errors.country)}
-              helperText={formik.touched.country && formik.errors.country}
-              select
             >
-              {countries?.map(({ name, id, short_name }: MenuProps) => (
-                <MenuItem sx={{ width: "100%" }} key={id} value={short_name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Stack>
-          <Stack direction="row" flex={1} spacing="18px">
-            <TextField
-              label="Industry"
-              variant="standard"
-              name="industry"
+              Change Picture
+            </Button>
+            <Button
+              sx={{
+                ml: "10px",
+                height: "40px",
+                fontSize: "12px",
+                borderRadius: 0,
+                fontWeight: 500,
+                color: "#2E3192",
+              }}
+              variant="text"
+              onClick={clearFile}
               disabled={isReadOnly}
-              value={formik.values.industry}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              sx={{ flex: 1 }}
-              error={formik.touched.industry && Boolean(formik.errors.industry)}
-              helperText={formik.touched.industry && formik.errors.industry}
-              select
             >
-              {fetchBusinessType?.data?.data?.map(({ name, id }: MenuProps) => (
-                <MenuItem sx={{ width: "100%" }} key={id} value={name}>
-                  {name}
-                </MenuItem>
-              ))}
-            </TextField>
-            <TextField
-              label="Legal business name"
-              variant="standard"
-              name="legalName"
-              disabled={isReadOnly}
-              value={formik.values.legalName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              sx={{ flex: 1 }}
-              error={
-                formik.touched.legalName && Boolean(formik.errors.legalName)
-              }
-              helperText={formik.touched.legalName && formik.errors.legalName}
-            />
+              Remove
+            </Button> */}
           </Stack>
-          <Stack direction="row" flex={1} spacing="18px">
-            <TextField
-              label="Description"
-              variant="standard"
-              name="description"
-              multiline
-              disabled={isReadOnly}
-              rows={0}
-              value={formik.values.description}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              sx={{ flex: 1 }}
-              error={
-                formik.touched.description && Boolean(formik.errors.description)
-              }
-              helperText={
-                formik.touched.description && formik.errors.description
-              }
-            />
+          {/* form fields */}
+          <Stack mt="34px" spacing="24px">
+            <Stack direction="row" flex={1} spacing="18px">
+              <TextField
+                label="Business name"
+                variant="outlined"
+                name="businessName"
+                value={formik.values.businessName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                disabled={isReadOnly}
+                sx={{ flex: 1 }}
+                error={
+                  formik.touched.businessName &&
+                  Boolean(formik.errors.businessName)
+                }
+                helperText={
+                  formik.touched.businessName && formik.errors.businessName
+                }
+              />
+              <TextField
+                label="Business email"
+                variant="outlined"
+                name="businessEmail"
+                disabled={isReadOnly}
+                value={formik.values.businessEmail}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                sx={{ flex: 1 }}
+                error={
+                  formik.touched.businessEmail &&
+                  Boolean(formik.errors.businessEmail)
+                }
+                helperText={
+                  formik.touched.businessEmail && formik.errors.businessEmail
+                }
+              />
+            </Stack>
+            <Stack direction="row" flex={1} spacing="24px">
+              <TextField
+                label="Business type"
+                variant="outlined"
+                name="businessType"
+                disabled={isReadOnly}
+                value={formik.values.businessType}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                sx={{ flex: 1 }}
+                error={
+                  formik.touched.businessType &&
+                  Boolean(formik.errors.businessType)
+                }
+                helperText={
+                  formik.touched.businessType && formik.errors.businessType
+                }
+                select
+              >
+                {["Individual", "Company"]?.map((name, index) => (
+                  <MenuItem sx={{ width: "100%" }} key={index} value={name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </TextField>
+              <TextField
+                label="Country"
+                variant="outlined"
+                name="country"
+                value={formik.values.country}
+                disabled={isReadOnly}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                sx={{ flex: 1 }}
+                error={formik.touched.country && Boolean(formik.errors.country)}
+                helperText={formik.touched.country && formik.errors.country}
+                select
+              >
+                {countries?.map(({ name, id, short_name }: MenuProps) => (
+                  <MenuItem sx={{ width: "100%" }} key={id} value={short_name}>
+                    {name}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Stack>
+            <Stack direction="row" flex={1} spacing="24px">
+              <TextField
+                label="Industry"
+                variant="outlined"
+                name="industry"
+                disabled={isReadOnly}
+                value={formik.values.industry}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                sx={{ flex: 1 }}
+                error={
+                  formik.touched.industry && Boolean(formik.errors.industry)
+                }
+                helperText={formik.touched.industry && formik.errors.industry}
+                select
+              >
+                {fetchBusinessType?.data?.data?.map(
+                  ({ name, id }: MenuProps) => (
+                    <MenuItem sx={{ width: "100%" }} key={id} value={name}>
+                      {name}
+                    </MenuItem>
+                  )
+                )}
+              </TextField>
+              <TextField
+                label="Legal business name"
+                variant="outlined"
+                name="legalName"
+                disabled={isReadOnly}
+                value={formik.values.legalName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                sx={{ flex: 1 }}
+                error={
+                  formik.touched.legalName && Boolean(formik.errors.legalName)
+                }
+                helperText={formik.touched.legalName && formik.errors.legalName}
+              />
+            </Stack>
+            <Stack direction="row" flex={1} spacing="24px">
+              <TextField
+                label="Description"
+                variant="outlined"
+                name="description"
+                multiline
+                disabled={isReadOnly}
+                rows={3}
+                value={formik.values.description}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                sx={{ flex: 1 }}
+                error={
+                  formik.touched.description &&
+                  Boolean(formik.errors.description)
+                }
+                helperText={
+                  formik.touched.description && formik.errors.description
+                }
+              />
+            </Stack>
           </Stack>
-        </Stack>
-        <Divider sx={{ mt: "60px" }} />
-        <Stack
-          direction="row"
-          spacing="10px"
-          mt="16px"
-          ml="auto"
-          justifyContent="flex-end"
-        >
-          <Button
-            sx={{
-              height: "40px",
-              fontSize: "12px",
-            }}
-            variant="outlined"
-          >
-            Cancel
-          </Button>
-          <LoadingButton
-            variant="contained"
-            type="submit"
-            loading={loading}
-            sx={{
-              height: "40px",
-              fontSize: "12px",
-            }}
-            disabled={!(formik.isValid && formik.dirty) || isReadOnly}
-          >
-            Save Changes
-          </LoadingButton>
-        </Stack>
+        </Box>
+        <Box>
+          <Footer>Save changes</Footer>
+        </Box>
       </form>
     </Box>
   );
