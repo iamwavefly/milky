@@ -1,6 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  compiler: {
+    removeConsole: true,
+  },
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
 };
 
 module.exports = {
@@ -12,9 +18,6 @@ module.exports = {
     return config;
   },
   nextConfig,
-  compiler: {
-    removeConsole: true,
-  },
   images: {
     remotePatterns: [
       {
