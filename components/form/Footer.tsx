@@ -29,7 +29,12 @@ export default function Footer({ children, ...others }: Props) {
       <LoadingButton variant="text" onClick={close}>
         Cancel
       </LoadingButton>
-      <LoadingButton variant="contained" type="submit" {...others}>
+      <LoadingButton
+        sx={{ height: "44px", fontSize: "14px" }}
+        variant="contained"
+        type="submit"
+        {...others}
+      >
         {children}
       </LoadingButton>
     </Stack>

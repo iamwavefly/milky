@@ -20,7 +20,9 @@ import { serialize } from "object-to-formdata";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
-import UploadIcon from "../../../public/icons/photo-upload.svg";
+import UploadIcon from "@/public/icons/photo-upload.svg";
+import RepeatIcon from "@/public/icons/reload.svg";
+import CloseIcon from "@/public/icons/close-circle.svg";
 import Footer from "@/components/form/Footer";
 
 export default function BusinessInformation() {
@@ -217,37 +219,21 @@ export default function BusinessInformation() {
                 <UploadIcon />
               )}
             </Stack>
-            <Stack direction="row" spacing="28px">
-              <Button variant="text">Update</Button>
+            <Stack direction="row" spacing="28px" alignItems="center">
+              <Button variant="text" onClick={clearFile}>
+                <RepeatIcon fill="#0048B1" width="18px" height="18px" />
+                Update
+              </Button>
+              <Divider orientation="vertical" sx={{ height: "20px" }} />
+              <Button
+                variant="text"
+                sx={{ color: "#E84A5F" }}
+                onClick={handleClick}
+              >
+                <CloseIcon fill="#E84A5F" width="18px" height="18px" />
+                Remove
+              </Button>
             </Stack>
-            {/* <Button
-              sx={{
-                ml: "20px",
-                height: "40px",
-                fontSize: "12px",
-                fontWeight: 500,
-              }}
-              onClick={handleClick}
-              variant="outlined"
-              disabled={isReadOnly}
-            >
-              Change Picture
-            </Button>
-            <Button
-              sx={{
-                ml: "10px",
-                height: "40px",
-                fontSize: "12px",
-                borderRadius: 0,
-                fontWeight: 500,
-                color: "#2E3192",
-              }}
-              variant="text"
-              onClick={clearFile}
-              disabled={isReadOnly}
-            >
-              Remove
-            </Button> */}
           </Stack>
           {/* form fields */}
           <Stack mt="34px" spacing="24px">
