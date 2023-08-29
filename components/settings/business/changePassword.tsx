@@ -20,8 +20,10 @@ import Image from "next/image";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
-import EyeIcon from "../../../public/images/eye.svg";
-import EyeCloseIcon from "../../../public/images/eye-close.svg";
+import EyeIcon from "@/public/images/eye.svg";
+import EyeCloseIcon from "@/public/images/eye-close.svg";
+import PadlockIcon from "@/public/icons/padlock.svg";
+import Footer from "@/components/form/Footer";
 
 export default function ChangePasswordForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -64,14 +66,14 @@ export default function ChangePasswordForm() {
   });
 
   return (
-    <Box>
+    <Box bgcolor="#fff" border="1px solid #E8EAED" borderRadius="8px">
       <form onSubmit={formik.handleSubmit}>
         {/* form fields */}
-        <Stack spacing="16px">
+        <Stack spacing="16px" padding="48px 40px">
           <TextField
             type={showPassword ? "text" : "password"}
             label="Current Password"
-            variant="standard"
+            variant="outlined"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="start">
@@ -98,7 +100,7 @@ export default function ChangePasswordForm() {
           <TextField
             type={showPassword ? "text" : "password"}
             label="New password"
-            variant="standard"
+            variant="outlined"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="start">
@@ -123,7 +125,7 @@ export default function ChangePasswordForm() {
           <TextField
             type={showPassword ? "text" : "password"}
             label="Confirm new password"
-            variant="standard"
+            variant="outlined"
             InputProps={{
               endAdornment: (
                 <InputAdornment position="start">
@@ -146,34 +148,15 @@ export default function ChangePasswordForm() {
             helperText={formik.touched.password2 && formik.errors.password2}
           />
         </Stack>
-        <Divider sx={{ mt: "60px" }} />
-        <Stack
-          direction="row"
-          spacing="10px"
-          mt="16px"
-          ml="auto"
-          justifyContent="flex-end"
-        >
-          <Button
-            sx={{
-              height: "40px",
-              fontSize: "12px",
-            }}
-            variant="outlined"
-          >
-            Cancel
-          </Button>
+        {/* footer button */}
+        <Stack direction="row" px="40px" pb="56px" alignItems="center">
           <LoadingButton
-            variant="contained"
+            variant="outlined"
             type="submit"
-            loading={loading}
-            sx={{
-              height: "40px",
-              fontSize: "12px",
-            }}
-            disabled={!(formik.isValid && formik.dirty)}
+            sx={{ height: "44px", fontSize: "14px", px: "16px !important" }}
           >
-            Save Changes
+            <PadlockIcon />
+            Change password
           </LoadingButton>
         </Stack>
       </form>

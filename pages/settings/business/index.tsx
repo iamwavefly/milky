@@ -30,6 +30,7 @@ export default function Index() {
             </Typography>
             <Typography
               fontSize="14px"
+              color="#3C4453"
               mt="16px"
               lineHeight="26px"
               letterSpacing="0.14px"
@@ -41,8 +42,26 @@ export default function Index() {
             <BusinessInformation />
           </Box>
         </Stack>
+        <Stack direction="row" spacing="88px" width="100%" mt="48px">
+          <Box width="342px">
+            <Typography fontSize="18px" fontWeight={600} lineHeight="26px">
+              Password
+            </Typography>
+            <Typography
+              fontSize="14px"
+              color="#3C4453"
+              mt="16px"
+              lineHeight="26px"
+              letterSpacing="0.14px"
+            >
+              Enter your personal information and ensure they are correct
+            </Typography>
+          </Box>
+          <Box width="648px">
+            <PasswordForm />
+          </Box>
+        </Stack>
       </Stack>
-      <PasswordForm />
     </Dashboard>
   );
 }
