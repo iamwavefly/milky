@@ -1,1 +1,1 @@
-## AlliancePay Merchant
+## ARCA Merchant
