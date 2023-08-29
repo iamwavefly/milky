@@ -17,20 +17,20 @@ import { bankDetails } from "@/schema";
 import { LoadingButton } from "@mui/lab";
 import { toast } from "react-hot-toast";
 import { selectUserState } from "@/store/authSlice";
+import Footer from "../form/Footer";
 
 const accountTypes = ["Current", "Savings"];
 
 interface Props {
   append?: boolean;
   reload?: () => void;
+  close?: () => void;
 }
 
-export default function BankDetails({ append, reload }: Props) {
+export default function BankDetails({ append, reload, close }: Props) {
   const [banks, setBanks] = useState([]);
 
   const dispatch = useDispatch();
-
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/onboarding/bank/details`
@@ -47,7 +47,7 @@ export default function BankDetails({ append, reload }: Props) {
     if (status === "success") {
       dispatch(reloadPercentage());
       reload && reload();
-      close();
+      close && close();
     }
   }, [data]);
 
@@ -119,97 +119,89 @@ export default function BankDetails({ append, reload }: Props) {
   }, [fetchBankInformation?.data]);
 
   return (
-    <Box>
-      {!append && (
-        <Typography
-          fontSize="14px"
-          color="rgba(38, 43, 64, 0.8)"
-          lineHeight="20px"
-        >
-          This is the primary bank account we send your settlements to.
-        </Typography>
-      )}
+    <Box mt="32px">
       <form onSubmit={formik.handleSubmit}>
-        <Stack mt={!append ? "60px" : ""} spacing="13px">
-          <TextField
-            label="Account type"
-            variant="standard"
-            select
-            name="accountType"
-            value={formik.values.accountType}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.accountType && Boolean(formik.errors.accountType)
-            }
-            helperText={formik.touched.accountType && formik.errors.accountType}
+        <Box px="40px">
+          <Typography
+            fontSize="14px"
+            color="rgba(38, 43, 64, 0.8)"
+            lineHeight="20px"
           >
-            {accountTypes?.map((name, index) => (
-              <MenuItem value={name} key={index} sx={{ width: "100%" }}>
-                {name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            label="Bank name"
-            variant="standard"
-            select
-            name="bankName"
-            value={formik.values.bankName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={formik.touched.bankName && Boolean(formik.errors.bankName)}
-            helperText={formik.touched.bankName && formik.errors.bankName}
-          >
-            {banks?.map(({ name, id, bank_code }: any) => (
-              <MenuItem value={id} key={id} sx={{ width: "100%" }}>
-                {name}
-              </MenuItem>
-            ))}
-          </TextField>
-          <TextField
-            label="Account number"
-            variant="standard"
-            name="accountNumber"
-            value={formik.values.accountNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.accountNumber &&
-              Boolean(formik.errors.accountNumber)
-            }
-            helperText={
-              formik.touched.accountNumber && formik.errors.accountNumber
-            }
-          />
-          <TextField
-            label="Account name"
-            variant="standard"
-            name="accountName"
-            disabled
-            value={formik.values.accountName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={
-              formik.touched.accountName && Boolean(formik.errors.accountName)
-            }
-            helperText={formik.touched.accountName && formik.errors.accountName}
-          />
-        </Stack>
-        <LoadingButton
-          variant="contained"
-          fullWidth
-          type="submit"
-          loading={loading}
-          disabled={!(formik.isValid && formik.dirty)}
-          sx={{ mt: "60px" }}
-        >
-          Save
-        </LoadingButton>
+            This is the primary bank account we send your settlements to.
+          </Typography>
+          <Stack mt="24px" spacing="24px">
+            <TextField
+              label="Account type"
+              variant="outlined"
+              select
+              name="accountType"
+              value={formik.values.accountType}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.accountType && Boolean(formik.errors.accountType)
+              }
+              helperText={
+                formik.touched.accountType && formik.errors.accountType
+              }
+            >
+              {accountTypes?.map((name, index) => (
+                <MenuItem value={name} key={index} sx={{ width: "100%" }}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              label="Bank name"
+              variant="outlined"
+              select
+              name="bankName"
+              value={formik.values.bankName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={formik.touched.bankName && Boolean(formik.errors.bankName)}
+              helperText={formik.touched.bankName && formik.errors.bankName}
+            >
+              {banks?.map(({ name, id, bank_code }: any) => (
+                <MenuItem value={id} key={id} sx={{ width: "100%" }}>
+                  {name}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              label="Account number"
+              variant="outlined"
+              name="accountNumber"
+              value={formik.values.accountNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.accountNumber &&
+                Boolean(formik.errors.accountNumber)
+              }
+              helperText={
+                formik.touched.accountNumber && formik.errors.accountNumber
+              }
+            />
+            <TextField
+              label="Account name"
+              variant="outlined"
+              name="accountName"
+              disabled
+              value={formik.values.accountName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={
+                formik.touched.accountName && Boolean(formik.errors.accountName)
+              }
+              helperText={
+                formik.touched.accountName && formik.errors.accountName
+              }
+            />
+          </Stack>
+        </Box>
+        <Footer>Save Changes</Footer>
       </form>
-      <Button onClick={close} variant="outlined" fullWidth sx={{ mt: "25px" }}>
-        Cancel
-      </Button>
     </Box>
   );
 }
