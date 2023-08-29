@@ -35,6 +35,7 @@ const Index = () => {
   const [permissions, setPermissions] = useState([]);
   const [users, setUsers] = useState([]);
   const [userPermission, setUserPermission] = useState([]);
+  const [roles, setRoles] = useState([]);
 
   const dispatch = useDispatch();
   const { loading, data, error, handleSubmit } = useFetch(
@@ -57,6 +58,11 @@ const Index = () => {
   useEffect(() => {
     handleSubmit();
   }, []);
+
+  // fetch roles
+  useEffect(() => {
+    setRoles(data?.data);
+  }, [data?.data]);
 
   useEffect(() => {
     fetchPermissions?.handleSubmit();
@@ -126,10 +132,25 @@ const Index = () => {
 
   return (
     <Dashboard title="Settings">
-      <Stack px="30px" mt="20px">
-        <Typography fontSize="16px" color="#2E3192">
-          Roles and Permissions
-        </Typography>
+      <Stack>
+        <Stack
+          spacing="12px"
+          direction="row"
+          justifyContent="space-between"
+          alignItems="flex-end"
+        >
+          <Typography
+            fontSize="18px"
+            fontWeight={600}
+            color="#070F1C"
+            lineHeight="26px"
+          >
+            Roles & Permission
+          </Typography>
+          <Button variant="containedMedium" sx={{ height: "40px" }}>
+            Create custom role
+          </Button>
+        </Stack>
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -142,7 +163,7 @@ const Index = () => {
             onChange={handleRoleChange}
             aria-label="text alignment"
           >
-            {data?.data?.map(({ id, name, user_count }: Props) => (
+            {roles?.map(({ id, name, user_count }: Props) => (
               <ToggleButton value={id} key={id}>
                 {name} ({user_count})
               </ToggleButton>
