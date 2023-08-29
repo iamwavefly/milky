@@ -30,7 +30,6 @@
     "country-flag-icons": "^1.5.5",
     "csvtojson": "^2.0.10",
     "eslint": "8.33.0",
-    "eslint-config-next": "13.1.6",
     "formik": "^2.2.9",
     "html-to-image": "^1.11.11",
     "js-cookie": "^3.0.1",

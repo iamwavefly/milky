@@ -23,6 +23,7 @@ import { useDispatch } from "react-redux";
 import NewSubsidiary from "@/components/form/newSubsidiary";
 import { setDrawalState } from "@/store/appSlice";
 import NewRole from "@/components/form/newRole";
+import Tabs from "@/components/Tabs";
 
 interface Props {
   id: number;
@@ -61,7 +62,16 @@ const Index = () => {
 
   // fetch roles
   useEffect(() => {
-    setRoles(data?.data);
+    const newRoles = data?.data?.map(
+      ({ id, name }: { id: number; name: string }) => {
+        return {
+          id,
+          tab: name,
+        };
+      }
+    );
+    console.log({ newRoles });
+    setRoles(newRoles);
   }, [data?.data]);
 
   useEffect(() => {
@@ -163,11 +173,12 @@ const Index = () => {
             onChange={handleRoleChange}
             aria-label="text alignment"
           >
-            {roles?.map(({ id, name, user_count }: Props) => (
+            {/* {roles?.map(({ id, name, user_count }: Props) => (
               <ToggleButton value={id} key={id}>
                 {name} ({user_count})
               </ToggleButton>
-            ))}
+            ))} */}
+            <Tabs tabs={roles} />
           </ToggleButtonGroup>
           <Button
             sx={{ height: "40px", fontSize: "12px", fontWeight: 500 }}

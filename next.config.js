@@ -17,7 +17,7 @@ module.exports = {
     });
     return config;
   },
-  nextConfig,
+  ...nextConfig,
   images: {
     remotePatterns: [
       {

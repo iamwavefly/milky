@@ -48,7 +48,7 @@ export default function Tabs({ tabs, updateTab }: Props) {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  const Component = tabs[value - 1].Form;
+  const Component = tabs?.[value - 1]?.Form;
 
   return (
     <Box>
@@ -71,7 +71,7 @@ export default function Tabs({ tabs, updateTab }: Props) {
         </MuiTabs>
       </Box>
       <CustomTabPanel value={value} index={value}>
-        <Component currentTab={value} />
+        {Component && <Component currentTab={value} />}
       </CustomTabPanel>
     </Box>
   );
