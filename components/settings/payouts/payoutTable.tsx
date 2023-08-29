@@ -10,15 +10,20 @@ import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import { Box, Button } from "@mui/material";
-import AddBox from "remixicon-react/AddBoxFillIcon";
+import AddBox from "@/public/icons/add.svg";
 import { setDrawalState } from "@/store/appSlice";
 import { useDispatch } from "react-redux";
 import BankDetails from "@/components/setup/BankDetails";
+import Modal from "@/components/modal/modal";
 
 const PayoutTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const dispatch = useDispatch();
 
@@ -33,37 +38,36 @@ const PayoutTable = () => {
     "get"
   );
 
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Bank Details",
-        content: <BankDetails append reload={handleSubmit} />,
-      })
-    );
-  };
-
   useEffect(() => {
     handleSubmit();
   }, [currentPage, search, filters]);
 
   return (
     <Box>
+      <Modal
+        title="Bank Details"
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <BankDetails reload={handleSubmit} close={handleCloseModal} />
+      </Modal>
       <Header
         containerRef={containerRef}
         columns={PayoutTableColumns}
         data={data?.data}
-        entries={`${data?.page?.total_items ?? 0} Entries`}
+        entries={`${data?.data?.length ?? 0}`}
         setSearch={setSearch}
         url="/dashboard/settlement/bank/get"
-        buttons={
+        pageName="Bank Accounts"
+        actions={
           <Button
             variant="contained"
-            sx={{ height: "40px", fontSize: "12px" }}
-            onClick={openDrawal}
+            sx={{ height: "40px" }}
+            onClick={handleOpenModal}
           >
-            <AddBox size={16} />
-            Add bank account
+            <AddBox fill="#fff" width="18px" height="18px" />
+            Add a bank account
           </Button>
         }
         updateFilter={setFilters}

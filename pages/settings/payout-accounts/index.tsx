@@ -45,32 +45,42 @@ const Index = () => {
 
   return (
     <Dashboard title="Settings">
-      <Stack px="30px" mt="20px">
-        <Typography fontSize="16px" color="#2E3192">
-          Payout Accounts
-        </Typography>
-        <Stack direction="row" mt="32px" justifyContent="space-between">
-          <Stack spacing="7px">
-            <Typography fontSize="16px" fontWeight={600} color="#262B40">
+      <Stack mt="48x">
+        <Stack spacing="28px" justifyContent="space-between">
+          <Stack spacing="12px">
+            <Typography
+              fontSize="18px"
+              fontWeight={600}
+              color="#070F1C"
+              lineHeight="26px"
+            >
               Accounts
             </Typography>
-            <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
-              Which account would you like to get your earning?
+            <Typography
+              fontSize="14px"
+              color="#3C4453"
+              lineHeight="24px"
+              letterSpacing="0.14px"
+            >
+              Which account would you like to get your earnings?
             </Typography>
           </Stack>
           <Stack
             bgcolor="#FFFFFF"
-            padding="27px"
-            width="682px"
-            minHeight="110px"
+            padding="24px"
+            width="100%"
+            height="64px"
+            direction="row"
+            alignItems="center"
           >
             <FormControl>
               <RadioGroup
                 aria-labelledby="demo-controlled-radio-buttons-group"
                 name="controlled-radio-buttons-group"
-                sx={{ gap: "16px" }}
+                sx={{ gap: "72px" }}
                 value={whoBearFee}
                 onChange={feeBearerHandler}
+                row
               >
                 <FormControlLabel
                   value="bank"
@@ -104,10 +114,7 @@ const Index = () => {
             </FormControl>
           </Stack>
         </Stack>
-        <Typography mt="28px" fontSize="14px" color="#262B40">
-          Bank Accounts
-        </Typography>
-        <Box>
+        <Box mt="40px">
           <PayoutTable />
         </Box>
       </Stack>

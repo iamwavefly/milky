@@ -166,10 +166,15 @@ export const PayoutTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "account_name",
     header: "Account name",
   },
-  // {
-  //   accessorKey: "debit_currency",
-  //   header: "Currency",
-  // },
+  {
+    accessorKey: "debit_currency",
+    header: "Currency",
+  },
+  {
+    header: "Actions",
+    accessorKey: "id",
+    cell: (row) => <TransferMenu id={row.getValue()} />,
+  },
 ];
 
 export const UserTableColumns: ColumnDef<any, any>[] = [

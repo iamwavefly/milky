@@ -9,10 +9,12 @@ module.exports = {
       test: /\.svg$/,
       use: ["@svgr/webpack"],
     });
-
     return config;
   },
   nextConfig,
+  compiler: {
+    removeConsole: true,
+  },
   images: {
     remotePatterns: [
       {
