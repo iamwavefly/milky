@@ -13,7 +13,7 @@ import OnlyHeader from "@/components/cards/onlyHeader";
 import csvtojson from "csvtojson";
 import Table from "@/components/table/table";
 import Header from "@/components/table/header";
-import { Close } from "@carbon/icons-react";
+// import { Close } from "@carbon/icons-react";
 import { setToastState } from "@/store/appSlice";
 import { useDispatch } from "react-redux";
 import useFetch from "@/hooks/useFetch";
@@ -88,7 +88,7 @@ const Index = () => {
               <Stack direction="row" spacing="16px">
                 <Button variant="outlined" onClick={() => setShowTable(false)}>
                   Cancel
-                  <Close />
+                  {/* <Close /> */}
                 </Button>
                 <LoadingButton
                   loading={loading}

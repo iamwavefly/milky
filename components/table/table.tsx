@@ -17,7 +17,7 @@ import {
   Row,
   useReactTable,
 } from "@tanstack/react-table";
-import { debounce } from "lodash";
+// import { debounce } from "lodash";
 import { ChangeEvent, FC, memo, useMemo, useState } from "react";
 import { StyledPagination } from "./styled";
 
@@ -97,7 +97,7 @@ const Table: FC<TableProps> = ({
         overflow: "hidden",
       }}
     >
-      <Box paddingX="1rem">
+      {/* <Box paddingX="1rem">
         {memoisedHeaderComponent && <Box>{memoisedHeaderComponent}</Box>}
         {search && (
           <TextField
@@ -108,7 +108,7 @@ const Table: FC<TableProps> = ({
             variant="standard"
           />
         )}
-      </Box>
+      </Box> */}
       <Box ref={containerRef} style={{ overflowX: "auto" }}>
         <MuiTable>
           {!isFetching && (
