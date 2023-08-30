@@ -25,12 +25,19 @@ import NewRole from "@/components/form/newRole";
 import Tabs from "@/components/Tabs";
 // icons
 import UserIcon from "@/public/icons/user-line.svg";
+import UserCard from "@/components/cards/User";
+import Modal from "@/components/modal/modal";
 
 interface Props {
   id: number;
   name: string;
   tab: string;
   user_count: number;
+}
+
+interface UserProps {
+  id: number;
+  name: string;
 }
 
 const Index = () => {
@@ -41,6 +48,10 @@ const Index = () => {
   const [roles, setRoles] = useState<Props[]>([]);
   const [currentTab, setCurrentTab] = useState(0);
   const [selectedRole, setSelectedRole] = useState<Props>({} as Props);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const dispatch = useDispatch();
   const { loading, data, error, handleSubmit } = useFetch(
@@ -67,7 +78,6 @@ const Index = () => {
   useEffect(() => {
     const newRole = roles?.find((role) => role.id === currentTab);
     setSelectedRole(newRole as Props);
-    console.log({ newRole });
   }, [roles, currentTab]);
 
   useEffect(() => {
@@ -124,16 +134,6 @@ const Index = () => {
     setActiveRole(newRole);
   };
 
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Add a New Role",
-        content: <NewRole reload={handleSubmit} />,
-      })
-    );
-  };
-
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
     let newPermissions: string[] | null = null;
@@ -154,6 +154,14 @@ const Index = () => {
 
   return (
     <Dashboard title="Settings">
+      <Modal
+        title="New customer"
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <NewRole reload={handleSubmit} close={handleCloseModal} />
+      </Modal>
       <Stack>
         <Stack
           spacing="12px"
@@ -169,7 +177,11 @@ const Index = () => {
           >
             Roles & Permission
           </Typography>
-          <Button variant="containedMedium" sx={{ height: "40px" }}>
+          <Button
+            variant="containedMedium"
+            sx={{ height: "40px" }}
+            onClick={handleOpenModal}
+          >
             <UserIcon />
             Create custom role
           </Button>
@@ -180,21 +192,14 @@ const Index = () => {
           alignItems="center"
           mt="32px"
         >
-          <ToggleButtonGroup
-            value={activeRole}
-            exclusive
-            onChange={handleRoleChange}
-            aria-label="text alignment"
-          >
-            <Tabs
-              tabs={roles as any}
-              updateTab={setCurrentTab}
-              currentTab={currentTab}
-            />
-          </ToggleButtonGroup>
+          <Tabs
+            tabs={roles as any}
+            updateTab={setCurrentTab}
+            currentTab={currentTab}
+          />
         </Stack>
         <Stack direction="row" spacing="88px" mt="46px">
-          <Stack spacing="12px" width="342px">
+          <Box width="342px">
             <Typography fontSize="18px" fontWeight={600} lineHeight="26px">
               {selectedRole?.tab}
             </Typography>
@@ -202,33 +207,54 @@ const Index = () => {
               fontSize="14px"
               lineHeight="24px"
               letterSpacing="0.14px"
+              mt="12px"
             >
               Admin with this role:
             </Typography>
-          </Stack>
+            <Stack mt="32px" spacing="16px">
+              {users?.length
+                ? users?.map(({ id, name }: UserProps) => (
+                    <UserCard key={id} name={name} />
+                  ))
+                : "N/A"}
+            </Stack>
+          </Box>
           <Box
-            padding="25px 34px"
             width="100%"
             height="auto"
             maxWidth="788px"
             minHeight="432px"
             bgcolor="#fff"
             mt="35px"
+            border="1px solid #E8EAED"
+            borderRadius="8px"
           >
-            <Typography fontWeight={600} fontSize="14px" color="#262B40">
-              Permissions
-            </Typography>
-            <Stack mt="22px" spacing="20px">
-              {permissions?.map((perm: any) => {
+            <Stack
+              height="72px"
+              justifyContent="center"
+              borderBottom="1px solid #E8EAED"
+              px="40px"
+            >
+              <Typography fontWeight={700} fontSize="15px" color="#070F1C">
+                Permissions
+              </Typography>
+            </Stack>
+            <Stack>
+              {permissions?.map(({ id, name }: any) => {
                 const newPermission = userPermission?.find(
-                  (fin: any) => fin.id === perm.id
+                  (fin: any) => fin.id === id
                 ) as any;
+
                 if (newPermission) {
                   return (
                     <Stack
                       direction="row"
                       justifyContent="space-between"
                       key={newPermission?.id}
+                      height="60px"
+                      borderBottom="1px solid #E8EAED"
+                      px="40px"
+                      alignItems="center"
                     >
                       <Typography
                         fontSize="14px"
@@ -249,16 +275,20 @@ const Index = () => {
                     <Stack
                       direction="row"
                       justifyContent="space-between"
-                      key={perm?.name}
+                      key={name}
+                      height="60px"
+                      borderBottom="1px solid #E8EAED"
+                      px="40px"
+                      alignItems="center"
                     >
                       <Typography
                         fontSize="14px"
                         fontWeight={500}
                         color="rgba(38, 43, 64, 0.8)"
                       >
-                        {perm?.name}
+                        {name}
                       </Typography>
-                      <Checkbox onChange={handleCheck} value={perm?.id} />
+                      <Checkbox onChange={handleCheck} value={id} />
                     </Stack>
                   );
                 }
