@@ -1,20 +1,18 @@
+import Checkbox from "@/components/elements/Checkbox";
+import Radio from "@/components/elements/Radio";
 import PayoutTable from "@/components/settings/payouts/payoutTable";
 import PaymentMethods from "@/components/settings/preferences/paymentMethods";
 import useFetch from "@/hooks/useFetch";
 import Dashboard from "@/layouts/dashboard";
 import baseUrl from "@/middleware/baseUrl";
 import {
-  Box,
-  Checkbox,
   FormControl,
   FormControlLabel,
-  Radio,
   RadioGroup,
   Stack,
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
 
 const Index = () => {
   const [enabled2FA, setEnabled2FaA] = useState(false);
@@ -31,7 +29,6 @@ const Index = () => {
     "get"
   );
   const FeeBearerReq = useFetch(`${baseUrl}/dashboard/payment/fees/set`);
-
 
   useEffect(() => {
     TwoFaReqEnabled?.handleSubmit();
@@ -86,24 +83,26 @@ const Index = () => {
   };
 
   return (
-    <Dashboard title="Settings">
-      <Stack px="30px" mt="20px">
-        <Typography fontSize="16px" color="#2E3192">
-          Preferences
-        </Typography>
+    <Dashboard title="Preferences">
+      <Stack>
         {/* Transactions */}
-        <Stack direction="row" mt="32px" justifyContent="space-between">
-          <Stack spacing="7px">
-            <Typography fontSize="16px" fontWeight={600} color="#262B40">
+        <Stack direction="row" justifyContent="space-between">
+          <Stack spacing="8px">
+            <Typography
+              fontSize="18px"
+              fontWeight={600}
+              color="#262B40"
+              lineHeight="26px"
+            >
               Transactions
             </Typography>
-            <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
+            <Typography fontSize="14px" color="#3C4453">
               Who would be charged transaction fees?
             </Typography>
           </Stack>
           <Stack
             bgcolor="#FFFFFF"
-            padding="27px"
+            padding="40px"
             width="682px"
             minHeight="110px"
           >
@@ -146,18 +145,18 @@ const Index = () => {
           </Stack>
         </Stack>
         {/* Payment methods */}
-        <Stack direction="row" mt="32px" justifyContent="space-between">
-          <Stack spacing="7px">
-            <Typography fontSize="16px" fontWeight={600} color="#262B40">
+        <Stack direction="row" mt="48px" justifyContent="space-between">
+          <Stack spacing="8px">
+            <Typography fontSize="18px" fontWeight={600} color="#262B40">
               Payment methods
             </Typography>
-            <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
+            <Typography fontSize="14px" color="#3C4453">
               Payment methods available to customers
             </Typography>
           </Stack>
           <Stack
             bgcolor="#FFFFFF"
-            padding="27px"
+            padding="40px"
             width="682px"
             minHeight="110px"
           >
@@ -165,14 +164,17 @@ const Index = () => {
           </Stack>
         </Stack>
         {/* Other preferences */}
-        <Stack direction="row" mt="32px" justifyContent="space-between">
-          <Stack spacing="7px">
-            <Typography fontSize="16px" fontWeight={600} color="#262B40">
-              Other preferences
+        <Stack direction="row" mt="48px" justifyContent="space-between">
+          <Stack spacing="8px">
+            <Typography fontSize="18px" fontWeight={600} color="#262B40">
+              Other preference
+            </Typography>
+            <Typography fontSize="14px" color="#3C4453">
+              Payment methods available to customers
             </Typography>
           </Stack>
-          <Stack bgcolor="#FFFFFF" padding="27px" width="682px">
-            <FormControl sx={{ gap: "20px" }}>
+          <Stack bgcolor="#FFFFFF" padding="40px" width="682px">
+            <FormControl sx={{ gap: "16px" }}>
               <FormControlLabel
                 value="female"
                 control={
