@@ -51,7 +51,7 @@ const AuditTable = () => {
         containerRef={containerRef}
         columns={UserTableColumns}
         data={data?.users}
-        entries={`${data?.page?.total_items ?? 0} Entries`}
+        entries={data?.page?.total_items ?? 0}
         setSearch={setSearch}
         selector="audits"
         updateFilter={setFilters}
