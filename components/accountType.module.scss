@@ -15,18 +15,18 @@
 
 .icon {
   display: flex;
-  width: 40px;
-  height: 40px;
-  padding: 6px;
+  width: 40px !important;
+  height: 40px !important;
+  padding: 6px !important;
   justify-content: center;
   align-items: center;
   border-radius: 100px;
-  background: #f0f9ff;
+  background: #f0f9ff !important;
   & > svg {
-    width: 26px;
-    height: 26px;
+    width: 26px !important;
+    height: 26px !important;
     & > path {
-      fill: #0048b1;
+      fill: #0048b1 !important;
     }
   }
 }
