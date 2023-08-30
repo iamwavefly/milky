@@ -4,8 +4,6 @@ import theme from "@/theme/mui";
 import { ThemeProvider } from "@mui/material";
 import type { AppProps } from "next/app";
 import { wrapper } from "../store/store";
-// import "slick-carousel/slick/slick.scss";
-// import "slick-carousel/slick/slick-theme.scss";
 import ProtectRoutes from "@/middleware/protectRoutes";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
@@ -17,6 +15,7 @@ import "aos/dist/aos.css";
 import "../styles/colors.scss";
 import { Toaster } from "react-hot-toast";
 import Router from "next/router";
+import PageLoader from "@/components/PageLoader";
 
 function App({ Component, pageProps }: AppProps) {
   const token = Cookies.get("token");
@@ -68,6 +67,7 @@ function App({ Component, pageProps }: AppProps) {
     <>
       <ThemeProvider theme={theme}>
         <ProtectRoutes>
+          <PageLoader />
           <Toaster
             toastOptions={{
               duration: 3000,
