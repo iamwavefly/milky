@@ -25,7 +25,7 @@ import { setUserState } from "@/store/authSlice";
 import { loginHandler } from "@/middleware/auth";
 import { useDispatch } from "react-redux";
 import Cookies from "js-cookie";
-import Stepper from "@/components/stepper";
+import Stepper from "@/components/WyrrStepper";
 import { accountTypes, formComponents, formStepLabel } from "@/utils/signup";
 import AccountTypePanel from "@/components/accountTypePanel";
 

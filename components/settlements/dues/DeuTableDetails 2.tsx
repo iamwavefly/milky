@@ -46,7 +46,7 @@ const DeuDetailsTable = () => {
 
   return (
     <Box bgcolor="#fff">
-      <Header entries={transactions.length} entryOnly />
+      <Header entries={transactions.length} />
       <Table
         data={transactions}
         columns={SettlementDetailsTableColumns}

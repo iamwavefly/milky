@@ -46,8 +46,7 @@ const ProductDetailsTable = () => {
         setSearch={setSearch}
         title="Product"
         url={`/dashboard/product/all?PaymentLinkId=${id}`}
-        noButton
-        buttons={
+        actions={
           <Button
             href="/business/products/new"
             variant="contained"

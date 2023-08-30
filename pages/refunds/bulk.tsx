@@ -104,7 +104,7 @@ const Index = () => {
         </Box>
       ) : (
         <>
-          <Breadcrumb title="Back to dispute" />
+          <Breadcrumb />
           <OnlyHeader
             mt="49px"
             mx="auto"

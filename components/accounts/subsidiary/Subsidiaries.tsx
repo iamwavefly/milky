@@ -10,7 +10,7 @@ const Subsidiaries = () => {
   return (
     <Stack direction="row" ml="auto" width="auto" justifyContent="center">
       <Box className={Styles.card__container}>
-        {SubsidiaryRoutes?.map(({ id, content, subtitle, title }) => (
+        {/* {SubsidiaryRoutes?.map(({ id, content, subtitle, title }) => (
           <LandscapeCard
             key={id}
             content={content}
@@ -18,7 +18,7 @@ const Subsidiaries = () => {
             title={title}
             onClick={() => Router.push("/accounts/settlements/cycle/group")}
           />
-        ))}
+        ))} */}
       </Box>
     </Stack>
   );

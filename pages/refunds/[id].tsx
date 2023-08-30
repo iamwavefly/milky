@@ -8,7 +8,7 @@ import React from "react";
 const RefundDetails = () => {
   return (
     <Dashboard title="Refunds">
-      <Breadcrumb title="Refunds details" />
+      <Breadcrumb />
 
       <Box>
         <OnlyHeader
