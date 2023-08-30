@@ -15,7 +15,7 @@ export default function Header() {
     >
       <Logo />
       <IconButton>
-        <CloseIcon />
+        <CloseIcon width="24px" height="24px" fill="#070F1C" />
       </IconButton>
     </Stack>
   );
