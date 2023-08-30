@@ -23,7 +23,7 @@ export const catchErrors = (error, displayError) => {
     // 3. The request went in but no response was received
     errorMsg = error.request;
   } else if (error?.response === 401) {
-    logoutHandler();
+    // logoutHandler();
   } else {
     // 4. Something else happened that resulted to an error
     errorMsg = error.message;
@@ -41,7 +41,7 @@ export const notifyErrorHandler = ({ type, title, msg, duration }) => {
     if (message?.message === "Network Error") {
       errorMsg = "Network Error. Please check your internet connection";
     } else if (msg?.response?.status === 401) {
-      logoutHandler();
+      // logoutHandler();
       return;
     } else if (Object.entries(msg).length === 0) {
       errorMsg = String(msg);

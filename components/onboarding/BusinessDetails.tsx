@@ -11,6 +11,7 @@ import {
 import AccountTypePanel from "../accountTypePanel";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
+import Router from "next/router";
 
 interface Props {
   nextStep: () => void;
@@ -113,7 +114,7 @@ export default function BusinessDetails({ nextStep }: Props) {
             fullWidth
             variant="contained"
             sx={{ mt: "40px" }}
-            onClick={nextStep}
+            onClick={() => Router.push("/onboarding")}
           >
             Proceed to my dashboard
           </Button>
