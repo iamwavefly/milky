@@ -7,6 +7,8 @@ import React, { useEffect, useState } from "react";
 import AuditTable from "@/components/settings/audit/auditTable";
 import truncate from "@/helper/truncate";
 import clipboard from "@/helper/clipboard";
+import OnlyHeader from "@/components/cards/onlyHeader";
+import CopyIcon from "@/public/icons/copy.svg";
 
 interface Props {
   id: number;
@@ -39,155 +41,119 @@ const Index = () => {
   }, [data]);
 
   return (
-    <Dashboard title="Settings">
-      <Stack px="30px" mt="20px">
-        <Typography fontSize="16px" color="#2E3192">
-          API Keys & Webhooks
-        </Typography>
-        <Stack
-          direction="row"
-          flexWrap="wrap"
-          alignItems="center"
-          gap="20px"
-          mt="32px"
-        >
+    <Dashboard title="API keys & Webhooks">
+      <Stack spacing="24px">
+        <Stack direction="row" alignItems="center" gap="16px">
           {/* Webhook URL */}
-          <Stack
-            bgcolor="#FFFFFF"
-            height="105px"
-            padding="20px"
-            justifyContent="space-between"
+          <OnlyHeader
+            alignHeader="left"
+            header="Webhook URLs"
+            flex={1}
+            minHeight="146px"
           >
-            <Typography fontWeight={500} fontSize="16px" color="#262B40">
-              Webhook URL
-            </Typography>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
-                {truncate(webhook?.data?.data?.callback_url ?? "N/A", 30)}
-              </Typography>
-              <Button
-                sx={{
-                  border: "0.5px solid #E4E8F2",
-                  height: "20px",
-                  padding: "2px 4px",
-                  borderRadius: 0,
-                  color: "rgba(38, 43, 64, 0.8)",
-                  fontSize: "10px",
-                  ml: "25px",
-                }}
-                onClick={() => clipboard(webhook?.data?.data?.callback_url)}
+            <Box my="auto">
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                gap="14px"
               >
-                Copy
-              </Button>
-            </Stack>
-          </Stack>
-          {/* Public Key */}
-          <Stack
-            bgcolor="#FFFFFF"
-            height="105px"
-            padding="20px"
-            justifyContent="space-between"
-          >
-            <Typography fontWeight={500} fontSize="16px" color="#262B40">
-              Public Key
-            </Typography>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
-                {truncate(keys?.public_key ?? "N/A", 30)}
-              </Typography>
-              <Button
-                sx={{
-                  border: "0.5px solid #E4E8F2",
-                  height: "20px",
-                  padding: "2px 4px",
-                  borderRadius: 0,
-                  color: "rgba(38, 43, 64, 0.8)",
-                  fontSize: "10px",
-                  ml: "25px",
-                }}
-                onClick={() => clipboard(keys?.public_key)}
-              >
-                Copy
-              </Button>
-            </Stack>
-          </Stack>
-          {/*  Secret Key */}
-          <Stack
-            bgcolor="#FFFFFF"
-            height="105px"
-            padding="20px"
-            justifyContent="space-between"
-          >
-            <Typography fontWeight={500} fontSize="16px" color="#262B40">
-              Secret Key
-            </Typography>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
-                {truncate(keys?.secret_key ?? "N/A", 30)}
-              </Typography>
-              <Button
-                sx={{
-                  border: "0.5px solid #E4E8F2",
-                  height: "20px",
-                  padding: "2px 4px",
-                  borderRadius: 0,
-                  color: "rgba(38, 43, 64, 0.8)",
-                  fontSize: "10px",
-                  ml: "25px",
-                }}
-                onClick={() => clipboard(keys?.secret_key)}
-              >
-                Copy
-              </Button>
-            </Stack>
-          </Stack>
-          {/*  Encryption Key */}
-          <Stack
-            bgcolor="#FFFFFF"
-            height="105px"
-            padding="20px"
-            justifyContent="space-between"
-          >
-            <Typography fontWeight={500} fontSize="16px" color="#262B40">
-              Encryption Key
-            </Typography>
-            <Stack
-              direction="row"
-              justifyContent="space-between"
-              alignItems="center"
-            >
-              <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
-                {truncate(keys?.encryption_key ?? "N/A", 30)}
-              </Typography>
-              <Button
-                sx={{
-                  border: "0.5px solid #E4E8F2",
-                  height: "20px",
-                  padding: "2px 4px",
-                  borderRadius: 0,
-                  color: "rgba(38, 43, 64, 0.8)",
-                  fontSize: "10px",
-                  ml: "25px",
-                }}
-                onClick={() => clipboard(keys?.encryption_key)}
-              >
-                Copy
-              </Button>
-            </Stack>
-          </Stack>
+                <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
+                  {truncate(webhook?.data?.data?.callback_url ?? "N/A", 30)}
+                </Typography>
+                <Button
+                  variant="text"
+                  sx={{ fontSize: "12px", gap: "4px" }}
+                  onClick={() => clipboard(webhook?.data?.data?.callback_url)}
+                >
+                  Copy <CopyIcon />
+                </Button>
+              </Stack>
+            </Box>
+          </OnlyHeader>
           {/*  Encryption Key end */}
+          <OnlyHeader
+            alignHeader="left"
+            header="Public Key"
+            flex={1}
+            minHeight="146px"
+          >
+            <Box my="auto">
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                gap="14px"
+              >
+                <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
+                  {truncate(keys?.public_key ?? "N/A", 30)}
+                </Typography>
+                <Button
+                  variant="text"
+                  sx={{ fontSize: "12px", gap: "4px" }}
+                  onClick={() => clipboard(keys?.public_key)}
+                >
+                  Copy <CopyIcon />
+                </Button>
+              </Stack>
+            </Box>
+          </OnlyHeader>
+        </Stack>
+        <Stack direction="row" alignItems="center" gap="16px">
+          {/* Webhook URL */}
+          <OnlyHeader
+            alignHeader="left"
+            header="Secret Key"
+            flex={1}
+            minHeight="146px"
+          >
+            <Box my="auto">
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                gap="14px"
+              >
+                <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
+                  {truncate(keys?.secret_key ?? "N/A", 30)}
+                </Typography>
+                <Button
+                  variant="text"
+                  sx={{ fontSize: "12px", gap: "4px" }}
+                  onClick={() => clipboard(keys?.secret_key)}
+                >
+                  Copy <CopyIcon />
+                </Button>
+              </Stack>
+            </Box>
+          </OnlyHeader>
+          {/*  Encryption Key end */}
+          <OnlyHeader
+            alignHeader="left"
+            header="Encryption Key"
+            flex={1}
+            minHeight="146px"
+          >
+            <Box my="auto">
+              <Stack
+                direction="row"
+                justifyContent="space-between"
+                alignItems="center"
+                gap="14px"
+              >
+                <Typography fontSize="14px" color="rgba(38, 43, 64, 0.8)">
+                  {truncate(keys?.encryption_key ?? "N/A", 30)}
+                </Typography>
+                <Button
+                  variant="text"
+                  sx={{ fontSize: "12px", gap: "4px" }}
+                  onClick={() => clipboard(keys?.encryption_key)}
+                >
+                  Copy <CopyIcon />
+                </Button>
+              </Stack>
+            </Box>
+          </OnlyHeader>
         </Stack>
       </Stack>
     </Dashboard>
