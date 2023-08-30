@@ -19,7 +19,6 @@ import BarChart from "@/components/charts/barChart";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserState } from "@/store/authSlice";
 import { CSVLink } from "react-csv";
-import Header from "@/components/Header";
 import LandscapeCard from "@/components/cards/LandscapeCard";
 import DataIcon from "@/public/icons/data.svg";
 import DropIcon from "@/public/icons/drop.svg";
@@ -27,6 +26,7 @@ import ReportIcon from "@/public/icons/report.svg";
 import ArrowIcon from "@/public/icons/arrow-down.svg";
 import ColorBop from "@/components/colorBop";
 import LineChart from "@/components/charts/lineChart";
+import Header from "@/components/Header";
 
 export default function Index() {
   const [metric, setMetric] = useState<any>({});
