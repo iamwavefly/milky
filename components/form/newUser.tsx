@@ -9,8 +9,14 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import Footer from "./Footer";
 
-export default function NewUser({ reload }: { reload: () => void }) {
+interface NewUserProps {
+  reload: () => void;
+  close: () => void;
+}
+
+export default function NewUser({ reload, close }: NewUserProps) {
   const [countries, setCountries] = useState<any>([]);
 
   const { loading, data, error, handleSubmit } = useFetch(
@@ -25,7 +31,6 @@ export default function NewUser({ reload }: { reload: () => void }) {
   const roles = useFetch(`${baseUrl}/dashboard/service/roles`, "get");
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   useEffect(() => {
     console.log({ data });
@@ -77,10 +82,10 @@ export default function NewUser({ reload }: { reload: () => void }) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack spacing="13px">
+      <Stack spacing="24px" px="40px" mt="32px">
         <TextField
           label="First Name*"
-          variant="standard"
+          variant="outlined"
           name="firstName"
           value={formik.values.firstName}
           onChange={formik.handleChange}
@@ -90,7 +95,7 @@ export default function NewUser({ reload }: { reload: () => void }) {
         />
         <TextField
           label="Last name"
-          variant="standard"
+          variant="outlined"
           name="lastName"
           value={formik.values.lastName}
           onChange={formik.handleChange}
@@ -100,7 +105,7 @@ export default function NewUser({ reload }: { reload: () => void }) {
         />
         <TextField
           label="Email Address*"
-          variant="standard"
+          variant="outlined"
           name="emailAddress"
           value={formik.values.emailAddress}
           onChange={formik.handleChange}
@@ -112,7 +117,7 @@ export default function NewUser({ reload }: { reload: () => void }) {
         />
         <TextField
           label="Phone Number"
-          variant="standard"
+          variant="outlined"
           name="phoneNumber"
           placeholder="+23480000000000"
           value={formik.values.phoneNumber}
@@ -125,7 +130,7 @@ export default function NewUser({ reload }: { reload: () => void }) {
         />
         <TextField
           label="Country"
-          variant="standard"
+          variant="outlined"
           name="country"
           value={formik.values.country}
           onChange={formik.handleChange}
@@ -142,7 +147,7 @@ export default function NewUser({ reload }: { reload: () => void }) {
         </TextField>
         <TextField
           label="Role"
-          variant="standard"
+          variant="outlined"
           name="role"
           value={formik.values.role}
           onChange={formik.handleChange}
@@ -158,20 +163,13 @@ export default function NewUser({ reload }: { reload: () => void }) {
           ))}
         </TextField>
       </Stack>
-      <Stack spacing="25px" mt="60px">
-        <LoadingButton
-          variant="contained"
-          fullWidth
-          type="submit"
-          loading={loading}
-          disabled={!(formik.isValid && formik.dirty)}
-        >
-          Add User
-        </LoadingButton>
-        <LoadingButton variant="outlined" fullWidth onClick={close}>
-          Cancel
-        </LoadingButton>
-      </Stack>
+      <Footer
+        type="submit"
+        loading={loading}
+        disabled={!(formik.isValid && formik.dirty)}
+      >
+        Add User
+      </Footer>
     </form>
   );
 }
