@@ -45,7 +45,15 @@ export default function BusinessDetails({ nextStep }: Props) {
       >
         GET STARTED
       </Typography>
-      <Box width="515px" mx="auto" mt="24px" bgcolor="#FFF">
+      <Box
+        width="515px"
+        mx="auto"
+        mt="24px"
+        bgcolor="#FFF"
+        border="1px solid #E8EAED"
+        borderRadius="8px"
+        pb="16px"
+      >
         <Stack
           height="70px"
           justifyContent="center"
