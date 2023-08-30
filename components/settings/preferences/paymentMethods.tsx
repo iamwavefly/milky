@@ -1,8 +1,8 @@
+import Checkbox from "@/components/elements/Checkbox";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import paymentMethod from "@/mocks/paymentMethod";
 import {
-  Checkbox,
   FormControl,
   FormControlLabel,
   Stack,
@@ -43,7 +43,7 @@ export default function PaymentMethods() {
   };
 
   return (
-    <FormControl sx={{ gap: "20px" }}>
+    <FormControl sx={{ gap: "16px" }}>
       {result?.length
         ? paymentMethod.map((name: string, index: number) => {
             const isChecked = result.includes(name);
