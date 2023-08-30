@@ -263,6 +263,7 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
                 right: "18px",
                 width: "18px",
                 height: "18px",
+                padding: 0,
               }}
             >
               <CarretDownIcon />
