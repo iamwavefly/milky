@@ -160,17 +160,14 @@ export default function PersonalInformation() {
           </Typography>
           <Stack mt="60px" gap="25px">
             <FileUpload
-              height={82}
               title={"Upload means of identification"}
               update={(file: Blob) => fileChangeHandler("Identification", file)}
             />
             <FileUpload
-              height={82}
               title={"Upload passport"}
               update={(file: Blob) => fileChangeHandler("PassportPhoto", file)}
             />
             <FileUpload
-              height={82}
               title={"Upload proof of address"}
               update={(file: Blob) => fileChangeHandler("ProofOfAddress", file)}
             />

@@ -1,12 +1,9 @@
 import useFetch from "@/hooks/useFetch";
 import { MenuProps } from "@/interfaces";
 import baseUrl from "@/middleware/baseUrl";
-import { bankDetails, newCustomer, newSubsidiary, newUser } from "@/schema";
-import { setDrawalState } from "@/store/appSlice";
-import { LoadingButton } from "@mui/lab";
+import { newSubsidiary } from "@/schema";
 import {
   Box,
-  Checkbox,
   FormControlLabel,
   MenuItem,
   Stack,
@@ -18,8 +15,15 @@ import { serialize } from "object-to-formdata";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import Footer from "./Footer";
+import Checkbox from "../elements/Checkbox";
 
-export default function NewSubsidiary({ reload }: { reload: () => void }) {
+interface NewUserProps {
+  reload: () => void;
+  close: () => void;
+}
+
+export default function NewSubsidiary({ reload, close }: NewUserProps) {
   const [countries, setCountries] = useState<any>([]);
 
   const { loading, data, error, handleSubmit } = useFetch(
@@ -30,11 +34,6 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
     `${baseUrl}/dashboard/onboarding/business/information/view`,
     "get"
   );
-  // business types
-  // const fetchBusinessType = useFetch(
-  //   `${baseUrl}/dashboard/business/categories`,
-  //   "get"
-  // );
   // countries
   const fetchCountries = useFetch(
     `${baseUrl}/dashboard/service/countries`,
@@ -44,7 +43,6 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
   const roles = useFetch(`${baseUrl}/dashboard/service/roles`, "get");
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   useEffect(() => {
     const { status, message } = data;
@@ -57,10 +55,6 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
       }
     }
   }, [data]);
-  // fetch business type
-  // useEffect(() => {
-  //   fetchBusinessType.handleSubmit();
-  // }, []);
   // fetch countries
   useEffect(() => {
     fetchCountries.handleSubmit();
@@ -108,10 +102,10 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack spacing="13px">
+      <Stack spacing="24px" px="40px" mt="32px">
         <TextField
           label="Name"
-          variant="standard"
+          variant="outlined"
           name="name"
           value={formik.values.name}
           onChange={formik.handleChange}
@@ -121,7 +115,7 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
         />
         <TextField
           label="Email Address*"
-          variant="standard"
+          variant="outlined"
           name="emailAddress"
           value={formik.values.emailAddress}
           onChange={formik.handleChange}
@@ -133,7 +127,7 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
         />
         <TextField
           label="Phone Number"
-          variant="standard"
+          variant="outlined"
           name="phoneNumber"
           placeholder="+23480000000000"
           value={formik.values.phoneNumber}
@@ -146,7 +140,7 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
         />
         <TextField
           label="Country"
-          variant="standard"
+          variant="outlined"
           name="country"
           value={formik.values.country}
           onChange={formik.handleChange}
@@ -163,7 +157,7 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
         </TextField>
         <TextField
           label="Business type"
-          variant="standard"
+          variant="outlined"
           name="businessType"
           value={formik.values.businessType}
           onChange={formik.handleChange}
@@ -182,10 +176,10 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
         </TextField>
         <TextField
           label="Description"
-          variant="standard"
+          variant="outlined"
           name="description"
           multiline
-          rows={0}
+          rows={3}
           value={formik.values.description}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -215,20 +209,13 @@ export default function NewSubsidiary({ reload }: { reload: () => void }) {
           />
         </Box>
       </Stack>
-      <Stack spacing="25px" mt="60px">
-        <LoadingButton
-          variant="contained"
-          fullWidth
-          type="submit"
-          loading={loading}
-          disabled={!(formik.isValid && formik.dirty)}
-        >
-          Add Subsidiary
-        </LoadingButton>
-        <LoadingButton variant="outlined" fullWidth onClick={close}>
-          Cancel
-        </LoadingButton>
-      </Stack>
+      <Footer
+        type="submit"
+        loading={loading}
+        disabled={!(formik.isValid && formik.dirty)}
+      >
+        Add Subsidiary
+      </Footer>
     </form>
   );
 }

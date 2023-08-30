@@ -7,14 +7,15 @@
   justify-content: center;
   align-items: center;
   border-radius: 50px;
-  border: 1px solid var(--primary-40, #0089e7);
-  background: #fff;
+  border: 1px solid #0089e7 !important;
+  background: #fff !important;
+  padding: 0 !important;
 }
 .currentStepIcon {
-  border-color: #dadce2;
+  border-color: #dadce2 !important;
 }
 .completedStepIcon {
-  background-color: #0048b1;
-  border-color: transparent;
+  background-color: #0048b1 !important;
+  border-color: transparent !important;
   padding: 0;
 }

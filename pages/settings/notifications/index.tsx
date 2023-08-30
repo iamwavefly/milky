@@ -18,7 +18,7 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import Slider from "react-slick";
+// import Slider from "react-slick";
 import { styled } from "@mui/material/styles";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";

@@ -11,7 +11,7 @@ const SubcidiaryCard = () => {
         member="Merchants are settled 1 day after transaction"
         settlement={"Settlement cycle: 5"}
       /> */}
-      <LandscapeCard />
+      {/* <LandscapeCard /> */}
     </div>
   );
 };

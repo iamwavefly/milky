@@ -6,7 +6,7 @@ interface Props {
   title: string;
 }
 
-const Header = ({ children, title }: Props) => {
+const Navbar = ({ children, title }: Props) => {
   return (
     <Stack
       height="40px"
@@ -28,4 +28,4 @@ const Header = ({ children, title }: Props) => {
   );
 };
 
-export default Header;
+export default Navbar;

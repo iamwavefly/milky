@@ -19,7 +19,6 @@ import BarChart from "@/components/charts/barChart";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserState } from "@/store/authSlice";
 import { CSVLink } from "react-csv";
-import Header from "@/components/header";
 import LandscapeCard from "@/components/cards/LandscapeCard";
 import DataIcon from "@/public/icons/data.svg";
 import DropIcon from "@/public/icons/drop.svg";
@@ -27,6 +26,7 @@ import ReportIcon from "@/public/icons/report.svg";
 import ArrowIcon from "@/public/icons/arrow-down.svg";
 import ColorBop from "@/components/colorBop";
 import LineChart from "@/components/charts/lineChart";
+import Navbar from "@/components/Navbar";
 
 export default function Index() {
   const [metric, setMetric] = useState<any>({});
@@ -57,11 +57,11 @@ export default function Index() {
 
   return (
     <Dashboard title="Dashboard">
-      <Header title="Overview">
+      <Navbar title="Overview">
         <Stack direction="row" gap="10px">
           <DropdownMenu title="Filter currency" />
         </Stack>
-      </Header>
+      </Navbar>
       {/* group charts */}
       <Grid container spacing="16px" mt="20px">
         <Grid xs>

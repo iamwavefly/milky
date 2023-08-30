@@ -20,10 +20,6 @@ export default function Index() {
     handleSubmit();
   }, []);
 
-  useEffect(() => {
-    console.log({ data });
-  }, [data]);
-
   return (
     <Dashboard title="Pending Chargebacks">
       <Chart />

@@ -19,8 +19,8 @@ import React, {
   useState,
 } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Image } from "semantic-ui-react";
 import EditIcon from "../../../public/icons/edit.svg";
+import Image from "next/image";
 // import { serialize } from "object-to-formdata";
 
 const defaultUser = {
@@ -116,7 +116,7 @@ const Index = () => {
           style={{ display: "none" }}
           onChange={handleFileChange}
         />
-        {file && <Image src={file} width="100" height="100" />}
+        {file && <Image src={file} width="100" height="100" alt="main" />}
         <Typography fontWeight={700} fontSize="16px" mt="8px">
           {user.first_name} {user.last_name}
         </Typography>

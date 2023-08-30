@@ -1,4 +1,3 @@
-import { Icon } from "semantic-ui-react";
 import React from "react";
 
 export const defaultUser = {
@@ -66,14 +65,7 @@ export const errorClass = (target, parent, field) => {
   return `${target} ${parent[field]?.error ? "gen-error" : null} `;
 };
 export const errorMsg = (parent, field) => {
-  return (
-    parent[field]?.error && (
-      <>
-        <Icon name="warning circle" />
-        {parent[field].msg}
-      </>
-    )
-  );
+  return parent[field]?.error && <>{parent[field].msg}</>;
 };
 export const disableInput = (mode) => {
   return mode ? "disabled" : null;

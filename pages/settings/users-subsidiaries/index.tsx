@@ -20,6 +20,7 @@ import PenIcon from "remixicon-react/EditLineIcon";
 import CheckboxIcon from "remixicon-react/CheckboxLineIcon";
 import UserTable from "@/components/settings/user-subsidiaries/userTable";
 import SubsidiaryTable from "@/components/settings/user-subsidiaries/subsidiaryTable";
+import Tabs from "@/components/Tabs";
 
 interface Props {
   id: number;
@@ -27,10 +28,20 @@ interface Props {
   user_count: number;
 }
 
+const tabs = [
+  {
+    id: 1,
+    tab: "Users",
+  },
+  {
+    id: 2,
+    tab: "Subsidiaries",
+  },
+];
+
 const Index = () => {
   const [activeRole, setActiveRole] = useState("users");
-  const [permissions, setPermissions] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [currentTab, setCurrentTab] = useState(0);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/role/users`,
@@ -50,22 +61,12 @@ const Index = () => {
 
   return (
     <Dashboard title="Settings">
-      <Stack px="30px" mt="20px">
-        <Typography fontSize="16px" color="#2E3192">
-          Users & Subsidiaries
-        </Typography>
-        <ToggleButtonGroup
-          value={activeRole}
-          exclusive
-          onChange={handleRoleChange}
-          aria-label="text alignment"
-          sx={{ mt: "32px" }}
-        >
-          <ToggleButton value="users">Users</ToggleButton>
-          <ToggleButton value="subsidiaries">Subsidiaries</ToggleButton>
-        </ToggleButtonGroup>
-        <Box>
-          {activeRole === "users" ? <UserTable /> : <SubsidiaryTable />}
+      <Stack>
+        <Stack>
+          <Tabs tabs={tabs} updateTab={setCurrentTab} currentTab={currentTab} />
+        </Stack>
+        <Box mt="24px">
+          {currentTab === 1 ? <UserTable /> : <SubsidiaryTable />}
         </Box>
       </Stack>
     </Dashboard>

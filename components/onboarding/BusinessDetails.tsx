@@ -11,6 +11,7 @@ import {
 import AccountTypePanel from "../accountTypePanel";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
+import Router from "next/router";
 
 interface Props {
   nextStep: () => void;
@@ -40,10 +41,19 @@ export default function BusinessDetails({ nextStep }: Props) {
         textAlign="center"
         variant="h4"
         letterSpacing="0.5px"
+        mt="20px"
       >
         GET STARTED
       </Typography>
-      <Box width="515px" mx="auto" mt="24px" bgcolor="#FFF">
+      <Box
+        width="515px"
+        mx="auto"
+        mt="24px"
+        bgcolor="#FFF"
+        border="1px solid #E8EAED"
+        borderRadius="8px"
+        pb="16px"
+      >
         <Stack
           height="70px"
           justifyContent="center"
@@ -113,7 +123,7 @@ export default function BusinessDetails({ nextStep }: Props) {
             fullWidth
             variant="contained"
             sx={{ mt: "40px" }}
-            onClick={nextStep}
+            onClick={() => Router.push("/onboarding")}
           >
             Proceed to my dashboard
           </Button>

@@ -27,7 +27,7 @@ import Head from "next/head";
 import Styles from "./dashboard.module.scss";
 import routes from "@/configs/routes";
 import MenuIcon from "remixicon-react/Menu2LineIcon";
-import { faker } from "@faker-js/faker";
+// import { faker } from "@faker-js/faker";
 import Router, { useRouter } from "next/router";
 import Link from "next/link";
 import CarretDownIcon from "@/public/images/arrow.svg";
@@ -263,6 +263,7 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
                 right: "18px",
                 width: "18px",
                 height: "18px",
+                padding: 0,
               }}
             >
               <CarretDownIcon />

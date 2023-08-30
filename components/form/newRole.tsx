@@ -20,6 +20,7 @@ import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import Footer from "./Footer";
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -42,7 +43,12 @@ function getStyles(name: string, personName: string[], theme: Theme) {
   };
 }
 
-export default function NewRole({ reload }: { reload: () => void }) {
+interface NewRoleProps {
+  reload: () => void;
+  close: () => void;
+}
+
+export default function NewRole({ reload, close }: NewRoleProps) {
   const [permissions, setPermissions] = useState<string[]>([]);
 
   const theme = useTheme();
@@ -59,7 +65,6 @@ export default function NewRole({ reload }: { reload: () => void }) {
   const roles = useFetch(`${baseUrl}/dashboard/service/roles`, "get");
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   useEffect(() => {
     const { status, message } = data;
@@ -104,12 +109,12 @@ export default function NewRole({ reload }: { reload: () => void }) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack spacing="13px">
+      <Stack spacing="24px" px="40px" mt="32px">
         <TextField
           InputLabelProps={{ shrink: true }}
           autoFocus
           label="Name"
-          variant="standard"
+          variant="outlined"
           name="name"
           value={formik.values.name}
           onChange={formik.handleChange}
@@ -123,9 +128,10 @@ export default function NewRole({ reload }: { reload: () => void }) {
           </InputLabel>
           <Select
             multiple
+            fullWidth
             value={permissions}
             onChange={handleChange}
-            variant="standard"
+            variant="outlined"
             MenuProps={MenuInputProps}
           >
             {fetchPermissions?.data?.data?.map?.(({ name, id }: any) => (
@@ -141,18 +147,13 @@ export default function NewRole({ reload }: { reload: () => void }) {
         </Box>
       </Stack>
       <Stack spacing="25px" mt="60px">
-        <LoadingButton
-          variant="contained"
-          fullWidth
+        <Footer
           type="submit"
           loading={loading}
           disabled={!(formik.isValid && formik.dirty)}
         >
           Add Role
-        </LoadingButton>
-        <LoadingButton variant="outlined" fullWidth onClick={close}>
-          Cancel
-        </LoadingButton>
+        </Footer>
       </Stack>
     </form>
   );

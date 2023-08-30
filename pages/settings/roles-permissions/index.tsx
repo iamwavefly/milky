@@ -5,7 +5,6 @@ import baseUrl from "@/middleware/baseUrl";
 import {
   Box,
   Button,
-  Checkbox,
   FormControl,
   FormControlLabel,
   Radio,
@@ -18,16 +17,27 @@ import {
 import React, { useEffect, useState } from "react";
 import BoxPlusIcon from "remixicon-react/AddBoxLineIcon";
 import PenIcon from "remixicon-react/EditLineIcon";
-import CheckboxIcon from "remixicon-react/CheckboxLineIcon";
+import Checkbox from "@/components/elements/Checkbox";
 import { useDispatch } from "react-redux";
 import NewSubsidiary from "@/components/form/newSubsidiary";
 import { setDrawalState } from "@/store/appSlice";
 import NewRole from "@/components/form/newRole";
+import Tabs from "@/components/Tabs";
+// icons
+import UserIcon from "@/public/icons/user-line.svg";
+import UserCard from "@/components/cards/User";
+import Modal from "@/components/modal/modal";
 
 interface Props {
   id: number;
   name: string;
+  tab: string;
   user_count: number;
+}
+
+interface UserProps {
+  id: number;
+  name: string;
 }
 
 const Index = () => {
@@ -35,7 +45,13 @@ const Index = () => {
   const [permissions, setPermissions] = useState([]);
   const [users, setUsers] = useState([]);
   const [userPermission, setUserPermission] = useState([]);
-  const [roles, setRoles] = useState([]);
+  const [roles, setRoles] = useState<Props[]>([]);
+  const [currentTab, setCurrentTab] = useState(0);
+  const [selectedRole, setSelectedRole] = useState<Props>({} as Props);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const dispatch = useDispatch();
   const { loading, data, error, handleSubmit } = useFetch(
@@ -44,7 +60,7 @@ const Index = () => {
   );
   // fetch permission based on role
   const permApi = useFetch(
-    `${baseUrl}/dashboard/role/details?roleid=${activeRole}`,
+    `${baseUrl}/dashboard/role/details?roleid=${currentTab}`,
     "get"
   );
   // permissions
@@ -56,12 +72,28 @@ const Index = () => {
   const updatePermission = useFetch(`${baseUrl}/dashboard/role/edit`);
 
   useEffect(() => {
+    setCurrentTab(roles?.[0]?.id);
+  }, [roles]);
+
+  useEffect(() => {
+    const newRole = roles?.find((role) => role.id === currentTab);
+    setSelectedRole(newRole as Props);
+  }, [roles, currentTab]);
+
+  useEffect(() => {
     handleSubmit();
   }, []);
 
   // fetch roles
   useEffect(() => {
-    setRoles(data?.data);
+    const newRoles = data?.data?.map(({ id, name, user_count }: Props) => {
+      return {
+        id,
+        tab: name,
+        count: user_count ?? 0,
+      };
+    });
+    setRoles(newRoles);
   }, [data?.data]);
 
   useEffect(() => {
@@ -69,8 +101,8 @@ const Index = () => {
   }, []);
 
   useEffect(() => {
-    activeRole && permApi?.handleSubmit();
-  }, [activeRole]);
+    currentTab && permApi?.handleSubmit();
+  }, [currentTab]);
 
   useEffect(() => {
     setUserPermission(permApi?.data?.data?.permission);
@@ -102,16 +134,6 @@ const Index = () => {
     setActiveRole(newRole);
   };
 
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Add a New Role",
-        content: <NewRole reload={handleSubmit} />,
-      })
-    );
-  };
-
   const handleCheck = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
     let newPermissions: string[] | null = null;
@@ -132,6 +154,14 @@ const Index = () => {
 
   return (
     <Dashboard title="Settings">
+      <Modal
+        title="New customer"
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <NewRole reload={handleSubmit} close={handleCloseModal} />
+      </Modal>
       <Stack>
         <Stack
           spacing="12px"
@@ -147,7 +177,12 @@ const Index = () => {
           >
             Roles & Permission
           </Typography>
-          <Button variant="containedMedium" sx={{ height: "40px" }}>
+          <Button
+            variant="containedMedium"
+            sx={{ height: "40px" }}
+            onClick={handleOpenModal}
+          >
+            <UserIcon />
             Create custom role
           </Button>
         </Stack>
@@ -157,133 +192,110 @@ const Index = () => {
           alignItems="center"
           mt="32px"
         >
-          <ToggleButtonGroup
-            value={activeRole}
-            exclusive
-            onChange={handleRoleChange}
-            aria-label="text alignment"
-          >
-            {roles?.map(({ id, name, user_count }: Props) => (
-              <ToggleButton value={id} key={id}>
-                {name} ({user_count})
-              </ToggleButton>
-            ))}
-          </ToggleButtonGroup>
-          <Button
-            sx={{ height: "40px", fontSize: "12px", fontWeight: 500 }}
-            variant="outlined"
-            onClick={openDrawal}
-          >
-            <BoxPlusIcon size={18} />
-            Create custom role
-          </Button>
+          <Tabs
+            tabs={roles as any}
+            updateTab={setCurrentTab}
+            currentTab={currentTab}
+          />
         </Stack>
-        <Typography mt="20px" fontSize="12px" color="rgba(38, 43, 64, 0.8)">
-          Admins with this role:{" "}
-          {users?.length
-            ? users?.map(({ id, name }) => name).join(", ")
-            : "N/A"}
-        </Typography>
-        <Box
-          padding="25px 34px"
-          width="100%"
-          height="auto"
-          maxWidth="788px"
-          minHeight="432px"
-          bgcolor="#fff"
-          mt="35px"
-        >
-          <Typography fontWeight={600} fontSize="14px" color="#262B40">
-            Permissions
-          </Typography>
-          <Stack mt="22px" spacing="20px">
-            {permissions?.map((perm: any) => {
-              const newPermission = userPermission?.find(
-                (fin: any) => fin.id === perm.id
-              ) as any;
-              if (newPermission) {
-                return (
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    key={newPermission?.id}
-                  >
-                    <Typography
-                      fontSize="14px"
-                      fontWeight={500}
-                      color="rgba(38, 43, 64, 0.8)"
-                    >
-                      {newPermission?.permission}
-                    </Typography>
-                    <Checkbox
-                      value={newPermission?.id}
-                      defaultChecked
-                      onChange={handleCheck}
-                    />
-                  </Stack>
-                );
-              } else {
-                return (
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    key={perm?.name}
-                  >
-                    <Typography
-                      fontSize="14px"
-                      fontWeight={500}
-                      color="rgba(38, 43, 64, 0.8)"
-                    >
-                      {perm?.name}
-                    </Typography>
-                    <Checkbox onChange={handleCheck} value={perm?.id} />
-                  </Stack>
-                );
-              }
-            })}
-            {/* {permissions?.length ? (
-              permissions?.map(
-                ({ id, permission }: { id: number; permission: string }) => (
-                  <Stack
-                    direction="row"
-                    justifyContent="space-between"
-                    key={id}
-                  >
-                    <Typography
-                      fontSize="14px"
-                      fontWeight={500}
-                      color="rgba(38, 43, 64, 0.8)"
-                    >
-                      {permission}
-                    </Typography>
-                    <CheckboxIcon color="#2E3192" size={20} />
-                  </Stack>
-                )
-              )
-            ) : (
-              <Typography
-                fontSize="14px"
-                fontWeight={500}
-                color="rgba(38, 43, 64, 0.8)"
-              >
-                No result found
+        <Stack direction="row" spacing="88px" mt="46px">
+          <Box width="342px">
+            <Typography fontSize="18px" fontWeight={600} lineHeight="26px">
+              {selectedRole?.tab}
+            </Typography>
+            <Typography
+              fontSize="14px"
+              lineHeight="24px"
+              letterSpacing="0.14px"
+              mt="12px"
+            >
+              Admin with this role:
+            </Typography>
+            <Stack mt="32px" spacing="16px">
+              {users?.length
+                ? users?.map(({ id, name }: UserProps) => (
+                    <UserCard key={id} name={name} />
+                  ))
+                : "N/A"}
+            </Stack>
+          </Box>
+          <Box
+            width="100%"
+            height="auto"
+            maxWidth="788px"
+            minHeight="432px"
+            bgcolor="#fff"
+            mt="35px"
+            border="1px solid #E8EAED"
+            borderRadius="8px"
+          >
+            <Stack
+              height="72px"
+              justifyContent="center"
+              borderBottom="1px solid #E8EAED"
+              px="40px"
+            >
+              <Typography fontWeight={700} fontSize="15px" color="#070F1C">
+                Permissions
               </Typography>
-            )} */}
-          </Stack>
-        </Box>
-        {/* <Button
-          sx={{
-            height: "40px",
-            width: "max-content",
-            fontSize: "12px",
-            fontWeight: 500,
-            mt: "27px",
-          }}
-          variant="outlined"
-        >
-          <PenIcon size={18} />
-          Edit role
-        </Button> */}
+            </Stack>
+            <Stack>
+              {permissions?.map(({ id, name }: any) => {
+                const newPermission = userPermission?.find(
+                  (fin: any) => fin.id === id
+                ) as any;
+
+                if (newPermission) {
+                  return (
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      key={newPermission?.id}
+                      height="60px"
+                      borderBottom="1px solid #E8EAED"
+                      px="40px"
+                      alignItems="center"
+                    >
+                      <Typography
+                        fontSize="14px"
+                        fontWeight={500}
+                        color="rgba(38, 43, 64, 0.8)"
+                      >
+                        {newPermission?.permission}
+                      </Typography>
+                      <Checkbox
+                        value={newPermission?.id}
+                        defaultChecked
+                        onChange={handleCheck}
+                      />
+                    </Stack>
+                  );
+                } else {
+                  return (
+                    <Stack
+                      direction="row"
+                      justifyContent="space-between"
+                      key={name}
+                      height="60px"
+                      borderBottom="1px solid #E8EAED"
+                      px="40px"
+                      alignItems="center"
+                    >
+                      <Typography
+                        fontSize="14px"
+                        fontWeight={500}
+                        color="rgba(38, 43, 64, 0.8)"
+                      >
+                        {name}
+                      </Typography>
+                      <Checkbox onChange={handleCheck} value={id} />
+                    </Stack>
+                  );
+                }
+              })}
+            </Stack>
+          </Box>
+        </Stack>
       </Stack>
     </Dashboard>
   );

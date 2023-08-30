@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import AccountSetup from "@/layouts/setup";
 import { formStepLabel, onboardingForm } from "@/utils/signup";
 import { Box } from "@mui/material";
-import Stepper from "@/components/stepper";
+import Stepper from "@/components/WyrrStepper";
 
 export default function Index() {
   const [step, setStep] = useState(1);

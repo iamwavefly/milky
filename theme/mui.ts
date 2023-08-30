@@ -528,7 +528,7 @@ const theme = createTheme({
           paddingRight: "12px",
           "& > svg": {
             color: "transparent",
-            border: "1px solid #DADCE2",
+            border: "1px solid #DADCE2 !important",
             borderRadius: "50% !important",
             "&.Mui-active": {
               color: "transparent",

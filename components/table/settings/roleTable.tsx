@@ -2,7 +2,6 @@ import { useState, useCallback, useEffect } from "react";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import axios from "axios";
 import moment from "moment";
-import { Divider, Image } from "semantic-ui-react";
 import Link from "next/link";
 import { Box, Button, Checkbox, Typography } from "@mui/material";
 import { _businesses, _main } from "@/mocks";
@@ -30,7 +29,7 @@ const RoleTable = () => {
 
   return (
     <div>
-      <Header entries={`${transactions?.length}`} noButton entryOnly />
+      <Header entries={`${transactions?.length}`} />
       <Table
         data={transactions}
         columns={SettingRoleTableColumns}

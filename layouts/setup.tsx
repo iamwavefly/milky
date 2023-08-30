@@ -27,7 +27,7 @@ interface Props {
   title?: string;
   desc?: string;
   step: number;
-  prevStep: () => void;
+  prevStep?: () => void;
 }
 
 const AccountSetup = ({

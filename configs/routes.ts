@@ -55,12 +55,12 @@ const routes = [
         link: "/business/customers",
       },
       {
-        key: 3,
+        key: 4,
         name: "Products",
         link: "/business/products",
       },
       {
-        key: 4,
+        key: 5,
         name: "Payment Links",
         link: "/business/payment-links",
       },

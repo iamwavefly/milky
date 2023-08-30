@@ -10,27 +10,20 @@ import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import { Box, Button } from "@mui/material";
-import AddBox from "remixicon-react/AddBoxLineIcon";
+import AddBox from "@/public/icons/add.svg";
 import { setDrawalState } from "@/store/appSlice";
 import { useDispatch } from "react-redux";
 import NewSubsidiary from "@/components/form/newSubsidiary";
+import Modal from "@/components/modal/modal";
 
 const SubsidiaryTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [openModal, setOpenModal] = useState(false);
 
-  const dispatch = useDispatch();
-
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Add a New Subsidiary",
-        content: <NewSubsidiary reload={handleSubmit} />,
-      })
-    );
-  };
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const containerRef = useRef();
 
@@ -49,21 +42,29 @@ const SubsidiaryTable = () => {
 
   return (
     <Box>
+      <Modal
+        title="Add a New Subsidiary"
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <NewSubsidiary reload={handleSubmit} close={handleCloseModal} />
+      </Modal>
       <Header
         containerRef={containerRef}
         columns={SubsidiaryTableColumns}
         data={data?.users}
-        entries={`${data?.page?.total_items ?? 0} Entries`}
+        entries={data?.page?.total_items ?? 0}
         setSearch={setSearch}
         url="/dashboard/user/subsidiaries"
         searchText="Search subsidiaries or enter keyword"
-        buttons={
+        actions={
           <Button
             variant="contained"
             sx={{ height: "40px", fontSize: "12px" }}
-            onClick={openDrawal}
+            onClick={handleOpenModal}
           >
-            <AddBox size={16} />
+            <AddBox width="18px" height="18px" fill="#fff" />
             Add new subsidiary
           </Button>
         }
