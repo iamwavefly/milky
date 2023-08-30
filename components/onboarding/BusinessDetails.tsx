@@ -41,6 +41,7 @@ export default function BusinessDetails({ nextStep }: Props) {
         textAlign="center"
         variant="h4"
         letterSpacing="0.5px"
+        mt="20px"
       >
         GET STARTED
       </Typography>
