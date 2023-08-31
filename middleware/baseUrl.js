@@ -1,8 +1,7 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 
-const baseUrl =
-  "https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary";
+const baseUrl = "https://subsidiary-api.arca-payments.network/subsidiary";
 
 const token = Cookies.get("token");
 
