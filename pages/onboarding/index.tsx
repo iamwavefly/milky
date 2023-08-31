@@ -1,23 +1,31 @@
-import React, { useEffect, useState } from "react";
-import AccountSetup from "@/layouts/setup";
-import { formStepLabel, onboardingForm } from "@/utils/signup";
+import Onboarding from "@/layouts/onboarding";
 import { Box } from "@mui/material";
+import { useState } from "react";
 import Stepper from "@/components/WyrrStepper";
+import { formComponents, formStepLabel } from "@/utils/signup";
 
 export default function Index() {
-  const [step, setStep] = useState(1);
-  const { Form, id, subtitle, title } = onboardingForm[step - 1];
+  const [activeStep, setActiveStep] = useState(0);
 
-  const nextStep = () => setStep((prev) => prev + 1);
-  const prevStep = () => {
-    if (step > 1) {
-      setStep((prev) => prev - 1);
-    }
-  };
+  const { Form } = formComponents[activeStep];
+
+  const nextStepHandler = () => setActiveStep((prev) => prev + 1);
 
   return (
-    <AccountSetup title={title} desc={subtitle} prevStep={prevStep} step={step}>
-      <Form nextStep={nextStep} />
-    </AccountSetup>
+    <Onboarding title="Create an Account" my="72px" fullWidth>
+      {/* stepper */}
+      <Box
+        padding="32px 120px"
+        position="sticky"
+        top={0}
+        left={0}
+        bgcolor="#F6F6F9"
+      >
+        <Stepper activeStep={activeStep} steps={formStepLabel} />
+      </Box>
+      <Box mx="auto" overflow="auto">
+        {Form && <Form nextStep={nextStepHandler} />}
+      </Box>
+    </Onboarding>
   );
 }

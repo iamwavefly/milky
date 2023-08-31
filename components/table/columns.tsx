@@ -213,6 +213,11 @@ export const UserTableColumns: ColumnDef<any, any>[] = [
       );
     },
   },
+  {
+    header: "Actions",
+    accessorKey: "id",
+    cell: (row) => <VirtualAccountMenu id={row.getValue()} />,
+  },
 ];
 
 export const SubsidiaryTableColumns: ColumnDef<any, any>[] = [

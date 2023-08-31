@@ -277,7 +277,7 @@ const theme = createTheme({
         },
         input: {
           color: "#070F1C",
-          paddingLeft: "16px",
+          paddingLeft: "18px",
           paddingRight: "16px",
           fontSize: "15px",
         },

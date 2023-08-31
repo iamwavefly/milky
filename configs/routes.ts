@@ -11,11 +11,15 @@ import ArrowLeftRightIcon from "@/public/icons/chargeback.svg";
 import SettingIcon from "@/public/icons/setting.svg";
 import LogoutIcon from "@/public/icons/signout.svg";
 
-const routes = [
+const routes = {
+  login: "/",
+};
+
+export const dashboard = [
   {
     id: 1,
     name: "Get Started",
-    link: "/onboarding",
+    link: "/onboarding/setup",
     Icon: GetStartedIcon,
   },
   {

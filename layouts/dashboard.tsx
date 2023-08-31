@@ -25,7 +25,7 @@ import NotificationIcon from "@/public/icons/bell.svg";
 import Drawal from "@/components/drawal/Drawal";
 import Head from "next/head";
 import Styles from "./dashboard.module.scss";
-import routes from "@/configs/routes";
+import { dashboard } from "@/configs/routes";
 import MenuIcon from "remixicon-react/Menu2LineIcon";
 // import { faker } from "@faker-js/faker";
 import Router, { useRouter } from "next/router";
@@ -152,7 +152,7 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
     if (verified || pendingApproval) {
       // return setLabels(routes.slice(1));
     }
-    setLabels(routes);
+    setLabels(dashboard);
   }, [verified, pendingApproval]);
 
   const handleClickBizModal = () => {

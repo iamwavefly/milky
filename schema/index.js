@@ -11,7 +11,7 @@ export const signup = () =>
     businessName: yup.string().required("Business name is required").nullable(),
     firstName: yup.string().required("First name is required").nullable(),
     lastName: yup.string().required("Last name is required").nullable(),
-    email: yup
+    emailAddress: yup
       .string()
       .email()
       .nullable()
@@ -21,7 +21,7 @@ export const signup = () =>
       .password()
       .nullable()
       .required("Password is required"),
-    password2: yup
+    confirmPassword: yup
       .string()
       .password()
       .nullable()

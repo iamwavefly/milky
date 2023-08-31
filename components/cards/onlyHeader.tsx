@@ -25,7 +25,6 @@ export default function OnlyHeader({
       bgcolor="#fff"
       minHeight="171px"
       height="auto"
-      display="grid"
       border="1px solid #E8EAED"
       borderRadius="8px"
       {...props}
@@ -43,7 +42,7 @@ export default function OnlyHeader({
         >
           <Typography
             fontWeight={600}
-            fontSize={size ?? "15px"}
+            fontSize={"15px"}
             lineHeight="26px"
             color="#162031"
           >

@@ -53,25 +53,24 @@ export const checkNewDevice = (email_address) => {
   return Router.push("/");
 };
 
-export const loginHandler = async (data, fundRefId) => {
+export const loginHandler = async (data) => {
   clearCacheHandler();
   const { next } = Router.query;
 
   const { business_type, verification_status } =
     data?.subsidiary_details?.subsidiaries?.find((elem) => elem?.is_default) ??
     {};
+  const { access_token } = data?.token;
 
   localforage.setItem("user", { ...data });
-  localforage.setItem("key", data.token.access_token);
+  localforage.setItem("key", access_token);
 
   const tempToken = Cookies.get("token");
   if (tempToken) Cookies.remove("token");
 
-  Cookies.set("token", data.token.access_token);
+  Cookies.set("token", access_token);
 
-  axios.defaults.headers.common[
-    "Authorization"
-  ] = `Bearer ${data.token.access_token}`;
+  axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
 
   if (
     verification_status?.toLowerCase() === "active" ||
@@ -80,15 +79,7 @@ export const loginHandler = async (data, fundRefId) => {
     return Router.push("/dashboard");
   }
 
-  if (data?.route_to_get_started) {
-    return Router.push("/onboarding");
-  }
-
-  return Router.push(
-    `/onboarding/setup?type=${
-      business_type?.toLowerCase() === "company" ? "registered" : "unregistered"
-    }`
-  );
+  return Router.push(`/onboarding`);
 };
 
 export const setSignUpToken = async (data, fundRefId) => {

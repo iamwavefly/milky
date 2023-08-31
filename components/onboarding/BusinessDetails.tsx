@@ -123,7 +123,7 @@ export default function BusinessDetails({ nextStep }: Props) {
             fullWidth
             variant="contained"
             sx={{ mt: "40px" }}
-            onClick={() => Router.push("/onboarding")}
+            onClick={() => Router.push("/onboarding/setup")}
           >
             Proceed to my dashboard
           </Button>

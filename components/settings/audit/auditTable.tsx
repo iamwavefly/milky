@@ -19,17 +19,6 @@ const AuditTable = () => {
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
 
-  const dispatch = useDispatch();
-  // close drawal
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Add a New Customer",
-      })
-    );
-  };
-
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
@@ -51,7 +40,7 @@ const AuditTable = () => {
         containerRef={containerRef}
         columns={UserTableColumns}
         data={data?.users}
-        entries={`${data?.page?.total_items ?? 0} Entries`}
+        entries={data?.page?.total_items ?? 0}
         setSearch={setSearch}
         selector="audits"
         updateFilter={setFilters}
