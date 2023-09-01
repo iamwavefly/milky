@@ -31,10 +31,6 @@ export const signup = () =>
 // getStarted
 export const getStarted = () =>
   yup.object({
-    businessName: yup
-      .string("Enter your business name")
-      .nullable()
-      .required("Business name is required"),
     businessLocation: yup
       .string("Select your business location")
       .nullable()
@@ -47,6 +43,7 @@ export const getStarted = () =>
       .string("Select your business category")
       .nullable()
       .required("Business type is required"),
+    isDeveloper: yup.string().nullable(),
     referralCode: yup.string().nullable(),
   });
 // contact information
