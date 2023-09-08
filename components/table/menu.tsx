@@ -206,6 +206,10 @@ export const ProductMenu = ({ id }: { id?: number }) => {
 export const CustomerMenu = ({ id }: { id: number }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [customer, setCustomer] = useState<any>({});
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const router = useRouter();
 
@@ -220,24 +224,24 @@ export const CustomerMenu = ({ id }: { id: number }) => {
 
   const dispatch = useDispatch();
   // open drawal
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Blacklist Customer",
-        content: (
-          <BlacklistCustomer
-            emailAddress={customer?.email_address}
-            action={
-              customer?.status?.toLowerCase() === "active"
-                ? "blacklist"
-                : "whitelist"
-            }
-          />
-        ),
-      })
-    );
-  };
+  // const openDrawal = () => {
+  //   dispatch(
+  //     setDrawalState({
+  //       active: true,
+  //       title: "Blacklist Customer",
+  //       content: (
+  //         <BlacklistCustomer
+  //           emailAddress={customer?.email_address}
+  //           action={
+  //             customer?.status?.toLowerCase() === "active"
+  //               ? "blacklist"
+  //               : "whitelist"
+  //           }
+  //         />
+  //       ),
+  //     })
+  //   );
+  // };
 
   const handleClick = (event: any) => {
     event.stopPropagation();
@@ -253,13 +257,33 @@ export const CustomerMenu = ({ id }: { id: number }) => {
   const handleActionClick = (action: string, event: any) => {
     handleClose(event);
     if (action === "view") return Router.push(`/business/customers/${id}`);
-    if (action === "blacklist") return openDrawal();
+    if (action === "blacklist") return handleOpenModal();
   };
 
   const activeCustomer = customer?.status?.toLowerCase() === "active";
 
   return (
     <>
+      <Modal
+        title={` ${
+          customer?.status?.toLowerCase() === "active"
+            ? "Blacklist"
+            : "Whitelist"
+        } Customer`}
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <BlacklistCustomer
+          emailAddress={customer?.email_address}
+          close={handleCloseModal}
+          action={
+            customer?.status?.toLowerCase() === "active"
+              ? "blacklist"
+              : "whitelist"
+          }
+        />
+      </Modal>
       <Box>
         <IconButton
           sx={{ width: "40px", height: "40px" }}
