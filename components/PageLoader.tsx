@@ -31,7 +31,7 @@ const PageLoader = () => {
 
   return loading ? (
     <Box className={Styles.container}>
-      <Image src={Loader} alt="arca loader" width={200} height={200} />
+      {/* <Image src={Loader} alt="arca loader" width={200} height={200} /> */}
     </Box>
   ) : null;
 };

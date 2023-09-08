@@ -1,11 +1,24 @@
 import Onboarding from "@/layouts/onboarding";
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Stepper from "@/components/WyrrStepper";
 import { formComponents, formStepLabel } from "@/utils/signup";
+import useFetch from "@/hooks/useFetch";
+import baseUrl from "@/middleware/baseUrl";
 
 export default function Index() {
   const [activeStep, setActiveStep] = useState(0);
+
+  // percentage
+  const onboardingStatus = useFetch(
+    `${baseUrl}/dashboard/onboarding/percentage`,
+    "get"
+  );
+
+  // fetch business status
+  useEffect(() => {
+    onboardingStatus.handleSubmit();
+  }, []);
 
   const { Form } = formComponents[activeStep];
 

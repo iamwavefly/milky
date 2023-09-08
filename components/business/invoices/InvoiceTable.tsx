@@ -14,8 +14,8 @@ import AddBox from "@/public/icons/add.svg";
 import Filter from "@/components/Filter";
 import Export from "@/components/Export";
 import DropdownMenu from "@/components/DropdownMenu";
-import { setDrawalState } from "@/store/appSlice";
-import { useDispatch } from "react-redux";
+import { selectAppState, setDrawalState } from "@/store/appSlice";
+import { useDispatch, useSelector } from "react-redux";
 import NewInvoice from "./NewInvoice";
 
 const InvoiceTable = () => {
@@ -25,6 +25,8 @@ const InvoiceTable = () => {
 
   const dispatch = useDispatch();
   const containerRef = useRef();
+
+  const { percentage } = useSelector(selectAppState).reload;
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/invoice/all?page=${currentPage}&limit=10&${Object.entries(
@@ -37,7 +39,7 @@ const InvoiceTable = () => {
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, percentage, filters]);
 
   const newInvoiceDrawal = () => {
     dispatch(

@@ -36,7 +36,7 @@ export interface AuthState {
     country: string;
     industry: null | string;
     legal_business_name: string;
-    business_type: string;
+    business_type: string | null;
   };
   notifications: [
     {
@@ -83,7 +83,7 @@ const initialState: AuthState = {
     country: "",
     industry: null,
     legal_business_name: "",
-    business_type: "",
+    business_type: null,
   },
   notifications: [
     {

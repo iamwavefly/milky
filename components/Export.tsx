@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonProps,
   IconButton,
   Menu,
   MenuItem,
@@ -24,13 +25,13 @@ import { CSVLink } from "react-csv";
 import SearchIcon from "remixicon-react/SearchLineIcon";
 import ArrowDownIcon from "@/public/icons/arrow-down.svg";
 
-interface Props {
+type Props = {
   variant?: "containedSmall" | "outlinedSmall";
   title: string;
   data: [];
   containerRef?: RefObject<HTMLInputElement> | MutableRefObject<undefined>;
   columns: any;
-}
+} & ButtonProps;
 
 export default function Export({
   variant,
@@ -38,6 +39,7 @@ export default function Export({
   data,
   containerRef,
   title,
+  ...others
 }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [csvHeader, setCsvHeader] = useState<any>([]);
@@ -125,6 +127,7 @@ export default function Export({
             variant={variant ?? "containedSmall"}
             sx={{ height: "40px" }}
             onClick={handleClick}
+            {...others}
           >
             Export <ArrowDownIcon fill="#fff" height="18px" width="18px" />
           </Button>

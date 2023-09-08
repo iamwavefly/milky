@@ -31,10 +31,6 @@ export const signup = () =>
 // getStarted
 export const getStarted = () =>
   yup.object({
-    businessName: yup
-      .string("Enter your business name")
-      .nullable()
-      .required("Business name is required"),
     businessLocation: yup
       .string("Select your business location")
       .nullable()
@@ -47,6 +43,7 @@ export const getStarted = () =>
       .string("Select your business category")
       .nullable()
       .required("Business type is required"),
+    isDeveloper: yup.string().nullable(),
     referralCode: yup.string().nullable(),
   });
 // contact information
@@ -65,6 +62,26 @@ export const contactInformation = () =>
       .matches(phoneRegExp, "Phone number is not valid")
       .nullable()
       .required("Phone number is required"),
+  });
+// stakeholder
+export const stakeholder = () =>
+  yup.object({
+    firstName: yup
+      .string("Enter first name")
+      .nullable()
+      .required("First name is required"),
+    lastName: yup
+      .string("Enter last name")
+      .nullable()
+      .required("Last name is required"),
+    phoneNumber: yup
+      .string("Enter phone number")
+      .matches(phoneRegExp, "Phone number is not valid")
+      .nullable()
+      .required("Phone number is required"),
+    bvn: yup.string().nullable().required("BVN is required"),
+    gender: yup.string().nullable().required("Gender is required"),
+    dob: yup.string().nullable().required("Date of birth required"),
   });
 // business registration
 export const businessRegistration = () =>

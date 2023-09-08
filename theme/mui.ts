@@ -172,6 +172,10 @@ const theme = createTheme({
           fontSize: "14px",
           fontWeight: 600,
           borderRadius: "8px",
+          ":disabled": {
+            opacity: 0.2,
+            transition: "opacity 0.3s ease",
+          },
         },
         text: {
           background: "transparent !important",
@@ -216,10 +220,6 @@ const theme = createTheme({
           boxShadow: "none !important",
           opacity: 1,
           transition: "opacity 0.3s ease",
-          ":disabled": {
-            opacity: 0.2,
-            transition: "opacity 0.3s ease",
-          },
         },
       },
     },

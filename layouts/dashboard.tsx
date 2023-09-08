@@ -7,6 +7,8 @@ import React, {
 } from "react";
 import {
   Avatar,
+  Badge,
+  BadgeProps,
   Box,
   Button,
   Collapse,
@@ -18,6 +20,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
+import { styled } from "@mui/material/styles";
 import Logo from "../public/images/logo.svg";
 import ArrowIcon from "@/public/images/arrow.svg";
 import NotificationActiveIcon from "../public/images/notification-active.svg";
@@ -60,6 +63,20 @@ interface Props {
   onboarding?: boolean;
   breadcrumbLinks?: any;
 }
+
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  "& .MuiBadge-badge": {
+    right: 5,
+    top: 3,
+    border: `1.3px solid ${theme.palette.background.paper}`,
+    fontWeight: 900,
+    fontSize: "8px",
+    height: "17px",
+    minheight: "17px",
+    minWidth: "17px",
+    maxWidth: "17px",
+  },
+}));
 
 const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -441,7 +458,13 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
             <Breadcrumb items={breadcrumbLinks} title={title} />
             <Stack direction="row" spacing="18px">
               <IconButton onClick={handleClick}>
-                <NotificationIcon />
+                <StyledBadge
+                  badgeContent={notifications?.length}
+                  color="error"
+                  max={9}
+                >
+                  <NotificationIcon />
+                </StyledBadge>
               </IconButton>
               <Avatar src={photo} sx={{ width: "40px", height: "40px" }} />
             </Stack>

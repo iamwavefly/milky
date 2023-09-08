@@ -44,16 +44,6 @@ const VirtualAccountTable = () => {
     handleSubmit();
   }, [currentPage, search, filters]);
 
-  // const openDrawal = () => {
-  //   dispatch(
-  //     setDrawalState({
-  //       active: true,
-  //       title: "New Virtual Account",
-  //       content: <NewVirtualAccount reload={handleSubmit} />,
-  //     })
-  //   );
-  // };
-
   return (
     <Box>
       <Modal

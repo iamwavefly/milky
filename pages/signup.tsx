@@ -86,7 +86,7 @@ export default function Index() {
   // go to next page if submission successful
   useEffect(() => {
     if (data?.status === "success") {
-      Router.push("/onboarding");
+      Router.push(`/email-verification/${formik.values.emailAddress}`);
     }
   }, [data]);
 

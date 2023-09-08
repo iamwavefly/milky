@@ -39,17 +39,19 @@ const Onboarding = ({
             padding="40px"
             className="noscroll-indicator"
           >
-            <Typography
-              fontSize="15px"
-              textTransform="uppercase"
-              mx="auto"
-              fontWeight={500}
-              textAlign="center"
-              color="#070F1C"
-              letterSpacing="0.3px"
-            >
-              {title}
-            </Typography>
+            {title && (
+              <Typography
+                fontSize="15px"
+                textTransform="uppercase"
+                mx="auto"
+                fontWeight={500}
+                textAlign="center"
+                color="#070F1C"
+                letterSpacing="0.3px"
+              >
+                {title}
+              </Typography>
+            )}
             {subtitle && (
               <Typography
                 fontSize="13px"
@@ -63,7 +65,7 @@ const Onboarding = ({
                 {subtitle}
               </Typography>
             )}
-            <Box mt="24px">{children}</Box>
+            <Box mt={!title ? 0 : "24px"}>{children}</Box>
           </Box>
         )}
       </Stack>

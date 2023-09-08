@@ -1,17 +1,10 @@
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
-import {
-  bankDetails,
-  newCustomer,
-  newPaymentLink,
-  newVirtualAccount,
-} from "@/schema";
-import { setDrawalState } from "@/store/appSlice";
+import { newVirtualAccount } from "@/schema";
 import { LoadingButton } from "@mui/lab";
-import { Box, MenuItem, Stack, TextField } from "@mui/material";
+import { Stack, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect } from "react";
-import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
 export default function NewVirtualAccount({ reload, close }: any) {
