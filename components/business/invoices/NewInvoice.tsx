@@ -5,10 +5,12 @@ import React, { useState } from "react";
 
 export default function NewInvoice() {
   const [step, setStep] = useState(0);
+  const [form, setForm] = useState({});
 
-  const { name, Form } = formStepLabel[step];
+  const { Form } = formStepLabel[step];
 
-  const nextStepHandler = () => {
+  const nextStepHandler = (data: {}) => {
+    setForm(data);
     setStep((prev) => prev + 1);
   };
 
@@ -18,7 +20,7 @@ export default function NewInvoice() {
         <Stepper activeStep={step} steps={formStepLabel} alternativeLabel />
       </Box>
       <Box>
-        <Form nextStep={nextStepHandler} />
+        <Form nextStep={nextStepHandler} form={form} />
       </Box>
     </Box>
   );

@@ -1,19 +1,25 @@
 import React, { useRef, useState } from "react";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import AvatarPlaceholder from "@/public/icons/placeholder.svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setDrawalState } from "@/store/appSlice";
 import fileSizeLimit from "@/helper/fileSizeLimit";
 import Image from "next/image";
 import Styles from "./styles.module.scss";
+import { selectUserState } from "@/store/authSlice";
+import { useFormik } from "formik";
+import { invoiceBusinessDetails } from "@/schema";
+import { LoadingButton } from "@mui/lab";
 
 interface BusinessDetailsProps {
-  nextStep: () => void;
+  nextStep: (data: {}) => void;
 }
 
 export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
+
+  const { subsidiary_logo } = useSelector(selectUserState).subsidiaries;
 
   const dispatch = useDispatch();
   const close = () => dispatch(setDrawalState({ active: false }));
@@ -30,6 +36,19 @@ export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
   const handleClick = (e: any) => {
     ref.current.click();
   };
+
+  const formik = useFormik({
+    initialValues: {
+      companyName: "",
+      companyEmail: "",
+      customerName: "",
+      customerEmail: "",
+    },
+    validationSchema: invoiceBusinessDetails,
+    onSubmit: (data) => {
+      nextStep(data);
+    },
+  });
 
   return (
     <Box>
@@ -53,6 +72,14 @@ export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
             alt="Product image"
             className={Styles.productImage}
           />
+        ) : subsidiary_logo ? (
+          <Image
+            src={subsidiary_logo}
+            width={120}
+            height={120}
+            alt="Product image"
+            className={Styles.productImage}
+          />
         ) : (
           <AvatarPlaceholder width="120px" height="120px" />
         )}
@@ -66,33 +93,93 @@ export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
         </Button>
       </Stack>
       {/* form */}
-      <Stack mt="40px" px="40px" spacing="24px">
-        <TextField label="Company name" variant="outlined" />
-        <TextField label="Company email" variant="outlined" type="email" />
-        <TextField label="Company name" variant="outlined" />
-        <TextField label="Company email" variant="outlined" type="email" />
-      </Stack>
-      <Stack
-        position="sticky"
-        bottom={0}
-        left={0}
-        zIndex={2}
-        direction="row"
-        alignItems="center"
-        justifyContent="flex-end"
-        borderTop="1px solid #E8EAED"
-        mt="48px"
-        px="40px"
-        py="16px"
-        spacing="28px"
-      >
-        <Button variant="text" onClick={close}>
-          Cancel
-        </Button>
-        <Button variant="containedMedium" onClick={nextStep}>
-          Next
-        </Button>
-      </Stack>
+      <form onSubmit={formik.handleSubmit}>
+        <Stack mt="40px" px="40px" spacing="24px">
+          <TextField
+            label="Company name"
+            variant="outlined"
+            name="companyName"
+            value={formik.values.companyName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.companyName && Boolean(formik.errors.companyName)
+            }
+            helperText={formik.touched.companyName && formik.errors.companyName}
+          />
+          <TextField
+            label="Company email"
+            variant="outlined"
+            type="email"
+            name="companyEmail"
+            value={formik.values.companyEmail}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.companyEmail && Boolean(formik.errors.companyEmail)
+            }
+            helperText={
+              formik.touched.companyEmail && formik.errors.companyEmail
+            }
+          />
+          <TextField
+            label="Customer name"
+            variant="outlined"
+            name="customerName"
+            value={formik.values.customerName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.customerName && Boolean(formik.errors.customerName)
+            }
+            helperText={
+              formik.touched.customerName && formik.errors.customerName
+            }
+          />
+          <TextField
+            label="Customer email"
+            variant="outlined"
+            type="email"
+            name="customerEmail"
+            value={formik.values.customerEmail}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.customerEmail &&
+              Boolean(formik.errors.customerEmail)
+            }
+            helperText={
+              formik.touched.customerEmail && formik.errors.customerEmail
+            }
+          />
+        </Stack>
+        <Stack
+          position="sticky"
+          bottom={0}
+          left={0}
+          zIndex={2}
+          direction="row"
+          alignItems="center"
+          justifyContent="flex-end"
+          borderTop="1px solid #E8EAED"
+          mt="48px"
+          px="40px"
+          py="16px"
+          spacing="28px"
+          bgcolor="#fff"
+        >
+          <Button variant="text" onClick={close}>
+            Cancel
+          </Button>
+          <LoadingButton
+            variant="containedMedium"
+            type="submit"
+            disabled={!(formik.isValid && formik.dirty)}
+          >
+            Next
+          </LoadingButton>
+        </Stack>
+      </form>
     </Box>
   );
 }
