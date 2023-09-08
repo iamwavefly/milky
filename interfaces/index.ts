@@ -17,3 +17,13 @@ export interface MenuProps {
   id: number;
   short_name?: string;
 }
+
+export interface stakeholderProps {
+  first_name: string;
+  last_name: string;
+  gender: string;
+  mobile_number: string;
+  date_of_birth: string;
+  bvn: string;
+  id: number;
+}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { accountTypes } from "@/utils/signup";
 import {
   Box,
@@ -13,25 +13,23 @@ import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import AddIcon from "@/public/icons/add.svg";
 import Router from "next/router";
+import { LoadingButton } from "@mui/lab";
 
 interface Props {
   nextStep: () => void;
 }
 
 export default function TermsConditions({ nextStep }: Props) {
-  const [showPassword, setShowPassword] = useState(false);
-  const [activePanel, setActivePanel] = useState<undefined | number>(undefined);
-
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
-
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/signup`
+    `${baseUrl}/dashboard/onboarding/accept/terms`
   );
+
+  useEffect(() => {
+    const { status, message } = data;
+    if (status === "success") {
+      Router.push("/dashboard");
+    }
+  }, [data]);
 
   return (
     <Box>
@@ -97,6 +95,7 @@ export default function TermsConditions({ nextStep }: Props) {
           px="40px"
           py="16px"
           borderTop="1px solid #E8EAED"
+          alignItems="center"
         >
           <Button
             variant="text"
@@ -104,9 +103,17 @@ export default function TermsConditions({ nextStep }: Props) {
           >
             Decline
           </Button>
-          <Button variant="contained" onClick={() => Router.push("/dashboard")}>
+          <LoadingButton
+            variant="contained"
+            loading={loading}
+            onClick={() =>
+              handleSubmit({
+                accepted: true,
+              })
+            }
+          >
             Accept
-          </Button>
+          </LoadingButton>
         </Stack>
       </Box>
     </Box>

@@ -19,9 +19,6 @@ export default function Index() {
   useEffect(() => {
     onboardingStatus.handleSubmit();
   }, []);
-  useEffect(() => {
-    console.log(onboardingStatus?.data);
-  }, [onboardingStatus?.data]);
 
   const { Form } = formComponents[activeStep];
 

@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -19,6 +19,8 @@ import useFetch from "@/hooks/useFetch";
 import { toast } from "react-hot-toast";
 import Stepper from "@/components/WyrrStepper";
 import { formStepLabel } from "@/utils/signup";
+import { useSelector } from "react-redux";
+import { selectUserState } from "@/store/authSlice";
 
 interface Props {
   children?: ReactNode;
@@ -38,6 +40,10 @@ const AccountSetup = ({
   isReady,
   prevStep,
 }: Props) => {
+  const [stepLabel, setStepLabel] = useState<typeof formStepLabel | null>(null);
+
+  const { business_type } = useSelector(selectUserState).subsidiaries;
+
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/onboarding/complete`,
     "get"
@@ -47,6 +53,19 @@ const AccountSetup = ({
     toast.success(data?.message);
     Router.push("/dashboard");
   }
+
+  useEffect(() => {
+    if (business_type) {
+      if (business_type?.toLowerCase() === "company") {
+        const newStepLabel = formStepLabel?.filter(({ id }) => id !== 5);
+        return setStepLabel(newStepLabel);
+      }
+      const newStepLabel = formStepLabel?.filter(
+        ({ id }) => id !== 2 && id !== 3
+      );
+      setStepLabel(newStepLabel);
+    }
+  }, [business_type]);
 
   const requestLiveHandler = () => {
     handleSubmit();
@@ -60,14 +79,14 @@ const AccountSetup = ({
       </Head>
       <Dashboard title="Get Started" onboarding>
         <Box
-          padding="32px"
+          padding="32px 26px"
           position="sticky"
           top={0}
           left={0}
           bgcolor="#F6F6F9"
           zIndex={2}
         >
-          <Stepper activeStep={step} steps={formStepLabel} />
+          <Stepper activeStep={step} steps={stepLabel as any} />
         </Box>
         <Stack
           mb="85px"

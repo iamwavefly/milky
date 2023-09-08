@@ -133,7 +133,7 @@ export default function BusinessDetails({ nextStep }: Props) {
     if (fetchBusinessInformation?.data?.data) {
       const {
         business_registered_category,
-        country_id,
+        is_developer,
         business_size,
         referal_code,
       } = fetchBusinessInformation?.data?.data;
@@ -143,16 +143,16 @@ export default function BusinessDetails({ nextStep }: Props) {
       formik.setFieldValue("businessLocation", findCountryName?.short_name);
       formik.setFieldValue("businessSize", business_size);
       formik.setFieldValue("businessCategory", business_registered_category);
+      formik.setFieldValue("isDeveloper", is_developer);
       formik.setFieldValue("referralCode", referal_code);
     }
   }, [fetchBusinessInformation.data, countries]);
 
   useEffect(() => {
-    const { business_type } = fetchBusinessInformation?.data?.data ?? {};
     if (business_type) {
       setActivePanel(business_name === "Individual" ? 1 : 2);
     }
-  }, [fetchBusinessInformation.data]);
+  }, [business_type]);
 
   return (
     <Box>

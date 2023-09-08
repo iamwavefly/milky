@@ -103,14 +103,6 @@ export default function ContactInformation() {
       <Button onClick={close} variant="outlined" fullWidth sx={{ mt: "25px" }}>
         Cancel
       </Button>
-      {/* <Typography
-        sx={{ textAlign: "center" }}
-        mt="43px"
-        color="rgba(38, 43, 64, 0.8)"
-        fontSize="12px"
-      >
-        Add another contact
-      </Typography> */}
     </Box>
   );
 }

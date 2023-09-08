@@ -69,7 +69,7 @@ export default function Stepper({
   return (
     <Box sx={{ width: "100%" }}>
       <MuiStepper activeStep={activeStep} alternativeLabel={alternativeLabel}>
-        {steps.map(({ id, name }) => {
+        {steps?.map(({ id, name }) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: {
             optional?: React.ReactNode;

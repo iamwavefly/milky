@@ -6,6 +6,7 @@ import Styles from "./landscape.module.scss";
 interface cardProps {
   linkTo?: string;
   currency?: string;
+  change?: number;
   linkText?: string;
   footer?: ReactNode;
   icon: ReactNode;
@@ -24,6 +25,7 @@ const LandscapeCard = ({
   noFilter,
   footer,
   linkText,
+  change,
 }: cardProps) => {
   return (
     <Box
@@ -69,7 +71,7 @@ const LandscapeCard = ({
                   fontWeight={500}
                   width="max-content"
                 >
-                  10%
+                  {change ?? 0}%
                 </Typography>
               </Stack>
               <Typography color="#3C4453" fontSize="12px">

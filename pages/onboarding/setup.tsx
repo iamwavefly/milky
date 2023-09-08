@@ -10,11 +10,12 @@ import { selectAppState } from "@/store/appSlice";
 import { selectUserState } from "@/store/authSlice";
 
 export default function Index() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [status, setStatus] = useState<any>({});
   const [isReady, setIsReady] = useState<undefined | boolean>(undefined);
+  const [stepLabel, setStepLabel] = useState<any>(null);
 
-  const { Form, id, subtitle, title } = onboardingForm[step - 1];
+  const { Form, id, subtitle, title } = stepLabel?.[step - 1] ?? {};
 
   const { percentage } = useSelector(selectAppState).reload;
   const { user, subsidiaries } = useSelector(selectUserState);
@@ -26,14 +27,21 @@ export default function Index() {
     "get"
   );
 
+  useEffect(() => {
+    if (business_type) {
+      if (business_type?.toLowerCase() === "company") {
+        const newLabel = onboardingForm.filter(({ id }) => id !== 4);
+        return setStepLabel(newLabel);
+      }
+      const newLabel = onboardingForm?.filter(({ id }) => id !== 1 && id !== 2);
+      setStepLabel(newLabel);
+    }
+  }, [business_type, onboardingForm]);
+
   // fetch business status
   useEffect(() => {
     handleSubmit();
   }, [percentage]);
-
-  useEffect(() => {
-    console.log({ data }, "stage");
-  }, [data]);
 
   const nextStep = () => setStep((prev) => prev + 1);
   const prevStep = () => {
@@ -44,7 +52,7 @@ export default function Index() {
 
   return (
     <AccountSetup title={title} desc={subtitle} prevStep={prevStep} step={step}>
-      <Form nextStep={nextStep} />
+      {Form && <Form nextStep={nextStep} />}
     </AccountSetup>
   );
 }

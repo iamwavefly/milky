@@ -5,6 +5,8 @@ import {
   Button,
   Divider,
   IconButton,
+  Menu,
+  MenuItem,
   Stack,
   Typography,
 } from "@mui/material";
@@ -27,36 +29,77 @@ import ArrowIcon from "@/public/icons/arrow-down.svg";
 import ColorBop from "@/components/colorBop";
 import LineChart from "@/components/charts/lineChart";
 import Navbar from "@/components/Navbar";
+import Export from "@/components/Export";
+
+const options = ["week", "year"];
 
 export default function Index() {
-  const [metric, setMetric] = useState<any>({});
+  const [summary, setSummary] = useState<any>({});
   const [csvHeader, setCsvHeader] = useState<any>([]);
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
-
-  const { loading, data, error, handleSubmit } = useFetch(
+  const [selectedFilter, setSelectedFilter] = useState(1);
+  // filter menu
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const openFilterMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const closeFilterModal = () => {
+    setAnchorEl(null);
+  };
+  // filter menu ends
+  const txnSummaryReq = useFetch(
     `${baseUrl}/metric/transaction/summary?FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}`,
     "get"
   );
 
   const inflowOutflowChart = useFetch(
-    `${baseUrl}/metric/inflow/outflow?type=year&FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}`,
+    `${baseUrl}/metric/inflow/outflow?type=${options[selectedFilter]}&FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}`,
     "get"
   );
 
   useEffect(() => {
-    handleSubmit();
+    txnSummaryReq?.handleSubmit();
   }, [dateRange]);
 
   useEffect(() => {
     inflowOutflowChart?.handleSubmit();
-  }, [dateRange]);
+  }, [dateRange, selectedFilter]);
 
   useEffect(() => {
-    setMetric(data?.data);
-  }, [data]);
+    setSummary(txnSummaryReq?.data?.data);
+  }, [txnSummaryReq?.data]);
+
+  const handleMenuItemClick = (
+    event: React.MouseEvent<HTMLElement>,
+    index: number
+  ) => {
+    setSelectedFilter(index);
+    setAnchorEl(null);
+  };
 
   return (
     <Dashboard title="Dashboard">
+      <Menu
+        id="basic-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={closeFilterModal}
+        MenuListProps={{
+          "aria-labelledby": "basic-button",
+        }}
+      >
+        {options.map((option, index) => (
+          <MenuItem
+            sx={{ width: "100%" }}
+            key={option}
+            selected={index === selectedFilter}
+            onClick={(event) => handleMenuItemClick(event, index)}
+          >
+            {option}
+          </MenuItem>
+        ))}
+      </Menu>
       <Navbar title="Overview">
         <Stack direction="row" gap="10px">
           <DropdownMenu title="Filter currency" />
@@ -66,23 +109,25 @@ export default function Index() {
       <Grid container spacing="16px" mt="20px">
         <Grid xs>
           <LandscapeCard
-            title="12,500"
+            title={summary?.count}
+            change={summary?.count_change}
             subtitle={"Total Transaction count"}
             icon={<DataIcon />}
           />
         </Grid>
         <Grid xs>
           <LandscapeCard
-            title="1,500,000"
+            title={summary?.volume}
+            change={summary?.volume_change}
             subtitle={"Total Transaction Volume"}
-            variant="error"
             currency="NGN"
             icon={<DropIcon />}
           />
         </Grid>
         <Grid xs>
           <LandscapeCard
-            title="1,000,000"
+            title={summary?.settlements}
+            change={summary?.settlement_change}
             subtitle={"Total Transaction Settlements"}
             currency="NGN"
             icon={<ReportIcon />}
@@ -114,18 +159,22 @@ export default function Index() {
                 </Typography>
               </Box>
               <Stack direction="row" spacing="16px">
-                <Button variant="outlinedSmall">
-                  This week{" "}
+                <Button variant="outlinedSmall" onClick={openFilterMenu}>
+                  This {options[selectedFilter]}
                   <ArrowIcon width="18px" height="18px" fill="#0048B1" />
                 </Button>
-                <Button variant="containedSmall">
-                  This week <ArrowIcon width="18px" height="18px" fill="#fff" />
-                </Button>
+                <Export
+                  variant="containedSmall"
+                  sx={{ height: "36px" }}
+                  title={"dashboard"}
+                  data={inflowOutflowChart?.data?.data}
+                  columns={undefined}
+                />
               </Stack>
             </Stack>
             {/* chart */}
             <Box height="310px" mt="19px">
-              <LineChart />
+              <LineChart data={inflowOutflowChart?.data?.data} />
             </Box>
             {/* footer */}
             <Stack
@@ -154,15 +203,16 @@ export default function Index() {
         <Grid xs>
           <Stack spacing="24px">
             <LandscapeCard
-              title="2,500,000"
+              title={summary?.available_balance}
+              change={summary?.available_balance_change}
               subtitle={"Available Balance"}
               currency="NGN"
-              variant="error"
               icon={<ReportIcon />}
               linkTo="/balance"
             />
             <LandscapeCard
-              title="2,000,000"
+              title={summary?.ledger_balance}
+              change={summary?.ledger_balance_change}
               subtitle={"Ledger Balance"}
               currency="NGN"
               icon={<ReportIcon />}
