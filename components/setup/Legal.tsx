@@ -1,6 +1,6 @@
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
-import { reloadPercentage, setDrawalState } from "@/store/appSlice";
+import { reload, setDrawalState } from "@/store/appSlice";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, Stack, TextField, Typography } from "@mui/material";
 import Router from "next/router";
@@ -8,20 +8,22 @@ import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-export default function Legal() {
+interface Props {
+  nextStep: () => void;
+}
+
+export default function Legal({ nextStep }: Props) {
   const dispatch = useDispatch();
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/onboarding/accept/terms`
   );
 
-  const close = () => dispatch(setDrawalState({ active: false }));
-
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      dispatch(reloadPercentage());
-      close();
+      dispatch(reload());
+      nextStep();
     }
   }, [data]);
 

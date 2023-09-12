@@ -27,7 +27,7 @@ const CustomersTable = () => {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-  const { percentage } = useSelector(selectAppState).reload;
+  const { reload } = useSelector(selectAppState);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/fetch/customers?page=${currentPage}&limit=10&${Object.entries(
@@ -42,7 +42,7 @@ const CustomersTable = () => {
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, percentage, filters]);
+  }, [currentPage, reload, filters]);
 
   return (
     <Box>

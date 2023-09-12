@@ -1,7 +1,7 @@
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import { businessInformation, personalInformation } from "@/schema";
-import { reloadPercentage, setDrawalState } from "@/store/appSlice";
+import { reload, setDrawalState } from "@/store/appSlice";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -139,7 +139,7 @@ export default function PersonalInformation() {
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      dispatch(reloadPercentage());
+      dispatch(reload());
       close();
     }
   }, [data]);

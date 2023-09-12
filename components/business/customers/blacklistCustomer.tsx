@@ -1,7 +1,7 @@
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import { bankDetails, newCustomer } from "@/schema";
-import { reloadPercentage, setDrawalState } from "@/store/appSlice";
+import { reload, setDrawalState } from "@/store/appSlice";
 import { LoadingButton } from "@mui/lab";
 import { Box, Button, capitalize, Stack, TextField } from "@mui/material";
 import { useFormik } from "formik";
@@ -33,7 +33,7 @@ export default function BlacklistCustomer({
     const { status } = data;
     if (status === "success") {
       close();
-      dispatch(reloadPercentage());
+      dispatch(reload());
     }
   }, [data]);
 

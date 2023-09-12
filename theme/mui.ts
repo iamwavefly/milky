@@ -7,6 +7,7 @@ declare module "@mui/material/Button" {
   interface ButtonPropsVariantOverrides {
     containedSmall: true;
     containedMedium: true;
+    outlinedMedium: true;
     outlinedSmall: true;
   }
 }
@@ -144,6 +145,21 @@ const theme = createTheme({
             "& > svg": {
               fill: "#586379",
             },
+          },
+        },
+        {
+          props: { variant: "outlinedMedium" },
+          style: {
+            height: "44px",
+            padding: "13px 24px !important",
+            gap: "8px",
+            minWidth: "max-content",
+            lineHeight: "120%",
+            letterSpacing: "0.02em",
+            color: "#0048B1 !important",
+            textTransform: "none",
+            boxShadow: "none",
+            border: "1px solid #0048B1 !important",
           },
         },
         {

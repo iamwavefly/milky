@@ -13,11 +13,12 @@ import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import Router from "next/router";
 import { selectUserState } from "@/store/authSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useFormik } from "formik";
 import { getStarted } from "@/schema";
 import { MenuProps } from "@/interfaces";
 import { LoadingButton } from "@mui/lab";
+import { reload, selectAppState } from "@/store/appSlice";
 
 interface Props {
   nextStep: () => void;
@@ -28,17 +29,13 @@ export default function BusinessDetails({ nextStep }: Props) {
   const [activePanel, setActivePanel] = useState<undefined | number>(1);
   const [countries, setCountries] = useState([]);
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const handleMouseDownPassword = (
-    event: React.MouseEvent<HTMLButtonElement>
-  ) => {
-    event.preventDefault();
-  };
+  const dispatch = useDispatch();
 
   const { business_name, business_type, country } =
     useSelector(selectUserState).subsidiaries;
 
   const nextRoute = () => {
+    dispatch(reload());
     Router.push(`/onboarding/setup`);
   };
 
@@ -150,7 +147,7 @@ export default function BusinessDetails({ nextStep }: Props) {
 
   useEffect(() => {
     if (business_type) {
-      setActivePanel(business_name === "Individual" ? 1 : 2);
+      setActivePanel(business_type === "Individual" ? 1 : 2);
     }
   }, [business_type]);
 

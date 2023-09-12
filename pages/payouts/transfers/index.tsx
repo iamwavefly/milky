@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dashboard from "@/layouts/dashboard";
 import {
   Box,
@@ -16,67 +16,39 @@ import TransferDetails from "@/components/payouts/transfers/transferDetails";
 import TransferTable from "@/components/payouts/transfers/transferTable";
 import MakeTransfer from "@/components/payouts/transfers/makeTransfer";
 import Tabs from "@/components/Tabs";
-import LandscapeCard from "@/components/cards/LandscapeCard";
-
-import CoinsIcon from "@/public/icons/coins.svg";
-import ReportIcon from "@/public/icons/report.svg";
-import SemdIcon from "@/public/icons/send.svg";
-
-
-const TransferCurrency = ({ currentTab }: { currentTab: number }) => {
-  return (
-    <Box pt="30px" pb="32px">
-      <Stack direction="row" gap="16px" mt="20px">
-        <LandscapeCard
-          title="2,500,000"
-          subtitle={"Available Balance"}
-          currency="NGN"
-          icon={<CoinsIcon />}
-          variant="error"
-        />
-        <LandscapeCard
-          title="2,000,000"
-          subtitle={"Total Transfers"}
-          currency="NGN"
-          icon={<SemdIcon />}
-        />
-        <LandscapeCard
-          title="120"
-          subtitle={"Successful transfers"}
-          icon={<ReportIcon />}
-        />
-      </Stack>
-    </Box>
-  );
-};
-
-const tabs = [
-  {
-    id: 1,
-    tab: "Naira",
-    Form: TransferCurrency,
-  },
-  {
-    id: 2,
-    tab: "USD",
-    Form: TransferCurrency,
-  },
-  {
-    id: 3,
-    tab: "GBP",
-    Form: TransferCurrency,
-  },
-  {
-    id: 4,
-    tab: "EUR",
-    Form: TransferCurrency,
-  },
-];
+import TransferCurrency from "@/components/payouts/transfers/transferCurrency";
+import useFetch from "@/hooks/useFetch";
+import baseUrl from "@/middleware/baseUrl";
+import { walletProps } from "@/interfaces";
 
 export default function Index() {
+  const [tabs, setTabs] = useState([]);
   const [currentTab, setCurrentTab] = useState(0);
+
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/get/wallet/balance`,
+    "get"
+  );
+
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  useEffect(() => {
+    const newWalletTabs = data?.wallets?.map(
+      ({ currency_short_name, wallet_id }: walletProps) => {
+        return {
+          tab: currency_short_name,
+          id: wallet_id,
+          Form: TransferCurrency,
+        };
+      }
+    );
+    setTabs(newWalletTabs);
+  }, [data]);
+
   return (
-    <Dashboard title="Dashboard">
+    <Dashboard title="Transfers">
       {/* tabs */}
       <Tabs tabs={tabs} updateTab={setCurrentTab} />
       {/* table */}

@@ -57,7 +57,7 @@ export const loginHandler = async (data) => {
   clearCacheHandler();
   const { next } = Router.query;
 
-  const { business_type, verification_status } =
+  const { business_type, verification_status, country, industry } =
     data?.subsidiary_details?.subsidiaries?.find((elem) => elem?.is_default) ??
     {};
   const { access_token } = data?.token;
@@ -77,6 +77,10 @@ export const loginHandler = async (data) => {
     verification_status?.toLowerCase() === "pending-approval"
   ) {
     return Router.push("/dashboard");
+  }
+
+  if (business_type && country && industry) {
+    return Router.push(`/onboarding/setup`);
   }
 
   return Router.push(`/onboarding`);

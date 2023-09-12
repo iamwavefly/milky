@@ -25,6 +25,7 @@ import { selectUserState } from "@/store/authSlice";
 interface Props {
   children?: ReactNode;
   activePanel?: boolean;
+  complete?: boolean;
   isReady?: boolean;
   title?: string;
   desc?: string;
@@ -37,31 +38,33 @@ const AccountSetup = ({
   title,
   desc,
   step,
+  complete,
   isReady,
   prevStep,
 }: Props) => {
   const [stepLabel, setStepLabel] = useState<typeof formStepLabel | null>(null);
-
-  const { business_type } = useSelector(selectUserState).subsidiaries;
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/onboarding/complete`,
     "get"
   );
 
+  const { business_type } = useSelector(selectUserState).subsidiaries;
+  // redirect user to dashboard if request to go live is successful
   if (data?.status?.toLowerCase() === "success") {
-    toast.success(data?.message);
     Router.push("/dashboard");
   }
 
   useEffect(() => {
     if (business_type) {
       if (business_type?.toLowerCase() === "company") {
-        const newStepLabel = formStepLabel?.filter(({ id }) => id !== 5);
+        // remove personal information
+        const newStepLabel = formStepLabel?.filter(({ id }) => id !== 6);
         return setStepLabel(newStepLabel);
       }
+      // remove business registration, contact and business information
       const newStepLabel = formStepLabel?.filter(
-        ({ id }) => id !== 2 && id !== 3
+        ({ id }) => id !== 2 && id !== 3 && id !== 4
       );
       setStepLabel(newStepLabel);
     }
@@ -88,67 +91,100 @@ const AccountSetup = ({
         >
           <Stepper activeStep={step} steps={stepLabel as any} />
         </Box>
-        <Stack
-          mb="85px"
-          direction="row"
-          justifyContent="space-between"
-          pl="32px"
-          pr="36px"
-        >
+        {complete ? (
           <Stack
-            spacing="16px"
-            maxWidth="435px"
-            position="sticky"
-            top={90}
-            left={0}
-            height="max-content"
+            alignItems="center"
+            bgcolor="#fff"
+            width={"400px"}
+            overflow="auto"
+            borderRadius="8px"
+            mt="48px"
+            mx="auto"
+            padding="40px"
           >
-            {/* back arrow */}
-            <IconButton
-              onClick={prevStep}
-              sx={{
-                width: "28px",
-                height: "28px",
-                justifyContent: "center",
-                alignItems: "center",
-                bgcolor: "#FFF",
-                border: "1px solid #E8EAED",
-                padding: 0,
-                mt: "8px",
-                opacity: step < 2 ? 0 : 1,
-              }}
-            >
-              <BackArrow width="18px" height="18px" />
-            </IconButton>
-            {/* title */}
             <Typography
-              fontSize="18px"
-              fontWeight={600}
-              color="#070F1C"
-              lineHeight="24px"
-              mt="16px"
+              fontSize="15px"
+              fontWeight={500}
+              letterSpacing="0.3px"
+              textTransform="uppercase"
             >
-              {title ?? "Tell us about your business"}
+              Request to Go Live
             </Typography>
-            {/* subtitle */}
-            <Typography fontSize="14px" color="#3C4453">
-              {desc ?? "A few more things to help us set up your dashboard"}
+            <Typography
+              fontSize="14px"
+              letterSpacing="0.14px"
+              lineHeight="24px"
+              mt="12px"
+              color="#3C4453"
+              textAlign="center"
+            >
+              Congratulations on completing the compliance process! Your
+              business is now ready to go live. Please submit your request below
             </Typography>
-            {isReady && (
+            <Box mt="40px" width={"100%"}>
               <LoadingButton
-                onClick={requestLiveHandler}
-                sx={{ mt: "49px !important", width: "max-content" }}
-                variant="contained"
                 loading={loading}
+                variant="contained"
+                fullWidth
+                onClick={requestLiveHandler}
               >
-                Request to go live
+                Submit Request
               </LoadingButton>
-            )}
+            </Box>
           </Stack>
-          <Stack width="515px" mt="48px" overflow="auto">
-            {children}
+        ) : (
+          <Stack
+            mb="85px"
+            direction="row"
+            justifyContent="space-between"
+            pl="32px"
+            pr="36px"
+          >
+            <Stack
+              spacing="16px"
+              maxWidth="435px"
+              position="sticky"
+              top={90}
+              left={0}
+              height="max-content"
+            >
+              {/* back arrow */}
+              <IconButton
+                onClick={prevStep}
+                sx={{
+                  width: "28px",
+                  height: "28px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  bgcolor: "#FFF",
+                  border: "1px solid #E8EAED",
+                  padding: 0,
+                  mt: "8px",
+                  opacity: step < 2 ? 0 : 1,
+                }}
+              >
+                <BackArrow width="18px" height="18px" />
+              </IconButton>
+              {/* title */}
+              <Typography
+                fontSize="18px"
+                fontWeight={600}
+                color="#070F1C"
+                lineHeight="24px"
+                mt="16px"
+              >
+                {title ?? "Tell us about your business"}
+              </Typography>
+              {/* subtitle */}
+              <Typography fontSize="14px" color="#3C4453">
+                {desc ?? "A few more things to help us set up your dashboard"}
+              </Typography>
+            </Stack>
+            <Stack width="515px" mt="48px" overflow="auto">
+              {children}
+            </Stack>
           </Stack>
-        </Stack>
+        )}
       </Dashboard>
     </>
   );

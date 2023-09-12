@@ -27,3 +27,13 @@ export interface stakeholderProps {
   bvn: string;
   id: number;
 }
+
+export interface walletProps {
+  currency_name: string;
+  currency_short_name: string;
+  available_balance: number;
+  available_balance_change: number;
+  wallet_id: number;
+  total_transfer: number;
+  successful_transfer: number;
+}

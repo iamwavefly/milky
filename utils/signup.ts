@@ -6,6 +6,7 @@ import BusinessRegistration from "@/components/onboarding/BusinessRegistration";
 import BankDetails from "@/components/onboarding/BankDetails";
 import PersonalInformation from "@/components/onboarding/PersonalInformation";
 import TermsConditions from "@/components/onboarding/TermsConditions";
+import BusinessInformation from "@/components/onboarding/BusinessInformation";
 
 export const formStepLabel = [
   {
@@ -18,18 +19,22 @@ export const formStepLabel = [
   },
   {
     id: 3,
-    name: "Business registration",
+    name: "Business information",
   },
   {
     id: 4,
-    name: "Bank details",
+    name: "Business registration",
   },
   {
     id: 5,
-    name: "Personal information",
+    name: "Bank details",
   },
   {
     id: 6,
+    name: "Personal information",
+  },
+  {
+    id: 7,
     name: "Terms & conditions",
   },
 ];
@@ -59,19 +64,23 @@ export const formComponents = [
     name: "Contact information",
   },
   {
+    id: 4,
+    name: "Business information",
+  },
+  {
     id: 3,
     name: "Business registration",
   },
   {
-    id: 4,
+    id: 5,
     name: "Bank details",
   },
   {
-    id: 5,
+    id: 6,
     name: "Personal information",
   },
   {
-    id: 6,
+    id: 7,
     name: "Terms & conditions",
   },
 ];
@@ -86,27 +95,34 @@ export const onboardingForm = [
   },
   {
     id: 2,
+    Form: BusinessInformation,
+    name: "Business information",
+    subtitle:
+      "We need this information to give us an idea of the kind of business you run, the type of product/services you will need to maximize this portal and how we can generally serve you better.",
+  },
+  {
+    id: 3,
     Form: BusinessRegistration,
     title: "Business Registration",
     subtitle:
       "We need this information to give us an idea of the kind of business you run, the type of product / services you will need to maximize this portal and how we can generally serve you better.",
   },
   {
-    id: 3,
+    id: 4,
     Form: BankDetails,
     title: "Bank details",
     subtitle:
       "This is the primary bank account we will send your settlements to.",
   },
   {
-    id: 4,
+    id: 5,
     Form: PersonalInformation,
     title: "Personal information",
     subtitle:
       "This helps us confirm your identity. We use the details you provide for the verification purposes only and it will not be visible to anyone on your team or business.",
   },
   {
-    id: 5,
+    id: 6,
     Form: TermsConditions,
     title: "Terms & conditions",
     subtitle:

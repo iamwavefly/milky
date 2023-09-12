@@ -56,6 +56,7 @@ const TransactionTable = () => {
               data={data?.items}
               columns={BusinessTransactionTableColumns}
               containerRef={containerRef}
+              variant="containedSmall"
             />
           </>
         }
