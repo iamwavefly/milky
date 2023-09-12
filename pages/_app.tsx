@@ -8,7 +8,7 @@ import ProtectRoutes from "@/middleware/protectRoutes";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import Cookies from "js-cookie";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserState } from "@/store/authSlice";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -16,9 +16,12 @@ import "../styles/colors.scss";
 import { Toaster } from "react-hot-toast";
 import Router from "next/router";
 import PageLoader from "@/components/PageLoader";
+import { selectAppState } from "@/store/appSlice";
 
 function App({ Component, pageProps }: AppProps) {
   const token = Cookies.get("token");
+
+  const { reload } = useSelector(selectAppState);
   // user profile req
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/me`,
@@ -40,17 +43,16 @@ function App({ Component, pageProps }: AppProps) {
     }
   }, [token]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const fetchUserProfile = () => {
       handleSubmit();
     };
     token && fetchUserProfile();
-  }, [token]);
+  }, [token, reload]);
 
   useEffect(() => {
     if (data?.user) {
       const defaultBusiness = data?.subsidiary_details?.subsidiaries?.find(
-        // (business: { is_default: boolean }) => business?.is_default
         (business: { is_default: boolean }) => business
       );
       dispatch(

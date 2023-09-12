@@ -25,9 +25,9 @@ export default function TermsConditions({ nextStep }: Props) {
   );
 
   useEffect(() => {
-    const { status, message } = data;
+    const { status } = data;
     if (status === "success") {
-      Router.push("/dashboard");
+      nextStep();
     }
   }, [data]);
 

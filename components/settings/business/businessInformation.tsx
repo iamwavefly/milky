@@ -220,7 +220,7 @@ export default function BusinessInformation() {
               )}
             </Stack>
             <Stack direction="row" spacing="28px" alignItems="center">
-              <Button variant="text" onClick={clearFile}>
+              <Button variant="text" onClick={handleClick}>
                 <RepeatIcon fill="#0048B1" width="18px" height="18px" />
                 Update
               </Button>
@@ -228,7 +228,7 @@ export default function BusinessInformation() {
               <Button
                 variant="text"
                 sx={{ color: "#E84A5F" }}
-                onClick={handleClick}
+                onClick={clearFile}
               >
                 <CloseIcon fill="#E84A5F" width="18px" height="18px" />
                 Remove
@@ -381,7 +381,12 @@ export default function BusinessInformation() {
           </Stack>
         </Box>
         <Box>
-          <Footer>Save changes</Footer>
+          <Footer
+            disabled={!(formik.isValid && formik.dirty) || isReadOnly}
+            loading={loading}
+          >
+            Save changes
+          </Footer>
         </Box>
       </form>
     </Box>

@@ -2,7 +2,7 @@ import useFetch from "@/hooks/useFetch";
 import { MenuProps } from "@/interfaces";
 import baseUrl from "@/middleware/baseUrl";
 import { businessRegistration } from "@/schema";
-import { reloadPercentage, setDrawalState } from "@/store/appSlice";
+import { reload, setDrawalState } from "@/store/appSlice";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -75,7 +75,7 @@ export default function BusinessRegistration() {
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      dispatch(reloadPercentage());
+      dispatch(reload());
       close();
     }
   }, [data]);

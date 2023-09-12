@@ -15,9 +15,7 @@ export interface AppProps {
     title: string;
     content: ReactNode;
   };
-  reload: {
-    percentage: boolean;
-  };
+  reload: boolean;
   menu: {
     disabled: boolean;
   };
@@ -35,9 +33,7 @@ const initialState: AppProps = {
     title: "",
     content: undefined,
   },
-  reload: {
-    percentage: false,
-  },
+  reload: false,
   menu: {
     disabled: false,
   },
@@ -54,8 +50,8 @@ export const appSlice = createSlice({
     setDrawalState(state, action) {
       state.drawal = action.payload;
     },
-    reloadPercentage(state) {
-      state.reload.percentage = !state.reload.percentage;
+    reload(state) {
+      state.reload = !state.reload;
     },
     setMenuState(state, action) {
       state.menu.disabled = action.payload;
@@ -73,7 +69,7 @@ export const appSlice = createSlice({
   },
 });
 
-export const { setToastState, setDrawalState, reloadPercentage, setMenuState } =
+export const { setToastState, setDrawalState, reload, setMenuState } =
   appSlice.actions;
 
 export const selectAppState = (state: AppState) => state.app;

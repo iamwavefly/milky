@@ -14,7 +14,7 @@ import baseUrl from "@/middleware/baseUrl";
 import AddIcon from "@/public/icons/add.svg";
 import { useFormik } from "formik";
 import { contactInformation } from "@/schema";
-import { reloadPercentage, setDrawalState } from "@/store/appSlice";
+import { reload, setDrawalState } from "@/store/appSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { LoadingButton } from "@mui/lab";
 import { selectUserState } from "@/store/authSlice";

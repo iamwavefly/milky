@@ -150,7 +150,7 @@ export default function BulkUpload({ limit, uploadImages }: BulkUploadProps) {
           </Stack>
         </div>
       )}
-      <Stack spacing="24px">
+      <Stack spacing="24px" mt="32px">
         {productImages.map(({ file, name }) => (
           <Stack
             mt="32px"

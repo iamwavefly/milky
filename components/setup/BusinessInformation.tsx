@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { reloadPercentage, setDrawalState } from "@/store/appSlice";
+import { reload, setDrawalState } from "@/store/appSlice";
 import {
   Box,
   Button,
@@ -43,7 +43,7 @@ export default function BusinessInformation() {
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      dispatch(reloadPercentage());
+      dispatch(reload());
       close();
     }
   }, [data]);

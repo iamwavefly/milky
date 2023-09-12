@@ -62,7 +62,7 @@ export default function CountChart({
         </Stack>
       </Stack>
       <Stack direction="row" width="100%">
-        <LineChart themeColor={themeColor} />
+        <LineChart />
       </Stack>
     </Stack>
   );

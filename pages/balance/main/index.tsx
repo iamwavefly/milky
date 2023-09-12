@@ -33,8 +33,6 @@ export default function Index() {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
-  const dispatch = useDispatch();
-
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/get/wallet/balance`,
     "get"
@@ -47,16 +45,6 @@ export default function Index() {
   useEffect(() => {
     setBalance(data?.wallets);
   }, [data]);
-
-  // const openDrawal = () => {
-  //   dispatch(
-  //     setDrawalState({
-  //       active: true,
-  //       title: "Fund Balance",
-  //       content: <TransferDetails />,
-  //     })
-  //   );
-  // };
 
   return (
     <Dashboard title="Balance">
@@ -87,28 +75,30 @@ export default function Index() {
         </Button>
       </Stack>
       {/* cards */}
-      <Stack direction="row" gap="16px" mt="20px">
-        <LandscapeCard
-          title="2,500,000"
-          subtitle={"Available Balance"}
-          currency="NGN"
-          icon={<CoinsIcon />}
-          variant="error"
-        />
-        <LandscapeCard
-          title="2,000,000"
-          subtitle={"Ledger Balance"}
-          currency="NGN"
-          icon={<CardIcon />}
-        />
-        <LandscapeCard
-          title="0091487523"
-          subtitle={"Bank details (Guaranty Trust Bank)"}
-          icon={<BankIcon />}
-          noFilter
-        />
-      </Stack>
-      <Stack direction="row" gap="16px" mt="32px">
+      <Grid container spacing="16px" mt="20px">
+        {balance?.map(
+          ({
+            wallet_id,
+            available_balance,
+            available_balance_change,
+            currency_short_name,
+            account_details: { bank_name, account_number },
+          }) => (
+            <Grid item md={4} key={wallet_id}>
+              <LandscapeCard
+                title={available_balance}
+                subtitle={
+                  account_number ? `${account_number} (${bank_name})` : ""
+                }
+                currency={currency_short_name}
+                icon={<BankIcon />}
+                change={available_balance_change}
+              />
+            </Grid>
+          )
+        )}
+      </Grid>
+      {/* <Stack direction="row" gap="16px" mt="32px">
         <LandscapeCard
           title="0091487523"
           subtitle={"Dispute / Chargeback"}
@@ -156,7 +146,7 @@ export default function Index() {
             </Stack>
           }
         />
-      </Stack>
+      </Stack> */}
     </Dashboard>
   );
 }

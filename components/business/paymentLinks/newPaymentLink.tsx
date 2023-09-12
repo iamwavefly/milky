@@ -25,8 +25,6 @@ export default function NewPaymentLink({ reload, details, close }: any) {
     currencies?.handleSubmit();
   }, []);
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     paymentTypes?.handleSubmit();
   }, []);
@@ -35,6 +33,7 @@ export default function NewPaymentLink({ reload, details, close }: any) {
     const { status, message } = data;
     if (status === "Success") {
       reload();
+      close();
     }
   }, [data]);
   // form controller

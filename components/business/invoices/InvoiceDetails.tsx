@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import ArrowUpIcon from "@/public/icons/close.svg";
 import { useDispatch } from "react-redux";
-import { reloadPercentage, setDrawalState } from "@/store/appSlice";
+import { reload, setDrawalState } from "@/store/appSlice";
 import AddIcon from "@/public/icons/add.svg";
 import { invoiceDetails } from "@/schema";
 import { useFormik } from "formik";
@@ -43,7 +43,7 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
     if (status === "success") {
       Router.push("/business/invoice");
       close();
-      dispatch(reloadPercentage());
+      dispatch(reload());
     }
   }, [data]);
 

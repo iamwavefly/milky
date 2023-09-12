@@ -26,7 +26,7 @@ const InvoiceTable = () => {
   const dispatch = useDispatch();
   const containerRef = useRef();
 
-  const { percentage } = useSelector(selectAppState).reload;
+  const { reload } = useSelector(selectAppState);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/invoice/all?page=${currentPage}&limit=10&${Object.entries(
@@ -39,7 +39,7 @@ const InvoiceTable = () => {
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, percentage, filters]);
+  }, [currentPage, reload, filters]);
 
   const newInvoiceDrawal = () => {
     dispatch(

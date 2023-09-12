@@ -41,7 +41,7 @@ export const notifyErrorHandler = ({ type, title, msg, duration }) => {
     if (message?.message === "Network Error") {
       errorMsg = "Network Error. Please check your internet connection";
     } else if (msg?.response?.status === 401) {
-      // logoutHandler();
+      logoutHandler();
       return;
     } else if (Object.entries(msg).length === 0) {
       errorMsg = String(msg);

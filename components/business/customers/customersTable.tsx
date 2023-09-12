@@ -11,8 +11,8 @@ import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import { Box, Button } from "@mui/material";
 import AddBox from "@/public/icons/add.svg";
-import { setDrawalState } from "@/store/appSlice";
-import { useDispatch } from "react-redux";
+import { selectAppState, setDrawalState } from "@/store/appSlice";
+import { useDispatch, useSelector } from "react-redux";
 import NewCustomer from "./newCustomer";
 import Export from "@/components/Export";
 import DropdownMenu from "@/components/DropdownMenu";
@@ -27,6 +27,8 @@ const CustomersTable = () => {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
+  const { reload } = useSelector(selectAppState);
+
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/fetch/customers?page=${currentPage}&limit=10&${Object.entries(
       filters
@@ -36,13 +38,11 @@ const CustomersTable = () => {
     "get"
   );
 
-  const dispatch = useDispatch();
-
   const containerRef = useRef();
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, reload, filters]);
 
   return (
     <Box>
