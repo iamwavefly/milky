@@ -384,7 +384,7 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
       return (
         <Stack direction="row" alignItems="center" spacing="12px">
           <Image
-            src={`https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${image}`}
+            src={image}
             alt={name}
             style={{ objectFit: "cover", borderRadius: "8px" }}
             width={44}

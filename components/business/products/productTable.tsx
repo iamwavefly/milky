@@ -13,8 +13,8 @@ import AddBox from "@/public/icons/add.svg";
 import { Box, Button } from "@mui/material";
 import Filter from "@/components/Filter";
 import DropdownMenu from "@/components/DropdownMenu";
-import { useDispatch } from "react-redux";
-import { setDrawalState } from "@/store/appSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAppState, setDrawalState } from "@/store/appSlice";
 import NewProduct from "./NewProduct";
 
 const SettlementTable = () => {
@@ -24,6 +24,8 @@ const SettlementTable = () => {
 
   const containerRef = useRef();
   const dispatch = useDispatch();
+
+  const { reload } = useSelector(selectAppState);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/product/all?page=${currentPage}&limit=10&${Object.entries(
@@ -46,7 +48,7 @@ const SettlementTable = () => {
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, reload, filters]);
 
   return (
     <Box>

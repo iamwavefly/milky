@@ -96,6 +96,7 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
     undefined | boolean
   >(undefined);
 
+  const { reload } = useSelector(selectAppState);
   const { subsidiaries, user, notifications } = useSelector(selectUserState);
   const { menu } = useSelector(selectAppState);
 
@@ -107,6 +108,12 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
     "get"
   );
 
+  // update logo subsidiaries
+  const fetchSubsidiaries = useFetch(
+    `${baseUrl}/dashboard/onboarding/business/information/view`,
+    "get"
+  );
+
   const changeSettlementApi = useFetch(
     `${baseUrl}/dashboard/session/set-subsidiary`,
     "post"
@@ -115,6 +122,16 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
   const userApi = useFetch(`${baseUrl}/dashboard/me`, "get");
 
   const dispatch = useDispatch();
+
+  // fetch subsidiaries type
+  useEffect(() => {
+    fetchSubsidiaries.handleSubmit();
+  }, []);
+
+  // set subsidiary logo
+  useEffect(() => {
+    setPhoto(fetchSubsidiaries?.data?.data?.logo);
+  }, [fetchSubsidiaries?.data?.data]);
   // toggle menu state
   useEffect(() => {
     dispatch(setMenuState(activeBizMenu));
@@ -155,15 +172,6 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
     );
     setOtherSubsidiaries(fnSubsidiaries);
   }, [data, id]);
-
-  useEffect(() => {
-    console.log(id);
-  }, [id]);
-
-  useEffect(() => {
-    const imageUrl = `https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${subsidiary_logo}`;
-    setPhoto(imageUrl);
-  }, [subsidiary_logo]);
 
   useEffect(() => {
     if (verified || pendingApproval) {

@@ -19,11 +19,12 @@ import Image from "next/image";
 import { serialize } from "object-to-formdata";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-hot-toast";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import UploadIcon from "@/public/icons/photo-upload.svg";
 import RepeatIcon from "@/public/icons/reload.svg";
 import CloseIcon from "@/public/icons/close-circle.svg";
 import Footer from "@/components/form/Footer";
+import { reload, selectAppState } from "@/store/appSlice";
 
 export default function BusinessInformation() {
   const [fileName, setFileName] = useState(null);
@@ -32,6 +33,9 @@ export default function BusinessInformation() {
   const [isImage, setIsImage] = useState(false);
   const [countries, setCountries] = useState<any>([]);
   const [isReadOnly, setIsReadOnly] = useState(false);
+  const [logo, setLogo] = useState("");
+
+  const dispatch = useDispatch();
 
   const { subsidiaries } = useSelector(selectUserState);
 
@@ -49,7 +53,12 @@ export default function BusinessInformation() {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/business/update`
   );
-  // update logo
+  // update logo subsidiaries
+  const fetchSubsidiaries = useFetch(
+    `${baseUrl}/dashboard/onboarding/business/information/view`,
+    "get"
+  );
+  // view
   const logoUpdateReq = useFetch(
     `${baseUrl}/dashboard/business/logos/add-or-update`
   );
@@ -68,10 +77,20 @@ export default function BusinessInformation() {
     fetchBusinessType.handleSubmit();
   }, []);
 
+  // fetch subsidiaries type
+  useEffect(() => {
+    fetchSubsidiaries.handleSubmit();
+  }, []);
+
   // fetch countries
   useEffect(() => {
     fetchCountries.handleSubmit();
   }, []);
+
+  // subsidiaries
+  useEffect(() => {
+    setLogo(fetchSubsidiaries?.data?.data?.logo);
+  }, [fetchSubsidiaries?.data?.data]);
 
   // filter allowed countries
   useEffect(() => {
@@ -177,10 +196,9 @@ export default function BusinessInformation() {
       description,
     };
     formik.setValues(payload as any);
-    // set url
-    const imageUrl = `https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${subsidiary_logo}`;
-    setPreviewUrl(imageUrl);
-  }, [subsidiaries, countries]);
+    // set preview url
+    setPreviewUrl(logo);
+  }, [subsidiaries, countries, logo]);
 
   return (
     <Box bgcolor="#fff" border="1px solid #E8EAED" borderRadius="8px">
