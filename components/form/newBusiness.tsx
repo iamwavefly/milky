@@ -6,7 +6,6 @@ import { setDrawalState } from "@/store/appSlice";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
-  Checkbox,
   FormControlLabel,
   MenuItem,
   Stack,
@@ -18,12 +17,14 @@ import { serialize } from "object-to-formdata";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import Checkbox from "../elements/Checkbox";
 
 interface Props {
   closeHandler: () => void;
+  reload: () => void;
 }
 
-export default function NewBusiness({ closeHandler }: Props) {
+export default function NewBusiness({ closeHandler, reload }: Props) {
   const [countries, setCountries] = useState<any>([]);
 
   const { loading, data, error, handleSubmit } = useFetch(
@@ -45,13 +46,10 @@ export default function NewBusiness({ closeHandler }: Props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const { status, message } = data;
-    if (message && status !== "success") {
-      toast.error(message);
-    } else {
-      if (status === "success") {
-        closeHandler();
-      }
+    const { status } = data;
+    if (status === "success") {
+      closeHandler();
+      reload();
     }
   }, [data]);
   // fetch business information view
@@ -104,14 +102,11 @@ export default function NewBusiness({ closeHandler }: Props) {
 
   return (
     <Box>
-      <Typography fontSize="20px" fontWeight={500} mb="16px">
-        Create new business
-      </Typography>
       <form onSubmit={formik.handleSubmit}>
-        <Stack spacing="13px">
+        <Stack spacing="24px" p="40px">
           <TextField
             label="Business name"
-            variant="standard"
+            variant="outlined"
             name="name"
             value={formik.values.name}
             onChange={formik.handleChange}
@@ -121,7 +116,7 @@ export default function NewBusiness({ closeHandler }: Props) {
           />
           <TextField
             label="Business email"
-            variant="standard"
+            variant="outlined"
             name="emailAddress"
             value={formik.values.emailAddress}
             onChange={formik.handleChange}
@@ -135,7 +130,7 @@ export default function NewBusiness({ closeHandler }: Props) {
           />
           <TextField
             label="Phone Number"
-            variant="standard"
+            variant="outlined"
             name="phoneNumber"
             placeholder="+23480000000000"
             value={formik.values.phoneNumber}
@@ -148,7 +143,7 @@ export default function NewBusiness({ closeHandler }: Props) {
           />
           <TextField
             label="Country"
-            variant="standard"
+            variant="outlined"
             name="country"
             value={formik.values.country}
             onChange={formik.handleChange}
@@ -165,7 +160,7 @@ export default function NewBusiness({ closeHandler }: Props) {
           </TextField>
           <TextField
             label="Business type"
-            variant="standard"
+            variant="outlined"
             name="businessType"
             value={formik.values.businessType}
             onChange={formik.handleChange}
@@ -186,7 +181,7 @@ export default function NewBusiness({ closeHandler }: Props) {
           </TextField>
           <TextField
             label="Description"
-            variant="standard"
+            variant="outlined"
             name="description"
             value={formik.values.description}
             onChange={formik.handleChange}
@@ -204,26 +199,29 @@ export default function NewBusiness({ closeHandler }: Props) {
               }
               name="default"
               onChange={formik.handleChange}
-              label={
-                <Typography
-                  sx={{ cursor: "pointer" }}
-                  color="#262B40"
-                  fontSize="12px"
-                  ml="8px"
-                >
-                  Use the same account settings as my main account
-                </Typography>
-              }
+              label="Use the same account settings as my main account"
             />
           </Box>
         </Stack>
-        <Stack spacing="25px" mt="44px" direction="row">
-          <LoadingButton variant="outlined" fullWidth onClick={closeHandler}>
+        <Stack
+          position="sticky"
+          bottom={0}
+          left={0}
+          direction="row"
+          spacing="28px"
+          px="40px"
+          py="16px"
+          mt="44px"
+          borderTop="1px solid #E8EAED"
+          alignItems="center"
+          justifyContent="flex-end"
+          bgcolor="#fff"
+        >
+          <LoadingButton variant="outlined" onClick={closeHandler}>
             Cancel
           </LoadingButton>
           <LoadingButton
             variant="contained"
-            fullWidth
             type="submit"
             loading={loading}
             disabled={!(formik.isValid && formik.dirty)}

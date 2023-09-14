@@ -48,7 +48,7 @@ const ProductDetailsTable = () => {
         url={`/dashboard/product/all?PaymentLinkId=${id}`}
         actions={
           <Button
-            href="/business/products/new"
+            href="/business/products"
             variant="contained"
             sx={{ fontSize: "12px", height: "40px" }}
           >

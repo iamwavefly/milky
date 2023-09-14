@@ -47,6 +47,7 @@ import NewSubsidiary from "@/components/form/newSubsidiary";
 import NewBusiness from "@/components/form/newBusiness";
 import { selectAppState, setMenuState } from "@/store/appSlice";
 import Breadcrumb from "@/components/Breadcrumb";
+import Modal from "@/components/modal/modal";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -194,9 +195,6 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const toggleMenu = () => {
-    setShowSidebar((prev) => !prev);
-  };
 
   const toggleNavMenu = (id: number) => {
     if (id === openMenuId) return setOpenMenuId(undefined);
@@ -337,15 +335,14 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
         <Notifications />
       </Menu>
       {/* New Business Modal */}
-      <Dialog
-        open={openBizModal}
-        TransitionComponent={Transition}
+      <Modal
+        isOpen={openBizModal}
+        close={handleClickBizModal}
         onClose={handleCloseBizModal}
+        title="Create a New Business"
       >
-        <Box width="398px" padding="32px">
-          <NewBusiness closeHandler={handleCloseBizModal} />
-        </Box>
-      </Dialog>
+        <NewBusiness closeHandler={handleCloseBizModal} reload={handleSubmit} />
+      </Modal>
 
       <Stack className={Styles.container}>
         <Stack

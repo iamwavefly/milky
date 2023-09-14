@@ -155,7 +155,7 @@ const Index = () => {
   return (
     <Dashboard title="Settings">
       <Modal
-        title="New customer"
+        title="New Role"
         isOpen={openModal}
         close={handleCloseModal}
         onClose={handleCloseModal}

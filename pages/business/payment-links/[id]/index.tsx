@@ -80,7 +80,7 @@ export default function Index() {
               sx={{ fontSize: "12px", height: "40px" }}
               onClick={openDrawal}
             >
-              <EditIcon size={18} /> Edit Link
+              <EditIcon size={18} fill="#0048B1" /> Edit Link
             </Button>
           </Stack>
         </Stack>
@@ -140,11 +140,11 @@ export default function Index() {
             </Box>
           </Stack>
         </Stack>
-        <Box>
+        <Box mt="24px">
           <ProductDetailsTable />
         </Box>
         {/* Customer transaction */}
-        <Box>
+        <Box mt="24px">
           <TransactionrDetailsTable />
         </Box>
       </Box>

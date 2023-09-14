@@ -10,6 +10,7 @@ import {
   ProductMenu,
   TransferMenu,
   VirtualAccountMenu,
+  EmptyMenu,
 } from "./menu";
 import Image from "next/image";
 
@@ -173,7 +174,7 @@ export const PayoutTableColumns: ColumnDef<any, any>[] = [
   {
     header: "Actions",
     accessorKey: "id",
-    cell: (row) => <TransferMenu id={row.getValue()} />,
+    cell: (row) => <EmptyMenu id={row.getValue()} />,
   },
 ];
 
@@ -287,11 +288,7 @@ export const TransactionDetailsTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {
@@ -977,11 +974,7 @@ export const TransferTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_initiated",
     header: "Date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {

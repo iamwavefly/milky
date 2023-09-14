@@ -189,7 +189,7 @@ export default function NewSubsidiary({ reload, close }: NewUserProps) {
           }
           helperText={formik.touched.description && formik.errors.description}
         />
-        <Box pt="4px" zIndex={99999}>
+        <Box pt="4px">
           <FormControlLabel
             control={
               <Checkbox name="default" checked={formik.values.default} />

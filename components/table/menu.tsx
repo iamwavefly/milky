@@ -222,27 +222,6 @@ export const CustomerMenu = ({ id }: { id: number }) => {
     setCustomer(data?.items?.[0]);
   }, [data, id]);
 
-  const dispatch = useDispatch();
-  // open drawal
-  // const openDrawal = () => {
-  //   dispatch(
-  //     setDrawalState({
-  //       active: true,
-  //       title: "Blacklist Customer",
-  //       content: (
-  //         <BlacklistCustomer
-  //           emailAddress={customer?.email_address}
-  //           action={
-  //             customer?.status?.toLowerCase() === "active"
-  //               ? "blacklist"
-  //               : "whitelist"
-  //           }
-  //         />
-  //       ),
-  //     })
-  //   );
-  // };
-
   const handleClick = (event: any) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
@@ -579,27 +558,28 @@ export const BeneficiaryMenu = ({ id }: { id: number }) => {
 };
 // transfer
 // approve transfer
-const ApproveTransfer = ({ details }: any) => {
+const ApproveTransfer = ({ details, close }: any) => {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/payout/approve`,
     "post"
   );
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const { status } = data;
     if (status === "success") {
-      Router.reload();
+      close();
+      dispatch(reload());
     }
   }, [data]);
-
-  const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   const handleClick = () => {
     const payload = {
       payout_details: [
         {
           ...details,
+          account_name: details?.recipient_name,
         },
       ],
     };
@@ -608,11 +588,23 @@ const ApproveTransfer = ({ details }: any) => {
 
   return (
     <Box>
-      <Typography color="rgba(38, 43, 64, 0.8)">
+      <Typography color="rgba(38, 43, 64, 0.8)" p="40px">
         You are about to accept a transfer of NGN{" "}
         {stringToCurrency(details?.amount)}. Do you want to proceed?:{" "}
       </Typography>
-      <Stack spacing="25px" mt="60px">
+      <Stack
+        direction="row"
+        spacing="24px"
+        px="40px"
+        py="16px"
+        mt="44px"
+        borderTop="1px solid #E8EAED"
+        alignItems="center"
+        justifyContent="flex-end"
+      >
+        <Button onClick={close} variant="outlined">
+          Cancel
+        </Button>
         <LoadingButton
           onClick={handleClick}
           variant="contained"
@@ -620,9 +612,6 @@ const ApproveTransfer = ({ details }: any) => {
         >
           Approve
         </LoadingButton>
-        <Button onClick={close} variant="outlined">
-          Cancel
-        </Button>
       </Stack>
     </Box>
   );
@@ -677,6 +666,11 @@ const DeclineTransfer = ({ details }: any) => {
 export const TransferMenu = ({ id }: { id: number }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [details, setDetails] = useState<any>({});
+  const [openModal, setOpenModal] = useState(false);
+  const [Active, setActive] = useState(undefined);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/payout/all?id=${id}`,
@@ -687,7 +681,6 @@ export const TransferMenu = ({ id }: { id: number }) => {
 
   useEffect(() => {
     const transfer = data?.data?.items?.find((trans: any) => trans.id === +id);
-    console.log({ transfer });
     setDetails(transfer);
   }, [data]);
 
@@ -702,28 +695,21 @@ export const TransferMenu = ({ id }: { id: number }) => {
     setAnchorEl(null);
   };
 
-  const openPrompt = (title: string) => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title,
-        content: title.includes("Approve") ? (
-          <ApproveTransfer details={details} />
-        ) : (
-          <DeclineTransfer details={details} />
-        ),
-      })
-    );
-  };
-
   const handleActionClick = (action: string, event: any) => {
     handleClose(event);
-    if (action === "approve") return openPrompt("Approve Transfer");
-    if (action === "decline") return openPrompt("Decline Transfer");
+    if (action === "approve") return handleOpenModal();
   };
 
   return (
     <>
+      <Modal
+        title={`Approve Transfer`}
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <ApproveTransfer details={details} close={handleCloseModal} />
+      </Modal>
       <Box>
         <IconButton
           sx={{ width: "40px", height: "40px" }}
@@ -739,13 +725,45 @@ export const TransferMenu = ({ id }: { id: number }) => {
           <MenuItem onClick={(event) => handleActionClick("approve", event)}>
             Approve
           </MenuItem>
-          {/* <MenuItem
-            sx={{ color: "#EA5851" }}
-            onClick={(event) => handleActionClick("decline", event)}
-          >
-            Decline
-          </MenuItem> */}
         </Menu>
+      </Box>
+    </>
+  );
+};
+
+export const EmptyMenu = ({ id }: { id: number }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const handleClick = (event: any) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (event: any) => {
+    event.stopPropagation();
+    setAnchorEl(null);
+  };
+
+  const handleActionClick = (action: string, event: any) => {
+    handleClose(event);
+  };
+
+  return (
+    <>
+      <Box>
+        <IconButton
+          sx={{ width: "40px", height: "40px" }}
+          onClick={handleClick}
+        >
+          <MoreIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        ></Menu>
       </Box>
     </>
   );
