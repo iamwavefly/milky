@@ -2,7 +2,7 @@ import clipboard from "@/helper/clipboard";
 import stringToCurrency from "@/helper/formatCurrency";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
-import { setDrawalState } from "@/store/appSlice";
+import { reload, setDrawalState } from "@/store/appSlice";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -345,9 +345,10 @@ export const VirtualAccountMenu = ({ id }: { id: number }) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={(event) => handleActionClick("view", event)}>
+          <MenuItem>View Details</MenuItem>
+          {/* <MenuItem onClick={(event) => handleActionClick("view", event)}>
             View Details
-          </MenuItem>
+          </MenuItem> */}
         </Menu>
       </Box>
     </>
@@ -449,7 +450,7 @@ export const PaymentLinkMenu = ({ id }: { id: number }) => {
   );
 };
 
-const DeleteBeneficiary = ({ ben }: any) => {
+const DeleteBeneficiary = ({ ben, close }: any) => {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/beneficiary/delete/${ben?.id}`,
     "delete"
@@ -458,30 +459,33 @@ const DeleteBeneficiary = ({ ben }: any) => {
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      Router.reload();
+      dispatch(reload());
+      close();
     }
   }, [data]);
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   return (
     <Box>
-      <Typography color="rgba(38, 43, 64, 0.8)">
-        You are about to delete this beneficiary:{" "}
-        <Typography component="span" fontWeight={500}>
-          {ben?.name}
+      <Box p="40px">
+        <Typography color="rgba(38, 43, 64, 0.8)">
+          You are about to delete this beneficiary:{" "}
+          <Typography component="span" fontWeight={500}>
+            {ben?.name}
+          </Typography>
         </Typography>
-      </Typography>
-      <Stack spacing="25px" mt="60px">
-        <LoadingButton
-          onClick={handleSubmit}
-          variant="contained"
-          sx={{ bgcolor: "#EA5851 !important" }}
-          loading={loading}
-        >
-          Delete
-        </LoadingButton>
+      </Box>
+      <Stack
+        direction="row"
+        spacing="24px"
+        px="40px"
+        py="16px"
+        mt="44px"
+        borderTop="1px solid #E8EAED"
+        alignItems="center"
+        justifyContent="flex-end"
+      >
         <Button
           onClick={close}
           variant="outlined"
@@ -492,6 +496,14 @@ const DeleteBeneficiary = ({ ben }: any) => {
         >
           Cancel
         </Button>
+        <LoadingButton
+          onClick={handleSubmit}
+          variant="contained"
+          sx={{ bgcolor: "#EA5851 !important" }}
+          loading={loading}
+        >
+          Delete
+        </LoadingButton>
       </Stack>
     </Box>
   );
@@ -500,6 +512,11 @@ const DeleteBeneficiary = ({ ben }: any) => {
 export const BeneficiaryMenu = ({ id }: { id: number }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [details, setDetails] = useState<any>({});
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/beneficiary/all?id=${id}`,
@@ -519,23 +536,24 @@ export const BeneficiaryMenu = ({ id }: { id: number }) => {
     setAnchorEl(null);
   };
 
-  const openDeletePrompt = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Delete Beneficiary",
-        content: <DeleteBeneficiary ben={data?.data?.items?.[0]} />,
-      })
-    );
-  };
-
   const handleActionClick = (action: string, event: any) => {
     handleClose(event);
-    if (action === "delete") return openDeletePrompt();
+    if (action === "delete") return handleOpenModal();
   };
 
   return (
     <>
+      <Modal
+        title="Delete Beneficiary"
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <DeleteBeneficiary
+          ben={data?.data?.items?.[0]}
+          close={handleCloseModal}
+        />
+      </Modal>
       <Box>
         <IconButton
           sx={{ width: "40px", height: "40px" }}

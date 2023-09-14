@@ -20,6 +20,8 @@ import { uuid } from "uuidv4";
 import { LoadingButton } from "@mui/lab";
 import stringToCurrency from "@/helper/formatCurrency";
 import Router from "next/router";
+import cloudinary from "@/cloudinaryConfig";
+import { notifyErrorHandler, resolveErrorMsg } from "@/middleware/catchErrors";
 
 interface BusinessDetailsProps {
   form: any;
@@ -41,9 +43,9 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
   useEffect(() => {
     const { status } = data;
     if (status === "success") {
-      Router.push("/business/invoice");
       close();
       dispatch(reload());
+      Router.push("/business/invoice");
     }
   }, [data]);
 
@@ -81,6 +83,8 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
         quantity,
         item: description,
       };
+      const { customerName, companyName, customerEmail, companyEmail, image } =
+        form;
       const payload = {
         invoice_title: invoiceTitle,
         currency_id: currency,
@@ -91,11 +95,11 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
         tax,
         description: note,
         business_details: {
-          customer_name: form?.customerName,
-          company_name: form?.companyName,
-          email_address: form?.customerEmail,
-          company_email_address: form?.companyEmail,
-          logo: "",
+          customer_name: customerName,
+          company_name: companyName,
+          email_address: customerEmail,
+          company_email_address: companyEmail,
+          logo: image,
         },
       };
       handleSubmit(payload);

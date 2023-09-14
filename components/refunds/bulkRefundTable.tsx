@@ -99,7 +99,12 @@ export default function BulkRefundTable({
         <LoadingButton variant="text" onClick={reset}>
           Cancel
         </LoadingButton>
-        <LoadingButton variant="contained" type="submit">
+        <LoadingButton
+          variant="contained"
+          type="submit"
+          onClick={submitHandler}
+          loading={loading}
+        >
           Confirm refund
         </LoadingButton>
       </Stack>

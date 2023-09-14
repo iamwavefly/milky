@@ -542,41 +542,30 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     header: "Transaction amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "balance_after",
     header: "Balance after",
     accessorFn: (row) =>
-      `${row.currency ?? "NGN"} ${stringToCurrency(row.balance_after).replace(
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.total).replace(
         "NGN",
         ""
       )}`,
   },
   {
-    accessorKey: "details",
+    accessorKey: "remarks",
     header: "Transaction details",
-    accessorFn: (row) =>
-      `${row.currency ?? "NGN"} ${stringToCurrency(row.details).replace(
-        "NGN",
-        ""
-      )}`,
   },
   {
     accessorKey: "due_date",
     header: "Due date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {
@@ -1083,11 +1072,11 @@ export const FundingHistoryTableColumns: ColumnDef<any, any>[] = [
       return moment(row.getValue()).format("L");
     },
   },
-  {
-    header: "Actions",
-    accessorKey: "id",
-    cell: (row) => <CustomerMenu id={row.getValue()} />,
-  },
+  // {
+  //   header: "Actions",
+  //   accessorKey: "id",
+  //   cell: (row) => <CustomerMenu id={row.getValue()} />,
+  // },
 ];
 
 export const BeneficiaryTableColumns: ColumnDef<any, any>[] = [
@@ -1107,11 +1096,7 @@ export const BeneficiaryTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {

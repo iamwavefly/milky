@@ -12,8 +12,8 @@ import useFetch from "@/hooks/useFetch";
 import AddBox from "remixicon-react/AddBoxFillIcon";
 import { Box, Button } from "@mui/material";
 import FundIcon from "@/public/icons/add-white.svg";
-import { useDispatch } from "react-redux";
-import { setDrawalState } from "@/store/appSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAppState, setDrawalState } from "@/store/appSlice";
 import NewBeneficiary from "../newBeneficiary";
 import Export from "@/components/Export";
 import Modal from "@/components/modal/modal";
@@ -23,6 +23,8 @@ const BeneficiaryTable = () => {
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
   const [openModal, setOpenModal] = useState(false);
+
+  const { reload } = useSelector(selectAppState);
 
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
@@ -41,7 +43,7 @@ const BeneficiaryTable = () => {
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, reload, filters]);
 
   // open drawal
   const openDrawal = () => {
@@ -68,7 +70,7 @@ const BeneficiaryTable = () => {
         containerRef={containerRef}
         columns={BeneficiaryTableColumns}
         data={data?.data?.items}
-        entries={`${data?.data?.page?.size ?? 0}`}
+        entries={`${data?.data?.items?.length ?? 0}`}
         setSearch={setSearch}
         url="/beneficiary/all"
         actions={

@@ -33,8 +33,7 @@ export default function NewUser({ reload, close }: NewUserProps) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log({ data });
-    const { status, message } = data;
+    const { status } = data;
     if (status === "success") {
       reload();
       close();

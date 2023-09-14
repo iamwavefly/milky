@@ -16,6 +16,7 @@ export interface MenuProps {
   name: string;
   id: number;
   short_name?: string;
+  allowed?: string;
 }
 
 export interface stakeholderProps {

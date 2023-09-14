@@ -79,7 +79,7 @@ export default function NewRefund({ reload, close }: any) {
           helperText={formik.touched.reason && formik.errors.reason}
         />
       </Stack>
-      <Footer disabled={!(formik.isValid && formik.dirty)}>
+      <Footer disabled={!(formik.isValid && formik.dirty)} loading={loading}>
         Confirm refund
       </Footer>
     </form>

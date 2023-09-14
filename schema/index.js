@@ -380,7 +380,7 @@ export const newTransfer = () =>
 // new beneficiary
 export const beneficiary = () =>
   yup.object({
-    currency: yup.string().nullable().required("Currency is required"),
+    country: yup.string().nullable().required("Country is required"),
     accountNumber: yup
       .string()
       .nullable()
