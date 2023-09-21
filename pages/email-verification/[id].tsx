@@ -25,7 +25,7 @@ export default function EmailVerification() {
   const resendHandler = () => handleSubmit();
 
   return (
-    <Onboarding >
+    <Onboarding>
       <Stack alignItems="center">
         <Typography fontSize="15px" fontWeight={500} letterSpacing="0.3px">
           VERIFY YOUR EMAIL ADDRESS
