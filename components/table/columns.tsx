@@ -11,6 +11,7 @@ import {
   TransferMenu,
   VirtualAccountMenu,
   EmptyMenu,
+  UserMenu,
 } from "./menu";
 import Image from "next/image";
 
@@ -216,8 +217,8 @@ export const UserTableColumns: ColumnDef<any, any>[] = [
   },
   {
     header: "Actions",
-    accessorKey: "id",
-    cell: (row) => <VirtualAccountMenu id={row.getValue()} />,
+    accessorKey: "user_id",
+    cell: (row) => <UserMenu id={row.getValue()} />,
   },
 ];
 

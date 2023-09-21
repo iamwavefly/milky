@@ -10,9 +10,9 @@ import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import { Box, Button } from "@mui/material";
-import AddBox from "@/public/icons/add.svg";
-import { setDrawalState } from "@/store/appSlice";
-import { useDispatch } from "react-redux";
+import AddBox from "@/public/icons/user-line.svg";
+import { selectAppState, setDrawalState } from "@/store/appSlice";
+import { useDispatch, useSelector } from "react-redux";
 import NewUser from "@/components/form/newUser";
 import Modal from "@/components/modal/modal";
 
@@ -27,6 +27,8 @@ const UserTable = () => {
 
   const containerRef = useRef();
 
+  const { reload } = useSelector(selectAppState);
+
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/users?page=${currentPage}&limit=10&${Object.entries(
       filters
@@ -38,12 +40,12 @@ const UserTable = () => {
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, reload, filters]);
 
   return (
-    <Box>
+    <Box mt="32px">
       <Modal
-        title="Add a New User"
+        title="Invite New User"
         isOpen={openModal}
         close={handleCloseModal}
         onClose={handleCloseModal}
@@ -66,7 +68,7 @@ const UserTable = () => {
             onClick={handleOpenModal}
           >
             <AddBox width="18px" height="18px" fill="#fff" />
-            Add new user
+            Invite user
           </Button>
         }
         selector="users"

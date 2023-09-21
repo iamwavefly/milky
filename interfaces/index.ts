@@ -17,6 +17,7 @@ export interface MenuProps {
   id: number;
   short_name?: string;
   allowed?: string;
+  descriptions?: string;
 }
 
 export interface stakeholderProps {
@@ -37,4 +38,13 @@ export interface walletProps {
   wallet_id: number;
   total_transfer: number;
   successful_transfer: number;
+}
+
+export interface UserProps {
+  user_id: number;
+  first_name: string;
+  last_name: string;
+  mobile_number: string;
+  role: string;
+  status: string;
 }

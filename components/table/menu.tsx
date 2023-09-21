@@ -19,6 +19,9 @@ import { useDispatch } from "react-redux";
 import MoreIcon from "../../public/icons/more.svg";
 import BlacklistCustomer from "../business/customers/blacklistCustomer";
 import Modal from "../modal/modal";
+import { UserProps } from "@/interfaces";
+import RemoveUser from "../settings/roles-permissions/RemoveUser";
+import NewUser from "../form/newUser";
 
 export const ViewTransaction = ({ id }: { id?: number }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -765,6 +768,101 @@ export const EmptyMenu = ({ id }: { id: number }) => {
           onClose={handleClose}
         ></Menu>
       </Box>
+    </>
+  );
+};
+
+export const UserMenu = ({ id }: { id: number }) => {
+  const [user, setUser] = useState<UserProps | undefined>(undefined);
+  const [openRemoveModal, setOpenRemoveModal] = useState(false);
+  const [openRoleModal, setOpenRoleModal] = useState(false);
+  // remove user
+  const openRmModalHandler = () => setOpenRemoveModal(true);
+  const closeRmModalHandler = () => setOpenRemoveModal(false);
+  // edit role
+  const openRoleModalHandler = () => setOpenRoleModal(true);
+  const closeRoleModalHandler = () => setOpenRoleModal(false);
+
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/users`,
+    "get"
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  useEffect(() => {
+    const selectedUser = data?.users?.find(
+      ({ user_id }: UserProps) => user_id === id
+    );
+    setUser(selectedUser);
+  }, [data?.users]);
+
+  return (
+    <>
+      {/* remove user modal */}
+      <Modal
+        title="Remove User"
+        isOpen={openRemoveModal}
+        close={closeRmModalHandler}
+        onClose={closeRmModalHandler}
+      >
+        <RemoveUser user={user as UserProps} close={closeRmModalHandler} />
+      </Modal>
+      {/* change row modal */}
+      <Modal
+        title={`Edit ${user?.first_name} ${user?.last_name}'s Role`}
+        isOpen={openRoleModal}
+        close={closeRoleModalHandler}
+        onClose={closeRoleModalHandler}
+      >
+        <NewUser
+          user={user as UserProps}
+          close={closeRoleModalHandler}
+          reload={() => dispatch(reload())}
+          editRoleOnly
+        />
+      </Modal>
+      {/* buttons */}
+      <Stack gap="16px" direction="row" width="200px">
+        {/* remove user btn */}
+        {user?.role?.toLowerCase() !== "owner" && (
+          <Button
+            variant="outlinedMedium"
+            sx={{
+              height: "32px",
+              fontSize: "13px",
+              maxWidth: "100px",
+              px: "12px !important",
+              ml: "auto !important",
+            }}
+            onClick={openRoleModalHandler}
+          >
+            Change role
+          </Button>
+        )}
+        {user?.status?.toLowerCase() === "active" && (
+          <Button
+            variant="outlinedMedium"
+            onClick={openRmModalHandler}
+            sx={{
+              height: "32px",
+              maxWidth: "100px",
+              px: "12px !important",
+              fontSize: "13px",
+              color: "#E84A5F !important",
+              borderColor: "#E84A5F !important",
+              bgcolor: "#FFF5F5",
+              ml: "auto !important",
+            }}
+          >
+            Remove
+          </Button>
+        )}
+      </Stack>
     </>
   );
 };
