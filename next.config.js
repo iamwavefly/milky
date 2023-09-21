@@ -19,7 +19,7 @@ module.exports = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "subsidiary-dashboard-api-service-dev.eks-alliancepay.com",
+        hostname: "subsidiary-api.arca-payments.network",
         port: "",
         pathname: "/**",
       },

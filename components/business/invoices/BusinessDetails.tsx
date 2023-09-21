@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Box, Button, Stack, TextField } from "@mui/material";
 import AvatarPlaceholder from "@/public/icons/placeholder.svg";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,16 +10,52 @@ import { selectUserState } from "@/store/authSlice";
 import { useFormik } from "formik";
 import { invoiceBusinessDetails } from "@/schema";
 import { LoadingButton } from "@mui/lab";
+import baseUrl from "@/middleware/baseUrl";
+import useFetch from "@/hooks/useFetch";
+import { notifyErrorHandler, resolveErrorMsg } from "@/middleware/catchErrors";
 
 interface BusinessDetailsProps {
   nextStep: (data: {}) => void;
 }
 
 export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFile, setSelectedFile] = useState("");
+  const [logo, setLogo] = useState("");
   const [previewUrl, setPreviewUrl] = useState(null);
+  const [newLogoUrl, setNewLogoUrl] = useState(null);
 
-  const { subsidiary_logo } = useSelector(selectUserState).subsidiaries;
+  // update logo subsidiaries
+  const fetchSubsidiaries = useFetch(
+    `${baseUrl}/dashboard/onboarding/business/information/view`,
+    "get"
+  );
+
+  // upload image to cloudinary
+  const uploadImage = (file: string) => {
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "arca_merchant");
+    data.append("folder", "arca/merchant/invoice");
+    data.append("cloud_name", "new-invoice-logo");
+    fetch("https://api.cloudinary.com/v1_1/dzvevdlsv/image/upload", {
+      method: "post",
+      body: data,
+    })
+      .then((resp) => resp.json())
+      .then((data) => {
+        setNewLogoUrl(data.url);
+        console.log(data.url);
+      })
+      .catch((error) => {
+        let { errorMsg } = resolveErrorMsg(error);
+        notifyErrorHandler({
+          type: "error",
+          title: errorMsg,
+          msg: error,
+          duration: 5000,
+        });
+      });
+  };
 
   const dispatch = useDispatch();
   const close = () => dispatch(setDrawalState({ active: false }));
@@ -28,7 +64,7 @@ export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
     const file = e.target.files[0];
     if (fileSizeLimit(file)) return;
     const { name, type } = file;
-    setSelectedFile(file);
+    uploadImage(file);
     setPreviewUrl(URL.createObjectURL(e.target.files[0]) as any);
   };
 
@@ -36,6 +72,16 @@ export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
   const handleClick = (e: any) => {
     ref.current.click();
   };
+
+  // set subsidiary logo
+  useEffect(() => {
+    setLogo(fetchSubsidiaries?.data?.data?.logo);
+  }, [fetchSubsidiaries?.data?.data]);
+
+  // fetch subsidiaries type
+  useEffect(() => {
+    fetchSubsidiaries.handleSubmit();
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -46,7 +92,7 @@ export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
     },
     validationSchema: invoiceBusinessDetails,
     onSubmit: (data) => {
-      nextStep(data);
+      nextStep({ ...data, image: newLogoUrl });
     },
   });
 
@@ -72,9 +118,9 @@ export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
             alt="Product image"
             className={Styles.productImage}
           />
-        ) : subsidiary_logo ? (
+        ) : logo ? (
           <Image
-            src={subsidiary_logo}
+            src={logo}
             width={120}
             height={120}
             alt="Product image"

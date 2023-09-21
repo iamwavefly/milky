@@ -2,7 +2,7 @@ import clipboard from "@/helper/clipboard";
 import stringToCurrency from "@/helper/formatCurrency";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
-import { setDrawalState } from "@/store/appSlice";
+import { reload, setDrawalState } from "@/store/appSlice";
 import { LoadingButton } from "@mui/lab";
 import {
   Box,
@@ -19,6 +19,9 @@ import { useDispatch } from "react-redux";
 import MoreIcon from "../../public/icons/more.svg";
 import BlacklistCustomer from "../business/customers/blacklistCustomer";
 import Modal from "../modal/modal";
+import { UserProps } from "@/interfaces";
+import RemoveUser from "../settings/roles-permissions/RemoveUser";
+import NewUser from "../form/newUser";
 
 export const ViewTransaction = ({ id }: { id?: number }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -222,27 +225,6 @@ export const CustomerMenu = ({ id }: { id: number }) => {
     setCustomer(data?.items?.[0]);
   }, [data, id]);
 
-  const dispatch = useDispatch();
-  // open drawal
-  // const openDrawal = () => {
-  //   dispatch(
-  //     setDrawalState({
-  //       active: true,
-  //       title: "Blacklist Customer",
-  //       content: (
-  //         <BlacklistCustomer
-  //           emailAddress={customer?.email_address}
-  //           action={
-  //             customer?.status?.toLowerCase() === "active"
-  //               ? "blacklist"
-  //               : "whitelist"
-  //           }
-  //         />
-  //       ),
-  //     })
-  //   );
-  // };
-
   const handleClick = (event: any) => {
     event.stopPropagation();
     setAnchorEl(event.currentTarget);
@@ -345,9 +327,10 @@ export const VirtualAccountMenu = ({ id }: { id: number }) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          <MenuItem onClick={(event) => handleActionClick("view", event)}>
+          <MenuItem>View Details</MenuItem>
+          {/* <MenuItem onClick={(event) => handleActionClick("view", event)}>
             View Details
-          </MenuItem>
+          </MenuItem> */}
         </Menu>
       </Box>
     </>
@@ -449,7 +432,7 @@ export const PaymentLinkMenu = ({ id }: { id: number }) => {
   );
 };
 
-const DeleteBeneficiary = ({ ben }: any) => {
+const DeleteBeneficiary = ({ ben, close }: any) => {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/beneficiary/delete/${ben?.id}`,
     "delete"
@@ -458,30 +441,33 @@ const DeleteBeneficiary = ({ ben }: any) => {
   useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
-      Router.reload();
+      dispatch(reload());
+      close();
     }
   }, [data]);
 
   const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   return (
     <Box>
-      <Typography color="rgba(38, 43, 64, 0.8)">
-        You are about to delete this beneficiary:{" "}
-        <Typography component="span" fontWeight={500}>
-          {ben?.name}
+      <Box p="40px">
+        <Typography color="rgba(38, 43, 64, 0.8)">
+          You are about to delete this beneficiary:{" "}
+          <Typography component="span" fontWeight={500}>
+            {ben?.name}
+          </Typography>
         </Typography>
-      </Typography>
-      <Stack spacing="25px" mt="60px">
-        <LoadingButton
-          onClick={handleSubmit}
-          variant="contained"
-          sx={{ bgcolor: "#EA5851 !important" }}
-          loading={loading}
-        >
-          Delete
-        </LoadingButton>
+      </Box>
+      <Stack
+        direction="row"
+        spacing="24px"
+        px="40px"
+        py="16px"
+        mt="44px"
+        borderTop="1px solid #E8EAED"
+        alignItems="center"
+        justifyContent="flex-end"
+      >
         <Button
           onClick={close}
           variant="outlined"
@@ -492,6 +478,14 @@ const DeleteBeneficiary = ({ ben }: any) => {
         >
           Cancel
         </Button>
+        <LoadingButton
+          onClick={handleSubmit}
+          variant="contained"
+          sx={{ bgcolor: "#EA5851 !important" }}
+          loading={loading}
+        >
+          Delete
+        </LoadingButton>
       </Stack>
     </Box>
   );
@@ -500,6 +494,11 @@ const DeleteBeneficiary = ({ ben }: any) => {
 export const BeneficiaryMenu = ({ id }: { id: number }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [details, setDetails] = useState<any>({});
+
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/beneficiary/all?id=${id}`,
@@ -519,23 +518,24 @@ export const BeneficiaryMenu = ({ id }: { id: number }) => {
     setAnchorEl(null);
   };
 
-  const openDeletePrompt = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Delete Beneficiary",
-        content: <DeleteBeneficiary ben={data?.data?.items?.[0]} />,
-      })
-    );
-  };
-
   const handleActionClick = (action: string, event: any) => {
     handleClose(event);
-    if (action === "delete") return openDeletePrompt();
+    if (action === "delete") return handleOpenModal();
   };
 
   return (
     <>
+      <Modal
+        title="Delete Beneficiary"
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <DeleteBeneficiary
+          ben={data?.data?.items?.[0]}
+          close={handleCloseModal}
+        />
+      </Modal>
       <Box>
         <IconButton
           sx={{ width: "40px", height: "40px" }}
@@ -561,27 +561,28 @@ export const BeneficiaryMenu = ({ id }: { id: number }) => {
 };
 // transfer
 // approve transfer
-const ApproveTransfer = ({ details }: any) => {
+const ApproveTransfer = ({ details, close }: any) => {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/payout/approve`,
     "post"
   );
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const { status } = data;
     if (status === "success") {
-      Router.reload();
+      close();
+      dispatch(reload());
     }
   }, [data]);
-
-  const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
 
   const handleClick = () => {
     const payload = {
       payout_details: [
         {
           ...details,
+          account_name: details?.recipient_name,
         },
       ],
     };
@@ -590,11 +591,23 @@ const ApproveTransfer = ({ details }: any) => {
 
   return (
     <Box>
-      <Typography color="rgba(38, 43, 64, 0.8)">
+      <Typography color="rgba(38, 43, 64, 0.8)" p="40px">
         You are about to accept a transfer of NGN{" "}
         {stringToCurrency(details?.amount)}. Do you want to proceed?:{" "}
       </Typography>
-      <Stack spacing="25px" mt="60px">
+      <Stack
+        direction="row"
+        spacing="24px"
+        px="40px"
+        py="16px"
+        mt="44px"
+        borderTop="1px solid #E8EAED"
+        alignItems="center"
+        justifyContent="flex-end"
+      >
+        <Button onClick={close} variant="outlined">
+          Cancel
+        </Button>
         <LoadingButton
           onClick={handleClick}
           variant="contained"
@@ -602,9 +615,6 @@ const ApproveTransfer = ({ details }: any) => {
         >
           Approve
         </LoadingButton>
-        <Button onClick={close} variant="outlined">
-          Cancel
-        </Button>
       </Stack>
     </Box>
   );
@@ -659,6 +669,11 @@ const DeclineTransfer = ({ details }: any) => {
 export const TransferMenu = ({ id }: { id: number }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [details, setDetails] = useState<any>({});
+  const [openModal, setOpenModal] = useState(false);
+  const [Active, setActive] = useState(undefined);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/payout/all?id=${id}`,
@@ -669,7 +684,6 @@ export const TransferMenu = ({ id }: { id: number }) => {
 
   useEffect(() => {
     const transfer = data?.data?.items?.find((trans: any) => trans.id === +id);
-    console.log({ transfer });
     setDetails(transfer);
   }, [data]);
 
@@ -684,28 +698,21 @@ export const TransferMenu = ({ id }: { id: number }) => {
     setAnchorEl(null);
   };
 
-  const openPrompt = (title: string) => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title,
-        content: title.includes("Approve") ? (
-          <ApproveTransfer details={details} />
-        ) : (
-          <DeclineTransfer details={details} />
-        ),
-      })
-    );
-  };
-
   const handleActionClick = (action: string, event: any) => {
     handleClose(event);
-    if (action === "approve") return openPrompt("Approve Transfer");
-    if (action === "decline") return openPrompt("Decline Transfer");
+    if (action === "approve") return handleOpenModal();
   };
 
   return (
     <>
+      <Modal
+        title={`Approve Transfer`}
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <ApproveTransfer details={details} close={handleCloseModal} />
+      </Modal>
       <Box>
         <IconButton
           sx={{ width: "40px", height: "40px" }}
@@ -721,14 +728,141 @@ export const TransferMenu = ({ id }: { id: number }) => {
           <MenuItem onClick={(event) => handleActionClick("approve", event)}>
             Approve
           </MenuItem>
-          {/* <MenuItem
-            sx={{ color: "#EA5851" }}
-            onClick={(event) => handleActionClick("decline", event)}
-          >
-            Decline
-          </MenuItem> */}
         </Menu>
       </Box>
+    </>
+  );
+};
+
+export const EmptyMenu = ({ id }: { id: number }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const handleClick = (event: any) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (event: any) => {
+    event.stopPropagation();
+    setAnchorEl(null);
+  };
+
+  const handleActionClick = (action: string, event: any) => {
+    handleClose(event);
+  };
+
+  return (
+    <>
+      <Box>
+        <IconButton
+          sx={{ width: "40px", height: "40px" }}
+          onClick={handleClick}
+        >
+          <MoreIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        ></Menu>
+      </Box>
+    </>
+  );
+};
+
+export const UserMenu = ({ id }: { id: number }) => {
+  const [user, setUser] = useState<UserProps | undefined>(undefined);
+  const [openRemoveModal, setOpenRemoveModal] = useState(false);
+  const [openRoleModal, setOpenRoleModal] = useState(false);
+  // remove user
+  const openRmModalHandler = () => setOpenRemoveModal(true);
+  const closeRmModalHandler = () => setOpenRemoveModal(false);
+  // edit role
+  const openRoleModalHandler = () => setOpenRoleModal(true);
+  const closeRoleModalHandler = () => setOpenRoleModal(false);
+
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/users`,
+    "get"
+  );
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    handleSubmit();
+  }, []);
+
+  useEffect(() => {
+    const selectedUser = data?.users?.find(
+      ({ user_id }: UserProps) => user_id === id
+    );
+    setUser(selectedUser);
+  }, [data?.users]);
+
+  return (
+    <>
+      {/* remove user modal */}
+      <Modal
+        title="Remove User"
+        isOpen={openRemoveModal}
+        close={closeRmModalHandler}
+        onClose={closeRmModalHandler}
+      >
+        <RemoveUser user={user as UserProps} close={closeRmModalHandler} />
+      </Modal>
+      {/* change row modal */}
+      <Modal
+        title={`Edit ${user?.first_name} ${user?.last_name}'s Role`}
+        isOpen={openRoleModal}
+        close={closeRoleModalHandler}
+        onClose={closeRoleModalHandler}
+      >
+        <NewUser
+          user={user as UserProps}
+          close={closeRoleModalHandler}
+          reload={() => dispatch(reload())}
+          editRoleOnly
+        />
+      </Modal>
+      {/* buttons */}
+      <Stack gap="16px" direction="row" width="200px">
+        {/* remove user btn */}
+        {user?.role?.toLowerCase() !== "owner" && (
+          <Button
+            variant="outlinedMedium"
+            sx={{
+              height: "32px",
+              fontSize: "13px",
+              maxWidth: "100px",
+              px: "12px !important",
+              ml: "auto !important",
+            }}
+            onClick={openRoleModalHandler}
+          >
+            Change role
+          </Button>
+        )}
+        {user?.status?.toLowerCase() === "active" && (
+          <Button
+            variant="outlinedMedium"
+            onClick={openRmModalHandler}
+            sx={{
+              height: "32px",
+              maxWidth: "100px",
+              px: "12px !important",
+              fontSize: "13px",
+              color: "#E84A5F !important",
+              borderColor: "#E84A5F !important",
+              bgcolor: "#FFF5F5",
+              ml: "auto !important",
+            }}
+          >
+            Remove
+          </Button>
+        )}
+      </Stack>
     </>
   );
 };

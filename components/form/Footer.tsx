@@ -25,6 +25,7 @@ export default function Footer({ children, ...others }: Props) {
       borderTop="1px solid #E8EAED"
       alignItems="center"
       justifyContent="flex-end"
+      bgcolor="#fff"
     >
       <LoadingButton variant="text" onClick={close}>
         Cancel

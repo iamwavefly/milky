@@ -199,7 +199,7 @@ export default function BankDetails({ append, reload, close }: Props) {
             />
           </Stack>
         </Box>
-        <Footer>Save Changes</Footer>
+        <Footer loading={loading}>Save Changes</Footer>
       </form>
     </Box>
   );

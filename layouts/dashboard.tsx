@@ -47,6 +47,7 @@ import NewSubsidiary from "@/components/form/newSubsidiary";
 import NewBusiness from "@/components/form/newBusiness";
 import { selectAppState, setMenuState } from "@/store/appSlice";
 import Breadcrumb from "@/components/Breadcrumb";
+import Modal from "@/components/modal/modal";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -96,6 +97,7 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
     undefined | boolean
   >(undefined);
 
+  const { reload } = useSelector(selectAppState);
   const { subsidiaries, user, notifications } = useSelector(selectUserState);
   const { menu } = useSelector(selectAppState);
 
@@ -107,6 +109,12 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
     "get"
   );
 
+  // update logo subsidiaries
+  const fetchSubsidiaries = useFetch(
+    `${baseUrl}/dashboard/onboarding/business/information/view`,
+    "get"
+  );
+
   const changeSettlementApi = useFetch(
     `${baseUrl}/dashboard/session/set-subsidiary`,
     "post"
@@ -115,6 +123,16 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
   const userApi = useFetch(`${baseUrl}/dashboard/me`, "get");
 
   const dispatch = useDispatch();
+
+  // fetch subsidiaries type
+  useEffect(() => {
+    fetchSubsidiaries.handleSubmit();
+  }, []);
+
+  // set subsidiary logo
+  useEffect(() => {
+    setPhoto(fetchSubsidiaries?.data?.data?.logo);
+  }, [fetchSubsidiaries?.data?.data]);
   // toggle menu state
   useEffect(() => {
     dispatch(setMenuState(activeBizMenu));
@@ -157,15 +175,6 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
   }, [data, id]);
 
   useEffect(() => {
-    console.log(id);
-  }, [id]);
-
-  useEffect(() => {
-    const imageUrl = `https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${subsidiary_logo}`;
-    setPhoto(imageUrl);
-  }, [subsidiary_logo]);
-
-  useEffect(() => {
     if (verified || pendingApproval) {
       // return setLabels(routes.slice(1));
     }
@@ -185,9 +194,6 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
   };
   const handleClose = () => {
     setAnchorEl(null);
-  };
-  const toggleMenu = () => {
-    setShowSidebar((prev) => !prev);
   };
 
   const toggleNavMenu = (id: number) => {
@@ -329,15 +335,14 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
         <Notifications />
       </Menu>
       {/* New Business Modal */}
-      <Dialog
-        open={openBizModal}
-        TransitionComponent={Transition}
+      <Modal
+        isOpen={openBizModal}
+        close={handleClickBizModal}
         onClose={handleCloseBizModal}
+        title="Create a New Business"
       >
-        <Box width="398px" padding="32px">
-          <NewBusiness closeHandler={handleCloseBizModal} />
-        </Box>
-      </Dialog>
+        <NewBusiness closeHandler={handleCloseBizModal} reload={handleSubmit} />
+      </Modal>
 
       <Stack className={Styles.container}>
         <Stack

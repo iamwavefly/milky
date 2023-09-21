@@ -10,6 +10,8 @@ import {
   ProductMenu,
   TransferMenu,
   VirtualAccountMenu,
+  EmptyMenu,
+  UserMenu,
 } from "./menu";
 import Image from "next/image";
 
@@ -173,7 +175,7 @@ export const PayoutTableColumns: ColumnDef<any, any>[] = [
   {
     header: "Actions",
     accessorKey: "id",
-    cell: (row) => <TransferMenu id={row.getValue()} />,
+    cell: (row) => <EmptyMenu id={row.getValue()} />,
   },
 ];
 
@@ -215,8 +217,8 @@ export const UserTableColumns: ColumnDef<any, any>[] = [
   },
   {
     header: "Actions",
-    accessorKey: "id",
-    cell: (row) => <VirtualAccountMenu id={row.getValue()} />,
+    accessorKey: "user_id",
+    cell: (row) => <UserMenu id={row.getValue()} />,
   },
 ];
 
@@ -287,11 +289,7 @@ export const TransactionDetailsTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {
@@ -384,7 +382,7 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
       return (
         <Stack direction="row" alignItems="center" spacing="12px">
           <Image
-            src={`https://subsidiary-dashboard-api-service-dev.eks-alliancepay.com/subsidiary/dashboard/file/alliancepay-compliance-images/download?fileId=${image}`}
+            src={image}
             alt={name}
             style={{ objectFit: "cover", borderRadius: "8px" }}
             width={44}
@@ -542,41 +540,30 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "amount",
     header: "Transaction amount",
-    cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
-    },
+    accessorFn: (row) =>
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
+        "NGN",
+        ""
+      )}`,
   },
   {
     accessorKey: "balance_after",
     header: "Balance after",
     accessorFn: (row) =>
-      `${row.currency ?? "NGN"} ${stringToCurrency(row.balance_after).replace(
+      `${row.currency ?? "NGN"} ${stringToCurrency(row.total).replace(
         "NGN",
         ""
       )}`,
   },
   {
-    accessorKey: "details",
+    accessorKey: "remarks",
     header: "Transaction details",
-    accessorFn: (row) =>
-      `${row.currency ?? "NGN"} ${stringToCurrency(row.details).replace(
-        "NGN",
-        ""
-      )}`,
   },
   {
     accessorKey: "due_date",
     header: "Due date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {
@@ -988,11 +975,7 @@ export const TransferTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_initiated",
     header: "Date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {
@@ -1083,11 +1066,11 @@ export const FundingHistoryTableColumns: ColumnDef<any, any>[] = [
       return moment(row.getValue()).format("L");
     },
   },
-  {
-    header: "Actions",
-    accessorKey: "id",
-    cell: (row) => <CustomerMenu id={row.getValue()} />,
-  },
+  // {
+  //   header: "Actions",
+  //   accessorKey: "id",
+  //   cell: (row) => <CustomerMenu id={row.getValue()} />,
+  // },
 ];
 
 export const BeneficiaryTableColumns: ColumnDef<any, any>[] = [
@@ -1107,11 +1090,7 @@ export const BeneficiaryTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("L");
     },
   },
   {

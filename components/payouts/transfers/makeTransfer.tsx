@@ -309,7 +309,7 @@ export default function MakeTransfer({ reload, close }: any) {
                       {formik.touched.beneficiaryName &&
                         formik.errors.beneficiaryName}
                     </Typography>
-                    {beneficiaries?.length && (
+                    {beneficiaries?.length > 0 && (
                       <Typography
                         sx={{
                           fontWeight: 400,

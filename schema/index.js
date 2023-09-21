@@ -317,15 +317,14 @@ export const newCustomer = () =>
 // new user
 export const newUser = () =>
   yup.object({
-    firstName: yup.string().required("First name is required").nullable(),
-    lastName: yup.string().required("Last name is required").nullable(),
-    emailAddress: yup.string().required("Email address is required").nullable(),
+    firstName: yup.string().nullable(),
+    lastName: yup.string().nullable(),
+    emailAddress: yup.string().nullable(),
     phoneNumber: yup
       .string()
       .matches(phoneRegExp, "Phone number is not valid")
-      .required("Phone number is required")
       .nullable(),
-    country: yup.string().nullable().required("Country is required"),
+    country: yup.string().nullable(),
     role: yup.string().nullable().required("Role is required"),
   });
 // new user
@@ -380,7 +379,7 @@ export const newTransfer = () =>
 // new beneficiary
 export const beneficiary = () =>
   yup.object({
-    currency: yup.string().nullable().required("Currency is required"),
+    country: yup.string().nullable().required("Country is required"),
     accountNumber: yup
       .string()
       .nullable()

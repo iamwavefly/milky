@@ -58,7 +58,7 @@ export default function BlacklistCustomer({
       </Stack>
       <Stack
         direction="row"
-        spacing="28px"
+        spacing="24px"
         px="40px"
         py="16px"
         mt="44px"

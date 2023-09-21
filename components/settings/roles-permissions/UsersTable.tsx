@@ -5,35 +5,32 @@ import { _businesses, _customers, _invoices } from "@/mocks";
 import Header from "@/components/table/header";
 import Table from "@/components/table/table";
 import FilterTable from "@/components/table/filter";
-import { BeneficiaryTableColumns } from "@/components/table/columns";
+import { UserTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
-import AddBox from "remixicon-react/AddBoxFillIcon";
 import { Box, Button } from "@mui/material";
-import FundIcon from "@/public/icons/add-white.svg";
-import { useDispatch, useSelector } from "react-redux";
+import AddBox from "@/public/icons/user-line.svg";
 import { selectAppState, setDrawalState } from "@/store/appSlice";
-import NewBeneficiary from "../newBeneficiary";
-import Export from "@/components/Export";
+import { useDispatch, useSelector } from "react-redux";
+import NewUser from "@/components/form/newUser";
 import Modal from "@/components/modal/modal";
 
-const BeneficiaryTable = () => {
+const UserTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
   const [openModal, setOpenModal] = useState(false);
 
-  const { reload } = useSelector(selectAppState);
-
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
   const containerRef = useRef();
-  const dispatch = useDispatch();
+
+  const { reload } = useSelector(selectAppState);
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/beneficiary/all?page=${currentPage}&limit=10&${Object.entries(
+    `${baseUrl}/dashboard/users?page=${currentPage}&limit=10&${Object.entries(
       filters
     )
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
@@ -45,64 +42,48 @@ const BeneficiaryTable = () => {
     handleSubmit();
   }, [currentPage, reload, filters]);
 
-  // open drawal
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Add New Beneficiary",
-        content: <NewBeneficiary reload={handleSubmit} />,
-      })
-    );
-  };
-
   return (
-    <Box>
+    <Box mt="32px">
       <Modal
-        title="Add New Beneficiary"
+        title="Invite New User"
         isOpen={openModal}
         close={handleCloseModal}
         onClose={handleCloseModal}
       >
-        <NewBeneficiary reload={handleSubmit} close={handleCloseModal} />
+        <NewUser reload={handleSubmit} close={handleCloseModal} />
       </Modal>
       <Header
         containerRef={containerRef}
-        columns={BeneficiaryTableColumns}
-        data={data?.data?.items}
-        entries={`${data?.data?.items?.length ?? 0}`}
+        columns={UserTableColumns}
+        data={data?.users}
+        url="/dashboard/users"
+        entries={`${data?.users?.length ?? 0}`}
+        pageName="Users"
         setSearch={setSearch}
-        url="/beneficiary/all"
+        searchText="Search users or enter keyword"
         actions={
-          <>
-            <Export
-              columns={BeneficiaryTableColumns}
-              data={data?.data?.items}
-              title="beneficiary"
-              variant="outlinedSmall"
-            />
-            <Button
-              sx={{ fontSize: "14px", height: "40px" }}
-              variant="contained"
-              onClick={handleOpenModal}
-            >
-              <FundIcon width="18px" height="18px" />
-              Add new beneficiary
-            </Button>
-          </>
+          <Button
+            variant="contained"
+            sx={{ height: "40px", fontSize: "12px" }}
+            onClick={handleOpenModal}
+          >
+            <AddBox width="18px" height="18px" fill="#fff" />
+            Invite user
+          </Button>
         }
+        selector="users"
         updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}
-        data={data?.data?.items ?? []}
-        columns={BeneficiaryTableColumns}
+        data={data?.users ?? []}
+        columns={UserTableColumns}
         isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.data?.page?.total_page}
+        pageCount={data?.page?.total_pages}
       />
     </Box>
   );
 };
 
-export default BeneficiaryTable;
+export default UserTable;

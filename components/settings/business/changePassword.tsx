@@ -154,6 +154,7 @@ export default function ChangePasswordForm() {
             variant="outlined"
             type="submit"
             sx={{ height: "44px", fontSize: "14px", px: "16px !important" }}
+            disabled={!(formik.isValid && formik.dirty)}
           >
             <PadlockIcon />
             Change password

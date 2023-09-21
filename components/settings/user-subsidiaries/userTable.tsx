@@ -55,7 +55,7 @@ const UserTable = () => {
         columns={UserTableColumns}
         data={data?.users}
         url="/dashboard/users"
-        entries={`${data?.page?.total_items ?? 0}`}
+        entries={`${data?.users?.length ?? 0}`}
         pageName="Users"
         setSearch={setSearch}
         searchText="Search users or enter keyword"

@@ -15,7 +15,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { LoadingButton } from "@mui/lab";
 import { useDispatch } from "react-redux";
-import { setDrawalState } from "@/store/appSlice";
+import { reload, setDrawalState } from "@/store/appSlice";
 import { useFormik } from "formik";
 import { newProduct } from "@/schema";
 import Router from "next/router";
@@ -70,8 +70,10 @@ export default function NewProduct({ product }: any) {
   }, []);
 
   useEffect(() => {
-    const { status, message } = data;
+    const { status } = data;
     if (status === "success") {
+      close();
+      dispatch(reload());
       Router.push("/business/products");
     }
   }, [data]);
@@ -102,23 +104,33 @@ export default function NewProduct({ product }: any) {
       quantity,
       url,
     }) => {
-      const payload = {
-        name: productName,
-        description: productDescription,
-        price,
-        dealprice: dealPrice,
-        ondeal: onDeal,
-        containsphysicalgoods: containsPhysicalGoods,
-        deliveryaddressrequired: deliveryAddressRequired,
-        deliverynoterequired: deliveryNoteRequired,
-        fee: JSON.stringify(fees),
-        stock: quantity,
-        images,
-        url,
-      };
+      let formdata = new FormData();
+      formdata.append("name", productName);
+      formdata.append("description", productDescription);
+      formdata.append("price", price);
+      formdata.append("dealprice", dealPrice);
+      formdata.append("ondeal", JSON.stringify(onDeal));
+      formdata.append(
+        "containsphysicalgoods",
+        JSON.stringify(containsPhysicalGoods)
+      );
+      formdata.append(
+        "deliveryaddressrequired",
+        JSON.stringify(deliveryAddressRequired)
+      );
+      formdata.append(
+        "deliverynoterequired",
+        JSON.stringify(deliveryNoteRequired)
+      );
+      formdata.append("fee", JSON.stringify(fees));
+      formdata.append("stock", JSON.stringify(quantity));
+      formdata.append("url", url);
 
-      const formData = serialize(payload);
-      handleSubmit(formData);
+      images.forEach((image: any) => {
+        formdata.append("images", image);
+      });
+
+      handleSubmit(formdata);
     },
   });
 

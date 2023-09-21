@@ -19,7 +19,7 @@ import { ProductImage } from "@/types";
 
 interface BulkUploadProps {
   limit: number;
-  uploadImages?: (images: ProductImage[]) => void;
+  uploadImages?: (images: any) => void;
 }
 
 export default function BulkUpload({ limit, uploadImages }: BulkUploadProps) {
@@ -32,7 +32,9 @@ export default function BulkUpload({ limit, uploadImages }: BulkUploadProps) {
   }, [productImages]);
 
   useEffect(() => {
-    uploadImages && uploadImages(productImages);
+    const newImages = productImages.map(({ file }) => file);
+    uploadImages && uploadImages(newImages);
+    console.log(newImages);
   }, [productImages]);
 
   const onDrop = (acceptedFiles: File[], rejectedFiles: any) => {

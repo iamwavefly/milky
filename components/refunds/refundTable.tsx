@@ -13,8 +13,8 @@ import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import { Box, Button, Menu, MenuItem } from "@mui/material";
 import AddBox from "remixicon-react/LogoutCircleRLineIcon";
-import { setDrawalState } from "@/store/appSlice";
-import { useDispatch } from "react-redux";
+import { selectAppState, setDrawalState } from "@/store/appSlice";
+import { useDispatch, useSelector } from "react-redux";
 import NewRefund from "./newRefund";
 import BulkRefund from "./bulkRefund";
 import BulkRefundTable from "./bulkRefundTable";
@@ -31,6 +31,8 @@ const RefundTable = () => {
   const [csvFile, setCsvFile] = useState<null | {}>(null);
   const [modalState, setModalState] = useState<null | string>(null);
   const [openModal, setOpenModal] = useState(false);
+
+  const { reload } = useSelector(selectAppState);
 
   const open = Boolean(anchorEl);
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -74,7 +76,7 @@ const RefundTable = () => {
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, reload, filters]);
 
   useEffect(() => {
     if (csvFile) {

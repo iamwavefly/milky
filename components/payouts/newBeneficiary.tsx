@@ -29,25 +29,26 @@ import Footer from "../form/Footer";
 
 const benType = [
   { id: 1, name: "Bank Account", value: "Bank" },
-  { id: 2, name: "Alliance User App", value: "UserApp" },
-  { id: 3, name: "Alliance Merchant", value: "Merchant" },
+  { id: 2, name: "Arca User App", value: "Mobile" },
+  { id: 3, name: "Arca Merchant", value: "Merchant" },
 ];
 
 export default function NewBeneficiary({ reload, close }: any) {
   const [banks, setBanks] = useState([]);
-  const [currencies, setCurrencies] = useState([]);
+  const [countries, setCountries] = useState<any>([]);
 
   const createBeneficiary = useFetch(`${baseUrl}/beneficiary/create`);
-  const fetchCurrencies = useFetch(
-    `${baseUrl}/dashboard/service/currencies`,
+  // countries
+  const fetchCountries = useFetch(
+    `${baseUrl}/dashboard/service/countries`,
     "get"
   );
 
   const fetchBanks = useFetch(`${baseUrl}/dashboard/banks`, "get");
   const resolveAccount = useFetch(`${baseUrl}/beneficiary/resolve`, "post");
-  // currencies
+  // fetch countries
   useEffect(() => {
-    fetchCurrencies?.handleSubmit();
+    fetchCountries.handleSubmit();
   }, []);
   // beneficiaries
   // banks
@@ -55,12 +56,10 @@ export default function NewBeneficiary({ reload, close }: any) {
     fetchBanks?.handleSubmit();
   }, []);
 
+  // filter allowed countries
   useEffect(() => {
-    const strucCurrencies = fetchCurrencies?.data?.data?.filter(
-      (cur: any) => cur.is_allowed
-    );
-    setCurrencies(strucCurrencies);
-  }, [fetchCurrencies?.data]);
+    setCountries(fetchCountries?.data?.data);
+  }, [fetchCountries?.data]);
 
   const dispatch = useDispatch();
 
@@ -79,19 +78,20 @@ export default function NewBeneficiary({ reload, close }: any) {
   // form controller
   const formik = useFormik({
     initialValues: {
-      currency: "",
+      country: "",
       accountNumber: "",
       accountName: "",
       bank: "",
       type: "Bank",
     },
     validationSchema: beneficiary,
-    onSubmit: ({ accountName, accountNumber, bank, currency, type }) => {
+    onSubmit: ({ accountName, accountNumber, bank, country, type }) => {
       const payload = {
         type,
+        country_id: country,
         account_number: accountNumber,
         account_name: accountName,
-        bank_code: bank,
+        bank_id: bank,
       };
       createBeneficiary?.handleSubmit(payload);
     },
@@ -142,24 +142,26 @@ export default function NewBeneficiary({ reload, close }: any) {
             </MenuItem>
           ))}
         </TextField>
-        {/* currencies */}
+        {/* countries */}
         <TextField
-          InputLabelProps={{ shrink: true }}
-          select
-          sx={{ flex: 1 }}
+          label="Country"
           variant="outlined"
-          label="Currency"
-          defaultValue="NGN"
-          name="currency"
-          value={formik.values.currency}
+          name="country"
+          value={formik.values.country}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={formik.touched.currency && Boolean(formik.errors.currency)}
-          helperText={formik.touched.currency && formik.errors.currency}
+          error={formik.touched.country && Boolean(formik.errors.country)}
+          helperText={formik.touched.country && formik.errors.country}
+          select
         >
-          {currencies?.map(({ short_name, id }: any) => (
-            <MenuItem value={short_name} key={id} sx={{ width: "100%" }}>
-              {short_name}
+          {countries?.map(({ name, id, allowed }: MenuProps) => (
+            <MenuItem
+              disabled={!allowed}
+              sx={{ width: "100%" }}
+              key={id}
+              value={id}
+            >
+              {name}
             </MenuItem>
           ))}
         </TextField>
@@ -175,8 +177,8 @@ export default function NewBeneficiary({ reload, close }: any) {
           error={formik.touched.bank && Boolean(formik.errors.bank)}
           helperText={formik.touched.bank && formik.errors.bank}
         >
-          {banks?.map(({ name, id, bank_code }: any) => (
-            <MenuItem value={bank_code} key={id} sx={{ width: "100%" }}>
+          {banks?.map(({ name, id }: any) => (
+            <MenuItem value={id} key={id} sx={{ width: "100%" }}>
               {name}
             </MenuItem>
           ))}
@@ -214,7 +216,7 @@ export default function NewBeneficiary({ reload, close }: any) {
           />
         </Stack>
       </Stack>
-      <Footer>Add beneficiary</Footer>
+      <Footer loading={createBeneficiary?.loading}>Add beneficiary</Footer>
     </form>
   );
 }
