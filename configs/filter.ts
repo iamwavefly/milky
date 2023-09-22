@@ -1,6 +1,3 @@
-import baseUrl from "@/middleware/baseUrl";
-import axios from "axios";
-
 const filterOptions = {
   orders: [
     {
@@ -65,9 +62,10 @@ const filterOptions = {
       title: "Status",
       key: "Status",
       type: "list",
-      options: ["Paid", "Pending", "Failed"],
+      options: ["Successful", "Pending", "Failed"],
     },
   ],
+
   customers: [
     {
       id: 1,
