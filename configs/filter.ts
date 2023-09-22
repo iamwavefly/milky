@@ -1,6 +1,3 @@
-import baseUrl from "@/middleware/baseUrl";
-import axios from "axios";
-
 const filterOptions = {
   orders: [
     {
