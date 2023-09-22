@@ -414,6 +414,8 @@ const theme = createTheme({
           border: 0,
           fontSize: "14px",
           height: "72px",
+          maxWidth: "240px",
+          wordWrap: "break-word",
         },
         root: {
           fontWeight: 500,
