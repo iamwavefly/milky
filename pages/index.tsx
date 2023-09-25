@@ -123,74 +123,77 @@ export default function Index() {
 
   return (
     <Onboarding title="LOGIN">
-      <Stack width="100%" gap="24px">
-        <TextField
-          label="Email address"
-          variant="outlined"
-          value={form.email}
-          name="email"
-          onChange={onChangeHandler}
-        />
-        <TextField
-          type={showPassword ? "text" : "password"}
-          label="Password"
-          variant="outlined"
-          value={form.password}
-          name="password"
-          onChange={onChangeHandler}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  sx={{ border: 0, padding: "5px", left: "3px" }}
-                  edge="start"
-                >
-                  {showPassword ? <EyeCloseIcon /> : <EyeIcon />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Stack>
-      <Typography
-        fontSize="14px"
-        mt="8px"
-        lineHeight="24px"
-        textAlign="right"
-        color="#162031"
-      >
-        Forgot password?
-      </Typography>
-      <Stack mt="36px" spacing="8px" width="100%">
-        <LoadingButton
-          variant="contained"
-          fullWidth
-          disabled={disabled}
-          loading={loading as boolean}
-          onClick={handleLogin}
-        >
-          Log In
-        </LoadingButton>
+      <form onSubmit={handleLogin}>
+        <Stack width="100%" gap="24px">
+          <TextField
+            label="Email address"
+            variant="outlined"
+            value={form.email}
+            name="email"
+            onChange={onChangeHandler}
+          />
+          <TextField
+            type={showPassword ? "text" : "password"}
+            label="Password"
+            variant="outlined"
+            value={form.password}
+            name="password"
+            onChange={onChangeHandler}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    sx={{ border: 0, padding: "5px", left: "3px" }}
+                    edge="start"
+                  >
+                    {showPassword ? <EyeCloseIcon /> : <EyeIcon />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </Stack>
         <Typography
           fontSize="14px"
+          mt="8px"
+          lineHeight="24px"
+          textAlign="right"
           color="#162031"
-          letterSpacing="0.14px"
-          textAlign="center"
-          mx="auto"
         >
-          Don’t have an account?{" "}
-          <Typography
-            color="#0048B1"
-            fontWeight="600"
-            fontSize="14px"
-            component="span"
-          >
-            <Link href="/signup">Sign up</Link>
-          </Typography>
+          Forgot password?
         </Typography>
-      </Stack>
+        <Stack mt="36px" spacing="8px" width="100%">
+          <LoadingButton
+            variant="contained"
+            fullWidth
+            disabled={disabled}
+            loading={loading as boolean}
+            type="submit"
+            onClick={handleLogin}
+          >
+            Log In
+          </LoadingButton>
+          <Typography
+            fontSize="14px"
+            color="#162031"
+            letterSpacing="0.14px"
+            textAlign="center"
+            mx="auto"
+          >
+            Don’t have an account?{" "}
+            <Typography
+              color="#0048B1"
+              fontWeight="600"
+              fontSize="14px"
+              component="span"
+            >
+              <Link href="/signup">Sign up</Link>
+            </Typography>
+          </Typography>
+        </Stack>
+      </form>
     </Onboarding>
   );
 }
