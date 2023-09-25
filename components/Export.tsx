@@ -24,6 +24,9 @@ import html2canvas from "html2canvas";
 import { CSVLink } from "react-csv";
 import SearchIcon from "remixicon-react/SearchLineIcon";
 import ArrowDownIcon from "@/public/icons/arrow-down.svg";
+// @ts-ignore
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 type Props = {
   variant?: "containedSmall" | "outlinedSmall";
@@ -95,7 +98,19 @@ export default function Export({
       });
     handleClose();
   };
+  // export to excel
+  const fileType =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+  const fileExtension = ".xlsx";
 
+  const exportToCSV = () => {
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const newData = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(newData, title + fileExtension);
+    handleClose();
+  };
   return (
     <Box>
       {/* menu */}
@@ -108,8 +123,8 @@ export default function Export({
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={() => downloadPNG("png")}>Export as .png</MenuItem>
-        <MenuItem onClick={() => downloadPNG("pdf")}>Export as .pdf</MenuItem>
+        <MenuItem onClick={() => downloadPNG("png")}>Export as .PNG</MenuItem>
+        <MenuItem onClick={() => downloadPNG("pdf")}>Export as .PDF</MenuItem>
         <MenuItem>
           <CSVLink
             filename={title}
@@ -117,9 +132,10 @@ export default function Export({
             headers={csvHeader}
             onClick={handleClose}
           >
-            Export as .csv
+            Export as .CSV
           </CSVLink>
         </MenuItem>
+        <MenuItem onClick={exportToCSV}>Export as .XLS</MenuItem>
       </Menu>
       <Stack direction="row" gap="10px" alignItems="center">
         {variant === "containedSmall" ? (
