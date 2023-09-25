@@ -30,7 +30,6 @@ import ColorBop from "@/components/colorBop";
 import LineChart from "@/components/charts/lineChart";
 import Navbar from "@/components/Navbar";
 import Export from "@/components/Export";
-import FilterCurrencyMenu from "@/components/FiltterCurrencyMenu";
 
 const options = ["week", "year"];
 
@@ -103,7 +102,7 @@ export default function Index() {
       </Menu>
       <Navbar title="Overview">
         <Stack direction="row" gap="10px">
-          <FilterCurrencyMenu title="Filter currency" />
+          <DropdownMenu title="Filter currency" />
         </Stack>
       </Navbar>
       {/* group charts */}
