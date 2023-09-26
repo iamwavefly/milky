@@ -50,7 +50,7 @@ const InvoiceTable = () => {
         columns={BusinessTransactionTableColumns}
         page={setCurrentPage}
         pageCount={data?.total_pages}
-        // isFetching={loading}
+        isFetching={loading}
         onClickRow={(e) => Router.push(`/merchants/${e?.row?.original?.id}`)}
       />
     </Box>

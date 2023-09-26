@@ -68,6 +68,7 @@ const VirtualAccountTable = () => {
               data={data?.items}
               title="virtual account"
               variant="outlinedSmall"
+              containerRef={containerRef}
             />
             <Button
               variant="contained"

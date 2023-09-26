@@ -73,6 +73,7 @@ const CustomersTable = () => {
               data={data?.items}
               title="customer"
               variant="outlinedSmall"
+              containerRef={containerRef}
             />
             <Button
               variant="contained"

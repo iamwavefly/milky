@@ -80,9 +80,6 @@ const PayoutTable = () => {
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.page?.total_pages}
-        onClickRow={(e) =>
-          Router.push(`/business/customers/${e?.row?.original?.id}`)
-        }
       />
     </Box>
   );

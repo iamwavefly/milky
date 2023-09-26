@@ -53,6 +53,7 @@ const SettlementTable = () => {
               data={data?.items}
               title="settlements"
               variant="outlinedSmall"
+              containerRef={containerRef}
             />
           </>
         }

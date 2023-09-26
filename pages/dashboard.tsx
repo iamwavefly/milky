@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Dashboard from "@/layouts/dashboard";
 import {
   Box,
@@ -47,6 +47,9 @@ export default function Index() {
   const closeFilterModal = () => {
     setAnchorEl(null);
   };
+
+  const containerRef = useRef();
+
   // filter menu ends
   const txnSummaryReq = useFetch(
     `${baseUrl}/metric/transaction/summary?FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}`,
@@ -137,6 +140,7 @@ export default function Index() {
       <Grid container spacing="16px" mt="24px">
         <Grid xs={8}>
           <Box
+            ref={containerRef}
             bgcolor="#fff"
             height="456px"
             borderRadius="8px"
@@ -169,6 +173,7 @@ export default function Index() {
                   title={"dashboard"}
                   data={inflowOutflowChart?.data?.data}
                   columns={undefined}
+                  containerRef={containerRef}
                 />
               </Stack>
             </Stack>

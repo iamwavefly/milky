@@ -89,16 +89,6 @@ export default function Notifications() {
                 label={
                   <Stack direction="row" alignItems="center">
                     <Typography fontSize="10px">Unread messages</Typography>
-                    {/* <Typography
-                      padding="2px"
-                      bgcolor="#F3F3F9"
-                      component="span"
-                      fontSize="10px"
-                      ml="4px"
-                      color="#EA5851"
-                    >
-                      {notifications.length > 9 ? "9+" : notifications.length}
-                    </Typography> */}
                   </Stack>
                 }
                 {...a11yProps(1)}

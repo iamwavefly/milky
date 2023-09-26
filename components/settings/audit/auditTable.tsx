@@ -5,7 +5,7 @@ import { _businesses, _customers, _invoices } from "@/mocks";
 import Header from "@/components/table/header";
 import Table from "@/components/table/table";
 import FilterTable from "@/components/table/filter";
-import { UserTableColumns } from "@/components/table/columns";
+import { AuditTrailTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
@@ -38,9 +38,9 @@ const AuditTable = () => {
     <Box>
       <Header
         containerRef={containerRef}
-        columns={UserTableColumns}
-        data={data?.users}
-        entries={data?.page?.total_items ?? 0}
+        columns={AuditTrailTableColumns}
+        data={data?.items}
+        entries={data?.total_items ?? 0}
         setSearch={setSearch}
         selector="audits"
         updateFilter={setFilters}
@@ -48,11 +48,11 @@ const AuditTable = () => {
       />
       <Table
         containerRef={containerRef}
-        data={data?.users ?? []}
-        columns={UserTableColumns}
+        data={data?.items ?? []}
+        columns={AuditTrailTableColumns}
         isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.page?.total_pages}
+        pageCount={data?.total_pages}
         onClickRow={(e) =>
           Router.push(`/business/customers/${e?.row?.original?.id}`)
         }

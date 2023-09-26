@@ -221,6 +221,29 @@ export const UserTableColumns: ColumnDef<any, any>[] = [
     cell: (row) => <UserMenu id={row.getValue()} />,
   },
 ];
+// audit trails
+export const AuditTrailTableColumns: ColumnDef<any, any>[] = [
+  {
+    accessorKey: "date_created",
+    header: "Time",
+    cell: (row: any) => {
+      return moment(row.getValue()).calendar();
+    },
+  },
+  {
+    accessorKey: "name",
+    header: "User",
+  },
+  {
+    accessorKey: "action",
+    header: "Activity",
+  },
+  {
+    header: "Actions",
+    accessorKey: "user_id",
+    cell: (row) => <EmptyMenu id={row.getValue()} />,
+  },
+];
 
 export const SubsidiaryTableColumns: ColumnDef<any, any>[] = [
   {
