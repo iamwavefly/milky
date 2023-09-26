@@ -16,6 +16,11 @@ interface Props {
 export default function Notification({ details }: Props) {
   const { id, message_text, message_type, date_created, message_from } =
     details;
+
+  if (!details) {
+    return <></>;
+  }
+
   return (
     <Stack direction="row" justifyContent="space-between">
       <Stack direction="row" spacing="4px">
