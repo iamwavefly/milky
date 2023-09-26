@@ -19,6 +19,9 @@ export interface AppProps {
   menu: {
     disabled: boolean;
   };
+  modal: {
+    close: boolean;
+  };
 }
 
 // Initial state
@@ -37,6 +40,9 @@ const initialState: AppProps = {
   menu: {
     disabled: false,
   },
+  modal: {
+    close: false,
+  },
 };
 
 // Actual Slice
@@ -52,6 +58,9 @@ export const appSlice = createSlice({
     },
     reload(state) {
       state.reload = !state.reload;
+    },
+    closeModal(state) {
+      state.modal.close = !state.modal.close;
     },
     setMenuState(state, action) {
       state.menu.disabled = action.payload;
@@ -69,8 +78,13 @@ export const appSlice = createSlice({
   },
 });
 
-export const { setToastState, setDrawalState, reload, setMenuState } =
-  appSlice.actions;
+export const {
+  setToastState,
+  setDrawalState,
+  closeModal,
+  reload,
+  setMenuState,
+} = appSlice.actions;
 
 export const selectAppState = (state: AppState) => state.app;
 

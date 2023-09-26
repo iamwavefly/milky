@@ -18,12 +18,13 @@ import React, {
   useState,
 } from "react";
 import Styles from "./styles.module.scss";
-import htmlToImage from "html-to-image";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { CSVLink } from "react-csv";
-import SearchIcon from "remixicon-react/SearchLineIcon";
 import ArrowDownIcon from "@/public/icons/arrow-down.svg";
+// @ts-ignore
+import * as FileSaver from "file-saver";
+import * as XLSX from "xlsx";
 
 type Props = {
   variant?: "containedSmall" | "outlinedSmall";
@@ -65,7 +66,7 @@ export default function Export({
   }, [columns]);
 
   // download as png
-  const downloadPNG = (target: "pdf" | "jpeg" | "png") => {
+  const download = (target: "pdf" | "jpeg" | "png") => {
     // Get the component's DOM node
     const domNode = containerRef?.current;
     // Get the component's dimensions
@@ -95,6 +96,19 @@ export default function Export({
       });
     handleClose();
   };
+  // export to excel
+  const fileType =
+    "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+  const fileExtension = ".xlsx";
+
+  const exportToCSV = () => {
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
+    const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
+    const newData = new Blob([excelBuffer], { type: fileType });
+    FileSaver.saveAs(newData, title + fileExtension);
+    handleClose();
+  };
 
   return (
     <Box>
@@ -108,8 +122,8 @@ export default function Export({
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={() => downloadPNG("png")}>Export as .png</MenuItem>
-        <MenuItem onClick={() => downloadPNG("pdf")}>Export as .pdf</MenuItem>
+        <MenuItem onClick={() => download("png")}>Export as .PNG</MenuItem>
+        <MenuItem onClick={() => download("pdf")}>Export as .PDF</MenuItem>
         <MenuItem>
           <CSVLink
             filename={title}
@@ -117,9 +131,10 @@ export default function Export({
             headers={csvHeader}
             onClick={handleClose}
           >
-            Export as .csv
+            Export as .CSV
           </CSVLink>
         </MenuItem>
+        <MenuItem onClick={exportToCSV}>Export as .XLS</MenuItem>
       </Menu>
       <Stack direction="row" gap="10px" alignItems="center">
         {variant === "containedSmall" ? (
@@ -127,6 +142,7 @@ export default function Export({
             variant={variant ?? "containedSmall"}
             sx={{ height: "40px" }}
             onClick={handleClick}
+            disabled={!data?.length}
             {...others}
           >
             Export <ArrowDownIcon fill="#fff" height="18px" width="18px" />
@@ -153,6 +169,7 @@ export default function Export({
               </Typography>
             </Box>
             <IconButton
+              disabled={!data?.length}
               sx={{ flex: 1, minWidth: "35px" }}
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}

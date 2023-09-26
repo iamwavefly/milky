@@ -39,7 +39,7 @@ const PendingTransferTable = () => {
       <Header
         containerRef={containerRef}
         columns={TransferPendingTableColumns}
-        data={data?.data?.items}
+        data={data?.data}
         entries={`${data?.data?.page?.size ?? 0}`}
         setSearch={setSearch}
         pageName="Pending Approvals"
@@ -48,13 +48,14 @@ const PendingTransferTable = () => {
           <>
             <Export
               columns={TransferPendingTableColumns}
-              data={data?.items}
+              data={data?.data}
               title="Pending Approvals"
               variant="outlinedSmall"
             />
             <Button
               sx={{ fontSize: "14px", height: "40px" }}
               variant="contained"
+              disabled={data?.data?.length === 0}
             >
               Approve all
             </Button>
@@ -64,7 +65,7 @@ const PendingTransferTable = () => {
       />
       <Table
         containerRef={containerRef}
-        data={data?.data?.items ?? []}
+        data={data?.data ?? []}
         columns={TransferPendingTableColumns}
         isFetching={loading}
         page={setCurrentPage}

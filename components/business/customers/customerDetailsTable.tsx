@@ -65,6 +65,7 @@ const CustomerDetailsTable = () => {
               data={data?.items}
               title="order"
               variant="outlinedSmall"
+              containerRef={containerRef}
             />
           </>
         }

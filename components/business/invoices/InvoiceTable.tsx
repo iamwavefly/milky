@@ -70,6 +70,7 @@ const InvoiceTable = () => {
               data={data?.items}
               title="invoice"
               variant="outlinedSmall"
+              containerRef={containerRef}
             />
             <Button
               sx={{ height: "40px", fontSize: "12px" }}

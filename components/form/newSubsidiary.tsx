@@ -95,7 +95,7 @@ export default function NewSubsidiary({ reload, close }: NewUserProps) {
         is_Default: form.default,
         business_id: fetchBusinessInformation?.data?.data?.business_id,
       };
-      const formData = serialize(payload);
+      const formData = payload;
       handleSubmit(formData);
     },
   });
@@ -212,6 +212,7 @@ export default function NewSubsidiary({ reload, close }: NewUserProps) {
       <Footer
         type="submit"
         loading={loading}
+        close={close}
         disabled={!(formik.isValid && formik.dirty)}
       >
         Add Subsidiary

@@ -145,6 +145,7 @@ const RefundTable = () => {
               columns={RefundTableColumns}
               data={data?.items}
               title="beneficiary"
+              containerRef={containerRef}
               variant="outlinedSmall"
             />
             <Button

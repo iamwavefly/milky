@@ -22,6 +22,7 @@ import Modal from "../modal/modal";
 import { UserProps } from "@/interfaces";
 import RemoveUser from "../settings/roles-permissions/RemoveUser";
 import NewUser from "../form/newUser";
+import { serialize } from "object-to-formdata";
 
 export const ViewTransaction = ({ id }: { id?: number }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -109,7 +110,9 @@ export const ProductMenu = ({ id }: { id?: number }) => {
     "get"
   );
 
-  const router = useRouter();
+  const dispatch = useDispatch();
+
+  const newProductReq = useFetch(`${baseUrl}/dashboard/product/create`);
 
   const archiveProductReq = useFetch(
     `${baseUrl}/dashboard/product/archive/${id}`,
@@ -121,12 +124,16 @@ export const ProductMenu = ({ id }: { id?: number }) => {
     "patch"
   );
 
-  const refreshData = () => router.reload();
+  const refreshData = () => dispatch(reload());
 
   useEffect(() => {
     archiveProductReq.data.message ||
       (unArchiveProductReq.data.message && refreshData());
   }, [archiveProductReq.data]);
+
+  useEffect(() => {
+    newProductReq.data.status === "success" && refreshData();
+  }, [newProductReq.data]);
 
   useEffect(() => {
     handleSubmit();
@@ -135,8 +142,6 @@ export const ProductMenu = ({ id }: { id?: number }) => {
   useEffect(() => {
     setProduct(data?.items?.[0]);
   }, [data]);
-
-  const dispatch = useDispatch();
 
   const handleClick = (event: any) => {
     event.stopPropagation();
@@ -158,10 +163,26 @@ export const ProductMenu = ({ id }: { id?: number }) => {
     );
   };
 
+  const duplicateProduct = () => {
+    const { id, name, price, image, availability, status, stock } = product;
+    const payload = {
+      name,
+      description: name,
+      price,
+      dealprice: price,
+      ondeal: availability,
+      stock,
+      images: image,
+      url: "",
+    };
+    newProductReq?.handleSubmit(serialize(payload));
+  };
+
   const handleActionClick = (action: string, event: any) => {
     handleClose(event);
     if (action === "edit") return Router.push(`/business/products/edit/${id}`);
     if (action === "delete") return openDeletePrompt();
+    if (action === "duplicate") return duplicateProduct();
     if (action === "archive") {
       if (product?.status !== "Archived") {
         return archiveProductReq?.handleSubmit();
@@ -188,7 +209,7 @@ export const ProductMenu = ({ id }: { id?: number }) => {
           <MenuItem onClick={(event) => handleActionClick("archive", event)}>
             {product?.status !== "Archived" ? "Archieve" : "Unarchive"}
           </MenuItem>
-          <MenuItem onClick={(event) => handleActionClick("edit", event)}>
+          <MenuItem onClick={(event) => handleActionClick("duplicate", event)}>
             Duplicate product
           </MenuItem>
           <MenuItem onClick={(event) => handleActionClick("edit", event)}>
