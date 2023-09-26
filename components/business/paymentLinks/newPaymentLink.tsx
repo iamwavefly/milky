@@ -9,10 +9,13 @@ import React, { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 
-export default function NewPaymentLink({ reload, details, close }: any) {
+export default function NewPaymentLink({ reload, details }: any) {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/payment/link/${details ? "edit" : "new"}`
   );
+
+  const dispatch = useDispatch();
+  const close = () => dispatch(setDrawalState({ active: false }));
 
   const paymentTypes = useFetch(
     `${baseUrl}/dashboard/payment/link/types`,
