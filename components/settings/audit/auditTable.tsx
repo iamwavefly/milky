@@ -13,6 +13,7 @@ import { Box, Button } from "@mui/material";
 import AddBox from "remixicon-react/AddBoxLineIcon";
 import { setDrawalState } from "@/store/appSlice";
 import { useDispatch } from "react-redux";
+import Export from "@/components/Export";
 
 const AuditTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -45,6 +46,17 @@ const AuditTable = () => {
         selector="audits"
         updateFilter={setFilters}
         url="/dashboard/audit/trails"
+        actions={
+          <>
+            <Export
+              columns={AuditTrailTableColumns}
+              data={data?.items}
+              title="Audit Trails"
+              variant="containedSmall"
+              containerRef={containerRef}
+            />
+          </>
+        }
       />
       <Table
         containerRef={containerRef}
