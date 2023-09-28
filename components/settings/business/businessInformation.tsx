@@ -400,7 +400,7 @@ export default function BusinessInformation() {
         </Box>
         <Box>
           <Footer
-            disabled={!(formik.isValid && formik.dirty)}
+            disabled={!(formik.isValid && formik.dirty) || isReadOnly}
             loading={loading}
           >
             Save changes
