@@ -252,7 +252,6 @@ export default function FilterContent({
           sx={{
             transform: "translate(-50%, -50%)",
             zIndex: 9999,
-            bgcolor: "red",
           }}
         >
           <DateRangePicker
