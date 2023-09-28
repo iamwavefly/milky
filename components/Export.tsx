@@ -65,7 +65,7 @@ export default function Export({
     setCsvHeader(newColumns);
   }, [columns]);
 
-  // download as png
+  // download handler
   const download = (target: "pdf" | "jpeg" | "png") => {
     // Get the component's DOM node
     const domNode = containerRef?.current;

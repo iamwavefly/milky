@@ -130,7 +130,7 @@ const filterOptions = {
       title: "Status",
       key: "Status",
       type: "list",
-      options: ["Available", "Archived"],
+      options: ["Active", "Inactive"],
     },
   ],
   paymentLinks: [
