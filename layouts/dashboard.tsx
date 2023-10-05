@@ -309,7 +309,9 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
                   key={key}
                 >
                   <Box></Box>
-                  <Typography component="span">{name}</Typography>
+                  <Typography whiteSpace="nowrap" component="span">
+                    {name}
+                  </Typography>
                 </Link>
               </li>
             ))}
