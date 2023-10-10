@@ -387,7 +387,7 @@ export const PaymentLinkMenu = ({ id }: { id: number }) => {
   const dispatch = useDispatch();
 
   const copyPaymentLink = () => {
-    clipboard(details?.payment_url);
+    clipboard(details?.payment_link_url);
   };
 
   const linkStatusUpdate = () => {
@@ -412,7 +412,7 @@ export const PaymentLinkMenu = ({ id }: { id: number }) => {
   const handleActionClick = (action: string, event: any) => {
     handleClose(event);
     if (action === "open")
-      return window.open(details?.payment_url, "_blank", "noopener,noreferrer");
+      return window.open(details?.payment_link_url, "_blank", "noopener,noreferrer");
     if (action === "view") return Router.push(`/business/payment-links/${id}`);
     if (action === "copy") return copyPaymentLink();
     if (action === "update") return linkStatusUpdate();
