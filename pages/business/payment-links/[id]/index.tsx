@@ -70,7 +70,7 @@ export default function Index() {
             <Button
               variant="outlined"
               sx={{ fontSize: "12px", height: "40px" }}
-              onClick={() => clipboard(details?.payment_url ?? "...")}
+              onClick={() => clipboard(details?.payment_link_url ?? "...")}
             >
               <CopyIcon size={18} />
               Copy Link
@@ -133,8 +133,8 @@ export default function Index() {
             </Stack>
             <Box justifyContent="center" pl="48px" my="auto">
               <Typography color="#262B40" fontSize="14px">
-                {details?.payment_url
-                  ? truncate(details?.payment_url, 30)
+                {details?.payment_link_url
+                  ? truncate(details?.payment_link_url, 30)
                   : "..."}
               </Typography>
             </Box>

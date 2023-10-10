@@ -37,7 +37,7 @@ export default function NewUser({
     `${baseUrl}/dashboard/create-user`
   );
   // update user role request
-  const userRoleApi = useFetch(`${baseUrl}/dashboard/user/update`, "post");
+  const userRoleApi = useFetch(`${baseUrl}/dashboard/role/edit`, "post");
   // countries
   const fetchCountries = useFetch(
     `${baseUrl}/dashboard/service/countries`,
@@ -204,7 +204,7 @@ export default function NewUser({
           select
         >
           {roles?.data?.data?.map(({ name, id }: MenuProps) => (
-            <MenuItem sx={{ width: "100%" }} key={id} value={name}>
+            <MenuItem sx={{ width: "100%" }} key={id} value={id}>
               {name}
             </MenuItem>
           ))}

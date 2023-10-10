@@ -147,7 +147,11 @@ export default function Index() {
                 <Detail
                   title={"PAYMENT URL"}
                   variant={"copy"}
-                  value={details?.payment_url ? details?.payment_url : "N/A"}
+                  value={
+                    details?.payment_link_url
+                      ? details?.payment_link_url
+                      : "N/A"
+                  }
                 />
               </Stack>
             </Box>
