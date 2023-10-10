@@ -14,8 +14,6 @@ export default function NewPaymentLink({ reload, details, close }: any) {
     `${baseUrl}/dashboard/payment/link/${details ? "edit" : "new"}`
   );
 
-  const dispatch = useDispatch();
-
   const paymentTypes = useFetch(
     `${baseUrl}/dashboard/payment/link/types`,
     "get"
