@@ -212,7 +212,7 @@ export default function NewSubsidiary({ reload, close }: NewUserProps) {
       <Footer
         type="submit"
         loading={loading}
-        close={close}
+        onClose={close}
         disabled={!(formik.isValid && formik.dirty)}
       >
         Add Subsidiary

@@ -183,6 +183,7 @@ export default function BankDetails({ nextStep }: Props) {
           <Stack
             spacing="28px"
             justifyContent="flex-end"
+            alignItems="center"
             direction="row"
             px="40px"
             py="16px"

@@ -1,4 +1,4 @@
-import { closeModal, setDrawalState } from "@/store/appSlice";
+import { setDrawalState } from "@/store/appSlice";
 import { LoadingButton, LoadingButtonProps } from "@mui/lab";
 import { ButtonProps, Stack } from "@mui/material";
 import React, { ReactNode } from "react";
@@ -6,16 +6,12 @@ import { useDispatch } from "react-redux";
 
 type Props = {
   children: ReactNode;
-  close?: () => void;
+  onClose?: () => void;
 } & LoadingButtonProps;
 
-export default function Footer({ children, close, ...others }: Props) {
+export default function Footer({ children, onClose, ...others }: Props) {
   const dispatch = useDispatch();
-  const closePopover = () => {
-    close && close();
-    dispatch(closeModal());
-    dispatch(setDrawalState({ active: false }));
-  };
+  const close = () => dispatch(setDrawalState({ active: false }));
 
   return (
     <Stack
@@ -32,7 +28,7 @@ export default function Footer({ children, close, ...others }: Props) {
       justifyContent="flex-end"
       bgcolor="#fff"
     >
-      <LoadingButton variant="text" onClick={closePopover}>
+      <LoadingButton variant="text" onClick={onClose ?? close}>
         Cancel
       </LoadingButton>
       <LoadingButton

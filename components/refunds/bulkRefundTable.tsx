@@ -27,6 +27,7 @@ export default function BulkRefundTable({
   openRefund,
   reload,
   reset,
+  close,
 }: any) {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/refund`

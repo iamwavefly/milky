@@ -39,6 +39,8 @@ export default function Index() {
     "get"
   );
 
+  const close = () => dispatch(setDrawalState({ active: false }));
+
   useEffect(() => {
     typeof id === "number" && isNaN(id) === false && handleSubmit();
   }, [asPath, id]);
@@ -52,7 +54,13 @@ export default function Index() {
       setDrawalState({
         active: true,
         title: "Edit Payment Link",
-        content: <NewPaymentLink reload={handleSubmit} details={details} />,
+        content: (
+          <NewPaymentLink
+            reload={handleSubmit}
+            details={details}
+            close={close}
+          />
+        ),
       })
     );
   };
