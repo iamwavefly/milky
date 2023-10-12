@@ -85,7 +85,10 @@ const RefundTable = () => {
     }
   }, [csvFile]);
 
-  const resetTable = () => setCsvFile(null);
+  const resetTable = () => {
+    handleCloseModal();
+    setCsvFile(null);
+  };
 
   return (
     <Box>
@@ -105,13 +108,14 @@ const RefundTable = () => {
         {modalState === "single" ? (
           <NewRefund reload={handleSubmit} close={handleCloseModal} />
         ) : modalState === "bulk" ? (
-          <BulkRefund updateCsvFile={updateCsvFile} />
+          <BulkRefund updateCsvFile={updateCsvFile} close={handleCloseModal} />
         ) : modalState === "csv" ? (
           <BulkRefundTable
             csvFile={csvFile}
             openRefund={openBulkRefund}
             reload={handleSubmit}
             reset={resetTable}
+            close={handleCloseModal}
           />
         ) : (
           ""

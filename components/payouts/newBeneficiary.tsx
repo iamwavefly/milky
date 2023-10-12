@@ -216,7 +216,7 @@ export default function NewBeneficiary({ reload, close }: any) {
           />
         </Stack>
       </Stack>
-      <Footer close={close} loading={createBeneficiary?.loading}>
+      <Footer onClose={close} loading={createBeneficiary?.loading}>
         Add beneficiary
       </Footer>
     </form>

@@ -189,7 +189,7 @@ export default function FundBalance({ reload, close }: any) {
           <TextField label="Funding amount" variant="outlined" type="number" />
         </Stack>
       </Stack>
-      <Footer>Fund balance </Footer>
+      <Footer onClose={close}>Fund balance </Footer>
     </form>
   );
 }

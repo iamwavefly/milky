@@ -106,7 +106,7 @@ const Index = () => {
                       color="#262B40"
                       ml="16px"
                     >
-                      Settle to Alliance Pay account
+                      Settle to Arca account
                     </Typography>
                   }
                 />

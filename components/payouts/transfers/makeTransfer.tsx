@@ -344,6 +344,7 @@ export default function MakeTransfer({ reload, close }: any) {
           <Footer
             disabled={!(formik.isValid && formik.dirty)}
             loading={initiatePayout?.loading}
+            onClose={close}
           >
             Pay
           </Footer>

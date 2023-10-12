@@ -46,7 +46,7 @@ const sampleBulkDownload = [
   },
 ];
 
-export default function BulkRefund({ reload, updateCsvFile }: any) {
+export default function BulkRefund({ reload, updateCsvFile, close }: any) {
   const [jsonData, setJsonData] = useState<any[] | null>(null);
   const [columns, setColumns] = useState<any[]>([]);
 
@@ -105,7 +105,7 @@ export default function BulkRefund({ reload, updateCsvFile }: any) {
           </Stack>
         </CSVLink>
       </Box>
-      <Footer>Continue</Footer>
+      <Footer onClose={close}>Continue</Footer>
     </Box>
   );
 }

@@ -1,13 +1,11 @@
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
-import { bankDetails, newCustomer, newPaymentLink } from "@/schema";
-import { setDrawalState } from "@/store/appSlice";
+import { newPaymentLink } from "@/schema";
 import { LoadingButton } from "@mui/lab";
 import { Box, MenuItem, Stack, TextField } from "@mui/material";
 import { useFormik } from "formik";
+import Router from "next/router";
 import React, { useEffect } from "react";
-import { toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
 
 export default function NewPaymentLink({ reload, details, close }: any) {
   const { loading, data, error, handleSubmit } = useFetch(
@@ -64,8 +62,9 @@ export default function NewPaymentLink({ reload, details, close }: any) {
     const { status } = data;
     if (status === "Success") {
       reload();
-      close();
+      close && close();
       formik.resetForm();
+      if (details) Router.push("/business/payment-links");
     }
   }, [data]);
 
@@ -77,6 +76,7 @@ export default function NewPaymentLink({ reload, details, close }: any) {
       formik.setFieldValue("linkName", details?.name);
       formik.setFieldValue("paymentType", linkType);
       formik.setFieldValue("amount", details?.amount);
+      formik.setFieldValue("currency", details?.currency);
       formik.setFieldValue("limit", details?.limit);
     }
   }, [details, paymentTypes?.data]);

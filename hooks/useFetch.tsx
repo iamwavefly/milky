@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   resolveErrorMsg,
   notifyErrorHandler,
@@ -11,14 +11,18 @@ import { toast } from "react-hot-toast";
 
 const useFetch = (
   url: string,
-  type?: "post" | "patch" | "put" | "get" | "delete"
+  type?: "post" | "patch" | "put" | "get" | "delete",
+  useLoader?: boolean
 ) => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
 
-  const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
+  useEffect(() => {
+    if (loading && useLoader) {
+      toast.loading("Hold tight, we're working on it...");
+    }
+  }, [loading, error]);
 
   const handleSubmit = async (payload: any, noToast?: boolean) => {
     setLoading(true);

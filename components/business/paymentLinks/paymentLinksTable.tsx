@@ -41,18 +41,6 @@ const PaymentLinksTable = () => {
 
   const containerRef = useRef();
 
-  const dispatch = useDispatch();
-  // open drawal
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "New Payment Link",
-        content: <NewPaymentLink reload={handleSubmit} />,
-      })
-    );
-  };
-
   useEffect(() => {
     handleSubmit();
   }, [currentPage, search, filters]);

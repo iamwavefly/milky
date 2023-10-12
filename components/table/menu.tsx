@@ -23,6 +23,7 @@ import { UserProps } from "@/interfaces";
 import RemoveUser from "../settings/roles-permissions/RemoveUser";
 import NewUser from "../form/newUser";
 import { serialize } from "object-to-formdata";
+import DeleteProd from "../business/products/DeleteProduct";
 
 export const ViewTransaction = ({ id }: { id?: number }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -61,50 +62,14 @@ export const ViewTransaction = ({ id }: { id?: number }) => {
   );
 };
 
-const DeletePromptComp = ({ product }: any) => {
-  const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/product/delete/${product?.id}`,
-    "delete"
-  );
-
-  const dispatch = useDispatch();
-  const close = () => dispatch(setDrawalState({ active: false }));
-
-  return (
-    <Box>
-      <Typography color="rgba(38, 43, 64, 0.8)">
-        You are about to delete this product:{" "}
-        <Typography component="span" fontWeight={500}>
-          {product?.name}
-        </Typography>
-      </Typography>
-      <Stack spacing="25px" mt="60px">
-        <LoadingButton
-          onClick={handleSubmit}
-          variant="contained"
-          sx={{ bgcolor: "#EA5851 !important" }}
-          loading={loading}
-        >
-          Delete
-        </LoadingButton>
-        <Button
-          onClick={close}
-          variant="outlined"
-          sx={{
-            color: "#EA5851 !important",
-            border: "1px solid #EA5851 !important",
-          }}
-        >
-          Cancel
-        </Button>
-      </Stack>
-    </Box>
-  );
-};
-
 export const ProductMenu = ({ id }: { id?: number }) => {
   const [product, setProduct] = useState<any>({});
   const [anchorEl, setAnchorEl] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => setOpenModal(true);
+  const handleCloseModal = () => setOpenModal(false);
+
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/product/all?ProductId=${id}`,
     "get"
@@ -112,28 +77,48 @@ export const ProductMenu = ({ id }: { id?: number }) => {
 
   const dispatch = useDispatch();
 
-  const newProductReq = useFetch(`${baseUrl}/dashboard/product/create`);
+  const newProdReq = useFetch(`${baseUrl}/dashboard/product/create`);
 
   const archiveProductReq = useFetch(
     `${baseUrl}/dashboard/product/archive/${id}`,
-    "patch"
+    "patch",
+    true
   );
 
-  const unArchiveProductReq = useFetch(
+  const unArchiveProdReq = useFetch(
     `${baseUrl}/dashboard/product/unarchive/${id}`,
-    "patch"
+    "patch",
+    true
+  );
+  // DUPLICATE PRODUCT
+  const duplicateProdReq = useFetch(
+    `${baseUrl}/dashboard/product/duplicate/${id}`,
+    "post",
+    true
   );
 
   const refreshData = () => dispatch(reload());
 
   useEffect(() => {
     archiveProductReq.data.message ||
-      (unArchiveProductReq.data.message && refreshData());
+      (unArchiveProdReq.data.message && refreshData());
   }, [archiveProductReq.data]);
 
   useEffect(() => {
-    newProductReq.data.status === "success" && refreshData();
-  }, [newProductReq.data]);
+    if (
+      newProdReq.data.status === "success" ||
+      duplicateProdReq?.data.status === "success" ||
+      archiveProductReq?.data?.status === "success" ||
+      unArchiveProdReq.data?.status === "success"
+    ) {
+      refreshData();
+    }
+  }, [
+    newProdReq.data,
+    duplicateProdReq?.data,
+    archiveProductReq?.data,
+    unArchiveProdReq.data,
+  ]);
 
   useEffect(() => {
     handleSubmit();
@@ -153,47 +138,38 @@ export const ProductMenu = ({ id }: { id?: number }) => {
     setAnchorEl(null);
   };
 
-  const openDeletePrompt = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Delete Product",
-        content: <DeletePromptComp product={product} />,
-      })
-    );
-  };
-
   const duplicateProduct = () => {
-    const { id, name, price, image, availability, status, stock } = product;
-    const payload = {
-      name,
-      description: name,
-      price,
-      dealprice: price,
-      ondeal: availability,
-      stock,
-      images: image,
-      url: "",
-    };
-    newProductReq?.handleSubmit(serialize(payload));
+    duplicateProdReq?.handleSubmit();
   };
 
   const handleActionClick = (action: string, event: any) => {
     handleClose(event);
     if (action === "edit") return Router.push(`/business/products/edit/${id}`);
-    if (action === "delete") return openDeletePrompt();
+    if (action === "delete") return handleOpenModal();
     if (action === "duplicate") return duplicateProduct();
     if (action === "archive") {
       if (product?.status !== "Archived") {
         return archiveProductReq?.handleSubmit();
       }
-      return unArchiveProductReq?.handleSubmit();
+      return unArchiveProdReq?.handleSubmit();
     }
     // reolveDisputeDrawal();
   };
 
   return (
     <>
+      <Modal
+        title="Delete Product"
+        isOpen={openModal}
+        close={handleCloseModal}
+        onClose={handleCloseModal}
+      >
+        <DeleteProd
+          product={product}
+          close={handleCloseModal}
+          reload={refreshData}
+        />
+      </Modal>
       <Box>
         <IconButton
           sx={{ width: "40px", height: "40px" }}
@@ -412,7 +388,11 @@ export const PaymentLinkMenu = ({ id }: { id: number }) => {
   const handleActionClick = (action: string, event: any) => {
     handleClose(event);
     if (action === "open")
-      return window.open(details?.payment_link_url, "_blank", "noopener,noreferrer");
+      return window.open(
+        details?.payment_link_url,
+        "_blank",
+        "noopener,noreferrer"
+      );
     if (action === "view") return Router.push(`/business/payment-links/${id}`);
     if (action === "copy") return copyPaymentLink();
     if (action === "update") return linkStatusUpdate();
