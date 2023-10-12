@@ -60,9 +60,10 @@ export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
     },
   },
   {
-    accessorKey: "order_reference",
     header: "actions",
-    cell: (row) => <ViewTransaction id={row.getValue()} />,
+    cell: (props) => (
+      <ViewTransaction id={props?.row?.original?.order_reference} />
+    ),
   },
 ];
 
