@@ -52,9 +52,9 @@ const TransactionTable = () => {
               selector={"orders"}
             />
             <Export
+              columns={BusinessTransactionTableColumns}
               title={"transactions"}
               data={data?.items}
-              columns={BusinessTransactionTableColumns}
               containerRef={containerRef}
               variant="containedSmall"
             />

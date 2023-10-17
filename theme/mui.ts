@@ -416,6 +416,7 @@ const theme = createTheme({
           height: "72px",
           maxWidth: "240px",
           wordWrap: "break-word",
+          borderBottom: "1px solid rgba(228, 232, 242, 0.5)",
         },
         root: {
           fontWeight: 500,
