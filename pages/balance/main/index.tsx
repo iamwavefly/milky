@@ -6,6 +6,7 @@ import {
   Divider,
   Grid,
   IconButton,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -24,6 +25,8 @@ import TransferDetails from "@/components/payouts/transfers/transferDetails";
 import { useDispatch } from "react-redux";
 import { setDrawalState } from "@/store/appSlice";
 import Modal from "@/components/modal/modal";
+
+const skeletons = Array.from({ length: 3 }, (x, i) => i);
 
 export default function Index() {
   const [metric, setMetric] = useState<any>({});
@@ -76,77 +79,36 @@ export default function Index() {
       </Stack>
       {/* cards */}
       <Grid container spacing="16px" mt="20px">
-        {balance?.map(
-          ({
-            wallet_id,
-            available_balance,
-            available_balance_change,
-            currency_short_name,
-            account_details: { bank_name, account_number },
-          }) => (
-            <Grid item md={4} key={wallet_id}>
-              <LandscapeCard
-                title={available_balance}
-                subtitle={
-                  account_number ? `${account_number} (${bank_name})` : ""
-                }
-                currency={currency_short_name}
-                icon={<BankIcon />}
-                change={available_balance_change}
-              />
-            </Grid>
-          )
-        )}
+        {balance?.length
+          ? balance?.map(
+              ({
+                wallet_id,
+                available_balance,
+                available_balance_change,
+                currency_short_name,
+                account_details: { bank_name, account_number },
+              }) => (
+                <Grid item md={4} key={wallet_id}>
+                  <LandscapeCard
+                    title={available_balance}
+                    subtitle={
+                      account_number ? `${account_number} (${bank_name})` : ""
+                    }
+                    currency={currency_short_name}
+                    icon={<BankIcon />}
+                    change={available_balance_change}
+                  />
+                </Grid>
+              )
+            )
+          : skeletons.map((skeleton) => (
+              <Grid item md={4} key={skeleton}>
+                <Box height={160}>
+                  <Skeleton variant="rounded" height={160} />
+                </Box>
+              </Grid>
+            ))}
       </Grid>
-      {/* <Stack direction="row" gap="16px" mt="32px">
-        <LandscapeCard
-          title="0091487523"
-          subtitle={"Dispute / Chargeback"}
-          currency="NGN"
-          icon={<ChargebackIcon />}
-          linkText="View chargeback"
-          linkTo="/"
-        />
-        <LandscapeCard
-          title="0091487523"
-          subtitle={"Refunds"}
-          currency="NGN"
-          icon={<ReloadIcon width="24px" height="24px" fill="#3C4453" />}
-          variant="error"
-          linkTo="/"
-          linkText="View all refunds"
-        />
-        <LandscapeCard
-          title="400,000"
-          subtitle={"Non-compliance assessment"}
-          currency="NGN"
-          icon={<BlockIcon />}
-          footer={
-            <Stack
-              direction="row"
-              padding="12px 24px"
-              height="56px"
-              bgcolor="#F5FBFF"
-              alignItems="flex-start"
-              spacing="8px"
-            >
-              <Box>
-                <InfoIcon />
-              </Box>
-              <Typography
-                position="relative"
-                top={-2}
-                color="#162031"
-                fontSize="12px"
-                lineHeight="18px"
-              >
-                This is how much you’ve charged for defaulting on compliance
-                rule
-              </Typography>
-            </Stack>
-          }
-        />
-      </Stack> */}
     </Dashboard>
   );
 }

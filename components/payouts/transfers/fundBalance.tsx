@@ -81,7 +81,7 @@ export default function FundBalance({ reload, close }: any) {
 
   return (
     <form onSubmit={formik.handleSubmit}>
-      <Stack px="40px" mt="32px">
+      <Stack px="40px" my="32px">
         <Typography color="#3C4453" fontSize="15px" lineHeight="26px">
           To fund your naira wallet, make a transfer to the account details
           below
@@ -164,7 +164,7 @@ export default function FundBalance({ reload, close }: any) {
           </Stack>
         </Stack>
         {/* account type */}
-        <Stack spacing="24px" mt="24px">
+        <Stack spacing="24px" mt="24px" pb="16px">
           <TextField
             label="Which balance do you want to fund?"
             variant="outlined"
@@ -186,10 +186,10 @@ export default function FundBalance({ reload, close }: any) {
               )
             )}
           </TextField>
-          <TextField label="Funding amount" variant="outlined" type="number" />
+          {/* <TextField label="Funding amount" variant="outlined" type="number" /> */}
         </Stack>
       </Stack>
-      <Footer onClose={close}>Fund balance </Footer>
+      {/* <Footer onClose={close}>Fund balance </Footer> */}
     </form>
   );
 }

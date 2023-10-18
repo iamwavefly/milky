@@ -3,7 +3,7 @@ import MuiTabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { Badge, Stack } from "@mui/material";
+import { Badge, Grid, Skeleton, Stack } from "@mui/material";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -115,7 +115,15 @@ export default function Tabs({ tabs, updateTab, currentTab }: Props) {
         </MuiTabs>
       </Box>
       <CustomTabPanel value={value} index={value}>
-        {Component && <Component currentTab={value} />}
+        {Component ? (
+          <Component currentTab={value} />
+        ) : (
+          <Stack spacing="18px" direction="row" mb="33px" mt="51px">
+            <Skeleton variant="rounded" height={160} width="100%" />
+            <Skeleton variant="rounded" height={160} width="100%" />
+            <Skeleton variant="rounded" height={160} width="100%" />
+          </Stack>
+        )}
       </CustomTabPanel>
     </Box>
   );
