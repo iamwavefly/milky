@@ -47,7 +47,7 @@ const PendingChargebackTable = () => {
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.total_pages}
-        dataLength={result.total_items}
+        dataLength={data.total_items}
         onClickRow={(e) =>
           Router.push(`/transactions/customers/${e?.row?.original?.id}`)
         }

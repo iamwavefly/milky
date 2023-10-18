@@ -46,7 +46,7 @@ const AssessmentChargebackTable = () => {
         columns={AssessmentChargebackColumns}
         isFetching={loading}
         page={setCurrentPage}
-        dataLength={result.total_items}
+        dataLength={data.total_items}
         pageCount={data?.total_pages}
         onClickRow={(e) =>
           Router.push(`/transactions/customers/${e?.row?.original?.id}`)

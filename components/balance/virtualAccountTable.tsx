@@ -60,7 +60,7 @@ const VirtualAccountTable = () => {
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.total_pages}
-        dataLength={result.total_items}
+        dataLength={data.total_items}
       />
     </div>
   );

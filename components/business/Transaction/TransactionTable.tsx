@@ -48,7 +48,7 @@ const TransactionTable = () => {
         page={setCurrentPage}
         pageCount={data?.total_pages}
         isFetching={loading}
-        dataLength={result.total_items}
+        dataLength={data.total_items}
         onClickRow={(e) => Router.push(`/transactions/${e?.row?.original?.id}`)}
       />
     </div>
