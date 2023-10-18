@@ -101,6 +101,7 @@ const InvoiceTable = () => {
         isFetching={loading && rowsPerPage}
         page={setCurrentPage}
         pageCount={data?.total_pages}
+        dataLength={result.total_items}
         onClickRow={(e) =>
           Router.push(`/business/invoice/${e?.row?.original?.id}`)
         }

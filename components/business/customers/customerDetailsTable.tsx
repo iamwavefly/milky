@@ -89,6 +89,7 @@ const CustomerDetailsTable = () => {
         data={result?.items ?? []}
         pageCount={result?.total_pages}
         isFetching={loading && rowsPerPage}
+        dataLength={result.total_items}
       />
     </div>
   );

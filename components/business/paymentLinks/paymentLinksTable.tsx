@@ -102,6 +102,7 @@ const PaymentLinksTable = () => {
         containerRef={containerRef}
         columns={PaymentLinkColumns}
         page={setCurrentPage}
+        dataLength={result.total_items}
         onClickRow={(e) =>
           Router.push(`/business/payment-links/${e?.row?.original?.id}`)
         }

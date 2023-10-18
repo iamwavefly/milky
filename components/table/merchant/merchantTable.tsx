@@ -259,6 +259,7 @@ const MerchantTable = () => {
         page={setCurrentPage}
         pageCount={data?.total_pages}
         isFetching={loading}
+        dataLength={result.total_items}
         onClickRow={(e) =>
           Router.push(`/merchant-channel/${e?.row?.original?.id}`)
         }

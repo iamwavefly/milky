@@ -43,6 +43,7 @@ const InvoiceTable = () => {
       <FilterTable updateFilter={setFilters} />
       <Table
         containerRef={containerRef}
+        dataLength={result.total_items}
         columns={InvoiceTableColumns}
         page={setCurrentPage}
         data={result?.items ?? []}

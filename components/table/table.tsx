@@ -20,6 +20,7 @@ import {
 // import { debounce } from "lodash";
 import { ChangeEvent, FC, memo, useMemo, useState } from "react";
 import { StyledPagination } from "./styled";
+import CustomPagination from "./Pagination";
 
 interface TableProps {
   containerRef?: any;
@@ -27,6 +28,7 @@ interface TableProps {
   columns: ColumnDef<any>[];
   isFetching?: boolean;
   skeletonCount?: number;
+  dataLength?: number;
   skeletonHeight?: number;
   headerComponent?: JSX.Element;
   pageCount?: number;
@@ -48,8 +50,10 @@ const Table: FC<TableProps> = ({
   search,
   onClickRow,
   page,
+  dataLength,
   searchLabel = "Search",
 }) => {
+  console.log(data.length);
   const [paginationPage, setPaginationPage] = useState(1);
 
   const memoizedData = useMemo(() => data, [data]);
@@ -80,10 +84,7 @@ const Table: FC<TableProps> = ({
     search && search(e.target.value);
   };
 
-  const handlePageChange = (
-    event: ChangeEvent<unknown>,
-    currentPage: number
-  ) => {
+  const handlePageChange = (currentPage: number) => {
     setPaginationPage(currentPage === 0 ? 1 : currentPage);
     page?.(currentPage === 0 ? 1 : currentPage);
   };
@@ -184,11 +185,17 @@ const Table: FC<TableProps> = ({
         </Box>
       )}
       {pageCount && page ? (
-        <StyledPagination
+        // <StyledPagination
+        //   count={pageCount}
+        //   page={paginationPage}
+        //   onChange={handlePageChange}
+        //   color="primary"
+        // />
+        <CustomPagination
           count={pageCount}
           page={paginationPage}
+          length={dataLength ?? 0}
           onChange={handlePageChange}
-          color="primary"
         />
       ) : (
         ""

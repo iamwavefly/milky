@@ -284,6 +284,7 @@ const DisputeTable = () => {
         data={data?.data?.items ?? []}
         columns={DisputeColumns}
         page={setCurrentPage}
+        dataLength={result.total_items}
         pageCount={data?.data?.page.total_pages}
         isFetching={loading}
       />

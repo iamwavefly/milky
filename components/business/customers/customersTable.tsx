@@ -102,6 +102,7 @@ const CustomersTable = () => {
         columns={CustomersTableColumns}
         isFetching={loading && rowsPerPage}
         page={setCurrentPage}
+        dataLength={result.total_items}
         onClickRow={(e) =>
           Router.push(`/business/customers/${e?.row?.original?.id}`)
         }

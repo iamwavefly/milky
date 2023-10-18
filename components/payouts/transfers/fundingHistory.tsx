@@ -94,6 +94,7 @@ const FundingHistory = () => {
         columns={FundingHistoryTableColumns}
         data={result?.items ?? []}
         pageCount={result?.total_pages}
+        dataLength={result.total_items}
         isFetching={loading && rowsPerPage}
         page={setCurrentPage}
       />

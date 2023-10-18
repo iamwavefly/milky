@@ -51,6 +51,7 @@ const InvoiceTable = () => {
         page={setCurrentPage}
         pageCount={data?.total_pages}
         isFetching={loading}
+        dataLength={result.total_items}
         onClickRow={(e) => Router.push(`/merchants/${e?.row?.original?.id}`)}
       />
     </Box>

@@ -55,6 +55,7 @@ const TransactionrDetailsTable = () => {
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.total_pages}
+        dataLength={result.total_items}
       />
     </Box>
   );

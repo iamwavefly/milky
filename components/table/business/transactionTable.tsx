@@ -71,6 +71,7 @@ const TransactionTable = () => {
       <Table
         containerRef={containerRef}
         data={result?.items ?? []}
+        dataLength={result.total_items}
         pageCount={result?.total_pages}
         isFetching={loading && rowsPerPage}
         columns={BusinessTransactionTableColumns}

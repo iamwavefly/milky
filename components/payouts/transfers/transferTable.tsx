@@ -105,6 +105,7 @@ const TransferTable = () => {
         page={setCurrentPage}
         data={result?.items ?? []}
         pageCount={result?.total_pages}
+        dataLength={result.total_items}
         isFetching={loading && rowsPerPage}
       />
     </Box>

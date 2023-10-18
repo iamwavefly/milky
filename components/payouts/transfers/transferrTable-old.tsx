@@ -72,6 +72,7 @@ const TransferTable = () => {
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.total_pages}
+        dataLength={result.total_items}
         onClickRow={(e) =>
           Router.push(`/business/customers/${e?.row?.original?.id}`)
         }
