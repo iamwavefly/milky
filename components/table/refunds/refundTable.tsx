@@ -83,7 +83,7 @@ const DisputeTable = () => {
         page={setCurrentPage}
         pageCount={data?.data?.page.total_pages}
         isFetching={loading}
-        dataLength={result.total_items}
+        dataLength={data?.data?.page?.total_items}
         onClickRow={(e) => Router.push(`/refunds/${e?.row?.original?.id}`)}
       />
     </Box>

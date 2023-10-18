@@ -43,7 +43,7 @@ const ProductsTable = () => {
       <FilterTable updateFilter={setFilters} />
       <Table
         containerRef={containerRef}
-        dataLength={result.total_items}
+        dataLength={data.total_items}
         data={data?.items ?? []}
         columns={ProductsTableColumns}
         isFetching={loading}

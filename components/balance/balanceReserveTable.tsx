@@ -53,7 +53,7 @@ const BalanceReserveTable = () => {
         isFetching={loading}
         page={setCurrentPage}
         pageCount={data?.data?.page?.total_page}
-        dataLength={result.total_items}
+        dataLength={data?.data?.page.total_items}
         onClickRow={(e) =>
           Router.push(`/balance/reserve/${e?.row?.original?.id}`)
         }
