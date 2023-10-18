@@ -33,7 +33,7 @@ type Props = {
   data: [];
   containerRef?: RefObject<HTMLInputElement> | MutableRefObject<undefined>;
   columns: any;
-  onExport: (value: number | null) => void;
+  onExport?: (value: number | null) => void;
   loading: boolean;
 } & ButtonProps;
 
@@ -52,11 +52,11 @@ export default function Export({
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-    onExport(null);
+    onExport && onExport(null);
   };
   const handleClose = () => {
     setAnchorEl(null);
-    onExport(10);
+    onExport && onExport(10);
   };
 
   const open = Boolean(anchorEl);

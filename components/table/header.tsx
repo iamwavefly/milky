@@ -5,6 +5,7 @@ import React, {
   useRef,
   useEffect,
   SetStateAction,
+  MutableRefObject,
 } from "react";
 import {
   Box,
@@ -22,15 +23,22 @@ import {
 import Router, { useRouter } from "next/router";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
+import { ColumnDef } from "@tanstack/react-table";
 
 interface headerProps {
   title?: string | ReactNode;
-  entries?: number;
+  entries?: number | string;
   searchText?: string;
+  url?: string;
+  selector?: string;
   transparent?: boolean;
   actions?: ReactNode;
   buttons?: ReactNode;
+  columns?: ColumnDef<any, any>[];
+  data?: [];
+  containerRef?: MutableRefObject<undefined>;
   pageName?: string;
+  updateFilter?: any;
   setSearch?: (term: string) => void;
 }
 

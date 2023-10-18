@@ -175,6 +175,7 @@ export default function Index() {
                   data={inflowOutflowChart?.data?.data}
                   columns={undefined}
                   containerRef={containerRef}
+                  loading={inflowOutflowChart?.loading}
                 />
               </Stack>
             </Stack>

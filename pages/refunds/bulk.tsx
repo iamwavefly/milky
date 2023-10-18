@@ -82,7 +82,6 @@ const Index = () => {
         <Box>
           <Header
             columns={columns}
-            data={jsonData}
             entries={`${jsonData?.length ?? 0}`}
             buttons={
               <Stack direction="row" spacing="16px">

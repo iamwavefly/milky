@@ -9,52 +9,55 @@ import { CustomersTableColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
+import { ResultProps } from "@/interfaces";
+import { Box } from "@mui/material";
 
 const CustomersTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/fetch/customers?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/dashboard/fetch/customers?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, search, filters, rowsPerPage]);
 
   return (
-    <div className={Styles.container}>
-      <Header
-        containerRef={containerRef}
-        columns={CustomersTableColumns}
-        data={data?.items}
-        entries={`${data?.total_items ?? 0} Entries`}
-        setSearch={setSearch}
-        selector="customers"
-        url="/dashboard/fetch/customers"
-        updateFilter={setFilters}
-      />
+    <Box className={Styles.container}>
+      <Header setSearch={setSearch} entries={result?.total_items} />
       <FilterTable updateFilter={setFilters} />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
         columns={CustomersTableColumns}
-        isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
         onClickRow={(e) =>
           Router.push(`/transactions/customers/${e?.row?.original?.id}`)
         }
       />
-    </div>
+    </Box>
   );
 };
 

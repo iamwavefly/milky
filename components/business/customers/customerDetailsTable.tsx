@@ -17,11 +17,18 @@ import { Button, Typography } from "@mui/material";
 import AddBox from "remixicon-react/AddBoxFillIcon";
 import Export from "@/components/Export";
 import DropdownMenu from "@/components/DropdownMenu";
+import { ResultProps } from "@/interfaces";
 
 const CustomerDetailsTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const containerRef = useRef();
 
@@ -29,9 +36,9 @@ const CustomerDetailsTable = () => {
   const id = +asPath.split("/").slice(-1)[0];
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/fetch/customers/orders?CustomerId=${id}&page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/dashboard/fetch/customers/orders?CustomerId=${id}&${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
@@ -39,14 +46,16 @@ const CustomerDetailsTable = () => {
 
   useEffect(() => {
     typeof id === "number" && isNaN(id) === false && handleSubmit();
-  }, [currentPage, search, filters, asPath, id]);
+  }, [currentPage, search, filters, asPath, id, rowsPerPage]);
+
+  useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
 
   return (
     <div className={Styles.container}>
       <Header
-        containerRef={containerRef}
-        columns={CustomerDetailsTableColumns}
-        data={data?.items}
+        entries={result?.total_items}
         setSearch={setSearch}
         title={
           <Typography fontSize="15px" fontWeight={600}>
@@ -66,21 +75,20 @@ const CustomerDetailsTable = () => {
               title="order"
               variant="outlinedSmall"
               containerRef={containerRef}
+              onExport={setRowsPerPage}
+              loading={loading}
             />
           </>
         }
         transparent
-        selector="customers"
-        url="/dashboard/fetch/customers/orders"
-        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
         columns={CustomerDetailsTableColumns}
-        isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
       />
     </div>
   );
