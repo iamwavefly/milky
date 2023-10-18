@@ -49,6 +49,7 @@ const CustomersTable = () => {
       <Table
         containerRef={containerRef}
         columns={CustomersTableColumns}
+        dataLength={result.total_items}
         page={setCurrentPage}
         data={result?.items ?? []}
         pageCount={result?.total_pages}

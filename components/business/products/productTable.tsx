@@ -91,6 +91,7 @@ const SettlementTable = () => {
         isFetching={loading && rowsPerPage}
         page={setCurrentPage}
         pageCount={result?.total_pages}
+        dataLength={result.total_items}
       />
     </Box>
   );

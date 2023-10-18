@@ -239,6 +239,16 @@ const theme = createTheme({
         },
       },
     },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          opacity: 1,
+          "&.Mui-disabled": {
+            opacity: 0.4,
+          },
+        },
+      },
+    },
     MuiInputLabel: {
       styleOverrides: {
         root: {

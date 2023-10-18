@@ -74,6 +74,7 @@ const PendingTransferTable = () => {
         containerRef={containerRef}
         data={result?.items ?? []}
         pageCount={result?.total_pages}
+        dataLength={result.total_items}
         isFetching={loading && rowsPerPage}
         columns={TransferPendingTableColumns}
         page={setCurrentPage}

@@ -43,6 +43,7 @@ const TransactionTable = () => {
       <FilterTable updateFilter={setFilters} />
       <Table
         containerRef={containerRef}
+        dataLength={result.total_items}
         data={data?.items ?? []}
         columns={TransactionTableColumns}
         page={setCurrentPage}

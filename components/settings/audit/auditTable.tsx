@@ -71,6 +71,7 @@ const AuditTable = () => {
         page={setCurrentPage}
         data={result?.items ?? []}
         pageCount={result?.total_pages}
+        dataLength={result.total_items}
         isFetching={loading && rowsPerPage}
         onClickRow={(e) =>
           Router.push(`/business/customers/${e?.row?.original?.id}`)

@@ -79,6 +79,7 @@ const PayoutTable = () => {
         columns={PayoutTableColumns}
         isFetching={loading}
         page={setCurrentPage}
+        dataLength={result.total_items}
         pageCount={data?.page?.total_pages}
       />
     </Box>

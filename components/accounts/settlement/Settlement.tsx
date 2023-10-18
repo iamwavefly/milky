@@ -71,6 +71,7 @@ const SettlementTable = () => {
       />
       <Table
         containerRef={containerRef}
+        dataLength={result.total_items}
         columns={AccountSettlementTableColumns}
         isFetching={loading && rowsPerPage}
         page={setCurrentPage}
