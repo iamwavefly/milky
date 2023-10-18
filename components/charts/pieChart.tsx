@@ -1,17 +1,8 @@
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import { Box, Stack, Typography } from "@mui/material";
-import React, { PureComponent, useEffect } from "react";
-import {
-  RadialBarChart,
-  RadialBar,
-  Legend,
-  ResponsiveContainer,
-  Cell,
-  Label,
-  Pie,
-  PieChart as RechartPieChart,
-} from "recharts";
+import React, { useEffect } from "react";
+import { Cell, Pie, PieChart as RechartPieChart } from "recharts";
 import ColorBop from "../colorBop";
 
 // const data = [

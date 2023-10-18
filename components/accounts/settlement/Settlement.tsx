@@ -13,34 +13,42 @@ import AddBox from "remixicon-react/AddBoxFillIcon";
 import { Box, Button } from "@mui/material";
 import Export from "@/components/Export";
 import DropdownMenu from "@/components/DropdownMenu";
+import { ResultProps } from "@/interfaces";
 
 const SettlementTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/settlement/paginated?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/dashboard/settlement/paginated?page=${currentPage}${
+      rowsPerPage ? `&limit=${rowsPerPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, search, filters, rowsPerPage]);
 
   return (
     <Box>
       <Header
-        containerRef={containerRef}
-        columns={AccountSettlementTableColumns}
-        data={data?.items}
-        entries={data?.total_items ?? 0}
+        entries={result?.total_items}
         actions={
           <>
             <DropdownMenu
@@ -54,21 +62,20 @@ const SettlementTable = () => {
               title="settlements"
               variant="outlinedSmall"
               containerRef={containerRef}
+              onExport={setRowsPerPage}
+              loading={loading}
             />
           </>
         }
         setSearch={setSearch}
-        selector="settlements"
-        updateFilter={setFilters}
-        url="/dashboard/settlement/paginated"
       />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
         columns={AccountSettlementTableColumns}
-        isFetching={loading}
+        isFetching={loading && rowsPerPage}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
       />
     </Box>
   );

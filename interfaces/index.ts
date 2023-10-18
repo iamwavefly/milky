@@ -48,3 +48,9 @@ export interface UserProps {
   role: string;
   status: string;
 }
+
+export interface ResultProps {
+  items: [];
+  total_items: number;
+  total_pages: number;
+}

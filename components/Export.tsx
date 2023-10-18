@@ -5,6 +5,7 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -32,6 +33,8 @@ type Props = {
   data: [];
   containerRef?: RefObject<HTMLInputElement> | MutableRefObject<undefined>;
   columns: any;
+  onExport?: (value: number | null) => void;
+  loading: boolean;
 } & ButtonProps;
 
 export default function Export({
@@ -40,6 +43,8 @@ export default function Export({
   data,
   containerRef,
   title,
+  loading,
+  onExport,
   ...others
 }: Props) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -47,9 +52,11 @@ export default function Export({
 
   const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+    onExport && onExport(null);
   };
   const handleClose = () => {
     setAnchorEl(null);
+    onExport && onExport(10);
   };
 
   const open = Boolean(anchorEl);
@@ -122,19 +129,30 @@ export default function Export({
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={() => download("png")}>Export as .PNG</MenuItem>
-        <MenuItem onClick={() => download("pdf")}>Export as .PDF</MenuItem>
-        <MenuItem>
-          <CSVLink
-            filename={title}
-            data={data}
-            headers={csvHeader}
-            onClick={handleClose}
-          >
-            Export as .CSV
-          </CSVLink>
-        </MenuItem>
-        <MenuItem onClick={exportToCSV}>Export as .XLS</MenuItem>
+        {loading ? (
+          <Box px="20px">
+            <Skeleton height={28} />
+            <Skeleton height={28} />
+            <Skeleton height={28} />
+            <Skeleton height={28} />
+          </Box>
+        ) : (
+          <>
+            <MenuItem onClick={() => download("png")}>Export as .PNG</MenuItem>
+            <MenuItem onClick={() => download("pdf")}>Export as .PDF</MenuItem>
+            <MenuItem>
+              <CSVLink
+                filename={title}
+                data={data}
+                headers={csvHeader}
+                onClick={handleClose}
+              >
+                Export as .CSV
+              </CSVLink>
+            </MenuItem>
+            <MenuItem onClick={exportToCSV}>Export as .XLS</MenuItem>
+          </>
+        )}
       </Menu>
       <Stack direction="row" gap="10px" alignItems="center">
         {variant === "containedSmall" ? (

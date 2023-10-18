@@ -16,11 +16,18 @@ import DropdownMenu from "@/components/DropdownMenu";
 import { useDispatch, useSelector } from "react-redux";
 import { selectAppState, setDrawalState } from "@/store/appSlice";
 import NewProduct from "./NewProduct";
+import { ResultProps } from "@/interfaces";
 
 const SettlementTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const containerRef = useRef();
   const dispatch = useDispatch();
@@ -28,9 +35,9 @@ const SettlementTable = () => {
   const { reload } = useSelector(selectAppState);
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/product/all?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/dashboard/product/all?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
@@ -47,18 +54,18 @@ const SettlementTable = () => {
   };
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, reload, filters]);
+  }, [currentPage, search, filters, rowsPerPage, reload]);
 
   return (
     <Box>
       <Header
-        containerRef={containerRef}
-        columns={ProductsTableColumns}
-        data={data?.items}
-        entries={`${data?.total_items ?? 0}`}
+        entries={result?.items?.length}
         setSearch={setSearch}
-        url="/dashboard/product/all"
         actions={
           <>
             <DropdownMenu
@@ -76,16 +83,14 @@ const SettlementTable = () => {
             </Button>
           </>
         }
-        selector="products"
-        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
+        data={result?.items ?? []}
         columns={ProductsTableColumns}
-        isFetching={loading}
+        isFetching={loading && rowsPerPage}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
+        pageCount={result?.total_pages}
       />
     </Box>
   );

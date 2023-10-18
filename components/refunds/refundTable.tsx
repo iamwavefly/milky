@@ -22,6 +22,7 @@ import Export from "../Export";
 import FundBalance from "../payouts/transfers/fundBalance";
 import FundIcon from "@/public/icons/edit-square.svg";
 import Modal from "../modal/modal";
+import { ResultProps } from "@/interfaces";
 
 const RefundTable = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -31,6 +32,12 @@ const RefundTable = () => {
   const [csvFile, setCsvFile] = useState<null | {}>(null);
   const [modalState, setModalState] = useState<null | string>(null);
   const [openModal, setOpenModal] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const { reload } = useSelector(selectAppState);
 
@@ -66,17 +73,21 @@ const RefundTable = () => {
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/refund/all?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/dashboard/refund/all?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, reload, filters]);
+  }, [currentPage, search, filters, rowsPerPage, reload]);
 
   useEffect(() => {
     if (csvFile) {
@@ -137,20 +148,18 @@ const RefundTable = () => {
         </MenuItem>
       </Menu>
       <Header
-        containerRef={containerRef}
-        columns={RefundTableColumns}
-        data={data?.items}
-        entries={data?.total_items ?? 0}
+        entries={result?.total_items}
         setSearch={setSearch}
-        url="/dashboard/refund/all"
         actions={
           <>
             <Export
               columns={RefundTableColumns}
               data={data?.items}
-              title="beneficiary"
+              title="refund"
               containerRef={containerRef}
               variant="outlinedSmall"
+              onExport={setRowsPerPage}
+              loading={loading}
             />
             <Button
               variant="contained"
@@ -162,16 +171,14 @@ const RefundTable = () => {
             </Button>
           </>
         }
-        selector="Refunds"
-        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
         columns={RefundTableColumns}
-        isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
       />
     </Box>
   );

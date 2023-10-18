@@ -14,38 +14,43 @@ import AddBox from "remixicon-react/AddBoxLineIcon";
 import { setDrawalState } from "@/store/appSlice";
 import { useDispatch } from "react-redux";
 import Export from "@/components/Export";
+import { ResultProps } from "@/interfaces";
 
 const AuditTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/audit/trails?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/dashboard/audit/trails?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, search, filters, rowsPerPage]);
 
   return (
     <Box>
       <Header
-        containerRef={containerRef}
-        columns={AuditTrailTableColumns}
-        data={data?.items}
-        entries={data?.total_items ?? 0}
+        entries={result?.total_items}
         setSearch={setSearch}
-        selector="audits"
-        updateFilter={setFilters}
-        url="/dashboard/audit/trails"
         actions={
           <>
             <Export
@@ -54,17 +59,19 @@ const AuditTable = () => {
               title="Audit Trails"
               variant="containedSmall"
               containerRef={containerRef}
+              onExport={setRowsPerPage}
+              loading={loading}
             />
           </>
         }
       />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
         columns={AuditTrailTableColumns}
-        isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
         onClickRow={(e) =>
           Router.push(`/business/customers/${e?.row?.original?.id}`)
         }

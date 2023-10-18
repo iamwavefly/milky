@@ -18,12 +18,19 @@ import NewVirtualAccount from "./newVirtualAccount";
 import DropdownMenu from "@/components/DropdownMenu";
 import Export from "@/components/Export";
 import Modal from "@/components/modal/modal";
+import { ResultProps } from "@/interfaces";
 
 const VirtualAccountTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
   const [openModal, setOpenModal] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
@@ -32,17 +39,21 @@ const VirtualAccountTable = () => {
   const dispatch = useDispatch();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/view/static/accounts?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/view/static/accounts?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, search, filters, rowsPerPage]);
 
   return (
     <Box>
@@ -55,12 +66,8 @@ const VirtualAccountTable = () => {
         <NewVirtualAccount reload={handleSubmit} close={handleCloseModal} />
       </Modal>
       <Header
-        containerRef={containerRef}
-        columns={AccountVirtualTableColumns}
-        data={data?.items}
-        entries={`${data?.total_items ?? 0}`}
+        entries={result?.total_items}
         pageName="Virtual Accounts"
-        url="/view/static/accounts"
         actions={
           <>
             <Export
@@ -69,6 +76,8 @@ const VirtualAccountTable = () => {
               title="virtual account"
               variant="outlinedSmall"
               containerRef={containerRef}
+              onExport={setRowsPerPage}
+              loading={loading}
             />
             <Button
               variant="contained"
@@ -80,16 +89,14 @@ const VirtualAccountTable = () => {
             </Button>
           </>
         }
-        selector="virtual"
-        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
         columns={AccountVirtualTableColumns}
-        isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
       />
     </Box>
   );

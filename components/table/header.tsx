@@ -5,6 +5,7 @@ import React, {
   useRef,
   useEffect,
   SetStateAction,
+  MutableRefObject,
 } from "react";
 import {
   Box,
@@ -22,52 +23,40 @@ import {
 import Router, { useRouter } from "next/router";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
+import { ColumnDef } from "@tanstack/react-table";
 
 interface headerProps {
-  containerRef?: any;
-  data?: any;
-  columns?: any[];
   title?: string | ReactNode;
-  selector?: string;
-  entries?: string;
+  entries?: number | string;
   searchText?: string;
+  url?: string;
+  selector?: string;
   transparent?: boolean;
   actions?: ReactNode;
   buttons?: ReactNode;
-  url?: string;
+  columns?: ColumnDef<any, any>[];
+  data?: [];
+  containerRef?: MutableRefObject<undefined>;
   pageName?: string;
+  updateFilter?: any;
   setSearch?: (term: string) => void;
-  updateFilter?: React.Dispatch<SetStateAction<{}>>;
 }
 
 export default function Header({
   entries,
   actions,
   title,
-  url,
   pageName,
 }: headerProps) {
   const [searchTextName, setSearchTextName] = useState("");
-  const [data, setdata] = useState([]);
   const [pageUrlName, setPageUrlName] = useState("");
 
   const { pathname } = useRouter();
-
-  const fetchData = useFetch(`${baseUrl}${url}`, "get");
 
   useEffect(() => {
     const newPageName = pathname?.split("/")?.pop()?.replaceAll("-", " ");
     setPageUrlName(newPageName as string);
   }, [pathname]);
-
-  useEffect(() => {
-    url && fetchData?.handleSubmit();
-  }, [url]);
-
-  useEffect(() => {
-    const data = fetchData?.data;
-    setdata(data?.items ?? data?.data);
-  }, [fetchData?.data]);
 
   useEffect(() => {
     const lastPathname = Router.pathname.split("/").pop();

@@ -17,11 +17,18 @@ import DropdownMenu from "@/components/DropdownMenu";
 import { selectAppState, setDrawalState } from "@/store/appSlice";
 import { useDispatch, useSelector } from "react-redux";
 import NewInvoice from "./NewInvoice";
+import { ResultProps } from "@/interfaces";
 
 const InvoiceTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const dispatch = useDispatch();
   const containerRef = useRef();
@@ -29,17 +36,21 @@ const InvoiceTable = () => {
   const { reload } = useSelector(selectAppState);
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/invoice/all?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/dashboard/invoice/all?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, reload, filters]);
+  }, [currentPage, search, filters, rowsPerPage]);
 
   const newInvoiceDrawal = () => {
     dispatch(
@@ -54,10 +65,6 @@ const InvoiceTable = () => {
   return (
     <div className={Styles.container}>
       <Header
-        containerRef={containerRef}
-        columns={InvoiceTableColumns}
-        data={data?.items}
-        url="/dashboard/invoice/all"
         actions={
           <>
             <DropdownMenu
@@ -71,6 +78,8 @@ const InvoiceTable = () => {
               title="invoice"
               variant="outlinedSmall"
               containerRef={containerRef}
+              onExport={setRowsPerPage}
+              loading={loading}
             />
             <Button
               sx={{ height: "40px", fontSize: "12px" }}
@@ -82,16 +91,14 @@ const InvoiceTable = () => {
             </Button>
           </>
         }
-        entries={`${data?.total_items ?? 0} Entries`}
+        entries={data?.total_items ?? 0}
         setSearch={setSearch}
-        updateFilter={setFilters}
-        selector="invoice"
       />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
+        data={result?.items ?? []}
         columns={InvoiceTableColumns}
-        isFetching={loading}
+        isFetching={loading && rowsPerPage}
         page={setCurrentPage}
         pageCount={data?.total_pages}
         onClickRow={(e) =>
