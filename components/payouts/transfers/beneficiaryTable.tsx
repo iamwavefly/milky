@@ -17,12 +17,19 @@ import { selectAppState, setDrawalState } from "@/store/appSlice";
 import NewBeneficiary from "../newBeneficiary";
 import Export from "@/components/Export";
 import Modal from "@/components/modal/modal";
+import { ResultProps } from "@/interfaces";
 
 const BeneficiaryTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
   const [openModal, setOpenModal] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const { reload } = useSelector(selectAppState);
 
@@ -33,28 +40,21 @@ const BeneficiaryTable = () => {
   const dispatch = useDispatch();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/beneficiary/all?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/beneficiary/all?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
-    handleSubmit();
-  }, [currentPage, reload, filters]);
+    rowsPerPage && setResult(data?.data);
+  }, [data]);
 
-  // open drawal
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Add New Beneficiary",
-        content: <NewBeneficiary reload={handleSubmit} />,
-      })
-    );
-  };
+  useEffect(() => {
+    handleSubmit();
+  }, [currentPage, search, filters, rowsPerPage, reload]);
 
   return (
     <Box>
@@ -67,12 +67,8 @@ const BeneficiaryTable = () => {
         <NewBeneficiary reload={handleSubmit} close={handleCloseModal} />
       </Modal>
       <Header
-        containerRef={containerRef}
-        columns={BeneficiaryTableColumns}
-        data={data?.data?.items}
-        entries={`${data?.data?.items?.length ?? 0}`}
+        entries={result?.total_items}
         setSearch={setSearch}
-        url="/beneficiary/all"
         actions={
           <>
             <Export
@@ -80,6 +76,8 @@ const BeneficiaryTable = () => {
               data={data?.data?.items}
               title="beneficiary"
               variant="outlinedSmall"
+              onExport={setRowsPerPage}
+              loading={loading}
             />
             <Button
               sx={{ fontSize: "14px", height: "40px" }}
@@ -91,15 +89,14 @@ const BeneficiaryTable = () => {
             </Button>
           </>
         }
-        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}
-        data={data?.data?.items ?? []}
         columns={BeneficiaryTableColumns}
-        isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.data?.page?.total_page}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
       />
     </Box>
   );

@@ -20,20 +20,27 @@ import NewPaymentLink from "./newPaymentLink";
 import DropdownMenu from "@/components/DropdownMenu";
 import Export from "@/components/Export";
 import Modal from "@/components/modal/modal";
+import { ResultProps } from "@/interfaces";
 
 const PaymentLinksTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
   const [openModal, setOpenModal] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/payment/link/subsidiary?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/dashboard/payment/link/subsidiary?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
@@ -42,8 +49,12 @@ const PaymentLinksTable = () => {
   const containerRef = useRef();
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, search, filters, rowsPerPage]);
 
   return (
     <Box>
@@ -56,11 +67,7 @@ const PaymentLinksTable = () => {
         <NewPaymentLink reload={handleSubmit} close={handleCloseModal} />
       </Modal>
       <Header
-        containerRef={containerRef}
-        columns={PaymentLinkColumns}
-        data={data?.items}
-        url="/dashboard/payment/link/subsidiary"
-        entries={`${data?.total_items ?? 0}`}
+        entries={result?.total_items}
         setSearch={setSearch}
         actions={
           <>
@@ -74,6 +81,8 @@ const PaymentLinksTable = () => {
               data={data?.items}
               columns={PaymentLinkColumns}
               containerRef={containerRef}
+              onExport={setRowsPerPage}
+              loading={loading}
             />
             <Button
               variant="contained"
@@ -85,16 +94,14 @@ const PaymentLinksTable = () => {
             </Button>
           </>
         }
-        selector="paymentLinks"
-        updateFilter={setFilters}
       />
       <Table
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
         containerRef={containerRef}
-        data={data?.items ?? []}
         columns={PaymentLinkColumns}
-        isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
         onClickRow={(e) =>
           Router.push(`/business/payment-links/${e?.row?.original?.id}`)
         }

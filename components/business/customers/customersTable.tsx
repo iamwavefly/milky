@@ -17,12 +17,19 @@ import NewCustomer from "./newCustomer";
 import Export from "@/components/Export";
 import DropdownMenu from "@/components/DropdownMenu";
 import Modal from "@/components/modal/modal";
+import { ResultProps } from "@/interfaces";
 
 const CustomersTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
   const [openModal, setOpenModal] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
@@ -30,9 +37,9 @@ const CustomersTable = () => {
   const { reload } = useSelector(selectAppState);
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/fetch/customers?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/dashboard/fetch/customers?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
@@ -41,8 +48,12 @@ const CustomersTable = () => {
   const containerRef = useRef();
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, reload, filters]);
+  }, [currentPage, search, filters, rowsPerPage, reload]);
 
   return (
     <Box>
@@ -55,12 +66,8 @@ const CustomersTable = () => {
         <NewCustomer reload={handleSubmit} close={handleCloseModal} />
       </Modal>
       <Header
-        containerRef={containerRef}
-        columns={CustomersTableColumns}
-        data={data?.items}
-        entries={`${data?.total_items ?? 0}`}
+        entries={result?.total_items}
         setSearch={setSearch}
-        url="/dashboard/fetch/customers"
         actions={
           <>
             <DropdownMenu
@@ -74,6 +81,8 @@ const CustomersTable = () => {
               title="customer"
               variant="outlinedSmall"
               containerRef={containerRef}
+              onExport={setRowsPerPage}
+              loading={loading}
             />
             <Button
               variant="contained"
@@ -85,16 +94,14 @@ const CustomersTable = () => {
             </Button>
           </>
         }
-        selector="customers"
-        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
         columns={CustomersTableColumns}
-        isFetching={loading}
+        isFetching={loading && rowsPerPage}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
         onClickRow={(e) =>
           Router.push(`/business/customers/${e?.row?.original?.id}`)
         }

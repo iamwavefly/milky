@@ -18,6 +18,7 @@ import { useDispatch } from "react-redux";
 import AddIcon from "@/public/icons/add.svg";
 import FundBalance from "./fundBalance";
 import Modal from "@/components/modal/modal";
+import { ResultProps } from "@/interfaces";
 
 const TransferTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -26,6 +27,12 @@ const TransferTable = () => {
   const [reload, setReload] = useState(false);
   const [modalState, setModalState] = useState<null | string>(null);
   const [openModal, setOpenModal] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const containerRef = useRef();
 
@@ -37,17 +44,21 @@ const TransferTable = () => {
   const handleCloseModal = () => setOpenModal(false);
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/payout/all?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/payout/all?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
+    rowsPerPage && setResult(data?.data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters, reload]);
+  }, [currentPage, search, filters, rowsPerPage, reload]);
 
   return (
     <Box>
@@ -67,14 +78,7 @@ const TransferTable = () => {
         )}
       </Modal>
       <Header
-        containerRef={containerRef}
-        columns={TransferTableColumns}
-        data={data?.data?.items}
-        entries={`${data?.data?.page?.size ?? 0}`}
         setSearch={setSearch}
-        selector="transfers"
-        updateFilter={setFilters}
-        url="/payout/all"
         actions={
           <>
             <Button
@@ -97,11 +101,11 @@ const TransferTable = () => {
       />
       <Table
         containerRef={containerRef}
-        data={data?.data?.items ?? []}
         columns={TransferTableColumns}
-        isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.data?.page?.total_page}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
       />
     </Box>
   );

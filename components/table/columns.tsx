@@ -572,7 +572,7 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
       )}`,
   },
   {
-    accessorKey: "balance_after",
+    accessorKey: "total",
     header: "Balance after",
     accessorFn: (row) =>
       `${row.currency ?? "NGN"} ${stringToCurrency(row.total).replace(
@@ -585,7 +585,7 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
     header: "Transaction details",
   },
   {
-    accessorKey: "due_date",
+    accessorKey: "date_created",
     header: "Due date",
     cell: (row: any) => {
       return moment(row.getValue()).format("L");

@@ -13,37 +13,43 @@ import AddBox from "remixicon-react/AddBoxFillIcon";
 import { Box, Button } from "@mui/material";
 import FundIcon from "remixicon-react/FundsBoxLineIcon";
 import Export from "@/components/Export";
+import { ResultProps } from "@/interfaces";
 
 const PendingTransferTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/payout/pending/approval?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/payout/pending/approval?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, search, filters, rowsPerPage]);
 
   return (
     <Box>
       <Header
-        containerRef={containerRef}
-        columns={TransferPendingTableColumns}
-        data={data?.data}
-        entries={`${data?.data?.page?.size ?? 0}`}
         setSearch={setSearch}
         pageName="Pending Approvals"
-        url="/payout/pending/approval"
         actions={
           <>
             <Export
@@ -51,6 +57,8 @@ const PendingTransferTable = () => {
               data={data?.data}
               title="Pending Approvals"
               variant="outlinedSmall"
+              onExport={setRowsPerPage}
+              loading={loading}
             />
             <Button
               sx={{ fontSize: "14px", height: "40px" }}
@@ -61,15 +69,14 @@ const PendingTransferTable = () => {
             </Button>
           </>
         }
-        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}
-        data={data?.data ?? []}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
         columns={TransferPendingTableColumns}
-        isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.data?.page?.total_page}
       />
     </Box>
   );

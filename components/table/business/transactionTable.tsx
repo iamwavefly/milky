@@ -12,38 +12,43 @@ import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 import Export from "@/components/Export";
 import DropdownMenu from "@/components/DropdownMenu";
+import { ResultProps } from "@/interfaces";
 
 const TransactionTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/fetch/orders?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/dashboard/fetch/orders?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, search, filters, rowsPerPage]);
 
   return (
     <Box>
       <Header
-        containerRef={containerRef}
-        columns={BusinessTransactionTableColumns}
-        data={data?.items}
-        entries={`${data?.total_items ?? 0}`}
         setSearch={setSearch}
-        updateFilter={setFilters}
-        selector="orders"
-        url="/dashboard/fetch/orders"
+        entries={result?.total_items}
         actions={
           <>
             <DropdownMenu
@@ -57,17 +62,19 @@ const TransactionTable = () => {
               data={data?.items}
               containerRef={containerRef}
               variant="containedSmall"
+              onExport={setRowsPerPage}
+              loading={loading}
             />
           </>
         }
       />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
         columns={BusinessTransactionTableColumns}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
-        isFetching={loading}
         onClickRow={(e) =>
           Router.push(
             `/business/transactions/${e?.row?.original?.order_reference}`

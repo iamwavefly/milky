@@ -133,9 +133,10 @@ fieldset {
   &.pending-approval,
   &.pending,
   &.processing,
+  &.awaiting-confirmation,
   &.archived {
-    color: #F59300;
-    background: #FFF8F0;
+    color: #f59300;
+    background: #fff8f0;
   }
   &.in-review,
   &.new,

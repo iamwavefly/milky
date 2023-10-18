@@ -18,12 +18,19 @@ import { useDispatch } from "react-redux";
 import FundBalance from "./fundBalance";
 import Export from "@/components/Export";
 import Modal from "@/components/modal/modal";
+import { ResultProps } from "@/interfaces";
 
 const FundingHistory = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
   const [openModal, setOpenModal] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
@@ -32,27 +39,21 @@ const FundingHistory = () => {
   const dispatch = useDispatch();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/payout/history?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/payout/history?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
-    handleSubmit();
-  }, [currentPage, search, filters]);
+    rowsPerPage && setResult(data);
+  }, [data]);
 
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Fund Balance",
-        content: <FundBalance />,
-      })
-    );
-  };
+  useEffect(() => {
+    handleSubmit();
+  }, [currentPage, search, filters, rowsPerPage]);
 
   return (
     <Box>
@@ -65,19 +66,17 @@ const FundingHistory = () => {
         <FundBalance reload={handleSubmit} close={handleCloseModal} />
       </Modal>
       <Header
-        containerRef={containerRef}
-        columns={FundingHistoryTableColumns}
-        data={data?.items}
-        url="/payout/history"
-        entries={`${data?.total_items ?? 0}`}
         setSearch={setSearch}
+        entries={result?.total_items}
         actions={
           <>
             <Export
               columns={FundingHistoryTableColumns}
-              data={data?.data?.items}
+              data={data?.items}
               title="beneficiary"
               variant="outlinedSmall"
+              onExport={setRowsPerPage}
+              loading={loading}
             />
             <Button
               sx={{ fontSize: "14px", height: "40px" }}
@@ -89,15 +88,14 @@ const FundingHistory = () => {
             </Button>
           </>
         }
-        updateFilter={setFilters}
       />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
         columns={FundingHistoryTableColumns}
-        isFetching={loading}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
       />
     </Box>
   );

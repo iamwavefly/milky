@@ -24,50 +24,31 @@ import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 
 interface headerProps {
-  containerRef?: any;
-  data?: any;
-  columns?: any[];
   title?: string | ReactNode;
-  selector?: string;
-  entries?: string;
+  entries?: number;
   searchText?: string;
   transparent?: boolean;
   actions?: ReactNode;
   buttons?: ReactNode;
-  url?: string;
   pageName?: string;
   setSearch?: (term: string) => void;
-  updateFilter?: React.Dispatch<SetStateAction<{}>>;
 }
 
 export default function Header({
   entries,
   actions,
   title,
-  url,
   pageName,
 }: headerProps) {
   const [searchTextName, setSearchTextName] = useState("");
-  const [data, setdata] = useState([]);
   const [pageUrlName, setPageUrlName] = useState("");
 
   const { pathname } = useRouter();
-
-  const fetchData = useFetch(`${baseUrl}${url}`, "get");
 
   useEffect(() => {
     const newPageName = pathname?.split("/")?.pop()?.replaceAll("-", " ");
     setPageUrlName(newPageName as string);
   }, [pathname]);
-
-  useEffect(() => {
-    url && fetchData?.handleSubmit();
-  }, [url]);
-
-  useEffect(() => {
-    const data = fetchData?.data;
-    setdata(data?.items ?? data?.data);
-  }, [fetchData?.data]);
 
   useEffect(() => {
     const lastPathname = Router.pathname.split("/").pop();

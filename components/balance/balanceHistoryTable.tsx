@@ -12,39 +12,44 @@ import AddBox from "remixicon-react/AddBoxFillIcon";
 import { Box, Button } from "@mui/material";
 import DropdownMenu from "../DropdownMenu";
 import Export from "../Export";
+import { ResultProps } from "@/interfaces";
 
 const BalanceHistoryTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
+  const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
+  const [result, setResult] = useState<ResultProps>({
+    items: [],
+    total_items: 0,
+    total_pages: 0,
+  });
 
   const containerRef = useRef();
 
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/fetch/wallet/history?page=${currentPage}&limit=10&${Object.entries(
-      filters
-    )
+    `${baseUrl}/dashboard/fetch/wallet/history?${
+      rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
+    }&${Object.entries(filters)
       ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
       .join("&")}`,
     "get"
   );
 
   useEffect(() => {
+    rowsPerPage && setResult(data);
+  }, [data]);
+
+  useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters]);
+  }, [currentPage, search, filters, rowsPerPage]);
 
   return (
     <Box>
       <Header
-        containerRef={containerRef}
-        columns={BalanceHistoryColumns}
-        data={data?.items}
-        entries={data?.total_items ?? 0}
+        entries={result?.total_items}
         pageName="Balance History"
         setSearch={setSearch}
-        selector="balanceHistory"
-        updateFilter={setFilters}
-        url="/dashboard/fetch/wallet/history"
         actions={
           <>
             <DropdownMenu
@@ -58,17 +63,19 @@ const BalanceHistoryTable = () => {
               columns={BalanceHistoryColumns}
               containerRef={containerRef}
               variant="containedSmall"
+              onExport={setRowsPerPage}
+              loading={loading}
             />
           </>
         }
       />
       <Table
         containerRef={containerRef}
-        data={data?.items ?? []}
         columns={BalanceHistoryColumns}
-        isFetching={loading}
         page={setCurrentPage}
-        pageCount={data?.total_pages}
+        data={result?.items ?? []}
+        pageCount={result?.total_pages}
+        isFetching={loading && rowsPerPage}
       />
     </Box>
   );

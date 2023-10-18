@@ -148,6 +148,20 @@ const Table: FC<TableProps> = ({
               ))
             ) : (
               <>
+                <TableRow
+                  sx={{
+                    height: "48px !important",
+                    bgcolor: "#F9FAFB",
+                  }}
+                >
+                  {Array.from({ length: columnCount }, (x, i) => i).map(
+                    (elm) => (
+                      <TableCell key={elm} sx={{ height: "48px" }}>
+                        <Skeleton />
+                      </TableCell>
+                    )
+                  )}
+                </TableRow>
                 {skeletons.map((skeleton) => (
                   <TableRow key={skeleton}>
                     {Array.from({ length: columnCount }, (x, i) => i).map(
