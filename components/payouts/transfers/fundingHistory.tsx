@@ -58,7 +58,7 @@ const FundingHistory = () => {
   return (
     <Box>
       <Modal
-        title="Add New Beneficiary"
+        title="Fund Balance"
         isOpen={openModal}
         close={handleCloseModal}
         onClose={handleCloseModal}

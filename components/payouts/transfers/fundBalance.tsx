@@ -28,13 +28,13 @@ import Footer from "@/components/form/Footer";
 export default function FundBalance({ reload, close }: any) {
   const [accounts, setAccounts] = useState<[]>([]);
   const [seletedAccount, setSeletedAccount] = useState<any>({});
+  const [seletedCurrency, setSeletedCurrency] = useState<string>("");
   const [selectedId, setSelectedId] = useState("");
+
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/get/wallet/balance`,
     "get"
   );
-
-  const dispatch = useDispatch();
 
   const handleChange = (event: any) => {
     const { value } = event.target;
@@ -42,6 +42,7 @@ export default function FundBalance({ reload, close }: any) {
       (account: any) => account.wallet_id === value
     );
     setSeletedAccount(findWallet.account_details);
+    setSeletedCurrency(findWallet.currency_name);
     setSelectedId(value);
   };
 
@@ -52,7 +53,8 @@ export default function FundBalance({ reload, close }: any) {
   useEffect(() => {
     const wallet = data?.wallets?.[0];
     setSelectedId(wallet?.wallet_id);
-    setSeletedAccount(wallet);
+    setSeletedCurrency(wallet?.currency_name);
+    setSeletedAccount(wallet?.account_details);
   }, [data]);
 
   useEffect(() => {
@@ -83,8 +85,8 @@ export default function FundBalance({ reload, close }: any) {
     <form onSubmit={formik.handleSubmit}>
       <Stack px="40px" my="32px">
         <Typography color="#3C4453" fontSize="15px" lineHeight="26px">
-          To fund your naira wallet, make a transfer to the account details
-          below
+          To fund your {seletedCurrency?.toLowerCase()} wallet, make a transfer
+          to the account details below
         </Typography>
         {/* account details */}
         <Stack
@@ -110,14 +112,17 @@ export default function FundBalance({ reload, close }: any) {
                 lineHeight="26px"
                 fontWeight={600}
               >
-                0091478522
+                {seletedAccount?.account_number}
               </Typography>
-              <Button
-                sx={{ fontSize: "12px", fontWeight: 600, lineHeight: "18px" }}
-                variant="text"
-              >
-                Copy <CopyIcon />
-              </Button>
+              {seletedAccount?.account_number && (
+                <Button
+                  sx={{ fontSize: "12px", fontWeight: 600, lineHeight: "18px" }}
+                  variant="text"
+                  onClick={() => clipboard(seletedAccount?.account_number)}
+                >
+                  Copy <CopyIcon />
+                </Button>
+              )}
             </Stack>
           </Stack>
           <Stack
@@ -137,7 +142,7 @@ export default function FundBalance({ reload, close }: any) {
                 lineHeight="26px"
                 fontWeight={600}
               >
-                Wema bank
+                {seletedAccount?.bank_name}
               </Typography>
             </Stack>
           </Stack>
@@ -158,7 +163,7 @@ export default function FundBalance({ reload, close }: any) {
                 lineHeight="26px"
                 fontWeight={600}
               >
-                Arcapay Limited
+                {seletedAccount?.account_name}
               </Typography>
             </Stack>
           </Stack>
