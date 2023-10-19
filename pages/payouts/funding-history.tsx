@@ -17,18 +17,6 @@ import PendingTransferTable from "@/components/payouts/transfers/pendingTransfer
 import FundingHistory from "@/components/payouts/transfers/fundingHistory";
 
 export default function Index() {
-  const dispatch = useDispatch();
-  // open drawal
-  const openDrawal = () => {
-    dispatch(
-      setDrawalState({
-        active: true,
-        title: "Fund Balance",
-        content: <TransferDetails />,
-      })
-    );
-  };
-
   return (
     <Dashboard title="Funding History">
       <FundingHistory />

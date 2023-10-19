@@ -114,17 +114,19 @@ export default function Tabs({ tabs, updateTab, currentTab }: Props) {
           })}
         </MuiTabs>
       </Box>
-      <CustomTabPanel value={value} index={value}>
-        {Component ? (
-          <Component currentTab={value} />
-        ) : (
-          <Stack spacing="18px" direction="row" mb="33px" mt="51px">
-            <Skeleton variant="rounded" height={160} width="100%" />
-            <Skeleton variant="rounded" height={160} width="100%" />
-            <Skeleton variant="rounded" height={160} width="100%" />
-          </Stack>
-        )}
-      </CustomTabPanel>
+      {Component && (
+        <CustomTabPanel value={value} index={value}>
+          {Component ? (
+            <Component currentTab={value} />
+          ) : (
+            <Stack spacing="18px" direction="row" mb="33px" mt="51px">
+              <Skeleton variant="rounded" height={160} width="100%" />
+              <Skeleton variant="rounded" height={160} width="100%" />
+              <Skeleton variant="rounded" height={160} width="100%" />
+            </Stack>
+          )}
+        </CustomTabPanel>
+      )}
     </Box>
   );
 }

@@ -25,6 +25,7 @@ import TransferDetails from "@/components/payouts/transfers/transferDetails";
 import { useDispatch } from "react-redux";
 import { setDrawalState } from "@/store/appSlice";
 import Modal from "@/components/modal/modal";
+import FundBalance from "@/components/payouts/transfers/fundBalance";
 
 const skeletons = Array.from({ length: 3 }, (x, i) => i);
 
@@ -57,7 +58,7 @@ export default function Index() {
         close={handleCloseModal}
         onClose={handleCloseModal}
       >
-        <TransferDetails reload={handleSubmit} close={handleCloseModal} />
+        <FundBalance reload={handleSubmit} close={handleCloseModal} />
       </Modal>
       {/* header */}
       <Stack
