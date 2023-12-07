@@ -1,28 +1,6 @@
-import React, {
-  ReactNode,
-  useState,
-  MouseEvent,
-  useRef,
-  useEffect,
-  SetStateAction,
-  MutableRefObject,
-} from "react";
-import {
-  Box,
-  Button,
-  IconButton,
-  InputAdornment,
-  Menu,
-  MenuItem,
-  OutlinedInput,
-  Stack,
-  TextField,
-  Typography,
-  capitalize,
-} from "@mui/material";
+import React, { ReactNode, useState, useEffect, MutableRefObject } from "react";
+import { Stack, Typography, capitalize } from "@mui/material";
 import Router, { useRouter } from "next/router";
-import useFetch from "@/hooks/useFetch";
-import baseUrl from "@/middleware/baseUrl";
 import { ColumnDef } from "@tanstack/react-table";
 
 interface headerProps {
@@ -85,7 +63,7 @@ export default function Header({
             fontWeight={600}
             lineHeight="26px"
           >
-            {capitalize(pageName ?? pageUrlName)} - {entries}
+            {capitalize(pageName ?? pageUrlName)} - {entries ?? 0}
           </Typography>
         )}
         <Stack direction="row" spacing="16px">

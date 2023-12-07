@@ -53,7 +53,6 @@ const Table: FC<TableProps> = ({
   dataLength,
   searchLabel = "Search",
 }) => {
-  console.log(data.length);
   const [paginationPage, setPaginationPage] = useState(1);
 
   const memoizedData = useMemo(() => data, [data]);
@@ -185,12 +184,6 @@ const Table: FC<TableProps> = ({
         </Box>
       )}
       {pageCount && page ? (
-        // <StyledPagination
-        //   count={pageCount}
-        //   page={paginationPage}
-        //   onChange={handlePageChange}
-        //   color="primary"
-        // />
         <CustomPagination
           count={pageCount}
           page={paginationPage}

@@ -77,8 +77,8 @@ const AccountSetup = ({
   return (
     <>
       <Head>
-        <title>{title} | alliancepay</title>
-        <meta name="description" content="Alliancepay Merchant" />
+        <title>{title} | Arca</title>
+        <meta name="description" content="Arca Merchant" />
       </Head>
       <Dashboard title="Get Started" onboarding>
         <Box

@@ -35,6 +35,10 @@ type Props = {
   columns: any;
   onExport?: (value: number | null) => void;
   loading: boolean;
+  noPNG?: boolean;
+  noPDF?: boolean;
+  noCSV?: boolean;
+  noXLS?: boolean;
 } & ButtonProps;
 
 export default function Export({
@@ -43,6 +47,10 @@ export default function Export({
   data,
   containerRef,
   title,
+  noPNG,
+  noPDF,
+  noCSV,
+  noXLS,
   loading,
   onExport,
   ...others
@@ -131,26 +139,38 @@ export default function Export({
       >
         {loading ? (
           <Box px="20px">
-            <Skeleton height={28} />
-            <Skeleton height={28} />
-            <Skeleton height={28} />
-            <Skeleton height={28} />
+            {!noXLS && <Skeleton height={28} />}
+            {!noPNG && <Skeleton height={28} />}
+            {!noPDF && <Skeleton height={28} />}
+            {!noCSV && <Skeleton height={28} />}
           </Box>
         ) : (
           <>
-            <MenuItem onClick={() => download("png")}>Export as .PNG</MenuItem>
-            <MenuItem onClick={() => download("pdf")}>Export as .PDF</MenuItem>
-            <MenuItem>
-              <CSVLink
-                filename={title}
-                data={data}
-                headers={csvHeader}
-                onClick={handleClose}
-              >
-                Export as .CSV
-              </CSVLink>
-            </MenuItem>
-            <MenuItem onClick={exportToCSV}>Export as .XLS</MenuItem>
+            {!noPNG && (
+              <MenuItem onClick={() => download("png")}>
+                Export as .PNG
+              </MenuItem>
+            )}
+            {!noPDF && (
+              <MenuItem onClick={() => download("pdf")}>
+                Export as .PDF
+              </MenuItem>
+            )}
+            {!noCSV && (
+              <MenuItem>
+                <CSVLink
+                  filename={title}
+                  data={data}
+                  headers={csvHeader}
+                  onClick={handleClose}
+                >
+                  Export as .CSV
+                </CSVLink>
+              </MenuItem>
+            )}
+            {!noXLS && (
+              <MenuItem onClick={exportToCSV}>Export as .XLS</MenuItem>
+            )}
           </>
         )}
       </Menu>

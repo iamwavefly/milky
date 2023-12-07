@@ -54,7 +54,7 @@ const SettlementTable = () => {
   };
 
   useEffect(() => {
-    rowsPerPage && setResult(data);
+    rowsPerPage && data && setResult(data);
   }, [data]);
 
   useEffect(() => {

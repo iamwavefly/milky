@@ -406,13 +406,15 @@ export const ProductsTableColumns: ColumnDef<any, any>[] = [
       const { image, name } = props.row.original;
       return (
         <Stack direction="row" alignItems="center" spacing="12px">
-          <Image
-            src={image}
-            alt={name}
-            style={{ objectFit: "cover", borderRadius: "8px" }}
-            width={44}
-            height={44}
-          />
+          {image && (
+            <Image
+              src={image}
+              alt={name}
+              style={{ objectFit: "cover", borderRadius: "8px" }}
+              width={44}
+              height={44}
+            />
+          )}
           <span className="email">{name}</span>
         </Stack>
       );
@@ -633,6 +635,10 @@ export const InvoiceTableColumns: ColumnDef<any, any>[] = [
   {
     accessorKey: "reference",
     header: "Invoice number",
+  },
+  {
+    accessorKey: "id",
+    header: "Invoice ID",
   },
   {
     accessorKey: "amount",

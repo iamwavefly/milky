@@ -80,6 +80,9 @@ const InvoiceTable = () => {
               containerRef={containerRef}
               onExport={setRowsPerPage}
               loading={loading}
+              noCSV
+              noPNG
+              noXLS
             />
             <Button
               sx={{ height: "40px", fontSize: "12px" }}

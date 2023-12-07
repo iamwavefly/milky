@@ -22,7 +22,7 @@ const Onboarding = ({
     <>
       <Head>
         <title>{title} | ARCA</title>
-        <meta name="description" content="Alliancepay Merchant" />
+        <meta name="description" content="Arca Merchant" />
       </Head>
       <Stack height="100vh" overflow="auto" bgcolor="rgba(246, 246, 249, 1)">
         <Header />
