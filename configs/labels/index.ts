@@ -192,7 +192,7 @@ export const merchants = {
   business_information: [
     {
       key: "about",
-      name: "What do you do at Alliance Pay",
+      name: "What do you do at Arca",
       variant: "copy",
       value: "I am a merchant and I have made use to of their POS services",
     },

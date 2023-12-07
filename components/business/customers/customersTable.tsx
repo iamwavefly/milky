@@ -76,9 +76,9 @@ const CustomersTable = () => {
               selector="customers"
             />
             <Export
+              title="customer"
               columns={CustomersTableColumns}
               data={data?.items}
-              title="customer"
               variant="outlinedSmall"
               containerRef={containerRef}
               onExport={setRowsPerPage}
@@ -96,10 +96,10 @@ const CustomersTable = () => {
         }
       />
       <Table
+        columns={CustomersTableColumns}
         containerRef={containerRef}
         data={result?.items ?? []}
         pageCount={result?.total_pages}
-        columns={CustomersTableColumns}
         isFetching={loading && rowsPerPage}
         page={setCurrentPage}
         dataLength={result.total_items}

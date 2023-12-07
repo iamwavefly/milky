@@ -5,7 +5,7 @@ import Detail from "@/components/detail";
 import BackArrow from "@/components/headers/BackArrow";
 import { merchants } from "@/configs/labels";
 import Dashboard from "@/layouts/dashboard";
-import { Box, Checkbox, Grid, Stack, Typography } from "@mui/material";
+import { Box, Checkbox, Divider, Grid, Stack, Typography } from "@mui/material";
 import WarningIcon from "../../../../public/icons/warning.svg";
 import EmptyDataImg from "../../../../public/images/empty.svg";
 import useFetch from "@/hooks/useFetch";
@@ -44,162 +44,191 @@ export default function Index() {
       {/* order information  */}
       <Box>
         <OnlyHeader alignHeader="left" header="Order Details" size="12px">
-          <Box my="auto">
-            <Stack
-              direction="row"
-              flexWrap="wrap"
-              columnGap="106px"
-              rowGap="36px"
-            >
-              <Detail
-                title={"ORDER REFERENCE"}
-                variant={"copy"}
-                value={details?.order_reference}
-              />
-              <Detail
-                title={"PAYMENT REFERENCE"}
-                variant={"copy"}
-                value={details?.payment_reference}
-              />
-              <Detail
-                title={"PAYMENT RESPONSE CODE"}
-                variant={"copy"}
-                value={details?.payment_response_code}
-              />
-              <Detail
-                title={"PAYMENT RESPONSE MESSAGE"}
-                variant={"copy"}
-                value={
-                  details?.payment_response_message !== ""
-                    ? details?.payment_response_message
-                    : "N/A"
-                }
-              />
-            </Stack>
+          <Box my="auto" width="100%">
+            <Grid container spacing="32px">
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"ORDER REFERENCE"}
+                  variant={"copy"}
+                  value={details?.order_reference}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"PAYMENT REFERENCE"}
+                  variant={"copy"}
+                  value={details?.payment_reference}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"PAYMENT RESPONSE CODE"}
+                  variant={"copy"}
+                  value={details?.payment_response_code}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"PAYMENT RESPONSE MESSAGE"}
+                  variant={"copy"}
+                  value={
+                    details?.payment_response_message !== ""
+                      ? details?.payment_response_message
+                      : "N/A"
+                  }
+                />
+              </Grid>
+            </Grid>
           </Box>
         </OnlyHeader>
       </Box>
       {/* Personal information  */}
       <Box mt="15px">
         <OnlyHeader alignHeader="left" header="Customer Details" size="12px">
-          <Box my="auto">
-            <Stack
-              direction="row"
-              flexWrap="wrap"
-              columnGap="112px"
-              rowGap="36px"
-            >
-              <Detail
-                title={"CUSTOMER NAME"}
-                variant={"copy"}
-                value={details?.customer_name}
-              />
-              <Detail
-                title={"CUSTOMER EMAIL"}
-                variant={"copy"}
-                value={details?.customer_email}
-              />
-              <Detail
-                title={"CUSTOMER PHONE NUMBER"}
-                variant={"copy"}
-                value={details?.customer_phone}
-              />
-              {/* <Detail
-                  title={"CURRENCY"}
+          <Box my="auto" width="100%">
+            <Grid container spacing="32px">
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"CUSTOMER NAME"}
                   variant={"copy"}
-                  value={details?.currency}
-                /> */}
-            </Stack>
+                  value={details?.customer_name}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"CUSTOMER EMAIL"}
+                  variant={"copy"}
+                  value={details?.customer_email}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"CUSTOMER PHONE NUMBER"}
+                  variant={"copy"}
+                  value={details?.customer_phone}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail title={"Country"} variant={"copy"} value={"N/A"} />
+              </Grid>
+            </Grid>
           </Box>
         </OnlyHeader>
       </Box>
       {/* Business registration  */}
       <Box mt="15px">
         <OnlyHeader alignHeader="left" header="Payment Details" size="12px">
-          <Box my="auto">
-            <Stack
-              direction="row"
-              flexWrap="wrap"
-              columnGap="112px"
-              rowGap="36px"
-            >
-              <Detail
-                title={"PAYMENT TYPE"}
-                variant={"copy"}
-                value={details?.payment_type}
-              />
-              <Detail
-                title={"CURRENCY"}
-                variant={"copy"}
-                value={details?.currency}
-              />
-              <Detail
-                title={"AMOUNT"}
-                variant={"copy"}
-                value={`${details?.currency} ${stringToCurrency(
-                  details?.amount
-                )}`}
-              />
-              <Detail
-                title={"STATUS"}
-                variant={"copy"}
-                value={details?.order_status}
-              />
-              <Detail
-                title={"NARRATION"}
-                variant={"copy"}
-                value={details?.narration}
-              />
-              <Detail
-                title={"REMARKS"}
-                variant={"copy"}
-                value={details?.remarks}
-              />
-              <Detail
-                title={"FEE"}
-                variant={"copy"}
-                value={stringToCurrency(details?.fee)}
-              />
-              <Detail
-                title={"SUBSIDIARY FEE"}
-                variant={"copy"}
-                value={stringToCurrency(details?.subsidiary_fee)}
-              />
-              <Detail
-                title={"CUSTOMER FEE"}
-                variant={"copy"}
-                value={stringToCurrency(details?.customer_fee)}
-              />
-              <Detail
-                title={"WHO BEARS FEE?"}
-                variant={"copy"}
-                value={details?.who_bears_fee}
-              />
-              <Detail
-                title={"DATE CREATED"}
-                variant={"copy"}
-                value={moment(details?.date_created).format("L")}
-              />
-              <Detail
-                title={"DATE UPDATED"}
-                variant={"copy"}
-                value={
-                  details?.date_updated
-                    ? moment(details?.date_updated).format("L")
-                    : "N/A"
-                }
-              />
-              <Detail
-                title={"DATE PAYMENT CONFIRMED"}
-                variant={"copy"}
-                value={
-                  details?.date_payment_confirmed
-                    ? moment(details?.date_payment_confirmed).format("L")
-                    : "N/A"
-                }
-              />
-            </Stack>
-          </Box>
+          <Stack gap="24px" my="auto">
+            <Grid container spacing="32px">
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"PAYMENT TYPE"}
+                  variant={"copy"}
+                  value={details?.payment_type}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"CURRENCY"}
+                  variant={"copy"}
+                  value={details?.currency}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"AMOUNT"}
+                  variant={"copy"}
+                  value={`${details?.currency} ${stringToCurrency(
+                    details?.amount
+                  )}`}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"STATUS"}
+                  variant={"copy"}
+                  value={details?.order_status}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"NARRATION"}
+                  variant={"copy"}
+                  value={details?.narration}
+                />
+              </Grid>
+            </Grid>
+            <Divider />
+            <Grid container spacing="32px">
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"REMARKS"}
+                  variant={"copy"}
+                  value={details?.remarks}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"FEE"}
+                  variant={"copy"}
+                  value={stringToCurrency(details?.fee)}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"SUBSIDIARY FEE"}
+                  variant={"copy"}
+                  value={stringToCurrency(details?.subsidiary_fee)}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"CUSTOMER FEE"}
+                  variant={"copy"}
+                  value={stringToCurrency(details?.customer_fee)}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"WHO BEARS FEE?"}
+                  variant={"copy"}
+                  value={details?.who_bears_fee}
+                />
+              </Grid>
+            </Grid>
+            <Divider />
+            <Grid container spacing="32px">
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"DATE CREATED"}
+                  variant={"copy"}
+                  value={moment(details?.date_created).format("L")}
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"DATE UPDATED"}
+                  variant={"copy"}
+                  value={
+                    details?.date_updated
+                      ? moment(details?.date_updated).format("L")
+                      : "N/A"
+                  }
+                />
+              </Grid>
+              <Grid item md={12 / 5}>
+                <Detail
+                  title={"DATE PAYMENT CONFIRMED"}
+                  variant={"copy"}
+                  value={
+                    details?.date_payment_confirmed
+                      ? moment(details?.date_payment_confirmed).format("L")
+                      : "N/A"
+                  }
+                />
+              </Grid>
+            </Grid>
+          </Stack>
         </OnlyHeader>
       </Box>
     </Dashboard>

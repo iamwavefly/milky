@@ -64,6 +64,7 @@ const TransactionTable = () => {
               variant="containedSmall"
               onExport={setRowsPerPage}
               loading={loading}
+              noPNG
             />
           </>
         }

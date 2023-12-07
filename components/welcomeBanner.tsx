@@ -17,7 +17,7 @@ export default function WelcomeBanner({ name }: { name: string }) {
           Hello, {name}!
         </Typography>
         <Typography variant="h5" color="#fff">
-          Welcome back to alliance pay
+          Welcome back to Arca
         </Typography>
       </Box>
       <Box marginRight="-42px">

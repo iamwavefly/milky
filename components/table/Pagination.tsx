@@ -71,7 +71,7 @@ const CustomPagination = ({
       >
         <Typography fontWeight={"inherit"} fontSize="inherit">
           {page * rowsPerPage - rowsPerPage + 1} -{" "}
-          {isLastPage ? Math.min(page * rowsPerPage, length) : length} of{" "}
+          {!isLastPage ? Math.min(page * rowsPerPage, length) : length} of{" "}
           {length} items
         </Typography>
         <Stack direction="row" spacing="16px" alignItems="center">
