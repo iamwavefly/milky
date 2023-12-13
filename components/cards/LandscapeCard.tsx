@@ -2,6 +2,7 @@ import { Box, IconButton, Stack, Typography } from "@mui/material";
 import React, { ReactNode } from "react";
 import ArrowIcon from "@/public/icons/arrow-up.svg";
 import Styles from "./landscape.module.scss";
+import stringToCurrency from "@/helper/formatCurrency";
 
 interface cardProps {
   linkTo?: string;
@@ -17,7 +18,7 @@ interface cardProps {
 }
 const LandscapeCard = ({
   linkTo,
-  title,
+  title = 0,
   subtitle,
   icon,
   currency,
@@ -27,6 +28,7 @@ const LandscapeCard = ({
   linkText,
   change,
 }: cardProps) => {
+  const [amount, cent] = stringToCurrency?.(title)?.split?.(".");
   return (
     <Box
       border="1px solid #e8eaed"
@@ -100,7 +102,7 @@ const LandscapeCard = ({
                 {currency}
               </Typography>
             )}{" "}
-            {title}
+            {currency ? amount : title}
             {currency && (
               <Typography
                 fontSize="15px"
@@ -108,7 +110,7 @@ const LandscapeCard = ({
                 component="span"
                 fontWeight={600}
               >
-                .00
+                .{cent}
               </Typography>
             )}
           </Typography>

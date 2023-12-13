@@ -36,6 +36,7 @@ export default function EmailVerification() {
           lineHeight="24px"
           mt="12px"
           color="#3C4453"
+          textAlign="center"
         >
           Click on the verification link we sent to your email address. You can
           resend the link if you didn’t get it.

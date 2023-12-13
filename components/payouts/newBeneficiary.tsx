@@ -1,29 +1,10 @@
-import Modal from "@/components/modal/modal";
-import clipboard from "@/helper/clipboard";
-import stringToCurrency from "@/helper/formatCurrency";
 import useFetch from "@/hooks/useFetch";
 import { MenuProps } from "@/interfaces";
 import baseUrl from "@/middleware/baseUrl";
-import { beneficiary, newTransfer } from "@/schema";
-import { setDrawalState } from "@/store/appSlice";
-import { LoadingButton } from "@mui/lab";
-import {
-  Box,
-  Button,
-  Collapse,
-  FormHelperText,
-  InputLabel,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
-import { borderRadius } from "@mui/system";
+import { beneficiary } from "@/schema";
+import { MenuItem, Stack, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import React, { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import Footer from "../form/Footer";
 
@@ -61,19 +42,9 @@ export default function NewBeneficiary({ reload, close }: any) {
     setCountries(fetchCountries?.data?.data);
   }, [fetchCountries?.data]);
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     setBanks(fetchBanks?.data?.banks);
   }, [fetchBanks?.data]);
-
-  useEffect(() => {
-    const { status } = createBeneficiary?.data;
-    if (status === "success") {
-      close();
-      reload();
-    }
-  }, [createBeneficiary?.data]);
 
   // form controller
   const formik = useFormik({
@@ -96,6 +67,15 @@ export default function NewBeneficiary({ reload, close }: any) {
       createBeneficiary?.handleSubmit(payload);
     },
   });
+
+  useEffect(() => {
+    const { status } = createBeneficiary?.data;
+    if (status === "success") {
+      close();
+      reload();
+      formik.resetForm();
+    }
+  }, [createBeneficiary?.data]);
 
   // resolve account
   useEffect(() => {

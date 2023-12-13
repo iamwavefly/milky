@@ -50,7 +50,7 @@ const InvoiceTable = () => {
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters, rowsPerPage]);
+  }, [currentPage, search, filters, reload, rowsPerPage]);
 
   const newInvoiceDrawal = () => {
     dispatch(
