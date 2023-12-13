@@ -233,24 +233,6 @@ const filterOptions = {
       key: "WalletId",
       type: "input",
     },
-    {
-      id: 2,
-      title: "Subsidiary ID",
-      key: "SubsidiaryId",
-      type: "input",
-    },
-    {
-      id: 3,
-      title: "Remarks",
-      key: "Remarks",
-      type: "input",
-    },
-    {
-      id: 4,
-      title: "Reference",
-      key: "Reference",
-      type: "input",
-    },
   ],
   rollingReserve: [
     {

@@ -12,7 +12,6 @@ import {
   Box,
   Button,
   Collapse,
-  Dialog,
   Divider,
   IconButton,
   Menu,
@@ -23,13 +22,11 @@ import {
 import { styled } from "@mui/material/styles";
 import Logo from "../public/images/logo.svg";
 import ArrowIcon from "@/public/images/arrow.svg";
-import NotificationActiveIcon from "../public/images/notification-active.svg";
 import NotificationIcon from "@/public/icons/bell.svg";
 import Drawal from "@/components/drawal/Drawal";
 import Head from "next/head";
 import Styles from "./dashboard.module.scss";
 import { dashboard } from "@/configs/routes";
-import MenuIcon from "remixicon-react/Menu2LineIcon";
 // import { faker } from "@faker-js/faker";
 import Router, { useRouter } from "next/router";
 import Link from "next/link";
@@ -38,12 +35,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserState, setUserState } from "@/store/authSlice";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
-import substring from "@/helper/substring";
 import Notifications from "@/components/notifications/notifications";
-import TestModeBadge from "@/components/testModeBadge";
 import truncate from "@/helper/truncate";
 import { TransitionProps } from "@mui/material/transitions";
-import NewSubsidiary from "@/components/form/newSubsidiary";
 import NewBusiness from "@/components/form/newBusiness";
 import { selectAppState, setMenuState } from "@/store/appSlice";
 import Breadcrumb from "@/components/Breadcrumb";
@@ -176,7 +170,7 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
 
   useEffect(() => {
     if (verified || pendingApproval) {
-      // return setLabels(routes.slice(1));
+      return setLabels(dashboard.slice(1));
     }
     setLabels(dashboard);
   }, [verified, pendingApproval]);

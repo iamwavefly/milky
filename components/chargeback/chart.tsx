@@ -40,19 +40,19 @@ const OverviewCharts = ({ currentTab }: { currentTab: number }) => {
         {currentTab === 1 ? (
           <>
             <OverviewCard
-              title={`${overview?.threshold_percent}%`}
+              title={`${overview?.threshold_percent ?? 0}%`}
               subtitle={"Remaining of your Threshold"}
               icon={<ReportIcon />}
               variant="error"
             />
             <OverviewCard
-              title={overview?.chargeback_value}
+              title={overview?.chargeback_value ?? 0}
               subtitle={"Chargeback Value"}
               currency="NGN"
               icon={<CoinsIcon />}
             />
             <OverviewCard
-              title={overview?.chargeback_count}
+              title={overview?.chargeback_count ?? 0}
               subtitle={"Chargeback Count"}
               icon={<ChargebackIcon />}
             />

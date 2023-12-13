@@ -25,7 +25,7 @@ const BeneficiaryTable = () => {
   const [filters, setFilters] = useState({});
   const [openModal, setOpenModal] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
-  const [result, setResult] = useState<ResultProps>({
+  const [result, setResult] = useState<any>({
     items: [],
     total_items: 0,
     total_pages: 0,
@@ -37,7 +37,6 @@ const BeneficiaryTable = () => {
   const handleCloseModal = () => setOpenModal(false);
 
   const containerRef = useRef();
-  const dispatch = useDispatch();
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/beneficiary/all?${
@@ -67,7 +66,7 @@ const BeneficiaryTable = () => {
         <NewBeneficiary reload={handleSubmit} close={handleCloseModal} />
       </Modal>
       <Header
-        entries={result?.total_items}
+        entries={result?.page?.total}
         setSearch={setSearch}
         actions={
           <>
@@ -76,6 +75,7 @@ const BeneficiaryTable = () => {
               data={data?.data?.items}
               title="beneficiary"
               variant="outlinedSmall"
+              containerRef={containerRef}
               onExport={setRowsPerPage}
               loading={loading}
             />
@@ -95,8 +95,8 @@ const BeneficiaryTable = () => {
         columns={BeneficiaryTableColumns}
         page={setCurrentPage}
         data={result?.items ?? []}
-        pageCount={result?.total_pages}
-        dataLength={result.total_items}
+        pageCount={result?.page?.total_page}
+        dataLength={result?.page?.total}
         isFetching={loading && rowsPerPage}
       />
     </Box>

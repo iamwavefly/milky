@@ -1,5 +1,5 @@
 import LandscapeCard from "@/components/cards/LandscapeCard";
-import { Box, Stack } from "@mui/material";
+import { Box, Skeleton, Stack } from "@mui/material";
 
 import CoinsIcon from "@/public/icons/coins.svg";
 import ReportIcon from "@/public/icons/report.svg";
@@ -20,7 +20,7 @@ const DefaultWallet: walletProps = {
 };
 
 const TransferCurrency = ({ currentTab }: { currentTab: number }) => {
-  const [balance, setBalance] = useState(DefaultWallet);
+  const [balance, setBalance] = useState<walletProps | null>(null);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/get/wallet/balance?walletId=${currentTab}`,
@@ -37,28 +37,36 @@ const TransferCurrency = ({ currentTab }: { currentTab: number }) => {
 
   return (
     <Box pt="30px" pb="32px">
-      <Stack direction="row" gap="16px" mt="20px">
-        <LandscapeCard
-          title={balance?.available_balance}
-          change={balance?.available_balance_change}
-          subtitle={"Available Balance"}
-          currency={balance?.currency_short_name}
-          icon={<CoinsIcon />}
-        />
-        <LandscapeCard
-          title={balance?.total_transfer}
-          change={balance?.available_balance_change}
-          subtitle={"Total Transfers"}
-          currency={balance?.currency_short_name}
-          icon={<SemdIcon />}
-        />
-        <LandscapeCard
-          title={balance?.successful_transfer}
-          change={balance?.available_balance_change}
-          subtitle={"Successful transfers"}
-          icon={<ReportIcon />}
-        />
-      </Stack>
+      {!balance ? (
+        <Stack gap="16px" direction="row" mt="20px">
+          <Skeleton variant="rounded" height={160} width="100%" />
+          <Skeleton variant="rounded" height={160} width="100%" />
+          <Skeleton variant="rounded" height={160} width="100%" />
+        </Stack>
+      ) : (
+        <Stack direction="row" gap="16px" mt="20px">
+          <LandscapeCard
+            title={balance?.available_balance}
+            change={balance?.available_balance_change}
+            subtitle={"Available Balance"}
+            currency={balance?.currency_short_name}
+            icon={<CoinsIcon />}
+          />
+          <LandscapeCard
+            title={balance?.total_transfer}
+            change={balance?.available_balance_change}
+            subtitle={"Total Transfers"}
+            currency={balance?.currency_short_name}
+            icon={<SemdIcon />}
+          />
+          <LandscapeCard
+            title={balance?.successful_transfer}
+            change={balance?.available_balance_change}
+            subtitle={"Successful transfers"}
+            icon={<ReportIcon />}
+          />
+        </Stack>
+      )}
     </Box>
   );
 };

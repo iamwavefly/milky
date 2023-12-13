@@ -593,11 +593,11 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
       return moment(row.getValue()).format("L");
     },
   },
-  {
-    header: "Actions",
-    accessorKey: "id",
-    cell: (row) => <VirtualAccountMenu id={row.getValue()} />,
-  },
+  // {
+  //   header: "Actions",
+  //   accessorKey: "id",
+  //   cell: (row) => <VirtualAccountMenu id={row.getValue()} />,
+  // },
 ];
 
 export const AccountCustomerTableColumns: ColumnDef<any, any>[] = [

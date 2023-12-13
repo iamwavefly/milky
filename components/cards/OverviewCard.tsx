@@ -2,6 +2,7 @@ import { Box, IconButton, Stack, Typography } from "@mui/material";
 import React, { ReactNode } from "react";
 import ArrowIcon from "@/public/icons/arrow-up.svg";
 import Styles from "./overview.module.scss";
+import stringToCurrency from "@/helper/formatCurrency";
 
 interface cardProps {
   linkTo?: string;
@@ -22,6 +23,8 @@ const OverviewCard = ({
   footer,
   linkText,
 }: cardProps) => {
+  const [amount, cent] = stringToCurrency?.(title)?.split?.(".");
+
   return (
     <Box
       border="1px solid #e8eaed"
@@ -54,7 +57,7 @@ const OverviewCard = ({
                   {currency}
                 </Typography>
               )}{" "}
-              {title}
+              {currency ? amount : title}
               {currency && (
                 <Typography
                   fontSize="15px"
@@ -62,7 +65,7 @@ const OverviewCard = ({
                   component="span"
                   fontWeight={600}
                 >
-                  .00
+                  .{cent}
                 </Typography>
               )}
             </Typography>

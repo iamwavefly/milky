@@ -73,9 +73,10 @@ const FundingHistory = () => {
             <Export
               columns={FundingHistoryTableColumns}
               data={data?.items}
-              title="beneficiary"
+              title="funding-history"
               variant="outlinedSmall"
               onExport={setRowsPerPage}
+              containerRef={containerRef}
               loading={loading}
             />
             <Button

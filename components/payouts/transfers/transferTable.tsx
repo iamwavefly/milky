@@ -90,7 +90,7 @@ const TransferTable = () => {
               Fund balance
             </Button>
             <Button
-              sx={{ fontSize: "12px", height: "40px" }}
+              sx={{ height: "40px" }}
               variant="contained"
               onClick={() => handleOpenModal("transfer")}
             >

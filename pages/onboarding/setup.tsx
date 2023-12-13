@@ -14,6 +14,7 @@ export default function Index() {
   const [status, setStatus] = useState<any>({});
   const [isReady, setIsReady] = useState<undefined | boolean>(undefined);
   const [stepLabel, setStepLabel] = useState<any>(null);
+  const [isComplete, setIsComplete] = useState(false);
 
   const { Form, id, subtitle, title } = stepLabel?.[step - 1] ?? {};
 
@@ -25,6 +26,16 @@ export default function Index() {
     `${baseUrl}/dashboard/onboarding/percentage`,
     "get"
   );
+
+  useEffect(() => {
+    if (business_type?.toLowerCase() === "company" && step === 6) {
+      return setIsComplete(true);
+    }
+    if (business_type?.toLowerCase() === "individual" && step === 4) {
+      return setIsComplete(true);
+    }
+    setIsComplete(false);
+  }, [step]);
 
   // set step to uncompleted page
   useEffect(() => {
@@ -100,7 +111,7 @@ export default function Index() {
       desc={subtitle}
       prevStep={prevStep}
       step={step}
-      complete={step === 6}
+      complete={isComplete}
     >
       {Form && <Form nextStep={nextStep} />}
     </AccountSetup>

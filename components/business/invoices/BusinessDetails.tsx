@@ -13,6 +13,7 @@ import { LoadingButton } from "@mui/lab";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import { notifyErrorHandler, resolveErrorMsg } from "@/middleware/catchErrors";
+import convertToBase64 from "@/helper/convertToBase64";
 
 interface BusinessDetailsProps {
   nextStep: (data: {}) => void;
@@ -22,7 +23,7 @@ export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
   const [selectedFile, setSelectedFile] = useState("");
   const [logo, setLogo] = useState("");
   const [previewUrl, setPreviewUrl] = useState(null);
-  const [newLogoUrl, setNewLogoUrl] = useState(null);
+  const [newLogoUrl, setNewLogoUrl] = useState<File | null>(null);
 
   // update logo subsidiaries
   const fetchSubsidiaries = useFetch(
@@ -30,31 +31,33 @@ export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
     "get"
   );
 
-  // upload image to cloudinary
-  const uploadImage = (file: string) => {
-    const data = new FormData();
-    data.append("file", file);
-    data.append("upload_preset", "arca_merchant");
-    data.append("folder", "arca/merchant/invoice");
-    data.append("cloud_name", "new-invoice-logo");
-    fetch("https://api.cloudinary.com/v1_1/dzvevdlsv/image/upload", {
-      method: "post",
-      body: data,
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        setNewLogoUrl(data.url);
-        console.log(data.url);
-      })
-      .catch((error) => {
-        let { errorMsg } = resolveErrorMsg(error);
-        notifyErrorHandler({
-          type: "error",
-          title: errorMsg,
-          msg: error,
-          duration: 5000,
-        });
-      });
+  const uploadImage = async (file: File) => {
+    // gen base64 url
+    const base64File = await convertToBase64(file);
+    setNewLogoUrl(base64File as File);
+    // upload image to cloudinary
+    // const data = new FormData();
+    // data.append("file", file);
+    // data.append("upload_preset", "arca_merchant");
+    // data.append("folder", "arca/merchant/invoice");
+    // data.append("cloud_name", "new-invoice-logo");
+    // fetch("https://api.cloudinary.com/v1_1/dzvevdlsv/image/upload", {
+    //   method: "post",
+    //   body: data,
+    // })
+    //   .then((resp) => resp.json())
+    //   .then((data) => {
+    //     setNewLogoUrl(data.url);
+    //   })
+    //   .catch((error) => {
+    //     let { errorMsg } = resolveErrorMsg(error);
+    //     notifyErrorHandler({
+    //       type: "error",
+    //       title: errorMsg,
+    //       msg: error,
+    //       duration: 5000,
+    //     });
+    //   });
   };
 
   const dispatch = useDispatch();
