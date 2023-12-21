@@ -47,6 +47,7 @@ export default function EmailVerification() {
           lineHeight="24px"
           mt="12px"
           color="#3C4453"
+          textAlign="center"
         >
           {emailVerified
             ? "Your Email Address Has Been Successfully Verified"

@@ -103,7 +103,7 @@ export default function BankDetails({ nextStep }: Props) {
         accountType: "",
         bankName: bank?.id,
         accountNumber: account_number,
-        accountName: account_name,
+        accountName: account_name ?? "Demo",
       });
     }
   }, [fetchBankInformation?.data]);
@@ -160,6 +160,7 @@ export default function BankDetails({ nextStep }: Props) {
                 variant="outlined"
                 name="accountNumber"
                 value={formik.values.accountNumber}
+                inputProps={{ maxLength: 10 }}
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={

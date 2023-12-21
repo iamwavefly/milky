@@ -30,8 +30,6 @@ interface Props {
 export default function BankDetails({ append, reload, close }: Props) {
   const [banks, setBanks] = useState([]);
 
-  const dispatch = useDispatch();
-
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/onboarding/bank/details`
   );
@@ -43,7 +41,7 @@ export default function BankDetails({ append, reload, close }: Props) {
   }, [fetchBanks?.data]);
 
   useEffect(() => {
-    const { status, message } = data;
+    const { status } = data;
     if (status === "success") {
       reload && reload();
       close && close();

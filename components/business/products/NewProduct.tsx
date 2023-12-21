@@ -25,6 +25,7 @@ import { serialize } from "object-to-formdata";
 import EditIcon from "@/public/icons/edit.svg";
 import DeleteIcon from "@/public/icons/delete.svg";
 import AddBox from "@/public/icons/add.svg";
+import { Product } from "@/interfaces";
 
 const deliveryTypes = [
   {
@@ -46,8 +47,13 @@ const deliveryTypes = [
 
 const feeDefault = { name: "", fee: "" };
 
-export default function NewProduct({ product }: any) {
+type NewProductProps = {
+  product?: Product | null;
+};
+
+export default function NewProduct({ product }: NewProductProps) {
   const [images, setImages] = useState<ProductImage[]>([]);
+  const [previewImage, setPreviewImage] = useState("");
   const [form, setForm] = useState(feeDefault);
   const [fees, setFees] = useState<any>([]);
   const [showFeeForm, setShowFeeForm] = useState(false);
@@ -82,13 +88,13 @@ export default function NewProduct({ product }: any) {
     initialValues: {
       productName: "",
       productDescription: "",
-      price: "",
+      price: null,
       quantity: 1,
       containsPhysicalGoods: false,
       deliveryAddressRequired: false,
       deliveryNoteRequired: false,
       onDeal: false,
-      dealPrice: "",
+      dealPrice: null,
       url: "",
     },
     validationSchema: newProduct,
@@ -107,8 +113,8 @@ export default function NewProduct({ product }: any) {
       let formdata = new FormData();
       formdata.append("name", productName);
       formdata.append("description", productDescription);
-      formdata.append("price", price);
-      formdata.append("dealprice", dealPrice);
+      formdata.append("price", "" + price);
+      formdata.append("dealprice", "" + dealPrice);
       formdata.append("ondeal", JSON.stringify(onDeal));
       formdata.append(
         "containsphysicalgoods",
@@ -123,16 +129,58 @@ export default function NewProduct({ product }: any) {
         JSON.stringify(deliveryNoteRequired)
       );
       formdata.append("fee", JSON.stringify(fees));
-      formdata.append("stock", JSON.stringify(quantity));
+      formdata.append("stock", "" + quantity);
       formdata.append("url", url);
 
-      images.forEach((image: any) => {
+      [...images, previewImage].forEach((image: any) => {
         formdata.append("images", image);
       });
 
       handleSubmit(formdata);
     },
   });
+
+  useEffect(() => {
+    if (product) {
+      const {
+        name,
+        description,
+        price,
+        stock,
+        is_physical,
+        can_be_delivered,
+        is_delivery_note,
+        is_on_deal,
+        discount,
+        image,
+      } = product;
+
+      formik.setValues({
+        productName: name,
+        productDescription: description,
+        price: price as any,
+        quantity: stock,
+        containsPhysicalGoods: is_physical,
+        deliveryAddressRequired: can_be_delivered,
+        deliveryNoteRequired: is_delivery_note,
+        onDeal: is_on_deal,
+        dealPrice: (discount > 0 ? discount : undefined) as any,
+        url: "",
+      });
+
+      // formik.setFieldValue("productName", name);
+      // formik.setFieldValue("productDescription", description);
+      // formik.setFieldValue("price", price);
+      // formik.setFieldValue("quantity", stock);
+      // formik.setFieldValue("containsPhysicalGoods", is_physical);
+      // formik.setFieldValue("deliveryAddressRequired", can_be_delivered);
+      // formik.setFieldValue("deliveryNoteRequired", is_delivery_note);
+      // formik.setFieldValue("onDeal", is_on_deal);
+      // formik.setFieldValue("dealPrice", discount);
+      // update image
+      setPreviewImage(image);
+    }
+  }, [product]);
 
   const newFeeHandler = () => {
     setShowFeeForm(false);
@@ -158,7 +206,11 @@ export default function NewProduct({ product }: any) {
             Add up to 6 high quality product images. Maximum upload size is 10mb
           </Typography>
           <Box mt="32px">
-            <BulkImageUpload limit={6} uploadImages={setImages} />
+            <BulkImageUpload
+              images={previewImage}
+              limit={6}
+              uploadImages={setImages}
+            />
           </Box>
         </Box>
         <Divider />
@@ -397,7 +449,7 @@ export default function NewProduct({ product }: any) {
             loading={loading}
             disabled={!(formik.isValid && formik.dirty)}
           >
-            Save
+            Save {product && "Changes"}
           </LoadingButton>
         </Stack>
       </form>

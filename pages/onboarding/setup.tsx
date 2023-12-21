@@ -31,7 +31,7 @@ export default function Index() {
     if (business_type?.toLowerCase() === "company" && step === 6) {
       return setIsComplete(true);
     }
-    if (business_type?.toLowerCase() === "individual" && step === 4) {
+    if (business_type?.toLowerCase() === "individual" && step === 5) {
       return setIsComplete(true);
     }
     setIsComplete(false);
@@ -49,14 +49,16 @@ export default function Index() {
       } = data?.data;
       if (business_type) {
         if (business_type?.toLowerCase() === "individual") {
-          if (bank_information !== 100) {
+          if (business_information !== 100) {
             setStep(1);
-          } else if (personal_information !== 100) {
+          } else if (bank_information !== 100) {
             setStep(2);
-          } else if (terms_and_condition !== 100) {
+          } else if (personal_information !== 100) {
             setStep(3);
-          } else {
+          } else if (terms_and_condition !== 100) {
             setStep(4);
+          } else {
+            setStep(5);
           }
         } else {
           if (personal_information !== 100) {
@@ -86,9 +88,7 @@ export default function Index() {
         return setStepLabel(newLabel);
       }
       // remove business registration, contact and business information
-      const newLabel = onboardingForm?.filter(
-        ({ id }) => id !== 1 && id !== 2 && id !== 3
-      );
+      const newLabel = onboardingForm?.filter(({ id }) => id !== 1 && id !== 3);
       setStepLabel(newLabel);
     }
   }, [business_type, onboardingForm]);

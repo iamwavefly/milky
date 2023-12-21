@@ -327,7 +327,7 @@ export default function Legal({ nextStep }: Props) {
         <p className="c0">
           <span className="c5">o.&nbsp;</span>
           <span className="c4">
-            upon request by Alliance Pay, provide KYC documentation/information
+            upon request by Arca Pay, provide KYC documentation/information
             relating to any of its customers.
           </span>
           <span className="c1">&nbsp;</span>
