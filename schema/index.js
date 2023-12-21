@@ -229,8 +229,9 @@ export const bankDetails = () =>
     accountNumber: yup
       .string()
       .nullable()
+      .length(10, "Account number must be exactly 10 characters")
       .required("Account number is required"),
-    accountName: yup.string().nullable().required("Account name is required"),
+    accountName: yup.string().nullable(),
   });
 
 // business information

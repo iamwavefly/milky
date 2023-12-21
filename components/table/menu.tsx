@@ -19,11 +19,12 @@ import { useDispatch } from "react-redux";
 import MoreIcon from "../../public/icons/more.svg";
 import BlacklistCustomer from "../business/customers/blacklistCustomer";
 import Modal from "../modal/modal";
-import { UserProps } from "@/interfaces";
+import { Product, UserProps } from "@/interfaces";
 import RemoveUser from "../settings/roles-permissions/RemoveUser";
 import NewUser from "../form/newUser";
 import { serialize } from "object-to-formdata";
 import DeleteProd from "../business/products/DeleteProduct";
+import NewProduct from "../business/products/NewProduct";
 
 export const ViewTransaction = ({ id }: { id?: number }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -63,7 +64,7 @@ export const ViewTransaction = ({ id }: { id?: number }) => {
 };
 
 export const ProductMenu = ({ id }: { id?: number }) => {
-  const [product, setProduct] = useState<any>({});
+  const [product, setProduct] = useState<Product | null>(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [openModal, setOpenModal] = useState(false);
 
@@ -142,9 +143,19 @@ export const ProductMenu = ({ id }: { id?: number }) => {
     duplicateProdReq?.handleSubmit();
   };
 
+  const editProductDrawal = () => {
+    dispatch(
+      setDrawalState({
+        active: true,
+        title: "Edit Product",
+        content: <NewProduct product={product} />,
+      })
+    );
+  };
+
   const handleActionClick = (action: string, event: any) => {
     handleClose(event);
-    if (action === "edit") return Router.push(`/business/products/edit/${id}`);
+    if (action === "edit") return editProductDrawal();
     if (action === "delete") return handleOpenModal();
     if (action === "duplicate") return duplicateProduct();
     if (action === "archive") {

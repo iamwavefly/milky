@@ -19,10 +19,15 @@ import { ProductImage } from "@/types";
 
 interface BulkUploadProps {
   limit: number;
+  images?: string;
   uploadImages?: (images: any) => void;
 }
 
-export default function BulkUpload({ limit, uploadImages }: BulkUploadProps) {
+export default function BulkUpload({
+  limit,
+  images,
+  uploadImages,
+}: BulkUploadProps) {
   const [errors, setErrors] = useState<string[]>([]);
   const [productImages, setProductImages] = useState<ProductImage[]>([]);
   const [calcImagesLeft, setCalcImagesLeft] = useState(0);
@@ -34,8 +39,11 @@ export default function BulkUpload({ limit, uploadImages }: BulkUploadProps) {
   useEffect(() => {
     const newImages = productImages.map(({ file }) => file);
     uploadImages && uploadImages(newImages);
-    console.log(newImages);
   }, [productImages]);
+
+  useEffect(() => {
+    if (images) return setProductImages((prev) => [...prev, images] as any);
+  }, [images]);
 
   const onDrop = (acceptedFiles: File[], rejectedFiles: any) => {
     if (productImages.length === limit) return;
@@ -153,10 +161,10 @@ export default function BulkUpload({ limit, uploadImages }: BulkUploadProps) {
         </div>
       )}
       <Stack spacing="24px" mt="32px">
-        {productImages.map(({ file, name }) => (
+        {productImages.map((image) => (
           <Stack
             mt="32px"
-            key={name}
+            key={image?.name}
             direction="row"
             alignItems="center"
             justifyContent="space-between"
@@ -164,18 +172,22 @@ export default function BulkUpload({ limit, uploadImages }: BulkUploadProps) {
             <Stack direction="row" alignItems="center" spacing="16px">
               <Image
                 style={{ borderRadius: "11.636px", objectFit: "cover" }}
-                src={URL.createObjectURL(file)}
+                src={
+                  image?.file
+                    ? URL.createObjectURL(image?.file)
+                    : (image as any)
+                }
                 width={64}
                 height={64}
                 alt="name"
               />
               <Typography fontSize="15px" color="#070F1C">
-                {name}
+                {image?.name}
               </Typography>
             </Stack>
             <IconButton
               sx={{ bgcolor: "#FFF5F5" }}
-              onClick={() => removeImage(name)}
+              onClick={() => removeImage(image?.name)}
             >
               <DeleteIcon />
             </IconButton>

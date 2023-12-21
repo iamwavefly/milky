@@ -54,3 +54,24 @@ export interface ResultProps {
   total_items: number;
   total_pages: number;
 }
+
+export interface Product {
+  availability: string;
+  can_be_delivered: boolean;
+  date_created: string;
+  description: string;
+  discount: number;
+  id: number;
+  image: string;
+  is_delivery_note: boolean;
+  is_on_deal: boolean;
+  is_physical: boolean;
+  name: string;
+  payment_link: string;
+  price: number;
+  status: string;
+  stock: number;
+  summary: string;
+  total_amount: number;
+  total_orders: number;
+}

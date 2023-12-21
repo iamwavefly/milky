@@ -64,7 +64,7 @@ const AccountSetup = ({
       }
       // remove business registration, contact and business information
       const newStepLabel = formStepLabel?.filter(
-        ({ id }) => id !== 2 && id !== 3 && id !== 4
+        ({ id }) => id !== 2 && id !== 4
       );
       setStepLabel(newStepLabel);
     }
