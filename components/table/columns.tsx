@@ -20,7 +20,7 @@ export const BusinessTransactionTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Date",
     cell: (row: any) => {
-      return moment(row.getValue()).format("L");
+      return moment(row.getValue()).format("D MMM, YYYY");
     },
   },
   {
@@ -75,7 +75,7 @@ export const TransactionTableColumns: ColumnDef<any, any>[] = [
     cell: (row: any) => {
       return (
         <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
+          {moment(row.getValue()).format("D MMM, YYYY")}
         </Typography>
       );
     },
@@ -314,7 +314,7 @@ export const TransactionDetailsTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Date",
     cell: (row: any) => {
-      return moment(row.getValue()).format("L");
+      return moment(row.getValue()).format("D MMM, YYYY");
     },
   },
   {
@@ -485,11 +485,11 @@ export const AccountVirtualTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "bvn",
     header: "BVN",
   },
-  {
-    header: "Actions",
-    accessorKey: "id",
-    cell: (row) => <VirtualAccountMenu id={row.getValue()} />,
-  },
+  // {
+  //   header: "Actions",
+  //   accessorKey: "id",
+  //   cell: (row) => <VirtualAccountMenu id={row.getValue()} />,
+  // },
 ];
 
 export const BalanceReserveColumns: ColumnDef<any, any>[] = [
@@ -505,11 +505,7 @@ export const BalanceReserveColumns: ColumnDef<any, any>[] = [
     accessorKey: "settlement_date",
     header: "Settlement date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("D MMM, YYYY");
     },
   },
   {
@@ -525,11 +521,7 @@ export const BalanceReserveColumns: ColumnDef<any, any>[] = [
     accessorKey: "due_date",
     header: "Due date",
     cell: (row: any) => {
-      return (
-        <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
-        </Typography>
-      );
+      return moment(row.getValue()).format("D MMM, YYYY");
     },
   },
   {
@@ -590,7 +582,7 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Due date",
     cell: (row: any) => {
-      return moment(row.getValue()).format("L");
+      return moment(row.getValue()).format("D MMM, YYYY");
     },
   },
   // {
@@ -653,14 +645,14 @@ export const InvoiceTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Date issued",
     cell: (row: any) => {
-      return moment(row.getValue()).format("L");
+      return moment(row.getValue()).format("D MMM, YYYY");
     },
   },
   {
     accessorKey: "due_date",
     header: "Due date",
     cell: (row: any) => {
-      return moment(row.getValue()).format("L");
+      return moment(row.getValue()).format("D MMM, YYYY");
     },
   },
   {
@@ -805,7 +797,7 @@ export const RefundTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Date",
     cell: (row: any) => {
-      return moment(row.getValue()).format("L");
+      return moment(row.getValue()).format("D MMM, YYYY");
     },
   },
   {
@@ -1006,7 +998,7 @@ export const TransferTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_initiated",
     header: "Date",
     cell: (row: any) => {
-      return moment(row.getValue()).format("L");
+      return moment(row.getValue()).format("D MMM, YYYY");
     },
   },
   {
@@ -1055,7 +1047,7 @@ export const TransferPendingTableColumns: ColumnDef<any, any>[] = [
     cell: (row: any) => {
       return (
         <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
+          {moment(row.getValue()).format("D MMM, YYYY")}
         </Typography>
       );
     },
@@ -1094,7 +1086,7 @@ export const FundingHistoryTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_initiated",
     header: "Date",
     cell: (row: any) => {
-      return moment(row.getValue()).format("L");
+      return moment(row.getValue()).format("D MMM, YYYY");
     },
   },
   // {
@@ -1121,7 +1113,7 @@ export const BeneficiaryTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "date_created",
     header: "Date",
     cell: (row: any) => {
-      return moment(row.getValue()).format("L");
+      return moment(row.getValue()).format("D MMM, YYYY");
     },
   },
   {
@@ -1364,7 +1356,7 @@ export const DisputeColumns: ColumnDef<any, any>[] = [
     cell: (row: any) => {
       return (
         <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
+          {moment(row.getValue()).format("D MMM, YYYY")}
         </Typography>
       );
     },
@@ -1375,7 +1367,7 @@ export const DisputeColumns: ColumnDef<any, any>[] = [
     cell: (row: any) => {
       return (
         <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
+          {moment(row.getValue()).format("D MMM, YYYY")}
         </Typography>
       );
     },
@@ -1728,7 +1720,7 @@ export const ApprovalFeesTableColumns: ColumnDef<any, any>[] = [
     cell: (row: any) => {
       return (
         <Typography color="#92959F" fontSize="12px" width="max-content">
-          {moment(row.getValue()).format("L")}
+          {moment(row.getValue()).format("D MMM, YYYY")}
         </Typography>
       );
     },
