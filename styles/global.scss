@@ -124,7 +124,8 @@ fieldset {
   &.successful,
   &.available,
   &.completed,
-  &.paid {
+  &.paid,
+  &.not-due {
     color: #0e9a4c;
     background-color: #ebfff4;
   }

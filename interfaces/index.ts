@@ -54,6 +54,13 @@ export interface ResultProps {
   total_items: number;
   total_pages: number;
 }
+export interface ResultPageProps {
+  items: [];
+  page: {
+    total: number;
+    total_page: number;
+  };
+}
 
 export interface Product {
   availability: string;

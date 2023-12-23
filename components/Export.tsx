@@ -31,6 +31,7 @@ type Props = {
   variant?: "containedSmall" | "outlinedSmall";
   title: string;
   data: [];
+  btnContent?: string | ReactNode;
   containerRef?: RefObject<HTMLInputElement> | MutableRefObject<undefined>;
   columns: any;
   onExport?: (value: number | null) => void;
@@ -46,6 +47,7 @@ export default function Export({
   columns,
   data,
   containerRef,
+  btnContent,
   title,
   noPNG,
   noPDF,
@@ -183,7 +185,7 @@ export default function Export({
             disabled={!data?.length}
             {...others}
           >
-            Export <ArrowDownIcon fill="#fff" height="18px" width="18px" />
+            {btnContent ?? "Export"}
           </Button>
         ) : (
           <Stack
@@ -203,7 +205,7 @@ export default function Export({
               borderRight="1px solid #DADCE2"
             >
               <Typography fontSize="14px" color="#162031" fontWeight={500}>
-                Export
+                {btnContent ?? "Export"}
               </Typography>
             </Box>
             <IconButton

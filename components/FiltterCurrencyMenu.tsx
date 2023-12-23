@@ -16,7 +16,7 @@ import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
 
 interface Props {
-  updateFilter?: React.Dispatch<SetStateAction<{}>>;
+  updateFilter?: React.Dispatch<SetStateAction<string>>;
   title?: string;
   selector?: string;
 }
@@ -28,7 +28,9 @@ export default function FilterCurrencyMenu({
 }: Props) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [currencies, setCurrencies] = useState([]);
-  const [setselectedCurrencies, setSetselectedCurrencies] = useState(0);
+  const [selectedCurrencies, setSelectedCurrencies] = useState<null | string>(
+    null
+  );
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -53,8 +55,9 @@ export default function FilterCurrencyMenu({
     setCurrencies(fnCurrencies);
   }, [data?.data]);
 
-  const onSelectionChanged = (id: number) => {
-    setSetselectedCurrencies(id);
+  const onSelectionChanged = (name: string) => {
+    setSelectedCurrencies(name);
+    updateFilter?.(name);
     handleClose();
   };
 
@@ -68,9 +71,9 @@ export default function FilterCurrencyMenu({
       >
         {currencies?.map(({ short_name, id }: any) => (
           <MenuItem
-            onClick={() => onSelectionChanged(id)}
-            selected={setselectedCurrencies === id}
-            value={id}
+            onClick={() => onSelectionChanged(short_name)}
+            selected={selectedCurrencies === short_name}
+            value={short_name}
             key={id}
             sx={{ width: "100%" }}
           >
@@ -95,7 +98,7 @@ export default function FilterCurrencyMenu({
           borderRight="1px solid #DADCE2"
         >
           <Typography fontSize="14px" color="#162031" fontWeight={500}>
-            {title}
+            {selectedCurrencies ?? title}
           </Typography>
         </Box>
         <IconButton

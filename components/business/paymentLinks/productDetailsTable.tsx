@@ -11,7 +11,7 @@ import Router, { useRouter } from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import { Box, Button } from "@mui/material";
-import CopyIcon from "remixicon-react/FileCopyLineIcon";
+import AddIcon from "@/public/icons/add-white.svg";
 
 const ProductDetailsTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -52,8 +52,8 @@ const ProductDetailsTable = () => {
             variant="contained"
             sx={{ fontSize: "12px", height: "40px" }}
           >
-            <CopyIcon size={18} />
-            Add New Product
+            <AddIcon width={18} />
+            Add Product
           </Button>
         }
         transparent

@@ -26,6 +26,8 @@ import { setDrawalState } from "@/store/appSlice";
 import { useDispatch } from "react-redux";
 import NewPaymentLink from "@/components/business/paymentLinks/newPaymentLink";
 import BackArrow from "@/components/headers/BackArrow";
+import OnlyHeader from "@/components/cards/onlyHeader";
+import Detail from "@/components/detail";
 
 export default function Index() {
   const [details, setDetails] = useState({});
@@ -93,61 +95,39 @@ export default function Index() {
           </Stack>
         </Stack>
         {/* customer details  */}
-        <Stack direction="row" mt="35px" height="112px" bgcolor="#FFFFFF">
-          <Stack flex={1}>
-            <Stack
-              justifyContent="center"
-              height="56px"
-              borderBottom="1px solid #E8EAF0"
-              pl="48px"
-            >
-              <Typography color="#92959F" fontSize="12px" fontWeight={500}>
-                Date created
-              </Typography>
-            </Stack>
-            <Box justifyContent="center" pl="48px" my="auto">
-              <Typography color="#262B40" fontSize="14px">
-                {moment(details?.date_created).format("LL")}
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack flex={1}>
-            <Stack
-              justifyContent="center"
-              height="56px"
-              borderBottom="1px solid #E8EAF0"
-              pl="48px"
-            >
-              <Typography color="#92959F" fontSize="12px" fontWeight={500}>
-                Link type
-              </Typography>
-            </Stack>
-            <Box justifyContent="center" pl="48px" my="auto">
-              <Typography color="#262B40" fontSize="14px">
-                {details?.payment_type}
-              </Typography>
-            </Box>
-          </Stack>
-          <Stack flex={1}>
-            <Stack
-              justifyContent="center"
-              height="56px"
-              borderBottom="1px solid #E8EAF0"
-              pl="48px"
-            >
-              <Typography color="#92959F" fontSize="12px" fontWeight={500}>
-                Link URL
-              </Typography>
-            </Stack>
-            <Box justifyContent="center" pl="48px" my="auto">
-              <Typography color="#262B40" fontSize="14px">
-                {details?.payment_link_url
-                  ? truncate(details?.payment_link_url, 30)
-                  : "..."}
-              </Typography>
-            </Box>
-          </Stack>
-        </Stack>
+        <OnlyHeader
+          header={details?.name ?? "..."}
+          alignHeader="left"
+          mt="35px"
+        >
+          <Grid container flex={1} minWidth="100%">
+            <Grid item xs={4}>
+              <Detail
+                title="link Url"
+                value={
+                  details?.payment_link_url
+                    ? truncate(details?.payment_link_url, 30)
+                    : "..."
+                }
+                variant="copy"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <Detail
+                title="Date created"
+                value={moment(details?.date_created).format("LL")}
+                variant="copy"
+              />
+            </Grid>
+            <Grid item xs={3}>
+              <Detail
+                title="link type"
+                value={details?.payment_type}
+                variant="copy"
+              />
+            </Grid>
+          </Grid>
+        </OnlyHeader>
         <Box mt="24px">
           <ProductDetailsTable />
         </Box>

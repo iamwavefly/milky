@@ -35,6 +35,7 @@ import FilterCurrencyMenu from "@/components/FiltterCurrencyMenu";
 const options = ["week", "year"];
 
 export default function Index() {
+  const [selectedCurrency, setSelectedCurrency] = useState<string>("");
   const [summary, setSummary] = useState<any>({});
   const [csvHeader, setCsvHeader] = useState<any>([]);
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
@@ -53,22 +54,22 @@ export default function Index() {
 
   // filter menu ends
   const txnSummaryReq = useFetch(
-    `${baseUrl}/metric/transaction/summary?FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}`,
+    `${baseUrl}/metric/transaction/summary?FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}&currency=${selectedCurrency}`,
     "get"
   );
 
   const inflowOutflowChart = useFetch(
-    `${baseUrl}/metric/inflow/outflow?type=${options[selectedFilter]}&FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}`,
+    `${baseUrl}/metric/inflow/outflow?type=${options[selectedFilter]}&FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}&currency=${selectedCurrency}`,
     "get"
   );
 
   useEffect(() => {
     txnSummaryReq?.handleSubmit();
-  }, [dateRange]);
+  }, [dateRange, selectedCurrency]);
 
   useEffect(() => {
     inflowOutflowChart?.handleSubmit();
-  }, [dateRange, selectedFilter]);
+  }, [dateRange, selectedFilter, selectedCurrency]);
 
   useEffect(() => {
     setSummary(txnSummaryReq?.data?.data);
@@ -106,7 +107,10 @@ export default function Index() {
       </Menu>
       <Navbar title="Overview">
         <Stack direction="row" gap="10px">
-          <FilterCurrencyMenu title="Filter currency" />
+          <FilterCurrencyMenu
+            title="Filter currency"
+            updateFilter={setSelectedCurrency}
+          />
         </Stack>
       </Navbar>
       {/* group charts */}
