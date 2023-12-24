@@ -87,9 +87,9 @@ const BalanceReserveTable = () => {
         isFetching={loading && rowsPerPage}
         page={setCurrentPage}
         pageCount={result?.page?.total_page}
-        onClickRow={(e) =>
-          Router.push(`/balance/reserve/${e?.row?.original?.id}`)
-        }
+        // onClickRow={(e) =>
+        //   Router.push(`/balance/reserve/${e?.row?.original?.id}`)
+        // }
       />
     </Box>
   );

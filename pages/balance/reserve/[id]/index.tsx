@@ -5,6 +5,7 @@ import {
   Box,
   Button,
   Checkbox,
+  Chip,
   Grid,
   IconButton,
   Stack,
@@ -28,10 +29,11 @@ import NewPaymentLink from "@/components/business/paymentLinks/newPaymentLink";
 import BackArrow from "@/components/headers/BackArrow";
 import OnlyHeader from "@/components/cards/onlyHeader";
 import Detail from "@/components/detail";
+import stringToCurrency from "@/helper/formatCurrency";
 
 const routes = [
-  { label: "Payment links", link: "/business/payment-links" },
-  { label: "Payment link details" },
+  { label: "Rolling reserve", link: "/balance/reserve" },
+  { label: "Rolling reserve details" },
 ];
 
 export default function Index() {
@@ -42,7 +44,7 @@ export default function Index() {
   const { asPath } = useRouter();
   const id = +asPath.split("/").slice(-1)[0];
   const { loading, data, error, handleSubmit } = useFetch(
-    `${baseUrl}/dashboard/payment/link/subsidiary?id=${id}`,
+    `${baseUrl}/dashboard/rolling/reserves?id=${id}`,
     "get"
   );
 
@@ -53,7 +55,7 @@ export default function Index() {
   }, [asPath, id]);
 
   useEffect(() => {
-    setDetails(data?.items?.[0]);
+    setDetails(data?.data?.items?.[0]);
   }, [data]);
 
   const openDrawal = () => {
@@ -73,61 +75,54 @@ export default function Index() {
   };
 
   return (
-    <Dashboard title={`Payment Links`} breadcrumbLinks={routes}>
+    <Dashboard title={`Rolling Reserve Details`} breadcrumbLinks={routes}>
       <Box>
         <Stack
           direction="row"
           justifyContent="space-between"
           alignItems="center"
         >
-          <BackArrow title="Payment Link Details" mb={0} />
-          <Stack direction="row" spacing="10px">
-            <Button
-              variant="outlined"
-              sx={{ fontSize: "12px", height: "40px" }}
-              onClick={() => clipboard(details?.payment_link_url ?? "...")}
-            >
-              <CopyIcon size={18} />
-              Copy Link
-            </Button>
-            <Button
-              variant="outlined"
-              sx={{ fontSize: "12px", height: "40px" }}
-              onClick={openDrawal}
-            >
-              <EditIcon size={18} fill="#0048B1" /> Edit Link
-            </Button>
-          </Stack>
+          <BackArrow title="Rolling Reserve Details" mb={0} />
         </Stack>
-        {/* customer details  */}
+        {/* rolling reserve details  */}
         <OnlyHeader
-          header={details?.name ?? "..."}
           alignHeader="left"
           mt="35px"
+          header={
+            details && (
+              <Stack spacing="16px" direction="row">
+                <Typography color="#162031" fontSize="15px" fontWeight={700}>
+                  NGN {stringToCurrency(details?.settlement_amount)}
+                </Typography>
+                <Chip
+                  label={details?.status?.replaceAll("-", " ")}
+                  className={`chip border ${details?.status
+                    ?.toLowerCase()
+                    ?.replaceAll(" ", "-")}`}
+                />
+              </Stack>
+            )
+          }
         >
           <Grid container flex={1} minWidth="100%">
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <Detail
-                title="link Url"
-                value={
-                  details?.payment_link_url
-                    ? truncate(details?.payment_link_url, 30)
-                    : "..."
-                }
+                title="DATE PAID"
+                value={moment(details?.settlement_date).format("D MMM, YYYY")}
                 variant="copy"
               />
             </Grid>
             <Grid item xs={3}>
               <Detail
-                title="Date created"
-                value={moment(details?.date_created).format("LL")}
+                title="Date Due"
+                value={moment(details?.due_date).format("D MMM, YYYY")}
                 variant="copy"
               />
             </Grid>
             <Grid item xs={3}>
               <Detail
-                title="link type"
-                value={details?.payment_type}
+                title="Withheld Amount"
+                value={`NGN ${stringToCurrency(details?.withheld_amount)}`}
                 variant="copy"
               />
             </Grid>
@@ -135,10 +130,6 @@ export default function Index() {
         </OnlyHeader>
         <Box mt="24px">
           <ProductDetailsTable />
-        </Box>
-        {/* Customer transaction */}
-        <Box mt="24px">
-          <TransactionrDetailsTable />
         </Box>
       </Box>
     </Dashboard>

@@ -240,11 +240,11 @@ export const AuditTrailTableColumns: ColumnDef<any, any>[] = [
     accessorKey: "action",
     header: "Activity",
   },
-  {
-    header: "Actions",
-    accessorKey: "user_id",
-    cell: (row) => <EmptyMenu id={row.getValue()} />,
-  },
+  // {
+  //   header: "Actions",
+  //   accessorKey: "user_id",
+  //   cell: (row) => <EmptyMenu id={row.getValue()} />,
+  // },
 ];
 
 export const SubsidiaryTableColumns: ColumnDef<any, any>[] = [
