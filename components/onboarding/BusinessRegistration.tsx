@@ -171,7 +171,7 @@ export default function BusinessRegistration({ nextStep }: Props) {
         <Box px="40px" pt="29px" pb="40px">
           <Stack spacing="24px" mt="16px">
             <TextField
-              label="Business class"
+              label="Business class *"
               variant="outlined"
               select
               name="businessClass"
@@ -195,7 +195,7 @@ export default function BusinessRegistration({ nextStep }: Props) {
               )}
             </TextField>
             <TextField
-              label="Tax Identification Number (TIN)"
+              label="Tax Identification Number (TIN) *"
               variant="outlined"
               name="taxIdNumber"
               value={formik.values.taxIdNumber}
@@ -227,13 +227,13 @@ export default function BusinessRegistration({ nextStep }: Props) {
           </Typography>
           <Stack gap="24px" mt="16px">
             <FileUpload
-              title={"Certificate of incorporation"}
+              title={"Certificate of incorporation *"}
               update={(file: Blob) =>
                 fileChangeHandler("certofincorporation", file)
               }
             />
             <FileUpload
-              title={"Memorandum and Article of Association"}
+              title={"Memorandum and Article of Association *"}
               update={(file: Blob) =>
                 fileChangeHandler("memoofassociation", file)
               }
@@ -252,7 +252,7 @@ export default function BusinessRegistration({ nextStep }: Props) {
               }
             />
             <FileUpload
-              title={"Proof of Business Address"}
+              title={"Proof of Business Address *"}
               update={(file: Blob) => fileChangeHandler("proofofaddress", file)}
             />
           </Stack>
@@ -264,7 +264,7 @@ export default function BusinessRegistration({ nextStep }: Props) {
           </Typography>
           <Stack gap="24px" mt="16px">
             <FileUpload
-              title={"Director 1"}
+              title={"Director 1 *"}
               update={(file: Blob) =>
                 fileChangeHandler("directorsidentification", file)
               }
@@ -383,11 +383,11 @@ export default function BusinessRegistration({ nextStep }: Props) {
           <LoadingButton
             variant="contained"
             loading={loading}
-            disabled={
-              !(formik.isValid && formik.dirty) ||
-              disabled ||
-              stakeholders.length < 1
-            }
+            // disabled={
+            //   !(formik.isValid && formik.dirty) ||
+            //   disabled ||
+            //   stakeholders.length < 1
+            // }
             type="submit"
           >
             Save & Continue

@@ -119,6 +119,9 @@ fieldset {
     font-size: 13px;
     line-height: 21px;
   }
+  &.border {
+    border: 1px solid;
+  }
   &.approved,
   &.active,
   &.successful,
@@ -128,6 +131,7 @@ fieldset {
   &.not-due {
     color: #0e9a4c;
     background-color: #ebfff4;
+    border-color: #0e9a4c;
   }
   &.pending-review,
   &.pending-verification,
@@ -138,12 +142,14 @@ fieldset {
   &.archived {
     color: #f59300;
     background: #fff8f0;
+    border-color: #f59300;
   }
   &.in-review,
   &.new,
   &.initiated {
     color: #1155d9;
     background-color: rgba(16, 96, 251, 0.05);
+    border-color: #1155d9;
   }
   &.rejected,
   &.suspended,
@@ -154,6 +160,7 @@ fieldset {
   &.blacklisted {
     color: #e84a5f;
     background-color: #fff5f5;
+    border-color: #e84a5f;
   }
 }
 

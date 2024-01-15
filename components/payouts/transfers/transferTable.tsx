@@ -18,7 +18,7 @@ import { useDispatch } from "react-redux";
 import AddIcon from "@/public/icons/add.svg";
 import FundBalance from "./fundBalance";
 import Modal from "@/components/modal/modal";
-import { ResultProps } from "@/interfaces";
+import { ResultPageProps, ResultProps } from "@/interfaces";
 
 const TransferTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -28,10 +28,12 @@ const TransferTable = () => {
   const [modalState, setModalState] = useState<null | string>(null);
   const [openModal, setOpenModal] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState<number | null>(10);
-  const [result, setResult] = useState<ResultProps>({
+  const [result, setResult] = useState<ResultPageProps>({
     items: [],
-    total_items: 0,
-    total_pages: 0,
+    page: {
+      total: 0,
+      total_page: 0,
+    },
   });
 
   const containerRef = useRef();
@@ -79,6 +81,7 @@ const TransferTable = () => {
       </Modal>
       <Header
         setSearch={setSearch}
+        entries={result?.page?.total}
         actions={
           <>
             <Button
@@ -104,8 +107,8 @@ const TransferTable = () => {
         columns={TransferTableColumns}
         page={setCurrentPage}
         data={result?.items ?? []}
-        pageCount={result?.total_pages}
-        dataLength={result?.total_items}
+        pageCount={result?.page?.total_page}
+        dataLength={result?.page?.total}
         isFetching={loading && rowsPerPage}
       />
     </Box>
