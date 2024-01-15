@@ -247,7 +247,7 @@ export const businessInformation = () =>
     address: yup.string().nullable().required("Address is required"),
     city: yup.string().nullable().required("City is required"),
     state: yup.string().nullable().required("State is required"),
-    website: yup.string(),
+    website: yup.string().nullable().required("Website is required"),
     facebook: yup.string(),
     instagram: yup.string(),
     twitter: yup.string(),

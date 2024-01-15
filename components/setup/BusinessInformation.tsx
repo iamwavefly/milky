@@ -197,7 +197,7 @@ export default function BusinessInformation() {
           </Stack>
           <Stack mt="25px" spacing="13px">
             <TextField
-              label="Website (optional)"
+              label="Website *"
               variant="standard"
               name="website"
               value={formik.values.website}
@@ -275,7 +275,7 @@ export default function BusinessInformation() {
       </Typography>
       <Stack mt="60px" spacing="13px">
         <TextField
-          label="What do you do?"
+          label="What do you do? *"
           variant="standard"
           name="description"
           value={formik.values.description}
@@ -287,7 +287,7 @@ export default function BusinessInformation() {
           helperText={formik.touched.description && formik.errors.description}
         />
         <TextField
-          label="Business email"
+          label="Business email *"
           variant="standard"
           name="emailAddress"
           value={formik.values.emailAddress}
@@ -299,7 +299,7 @@ export default function BusinessInformation() {
           helperText={formik.touched.emailAddress && formik.errors.emailAddress}
         />
         <TextField
-          label="Business phone number"
+          label="Business phone number *"
           variant="standard"
           name="phoneNumber"
           placeholder="+2348000000000"
@@ -312,7 +312,7 @@ export default function BusinessInformation() {
           helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
         />
         <TextField
-          label="Business address"
+          label="Business address *"
           variant="standard"
           name="address"
           value={formik.values.address}
@@ -323,7 +323,7 @@ export default function BusinessInformation() {
         />
         <Stack direction="row" width="100%" spacing="25px">
           <TextField
-            label="City"
+            label="City *"
             variant="standard"
             sx={{ flex: 1 }}
             name="city"
@@ -334,7 +334,7 @@ export default function BusinessInformation() {
             helperText={formik.touched.city && formik.errors.city}
           />
           <TextField
-            label="State"
+            label="State *"
             variant="standard"
             sx={{ flex: 1 }}
             name="state"

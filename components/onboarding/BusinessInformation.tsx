@@ -143,7 +143,7 @@ export default function BusinessInformation({ nextStep }: Props) {
             </Stack>
             <Stack mt="24px" spacing="24px">
               <TextField
-                label="Website"
+                label="Website *"
                 variant="outlined"
                 name="website"
                 value={formik.values.website}
@@ -225,7 +225,7 @@ export default function BusinessInformation({ nextStep }: Props) {
         <Box>
           <Stack spacing="24px" p="40px">
             <TextField
-              label="What do you do?"
+              label="What do you do? *"
               variant="outlined"
               name="description"
               value={formik.values.description}
@@ -239,7 +239,7 @@ export default function BusinessInformation({ nextStep }: Props) {
               }
             />
             <TextField
-              label="Business email"
+              label="Business email *"
               variant="outlined"
               name="emailAddress"
               value={formik.values.emailAddress}
@@ -255,7 +255,7 @@ export default function BusinessInformation({ nextStep }: Props) {
               }
             />
             <TextField
-              label="Business phone number"
+              label="Business phone number *"
               variant="outlined"
               name="phoneNumber"
               placeholder="+2348000000000"
@@ -270,7 +270,7 @@ export default function BusinessInformation({ nextStep }: Props) {
               }
             />
             <TextField
-              label="Business address"
+              label="Business address *"
               variant="outlined"
               name="address"
               value={formik.values.address}
@@ -283,7 +283,7 @@ export default function BusinessInformation({ nextStep }: Props) {
             />
             <Stack direction="row" width="100%" spacing="25px">
               <TextField
-                label="City"
+                label="City *"
                 variant="outlined"
                 sx={{ flex: 1 }}
                 name="city"
@@ -294,7 +294,7 @@ export default function BusinessInformation({ nextStep }: Props) {
                 helperText={formik.touched.city && Boolean(formik.errors.city)}
               />
               <TextField
-                label="State"
+                label="State *"
                 variant="outlined"
                 sx={{ flex: 1 }}
                 name="state"
