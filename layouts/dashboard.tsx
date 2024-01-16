@@ -173,7 +173,7 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
       return setLabels(dashboard.slice(1));
     }
     setLabels(dashboard);
-  }, [verified, pendingApproval]);
+  }, [verified, pendingApproval, reload]);
 
   const handleClickBizModal = () => {
     setOpenBizModal(true);

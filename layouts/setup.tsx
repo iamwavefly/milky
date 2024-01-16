@@ -19,8 +19,9 @@ import useFetch from "@/hooks/useFetch";
 import { toast } from "react-hot-toast";
 import Stepper from "@/components/WyrrStepper";
 import { formStepLabel } from "@/utils/signup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUserState } from "@/store/authSlice";
+import { reload } from "@/store/appSlice";
 
 interface Props {
   children?: ReactNode;
@@ -43,6 +44,9 @@ const AccountSetup = ({
   prevStep,
 }: Props) => {
   const [stepLabel, setStepLabel] = useState<typeof formStepLabel | null>(null);
+  const [requestSubmited, setRequestSubmited] = useState(false);
+
+  const dispatch = useDispatch();
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/onboarding/complete`,
@@ -51,9 +55,13 @@ const AccountSetup = ({
 
   const { business_type } = useSelector(selectUserState).subsidiaries;
   // redirect user to dashboard if request to go live is successful
-  if (data?.status?.toLowerCase() === "success") {
-    Router.push("/dashboard");
-  }
+  useEffect(() => {
+    if (data?.status?.toLowerCase() === "success") {
+      dispatch(reload());
+      Router.push("/dashboard");
+    }
+  }, [data])
+  
 
   useEffect(() => {
     if (business_type) {
