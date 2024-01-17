@@ -1,0 +1,7 @@
+.itemContainer {
+  cursor: pointer;
+  padding-inline: 16px;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}

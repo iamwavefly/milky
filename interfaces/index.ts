@@ -82,3 +82,11 @@ export interface Product {
   total_amount: number;
   total_orders: number;
 }
+
+export interface ItemsProps {
+  item: string;
+  id: string;
+  quantity: number;
+  unitPrice: number;
+  amount: number;
+}
