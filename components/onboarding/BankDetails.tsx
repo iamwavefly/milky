@@ -103,7 +103,7 @@ export default function BankDetails({ nextStep }: Props) {
         accountType: "",
         bankName: bank?.id,
         accountNumber: account_number,
-        accountName: account_name ?? "Demo",
+        accountName: account_name ?? "",
       });
     }
   }, [fetchBankInformation?.data]);

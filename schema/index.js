@@ -299,10 +299,10 @@ export const invoiceDetails = () =>
     dueDate: yup.date().nullable().required("Due date is required"),
     currency: yup.string().nullable().required("Currency is required"),
     note: yup.string(),
-    discount: yup.number(),
-    tax: yup.number(),
-    quantity: yup.number().nullable().required("Quantity is required"),
-    amount: yup.number().nullable().required("Amount is required"),
+    discount: yup.number().min(0),
+    tax: yup.number().min(0),
+    quantity: yup.number().min(1).nullable().required("Quantity is required"),
+    amount: yup.number().min(1).nullable().required("Amount is required"),
     description: yup.string().nullable().required("Description is required"),
   });
 
@@ -360,7 +360,7 @@ export const newPaymentLink = () =>
     description: yup.string(),
     limit: yup.string(),
     paymentType: yup.string().nullable().required("Payment type is required"),
-    amount: yup.string().nullable().required("Amount is required"),
+    amount: yup.string().nullable(),
     currency: yup.string().nullable().required("Currency is required"),
   });
 // new payment link

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, MouseEvent, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowUpIcon from "@/public/icons/close.svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { reload, setDrawalState } from "@/store/appSlice";
 import AddIcon from "@/public/icons/add.svg";
 import { invoiceDetails } from "@/schema";
@@ -21,16 +21,33 @@ import { LoadingButton } from "@mui/lab";
 import stringToCurrency from "@/helper/formatCurrency";
 import Router from "next/router";
 import cloudinary from "@/cloudinaryConfig";
-import { notifyErrorHandler, resolveErrorMsg } from "@/middleware/catchErrors";
+import Styles from "@/styles/invoice.module.scss";
+import { CurrencyProps, ItemsProps } from "@/interfaces";
 
 interface BusinessDetailsProps {
   form: any;
 }
 
+const initialValues = {
+  bulk: 1,
+  invoiceTitle: "",
+  dueDate: "",
+  currency: "",
+  description: "",
+  quantity: "",
+  amount: "",
+  note: "",
+  discount: "",
+  tax: "",
+};
+
 export default function InvoiceDetails({ form }: BusinessDetailsProps) {
-  const [Items, setItems] = useState<any>([]);
+  const [Items, setItems] = useState<ItemsProps[]>([]);
   const [amount, setAmount] = useState(0);
   const [total, setTotal] = useState(0);
+  const [selectedCurrency, setSelectedCurrency] = useState<string | undefined>(
+    undefined
+  );
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/invoice/create`
@@ -39,6 +56,31 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
 
   const dispatch = useDispatch();
   const close = () => dispatch(setDrawalState({ active: false }));
+
+  const validate = (values: any) => {
+    const errors: any = {};
+
+    if (!values.invoiceTitle) {
+      errors.invoiceTitle = "Invoice title is required";
+    }
+    if (!values.dueDate) {
+      errors.dueDate = "Due date is required";
+    }
+    if (!values.currency) {
+      errors.currency = "Currency is required";
+    }
+    if (!values.quantity && !Items.length) {
+      errors.quantity = "Quantity is required";
+    }
+    if (!values.amount && !Items.length) {
+      errors.amount = "Amount is required";
+    }
+    if (!values.description && !Items.length) {
+      errors.description = "Description is required";
+    }
+
+    return errors;
+  };
 
   useEffect(() => {
     const { status } = data;
@@ -54,19 +96,9 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
   }, []);
 
   const formik = useFormik({
-    initialValues: {
-      bulk: 1,
-      invoiceTitle: "",
-      dueDate: "",
-      currency: "",
-      description: "",
-      quantity: 1,
-      amount: 0,
-      note: "",
-      discount: 0,
-      tax: 0,
-    },
-    validationSchema: invoiceDetails,
+    initialValues,
+    validate,
+    // validationSchema: invoiceDetails,
     onSubmit: ({
       currency,
       description,
@@ -79,20 +111,26 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
       quantity,
     }) => {
       const item = {
-        amount,
-        quantity,
+        amount: +amount,
+        quantity: +quantity,
         item: description,
       };
+
+      const filterUnitPrice = [
+        ...Items.map(({ unitPrice, ...rest }) => rest),
+        item,
+      ];
+
       const { customerName, companyName, customerEmail, companyEmail, image } =
         form;
       const payload = {
         invoice_title: invoiceTitle,
         currency_id: currency,
         due_date: dueDate,
-        invoice_items: [...Items, item],
-        amount: total,
-        discount,
-        tax,
+        invoice_items: amount && quantity && item ? filterUnitPrice : Items,
+        amount: +total,
+        discount: +discount,
+        tax: +tax,
         description: note,
         business_details: {
           customer_name: customerName,
@@ -107,6 +145,13 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
   });
 
   useEffect(() => {
+    const findCurName: CurrencyProps = currencies?.data?.data?.find(
+      ({ id }: CurrencyProps) => +formik.values.currency === id
+    );
+    setSelectedCurrency(findCurName?.short_name);
+  }, [formik.values.currency, currencies?.data?.data]);
+
+  useEffect(() => {
     const { amount, quantity } = formik.values;
     let total = function (items: any, prop: string) {
       return items?.reduce(function (a: any, b: { [x: string]: any }) {
@@ -114,7 +159,7 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
       }, 0);
     };
     const totalAmount = total(
-      [...Items, { amount: amount * quantity, quantity }],
+      [...Items, { amount: +amount * +quantity, quantity: +quantity }],
       "amount"
     );
     setAmount(totalAmount);
@@ -122,29 +167,30 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
 
   useEffect(() => {
     const { discount, tax } = formik.values;
-    let newAmount = amount;
+    let newAmount = +amount;
     if (discount) {
-      newAmount -= discount;
+      newAmount -= +discount;
     }
     if (tax) {
-      newAmount += tax;
+      newAmount += +tax;
     }
     setTotal(newAmount);
   }, [amount, formik.values]);
 
   const handleNewForm = () => {
     const { description, amount, quantity } = formik.values;
-    const newForm = {
+    const newForm: ItemsProps = {
       item: description,
-      amount: amount * quantity,
-      quantity,
+      amount: +amount * +quantity,
+      unitPrice: +amount,
+      quantity: +quantity,
       id: uuid(),
     };
     if (description && amount && quantity) {
       formik.setFieldValue("description", "");
       formik.setFieldValue("amount", "");
       formik.setFieldValue("quantity", "");
-      return setItems((prev: []) => [...prev, newForm]);
+      return setItems((prev: ItemsProps[]) => [...prev, newForm]);
     }
   };
 
@@ -154,9 +200,47 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
     }
   }, [Items]);
 
-  const handleRemoveItem = (id: number) => {
+  const handleRemoveItem = (id: string, e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+
     const newItems = Items?.filter((item: any) => item?.id !== id);
     setItems(newItems);
+
+    // populate the item for edit
+    formik.setValues({
+      ...formik.values,
+      description: "",
+      amount: "",
+      quantity: "",
+    });
+  };
+
+  const handleEditItem = (id: string) => {
+    const selectedItem = Items.find(
+      (item: ItemsProps) => item?.id === id
+    ) as ItemsProps;
+    // remove the selected item
+    const newItems = Items?.filter((item: ItemsProps) => item?.id !== id);
+    setItems(newItems);
+
+    // populate the item for edit
+    formik.setValues({
+      ...formik.values,
+      description: selectedItem.item,
+      amount: String(selectedItem.unitPrice),
+      quantity: String(selectedItem.quantity),
+    });
+  };
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // Remove non-numeric characters from the input value
+    const inputValue = event.target.value.replace(/[^0-9]/g, "");
+    // Update the TextField value
+    event.target.value = inputValue;
+    // Forward the event to the parent component
+    if (formik.handleChange) {
+      formik.handleChange(event);
+    }
   };
 
   return (
@@ -203,7 +287,7 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
           >
             {currencies?.data?.data
               ?.filter((cur: { is_allowed: boolean }) => cur.is_allowed)
-              .map(({ short_name, id }: any) => (
+              .map(({ short_name, id }: CurrencyProps) => (
                 <MenuItem value={id} key={id} sx={{ width: "100%" }}>
                   {short_name}
                 </MenuItem>
@@ -222,8 +306,10 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
           {/*  items */}
           {Items.length > 0 && (
             <Stack spacing="8px">
-              {Items?.map(({ item, id }: any, index: number) => (
+              {Items?.map(({ item, id }: ItemsProps, index: number) => (
                 <Stack
+                  className={Styles.itemContainer}
+                  onClick={() => handleEditItem(id)}
                   direction="row"
                   alignItems="center"
                   justifyContent="space-between"
@@ -233,7 +319,7 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
                   <Typography color="#070F1C" fontSize="14px" fontWeight={600}>
                     {item}
                   </Typography>
-                  <IconButton onClick={() => handleRemoveItem(id)}>
+                  <IconButton onClick={(e) => handleRemoveItem(id, e)}>
                     <ArrowUpIcon width="20px" height="20px" fill="#6F7A90" />
                   </IconButton>
                 </Stack>
@@ -259,9 +345,9 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
             label="Quantity"
             variant="outlined"
             name="quantity"
-            type="number"
+            type="text"
+            onChange={handleInputChange}
             value={formik.values.quantity}
-            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.quantity && Boolean(formik.errors.quantity)}
             helperText={formik.touched.quantity && formik.errors.quantity}
@@ -269,10 +355,9 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
           <TextField
             label="Unit price"
             variant="outlined"
-            type="number"
             name="amount"
+            onChange={handleInputChange}
             value={formik.values.amount}
-            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.amount && Boolean(formik.errors.amount)}
             helperText={formik.touched.amount && formik.errors.amount}
@@ -307,10 +392,9 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
           <TextField
             label="Add discount"
             variant="outlined"
-            type="number"
+            onChange={handleInputChange}
             name="discount"
             value={formik.values.discount}
-            onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             error={formik.touched.discount && Boolean(formik.errors.discount)}
             helperText={formik.touched.discount && formik.errors.discount}
@@ -318,10 +402,9 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
           <TextField
             label="Add tax"
             variant="outlined"
-            type="number"
             name="tax"
             value={formik.values.tax}
-            onChange={formik.handleChange}
+            onChange={handleInputChange}
             onBlur={formik.handleBlur}
             error={formik.touched.tax && Boolean(formik.errors.tax)}
             helperText={formik.touched.tax && formik.errors.tax}
@@ -340,7 +423,7 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
               Subtotal
             </Typography>
             <Typography color="#070F1C" fontSize="14px" fontWeight={600}>
-              NGN {stringToCurrency(amount ?? 0)}
+              {selectedCurrency ?? "NGN"} {stringToCurrency(amount ?? 0)}
             </Typography>
           </Stack>
           <Stack
@@ -355,7 +438,7 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
               Total
             </Typography>
             <Typography color="#070F1C" fontSize="18px" fontWeight={600}>
-              NGN {stringToCurrency(total ?? 0)}
+              {selectedCurrency ?? "NGN"} {stringToCurrency(total ?? 0)}
             </Typography>
           </Stack>
         </Stack>

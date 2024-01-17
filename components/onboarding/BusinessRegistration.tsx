@@ -292,7 +292,7 @@ export default function BusinessRegistration({ nextStep }: Props) {
             justifyContent="space-between"
           >
             <Typography fontSize="15px" fontWeight={600} lineHeight="26px">
-              Add at least one stakeholder
+              Add at least one stakeholder *
             </Typography>
             {stakeholders?.length > 0 && (
               <Stack
