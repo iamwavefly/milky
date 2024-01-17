@@ -109,17 +109,6 @@ export default function NewPaymentLink({ reload, details, close }: any) {
           helperText={formik.touched.description && formik.errors.description}
         />
         <TextField
-          label="Limit"
-          variant="outlined"
-          name="limit"
-          type="number"
-          value={formik.values.limit}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={formik.touched.limit && Boolean(formik.errors.limit)}
-          helperText={formik.touched.limit && formik.errors.limit}
-        />
-        <TextField
           label="Payment Type"
           variant="outlined"
           name="paymentType"
@@ -140,6 +129,19 @@ export default function NewPaymentLink({ reload, details, close }: any) {
             )
           )}
         </TextField>
+        {formik.values.paymentType === "SUB" && (
+          <TextField
+            label="Limit"
+            variant="outlined"
+            name="limit"
+            type="number"
+            value={formik.values.limit}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.limit && Boolean(formik.errors.limit)}
+            helperText={formik.touched.limit && formik.errors.limit}
+          />
+        )}
         {/* currencies */}
         <TextField
           label="Currency"
