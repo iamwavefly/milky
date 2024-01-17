@@ -90,3 +90,11 @@ export interface ItemsProps {
   unitPrice: number;
   amount: number;
 }
+
+export interface CurrencyProps {
+  id: number;
+  is_allowed: boolean;
+  name: string;
+  short_name: string;
+  symbol: string;
+}

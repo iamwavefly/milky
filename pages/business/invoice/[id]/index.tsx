@@ -72,12 +72,16 @@ export default function Index() {
                 <Detail
                   title={"AMOUNT"}
                   variant={"copy"}
-                  value={`NGN${stringToCurrency(details?.amount)}`}
+                  value={`${details?.currency} ${stringToCurrency(
+                    details?.amount
+                  )}`}
                 />
                 <Detail
                   title={"DISCOUNT"}
                   variant={"copy"}
-                  value={`NGN${stringToCurrency(details?.discount)}`}
+                  value={`${details?.currency} ${stringToCurrency(
+                    details?.discount
+                  )}`}
                 />
                 <Detail
                   title={"DATE CREATED"}

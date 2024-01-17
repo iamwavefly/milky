@@ -9,7 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowUpIcon from "@/public/icons/close.svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { reload, setDrawalState } from "@/store/appSlice";
 import AddIcon from "@/public/icons/add.svg";
 import { invoiceDetails } from "@/schema";
@@ -22,7 +22,7 @@ import stringToCurrency from "@/helper/formatCurrency";
 import Router from "next/router";
 import cloudinary from "@/cloudinaryConfig";
 import Styles from "@/styles/invoice.module.scss";
-import { ItemsProps } from "@/interfaces";
+import { CurrencyProps, ItemsProps } from "@/interfaces";
 
 interface BusinessDetailsProps {
   form: any;
@@ -45,6 +45,9 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
   const [Items, setItems] = useState<ItemsProps[]>([]);
   const [amount, setAmount] = useState(0);
   const [total, setTotal] = useState(0);
+  const [selectedCurrency, setSelectedCurrency] = useState<string | undefined>(
+    undefined
+  );
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/invoice/create`
@@ -140,6 +143,13 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
       handleSubmit(payload);
     },
   });
+
+  useEffect(() => {
+    const findCurName: CurrencyProps = currencies?.data?.data?.find(
+      ({ id }: CurrencyProps) => +formik.values.currency === id
+    );
+    setSelectedCurrency(findCurName?.short_name);
+  }, [formik.values.currency, currencies?.data?.data]);
 
   useEffect(() => {
     const { amount, quantity } = formik.values;
@@ -277,7 +287,7 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
           >
             {currencies?.data?.data
               ?.filter((cur: { is_allowed: boolean }) => cur.is_allowed)
-              .map(({ short_name, id }: any) => (
+              .map(({ short_name, id }: CurrencyProps) => (
                 <MenuItem value={id} key={id} sx={{ width: "100%" }}>
                   {short_name}
                 </MenuItem>
@@ -413,7 +423,7 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
               Subtotal
             </Typography>
             <Typography color="#070F1C" fontSize="14px" fontWeight={600}>
-              NGN {stringToCurrency(amount ?? 0)}
+              {selectedCurrency ?? "NGN"} {stringToCurrency(amount ?? 0)}
             </Typography>
           </Stack>
           <Stack
@@ -428,7 +438,7 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
               Total
             </Typography>
             <Typography color="#070F1C" fontSize="18px" fontWeight={600}>
-              NGN {stringToCurrency(total ?? 0)}
+              {selectedCurrency ?? "NGN"} {stringToCurrency(total ?? 0)}
             </Typography>
           </Stack>
         </Stack>
