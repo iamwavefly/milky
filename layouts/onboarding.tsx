@@ -6,7 +6,7 @@ import Header from "@/components/onboarding/Header";
 
 type Props = {
   children?: ReactNode;
-  title: string;
+  title?: string;
   fullWidth?: boolean;
   subtitle?: string;
 } & BoxProps;
