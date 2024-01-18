@@ -130,7 +130,7 @@ fieldset {
   &.paid,
   &.not-due {
     color: #0e9a4c !important;
-    background-color: rgb(14, 154, 76, 0.05) !important;
+    background-color: rgba(14, 154, 76, 0.05) !important;
     border-color: #0e9a4c;
   }
   &.pending-review,
@@ -141,7 +141,7 @@ fieldset {
   &.awaiting-confirmation,
   &.archived {
     color: #f59300 !important;
-    background: rgb(255, 248, 240) !important;
+    background: rgba(245, 147, 0, 0.5) !important;
     border-color: #f59300;
   }
   &.in-review,
@@ -159,7 +159,7 @@ fieldset {
   &.inactive,
   &.blacklisted {
     color: #e84a5f !important;
-    background-color: rgb(255, 245, 245) !important;
+    background-color: rgba(232, 74, 95, 0.5) !important;
     border-color: #e84a5f;
   }
 }
