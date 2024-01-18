@@ -129,8 +129,8 @@ fieldset {
   &.completed,
   &.paid,
   &.not-due {
-    color: #0e9a4c;
-    // background-color: #ebfff4;
+    color: #0e9a4c !important;
+    background-color: #ebfff4 !important;
     border-color: #0e9a4c;
   }
   &.pending-review,
@@ -140,15 +140,15 @@ fieldset {
   &.processing,
   &.awaiting-confirmation,
   &.archived {
-    color: #f59300;
-    // background: #fff8f0;
+    color: #f59300 !important;
+    background: #fff8f0 !important;
     border-color: #f59300;
   }
   &.in-review,
   &.new,
   &.initiated {
-    color: #1155d9;
-    // background-color: rgba(16, 96, 251, 0.05);
+    color: #1155d9 !important;
+    background-color: rgba(16, 96, 251, 0.05) !important;
     border-color: #1155d9;
   }
   &.rejected,
@@ -158,8 +158,8 @@ fieldset {
   &.failed,
   &.inactive,
   &.blacklisted {
-    color: #e84a5f;
-    // background-color: #fff5f5;
+    color: #e84a5f !important;
+    background-color: #fff5f5 !important;
     border-color: #e84a5f;
   }
 }
