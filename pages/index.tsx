@@ -155,15 +155,17 @@ export default function Index() {
             }}
           />
         </Stack>
-        <Typography
-          fontSize="14px"
-          mt="8px"
-          lineHeight="24px"
-          textAlign="right"
-          color="#162031"
-        >
-          Forgot password?
-        </Typography>
+        <Link href="/forgot-password">
+          <Typography
+            fontSize="14px"
+            mt="8px"
+            lineHeight="24px"
+            textAlign="right"
+            color="#162031"
+          >
+            Forgot password?
+          </Typography>
+        </Link>
         <Stack mt="36px" spacing="8px" width="100%">
           <LoadingButton
             variant="contained"

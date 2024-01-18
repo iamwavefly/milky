@@ -111,7 +111,7 @@ fieldset {
   width: max-content;
   height: 27px;
   gap: 8px !important;
-  background: rgba(0, 128, 55, 0.05);
+  background: none;
   border-radius: 16px;
   & > span {
     padding: 0;
@@ -130,7 +130,7 @@ fieldset {
   &.paid,
   &.not-due {
     color: #0e9a4c;
-    background-color: #ebfff4;
+    // background-color: #ebfff4;
     border-color: #0e9a4c;
   }
   &.pending-review,
@@ -141,14 +141,14 @@ fieldset {
   &.awaiting-confirmation,
   &.archived {
     color: #f59300;
-    background: #fff8f0;
+    // background: #fff8f0;
     border-color: #f59300;
   }
   &.in-review,
   &.new,
   &.initiated {
     color: #1155d9;
-    background-color: rgba(16, 96, 251, 0.05);
+    // background-color: rgba(16, 96, 251, 0.05);
     border-color: #1155d9;
   }
   &.rejected,
@@ -159,7 +159,7 @@ fieldset {
   &.inactive,
   &.blacklisted {
     color: #e84a5f;
-    background-color: #fff5f5;
+    // background-color: #fff5f5;
     border-color: #e84a5f;
   }
 }

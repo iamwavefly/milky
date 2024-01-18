@@ -1,15 +1,15 @@
 import React, { ReactNode, useEffect } from "react";
-import { Box, Stack, Typography } from "@mui/material";
+import { Box, BoxProps, Stack, Typography } from "@mui/material";
 import Head from "next/head";
 import Logo from "../public/images/logo.svg";
 import Header from "@/components/onboarding/Header";
 
-interface Props {
+type Props = {
   children?: ReactNode;
-  title: string;
+  title?: string;
   fullWidth?: boolean;
   subtitle?: string;
-}
+} & BoxProps;
 
 const Onboarding = ({
   children,
@@ -17,7 +17,7 @@ const Onboarding = ({
   subtitle,
   fullWidth,
   ...props
-}: any) => {
+}: Props) => {
   return (
     <>
       <Head>
@@ -38,6 +38,7 @@ const Onboarding = ({
             mx="auto"
             padding="40px"
             className="noscroll-indicator"
+            border="1px solid #E8EAED"
           >
             {title && (
               <Typography

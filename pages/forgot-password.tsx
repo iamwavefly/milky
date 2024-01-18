@@ -1,82 +1,95 @@
+import NewPassword from "@/components/NewPassword";
+import useFetch from "@/hooks/useFetch";
 import Onboarding from "@/layouts/onboarding";
+import baseUrl from "@/middleware/baseUrl";
+import { forgotPassword } from "@/schema";
+import { LoadingButton } from "@mui/lab";
 import { Button, Stack, TextField, Typography } from "@mui/material";
+import { useFormik } from "formik";
 import Link from "next/link";
-import { useState } from "react";
-import Logo from "../public/images/logo.svg";
-import EyeIcon from "../public/images/eye.svg";
-import EyeCloseIcon from "../public/images/eye-close.svg";
+import { useEffect, useState } from "react";
 
 export default function Index() {
-  const [showStatus, setShowStatus] = useState(false);
+  const [showStatus, setShowStatus] = useState(true);
 
-  return showStatus ? (
-    <Stack height="100vh">
-      <Stack
-        width="513px"
-        height="100%"
-        maxHeight="170px"
-        bgcolor="#fff"
-        mx="auto"
-        my="auto"
-        py="45px"
-        alignItems="center"
-      >
-        <Typography fontWeight={500} fontSize="20px" lineHeight="28px">
-          We sent an email 📤
-        </Typography>
-        <Typography
-          fontSize="14px"
-          lineHeight="20px"
-          color="#92959F"
-          mt="5px"
-          textAlign="center"
-          maxWidth="285px"
-          mx="auto"
-          mb="45px"
-        >
-          Check your email for a recovery link and reset your password
-        </Typography>
-        <Link href="/">
-          <Button variant="outlined" fullWidth>
-            Remember your password? Log in
-          </Button>
-        </Link>
-      </Stack>
-    </Stack>
-  ) : (
-    <Onboarding title="Forgot Password">
-      <Typography fontWeight={500} fontSize="20px" lineHeight="28px">
-        Forgot Password 🔐
-      </Typography>
-      <Typography
-        fontSize="14px"
-        lineHeight="20px"
-        color="#92959F"
-        mt="5px"
-        textAlign="center"
-        maxWidth="324px"
-        mx="auto"
-      >
-        Enter your email address and we’ll send you a link to reset your
-        password
-      </Typography>
-      <Stack mt="34px" width="100%" spacing="14px">
-        <TextField label="Email Address" variant="standard" />
-      </Stack>
-      <Stack mt="36px" spacing="25px" width="100%">
-        <Button
-          onClick={() => setShowStatus(true)}
-          variant="contained"
-          fullWidth
-        >
-          Send recovery link
-        </Button>
-        <Link href="/">
-          <Button variant="outlined" fullWidth>
-            Remember your password? Log in
-          </Button>
-        </Link>
-      </Stack>
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/forgot-password`
+  );
+
+  // form controller
+  const formik = useFormik({
+    initialValues: {
+      emailAddress: "",
+    },
+    validationSchema: forgotPassword,
+    onSubmit: ({ emailAddress }) => {
+      const payload = {
+        identifier: emailAddress,
+      };
+      handleSubmit(payload);
+    },
+  });
+
+  useEffect(() => {
+    if (data?.status === "success") {
+      setShowStatus(true);
+    }
+  }, [data]);
+
+  return !showStatus ? (
+    <Onboarding
+      title="Forgot Password"
+      subtitle="Enter your email address, we’ll send you a link to reset your password"
+    >
+      <form onSubmit={formik.handleSubmit}>
+        <Stack mt="24px" width="100%" spacing="14px">
+          <TextField
+            label="Email Address"
+            variant="outlined"
+            type="email"
+            name="emailAddress"
+            value={formik.values.emailAddress}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.emailAddress && Boolean(formik.errors.emailAddress)
+            }
+            helperText={
+              formik.touched.emailAddress && formik.errors.emailAddress
+            }
+          />
+        </Stack>
+        <Stack mt="40px" spacing="14px" width="100%">
+          <LoadingButton
+            variant="contained"
+            fullWidth
+            loading={loading}
+            disabled={!(formik.isValid && formik.dirty)}
+            type="submit"
+          >
+            Send link
+          </LoadingButton>
+          <Typography
+            fontSize="14px"
+            color="#162031"
+            letterSpacing="0.14px"
+            textAlign="center"
+            mx="auto"
+          >
+            Rememeber your password?{" "}
+            <Typography
+              color="#0048B1"
+              fontWeight="600"
+              fontSize="14px"
+              component="span"
+            >
+              <Link href="/">Login</Link>
+            </Typography>
+          </Typography>
+        </Stack>
+      </form>
     </Onboarding>
+  ) : (
+    <NewPassword />
   );
 }
