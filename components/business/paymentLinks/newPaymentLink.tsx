@@ -78,6 +78,7 @@ export default function NewPaymentLink({ reload, details, close }: any) {
       formik.setFieldValue("amount", details?.amount);
       formik.setFieldValue("currency", details?.currency);
       formik.setFieldValue("limit", details?.limit);
+      formik.setFieldValue("description", details?.descriptions);
     }
   }, [details, paymentTypes?.data]);
 

@@ -462,3 +462,12 @@ export const ChangePassword = () =>
       .required("Confirm password is required")
       .oneOf([yup.ref("password"), null], "Passwords must match"),
   });
+
+export const forgotPassword = () =>
+  yup.object({
+    emailAddress: yup
+      .string()
+      .email()
+      .nullable()
+      .required("Email address is required"),
+  });
