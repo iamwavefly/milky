@@ -33,7 +33,7 @@ const Breadcrumb = ({ items, title }: BreadcrumbProps) => {
             )}
             <Typography
               component="a"
-              onClick={() => router.push(link)}
+              onClick={() => (link ? router.push(link) : null)}
               color={link ? "#6F7A90" : "#162031"}
               fontSize="15px"
               fontWeight={500}

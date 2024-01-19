@@ -92,6 +92,9 @@ const SettlementTable = () => {
         page={setCurrentPage}
         pageCount={result?.total_pages}
         dataLength={result.total_items}
+        onClickRow={(e) =>
+          Router.push(`/business/products/${e?.row?.original?.id}`)
+        }
       />
     </Box>
   );
