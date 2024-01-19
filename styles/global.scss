@@ -128,7 +128,8 @@ fieldset {
   &.available,
   &.completed,
   &.paid,
-  &.not-due {
+  &.not-due,
+  &.in-stock {
     color: #0e9a4c !important;
     background-color: rgba(14, 154, 76, 0.05) !important;
     border-color: #0e9a4c;
@@ -159,7 +160,7 @@ fieldset {
   &.inactive,
   &.blacklisted {
     color: #e84a5f !important;
-    background-color: rgba(232, 74, 95, 0.1) !important;
+    background-color: rgba(232, 74, 95, 0.01) !important;
     border-color: #e84a5f;
   }
 }
