@@ -12,6 +12,7 @@ import {
   VirtualAccountMenu,
   EmptyMenu,
   UserMenu,
+  InvoiceMenu,
 } from "./menu";
 import Image from "next/image";
 
@@ -669,6 +670,11 @@ export const InvoiceTableColumns: ColumnDef<any, any>[] = [
         />
       );
     },
+  },
+  {
+    header: "Actions",
+    accessorKey: "id",
+    cell: (row) => <InvoiceMenu id={row.getValue()} />,
   },
 ];
 

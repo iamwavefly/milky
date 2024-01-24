@@ -180,6 +180,7 @@ const RefundTable = () => {
         dataLength={result.total_items}
         pageCount={result?.total_pages}
         isFetching={loading && rowsPerPage}
+        onClickRow={(e) => Router.push(`/refunds/${e?.row?.original?.id}`)}
       />
     </Box>
   );

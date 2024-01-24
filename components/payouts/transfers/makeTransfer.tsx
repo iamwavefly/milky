@@ -1,30 +1,18 @@
-import Footer from "@/components/form/Footer";
-import Modal from "@/components/modal/modal";
-import clipboard from "@/helper/clipboard";
-import stringToCurrency from "@/helper/formatCurrency";
-import useFetch from "@/hooks/useFetch";
-import { MenuProps } from "@/interfaces";
-import baseUrl from "@/middleware/baseUrl";
-import { newTransfer } from "@/schema";
-import { setDrawalState } from "@/store/appSlice";
-import { LoadingButton } from "@mui/lab";
 import {
   Box,
   Button,
-  Collapse,
-  FormHelperText,
-  InputLabel,
   MenuItem,
-  Select,
-  SelectChangeEvent,
   Stack,
   TextField,
   Typography,
 } from "@mui/material";
-import { borderRadius } from "@mui/system";
+import Footer from "@/components/form/Footer";
+import Modal from "@/components/modal/modal";
+import useFetch from "@/hooks/useFetch";
+import baseUrl from "@/middleware/baseUrl";
+import { newTransfer } from "@/schema";
 import { useFormik } from "formik";
-import React, { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export default function MakeTransfer({ reload, close }: any) {
@@ -171,6 +159,17 @@ export default function MakeTransfer({ reload, close }: any) {
     formik.setFieldValue("beneficiaryName", beneficiary?.name);
   };
 
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // Remove non-numeric characters from the input value
+    const inputValue = event.target.value.replace(/[^0-9]/g, "");
+    // Update the TextField value
+    event.target.value = inputValue;
+    // Forward the event to the parent component
+    if (formik.handleChange) {
+      formik.handleChange(event);
+    }
+  };
+
   return (
     <>
       <Modal
@@ -238,8 +237,8 @@ export default function MakeTransfer({ reload, close }: any) {
               variant="outlined"
               label="Transfer Amount"
               name="amount"
+              onChange={handleInputChange}
               value={formik.values.amount}
-              onChange={formik.handleChange}
               onBlur={formik.handleBlur}
               error={formik.touched.amount && Boolean(formik.errors.amount)}
               helperText={formik.touched.amount && formik.errors.amount}
@@ -269,7 +268,7 @@ export default function MakeTransfer({ reload, close }: any) {
               label="Beneficiary Account Number"
               name="beneficiary"
               value={formik.values.beneficiary}
-              onChange={formik.handleChange}
+              onChange={handleInputChange}
               onBlur={formik.handleBlur}
               error={
                 formik.touched.beneficiary && Boolean(formik.errors.beneficiary)

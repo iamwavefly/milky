@@ -58,6 +58,7 @@ const Onboarding = ({
                 fontSize="13px"
                 mx="auto"
                 mt="4px"
+                maxWidth="267px"
                 textAlign="center"
                 color="#586379"
                 lineHeight="21px"

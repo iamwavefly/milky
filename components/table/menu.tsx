@@ -878,3 +878,64 @@ export const UserMenu = ({ id }: { id: number }) => {
     </>
   );
 };
+
+export const InvoiceMenu = ({ id }: { id: number }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const { loading, data, error, handleSubmit } = useFetch(
+    `${baseUrl}/dashboard/invoice/delete/${id}`,
+    "delete",
+    true
+  );
+
+  const handleClick = (event: any) => {
+    event.stopPropagation();
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = (event?: any) => {
+    event?.stopPropagation();
+    setAnchorEl(null);
+  };
+
+  const handleActionClick = (action: string, event: any) => {
+    event.stopPropagation();
+    handleClose(event);
+    if (action === "delete") return handleSubmit();
+  };
+
+  useEffect(() => {
+    const { status } = data;
+    if (status === "success") {
+      dispatch(reload());
+      handleClose();
+    }
+  }, [data]);
+
+  return (
+    <>
+      <Box>
+        <IconButton
+          sx={{ width: "40px", height: "40px" }}
+          onClick={handleClick}
+        >
+          <MoreIcon />
+        </IconButton>
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleClose}
+        >
+          <MenuItem
+            sx={{ color: "#EA5851" }}
+            onClick={(event) => handleActionClick("delete", event)}
+          >
+            Delete
+          </MenuItem>
+        </Menu>
+      </Box>
+    </>
+  );
+};
