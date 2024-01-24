@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Index() {
-  const [showStatus, setShowStatus] = useState(true);
+  const [showStatus, setShowStatus] = useState(false);
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/forgot-password`
@@ -90,6 +90,6 @@ export default function Index() {
       </form>
     </Onboarding>
   ) : (
-    <NewPassword />
+    <NewPassword identifier={formik.values.emailAddress} />
   );
 }

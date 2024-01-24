@@ -98,3 +98,23 @@ export interface CurrencyProps {
   short_name: string;
   symbol: string;
 }
+export interface WalletProps {
+  account_details: {
+    account_name: string;
+    account_number: string;
+    bank_code: string;
+    bank_name: string;
+  };
+  available_balance: number;
+  available_balance_change: number;
+  currency_name: string;
+  currency_short_name: string;
+  ledger_balance: number;
+  ledger_balance_change: number;
+  overdraft_limit: number;
+  successful_transfer: number;
+  total_transfer: number;
+  wallet_id: number;
+  wallet_restriction: string;
+  wallet_type: string;
+}

@@ -467,7 +467,23 @@ export const forgotPassword = () =>
   yup.object({
     emailAddress: yup
       .string()
-      .email()
+      .email("Invalid email address")
       .nullable()
       .required("Email address is required"),
+  });
+
+export const newPassword = () =>
+  yup.object({
+    otp: yup.string().nullable().required("OTP is required"),
+    password: yup
+      .string()
+      .password()
+      .nullable()
+      .required("Password is required"),
+    password2: yup
+      .string()
+      .password()
+      .nullable()
+      .required("Confirm password is required")
+      .oneOf([yup.ref("password"), null], "Passwords must match"),
   });

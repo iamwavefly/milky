@@ -5,8 +5,6 @@ import {
   notifyErrorHandler,
   catchErrors,
 } from "@/middleware/catchErrors";
-import { useDispatch } from "react-redux";
-import { setDrawalState, setToastState } from "@/store/appSlice";
 import { toast } from "react-hot-toast";
 
 const useFetch = (
