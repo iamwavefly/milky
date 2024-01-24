@@ -358,7 +358,7 @@ export const newPaymentLink = () =>
   yup.object({
     linkName: yup.string().nullable().required("Link name is required"),
     description: yup.string(),
-    limit: yup.string(),
+    limit: yup.number().min(1),
     paymentType: yup.string().nullable().required("Payment type is required"),
     amount: yup.string().nullable(),
     currency: yup.string().nullable().required("Currency is required"),

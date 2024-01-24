@@ -5,7 +5,7 @@ import { LoadingButton } from "@mui/lab";
 import { Box, MenuItem, Stack, TextField } from "@mui/material";
 import { useFormik } from "formik";
 import Router from "next/router";
-import React, { useEffect } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 
 export default function NewPaymentLink({ reload, details, close }: any) {
   const { loading, data, error, handleSubmit } = useFetch(
@@ -82,6 +82,22 @@ export default function NewPaymentLink({ reload, details, close }: any) {
     }
   }, [details, paymentTypes?.data]);
 
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // Remove non-numeric characters from the input value
+    const inputValue = event.target.value.replace(/[^0-9]/g, "");
+    // Update the TextField value
+    event.target.value = inputValue;
+    // Forward the event to the parent component
+    if (formik.handleChange) {
+      formik.handleChange(event);
+    }
+  };
+
+  // clear limit input
+  useEffect(() => {
+    formik.values.paymentType !== "SUB" && formik.setFieldValue("limit", "");
+  }, [formik.values.paymentType]);
+
   return (
     <form onSubmit={formik.handleSubmit}>
       <Stack spacing="24px" px="40px" mt="32px">
@@ -135,9 +151,8 @@ export default function NewPaymentLink({ reload, details, close }: any) {
             label="Limit"
             variant="outlined"
             name="limit"
-            type="number"
             value={formik.values.limit}
-            onChange={formik.handleChange}
+            onChange={handleInputChange}
             onBlur={formik.handleBlur}
             error={formik.touched.limit && Boolean(formik.errors.limit)}
             helperText={formik.touched.limit && formik.errors.limit}
