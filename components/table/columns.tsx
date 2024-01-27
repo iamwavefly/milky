@@ -552,19 +552,27 @@ export const BalanceHistoryColumns: ColumnDef<any, any>[] = [
     accessorKey: "balance",
     header: "Initial balance",
     accessorFn: (row) =>
-      `${row.currency ?? "NGN"} ${stringToCurrency(row.balance).replace(
-        "NGN",
-        ""
-      )}`,
+      `${row.currency ?? "NGN"} ${stringToCurrency(row?.balance)
+        .replace("NGN", "")
+        .slice?.(1)}`,
   },
   {
     accessorKey: "amount",
     header: "Transaction amount",
-    accessorFn: (row) =>
-      `${row.currency ?? "NGN"} ${stringToCurrency(row.amount).replace(
-        "NGN",
-        ""
-      )}`,
+    cell: (props) => {
+      const { currency, amount, direction } = props?.row?.original;
+      return (
+        <Typography
+          color={direction === "Debit" ? "#E84A5F" : "#0E9A4C"}
+          fontSize="14px"
+          width="max-content"
+        >
+          {`${direction === "Debit" ? "-" : "+"}${
+            currency ?? "NGN"
+          } ${stringToCurrency(amount).replace("NGN", "")}`}
+        </Typography>
+      );
+    },
   },
   {
     accessorKey: "total",
