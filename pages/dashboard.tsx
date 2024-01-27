@@ -31,6 +31,7 @@ import LineChart from "@/components/charts/lineChart";
 import Navbar from "@/components/Navbar";
 import Export from "@/components/Export";
 import FilterCurrencyMenu from "@/components/FiltterCurrencyMenu";
+import { selectAppState } from "@/store/appSlice";
 
 const options = ["week", "year"];
 
@@ -50,6 +51,8 @@ export default function Index() {
     setAnchorEl(null);
   };
 
+  const { reload } = useSelector(selectAppState);
+
   const containerRef = useRef();
 
   // filter menu ends
@@ -65,15 +68,15 @@ export default function Index() {
 
   useEffect(() => {
     txnSummaryReq?.handleSubmit();
-  }, [dateRange, selectedCurrency]);
+  }, [dateRange, selectedCurrency, reload]);
 
   useEffect(() => {
     inflowOutflowChart?.handleSubmit();
-  }, [dateRange, selectedFilter, selectedCurrency]);
+  }, [dateRange, selectedFilter, selectedCurrency, reload]);
 
   useEffect(() => {
     setSummary(txnSummaryReq?.data?.data);
-  }, [txnSummaryReq?.data]);
+  }, [txnSummaryReq?.data, reload]);
 
   const handleMenuItemClick = (
     event: React.MouseEvent<HTMLElement>,

@@ -47,6 +47,10 @@ export interface AuthState {
       message_from: string;
     }
   ];
+  env: {
+    id: number;
+    name: string;
+  };
 }
 
 // Initial state
@@ -94,6 +98,10 @@ const initialState: AuthState = {
       message_from: "",
     },
   ],
+  env: {
+    id: 0,
+    name: "",
+  },
 };
 
 // Actual Slice
@@ -106,6 +114,7 @@ export const authSlice = createSlice({
       state.subsidiaries = action.payload.subsidiaries;
       state.user = action.payload.user;
       state.notifications = action.payload.notifications;
+      state.env = action.payload.env;
     },
     setLogout(state) {
       state.subsidiaries = initialState.subsidiaries;
