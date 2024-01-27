@@ -156,7 +156,7 @@ export default function BusinessInformation({ nextStep }: Props) {
                 onBlur={formik.handleBlur}
                 error={formik.touched.website && Boolean(formik.errors.website)}
                 helperText={
-                  formik.touched.website && Boolean(formik.errors.website)
+                  (formik.touched.website && formik.errors.website) as string
                 }
               />
               <TextField
@@ -170,7 +170,7 @@ export default function BusinessInformation({ nextStep }: Props) {
                   formik.touched.facebook && Boolean(formik.errors.facebook)
                 }
                 helperText={
-                  formik.touched.facebook && Boolean(formik.errors.facebook)
+                  (formik.touched.facebook && formik.errors.facebook) as string
                 }
               />
               <TextField
@@ -184,7 +184,8 @@ export default function BusinessInformation({ nextStep }: Props) {
                   formik.touched.instagram && Boolean(formik.errors.instagram)
                 }
                 helperText={
-                  formik.touched.instagram && Boolean(formik.errors.instagram)
+                  (formik.touched.instagram &&
+                    formik.errors.instagram) as string
                 }
               />
               <TextField
@@ -196,7 +197,7 @@ export default function BusinessInformation({ nextStep }: Props) {
                 onBlur={formik.handleBlur}
                 error={formik.touched.twitter && Boolean(formik.errors.twitter)}
                 helperText={
-                  formik.touched.twitter && Boolean(formik.errors.twitter)
+                  (formik.touched.twitter && formik.errors.twitter) as string
                 }
               />
             </Stack>
@@ -240,7 +241,8 @@ export default function BusinessInformation({ nextStep }: Props) {
                 formik.touched.description && Boolean(formik.errors.description)
               }
               helperText={
-                formik.touched.description && Boolean(formik.errors.description)
+                (formik.touched.description &&
+                  formik.errors.description) as string
               }
             />
             <TextField
@@ -255,8 +257,8 @@ export default function BusinessInformation({ nextStep }: Props) {
                 Boolean(formik.errors.emailAddress)
               }
               helperText={
-                formik.touched.emailAddress &&
-                Boolean(formik.errors.emailAddress)
+                (formik.touched.emailAddress &&
+                  formik.errors.emailAddress) as string
               }
             />
             <TextField
@@ -271,7 +273,8 @@ export default function BusinessInformation({ nextStep }: Props) {
                 formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
               }
               helperText={
-                formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+                (formik.touched.phoneNumber &&
+                  formik.errors.phoneNumber) as string
               }
             />
             <TextField
@@ -283,7 +286,7 @@ export default function BusinessInformation({ nextStep }: Props) {
               onBlur={formik.handleBlur}
               error={formik.touched.address && Boolean(formik.errors.address)}
               helperText={
-                formik.touched.address && Boolean(formik.errors.address)
+                (formik.touched.address && formik.errors.address) as string
               }
             />
             <Stack direction="row" width="100%" spacing="25px">
@@ -296,7 +299,9 @@ export default function BusinessInformation({ nextStep }: Props) {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 error={formik.touched.city && Boolean(formik.errors.city)}
-                helperText={formik.touched.city && Boolean(formik.errors.city)}
+                helperText={
+                  (formik.touched.city && formik.errors.city) as string
+                }
               />
               <TextField
                 label="State *"
@@ -308,7 +313,7 @@ export default function BusinessInformation({ nextStep }: Props) {
                 onBlur={formik.handleBlur}
                 error={formik.touched.state && Boolean(formik.errors.state)}
                 helperText={
-                  formik.touched.state && Boolean(formik.errors.state)
+                  (formik.touched.state && formik.errors.state) as string
                 }
                 select
               >
