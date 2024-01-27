@@ -42,6 +42,9 @@ import NewBusiness from "@/components/form/newBusiness";
 import { selectAppState, setMenuState } from "@/store/appSlice";
 import Breadcrumb from "@/components/Breadcrumb";
 import Modal from "@/components/modal/modal";
+import ArcaSwitch from "@/components/elements/Switch";
+import AccountEnv from "@/components/AccountEnv";
+import { reload as sessionReload } from "@/store/appSlice";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -141,6 +144,7 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
     if (status === "success") {
       userApi.handleSubmit();
       setActiveBizMenu(false);
+      dispatch(sessionReload());
     }
   }, [changeSettlementApi?.data]);
 
@@ -148,7 +152,6 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
     if (userApi?.data?.subsidiary_details) {
       const defaultBusiness =
         userApi?.data?.subsidiary_details?.subsidiaries?.find(
-          // (business: { is_default: boolean }) => business?.is_default
           (business: { is_default: boolean }) => business
         );
       dispatch(
@@ -457,7 +460,14 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
             alignItems="center"
           >
             <Breadcrumb items={breadcrumbLinks} title={title} />
-            <Stack direction="row" spacing="18px">
+            <Stack direction="row" spacing="18px" alignItems="center">
+              <AccountEnv />
+              <Divider
+                orientation="vertical"
+                sx={{
+                  height: "24px",
+                }}
+              />
               <IconButton onClick={handleClick}>
                 <StyledBadge
                   badgeContent={notifications?.length}

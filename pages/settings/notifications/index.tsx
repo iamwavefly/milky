@@ -1,14 +1,9 @@
 // import Dues from "@/components/table/settlements/dues/Dues";
 import TabHeader from "@/components/TabHeader";
-import RoleTable from "@/components/table/settings/roleTable";
-import SettingsTable from "@/components/table/settings/settingsTable";
 import SettingRoutes from "@/configs/links/SettingRoutes";
-import SettlementHeaderRoutes from "@/configs/links/settlementRoutes";
 import Dashboard from "@/layouts/dashboard";
-import { roles } from "@/mocks";
 import {
   Box,
-  Button,
   Divider,
   FormControlLabel,
   FormGroup,
@@ -24,7 +19,6 @@ import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import { LoadingButton } from "@mui/lab";
 import { useDispatch } from "react-redux";
-import { setToastState } from "@/store/appSlice";
 
 const IOSSwitch = styled((props: SwitchProps) => (
   <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />

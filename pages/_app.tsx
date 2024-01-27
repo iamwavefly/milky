@@ -60,6 +60,7 @@ function App({ Component, pageProps }: AppProps) {
           user: data?.user,
           notifications: data?.notifications,
           subsidiaries: defaultBusiness,
+          env: data?.envronment_detail,
         })
       );
     }

@@ -20,7 +20,11 @@ import FundBalance from "./fundBalance";
 import Modal from "@/components/modal/modal";
 import { ResultPageProps, ResultProps } from "@/interfaces";
 
-const TransferTable = () => {
+type TransferTableProps = {
+  selectedCurrency?: string;
+};
+
+const TransferTable = ({ selectedCurrency }: TransferTableProps) => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
   const [search, setSearch] = useState<string | undefined>("");
   const [filters, setFilters] = useState({});
@@ -48,9 +52,7 @@ const TransferTable = () => {
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/payout/all?${
       rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
-    }&${Object.entries(filters)
-      ?.map((filterArr) => `${filterArr[0]}=${filterArr[1]}`)
-      .join("&")}`,
+    }&currency=${selectedCurrency}`,
     "get"
   );
 
@@ -60,7 +62,7 @@ const TransferTable = () => {
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters, rowsPerPage, reload]);
+  }, [currentPage, search, filters, rowsPerPage, reload, selectedCurrency]);
 
   return (
     <Box>

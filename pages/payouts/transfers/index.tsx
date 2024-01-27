@@ -24,6 +24,9 @@ import { walletProps } from "@/interfaces";
 export default function Index() {
   const [tabs, setTabs] = useState([]);
   const [currentTab, setCurrentTab] = useState(0);
+  const [selectedCurrency, setSelectedCurrency] = useState<undefined | string>(
+    undefined
+  );
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/get/wallet/balance`,
@@ -47,13 +50,25 @@ export default function Index() {
     setTabs(newWalletTabs);
   }, [data]);
 
+  useEffect(() => {
+    const findSelectedCur: walletProps = data?.wallets?.find(
+      ({ wallet_id }: walletProps) => currentTab === wallet_id
+    );
+    console.log({ findSelectedCur });
+    setSelectedCurrency(findSelectedCur?.currency_short_name);
+  }, [currentTab]);
+
   return (
     <Dashboard title="Transfers">
       {/* tabs */}
       <Tabs tabs={tabs} updateTab={setCurrentTab} />
       {/* table */}
       <Box>
-        <TransferTable />
+        <TransferTable
+          selectedCurrency={
+            selectedCurrency ?? data?.wallets?.[0]?.currency_short_name
+          }
+        />
       </Box>
     </Dashboard>
   );

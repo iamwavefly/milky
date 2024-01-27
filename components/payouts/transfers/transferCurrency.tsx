@@ -44,7 +44,7 @@ const TransferCurrency = ({ currentTab }: { currentTab: number }) => {
           <Skeleton variant="rounded" height={160} width="100%" />
         </Stack>
       ) : (
-        <Stack direction="row" gap="16px" mt="20px">
+        <Stack direction="row" gap="16px">
           <LandscapeCard
             title={balance?.available_balance}
             change={balance?.available_balance_change}

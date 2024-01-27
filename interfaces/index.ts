@@ -1,3 +1,4 @@
+import { SwitchProps } from "@mui/material";
 export interface Card {
   id: string | number;
   title?: string | number;
@@ -118,3 +119,5 @@ export interface WalletProps {
   wallet_restriction: string;
   wallet_type: string;
 }
+
+export type ArcaSwitchProps = {} & SwitchProps;
