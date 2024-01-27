@@ -1,9 +1,10 @@
 import { IconButton, Stack } from "@mui/material";
 import React from "react";
-import Logo from "@/public/icons/logo.svg";
+import Logo from "@/public/images/arca.png";
 import CloseIcon from "@/public/icons/close.svg";
 import Router from "next/router";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Header() {
   return (
@@ -20,7 +21,9 @@ export default function Header() {
       bgcolor="#F6F6F9"
       zIndex={2}
     >
-      <Logo />
+      <Link href="/">
+        <Image src={Logo} width={88} height={40} alt="Arca Logo" />
+      </Link>
       <Link href="https://arca.network/">
         <IconButton>
           <CloseIcon width="24px" height="24px" fill="#070F1C" />

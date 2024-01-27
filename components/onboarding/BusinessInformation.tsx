@@ -127,9 +127,14 @@ export default function BusinessInformation({ nextStep }: Props) {
 
   return (
     <Box bgcolor="#FFF">
+      <Box px="40px" mt="40px">
+        <Typography variant="h5" color="#3C4453">
+          Fields marked with '*' are compulsory.
+        </Typography>
+      </Box>
       {step === 2 ? (
         <form onSubmit={formik.handleSubmit}>
-          <Box p="40px">
+          <Box p="24px 40px 40px">
             <Stack>
               <Typography
                 fontSize="15px"
@@ -223,7 +228,7 @@ export default function BusinessInformation({ nextStep }: Props) {
         </form>
       ) : (
         <Box>
-          <Stack spacing="24px" p="40px">
+          <Stack spacing="24px" p="24px 40px 40px">
             <TextField
               label="What do you do? *"
               variant="outlined"

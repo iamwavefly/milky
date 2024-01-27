@@ -20,7 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import Logo from "../public/images/logo.svg";
+import Logo from "../public/images/arca.png";
 import ArrowIcon from "@/public/images/arrow.svg";
 import NotificationIcon from "@/public/icons/bell.svg";
 import Drawal from "@/components/drawal/Drawal";
@@ -45,6 +45,7 @@ import Modal from "@/components/modal/modal";
 import ArcaSwitch from "@/components/elements/Switch";
 import AccountEnv from "@/components/AccountEnv";
 import { reload as sessionReload } from "@/store/appSlice";
+import Image from "next/image";
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -354,7 +355,7 @@ const Dashboard = ({ children, title, onboarding, breadcrumbLinks }: Props) => {
             mt="24px"
             className={Styles.logo}
           >
-            <Logo />
+            <Image src={Logo} width={88} height={40} alt="Arca Logo" />
           </Stack>
           {/* brand menu */}
           {id ? (
