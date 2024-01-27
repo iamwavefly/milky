@@ -168,8 +168,13 @@ export default function BusinessRegistration({ nextStep }: Props) {
         />
       </Modal>
       <form onSubmit={formik.handleSubmit}>
-        <Box px="40px" pt="29px" pb="40px">
-          <Stack spacing="24px" mt="16px">
+        <Box px="40px" mt="40px">
+          <Typography variant="h5" color="#3C4453">
+            Fields marked with '*' are compulsory.
+          </Typography>
+        </Box>
+        <Box p="24px 40px 40px">
+          <Stack spacing="24px">
             <TextField
               label="Business class *"
               variant="outlined"
