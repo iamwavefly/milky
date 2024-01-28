@@ -36,7 +36,7 @@ import { selectAppState } from "@/store/appSlice";
 const options = ["week", "year"];
 
 export default function Index() {
-  const [selectedCurrency, setSelectedCurrency] = useState<string>("");
+  const [selectedCurrency, setSelectedCurrency] = useState<number>(0);
   const [summary, setSummary] = useState<any>({});
   const [csvHeader, setCsvHeader] = useState<any>([]);
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
@@ -57,12 +57,12 @@ export default function Index() {
 
   // filter menu ends
   const txnSummaryReq = useFetch(
-    `${baseUrl}/metric/transaction/summary?FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}&currency=${selectedCurrency}`,
+    `${baseUrl}/metric/transaction/summary?FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}&currencyId=${selectedCurrency}`,
     "get"
   );
 
   const inflowOutflowChart = useFetch(
-    `${baseUrl}/metric/inflow/outflow?type=${options[selectedFilter]}&FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}&currency=${selectedCurrency}`,
+    `${baseUrl}/metric/inflow/outflow?type=${options[selectedFilter]}&FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}&currencyId=${selectedCurrency}`,
     "get"
   );
 

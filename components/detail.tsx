@@ -10,10 +10,11 @@ interface props {
   title: string;
   variant?: "copy" | "download" | "img" | "status" | string;
   value: string;
+  maxLen?: number;
   full?: boolean;
 }
 
-export default function Detail({ title, full, variant, value }: props) {
+export default function Detail({ title, full, maxLen, variant, value }: props) {
   const copyTextHandler = (text: string) => {
     clipboard(text);
   };
@@ -39,11 +40,13 @@ export default function Detail({ title, full, variant, value }: props) {
               fontWeight={500}
               fontSize="14px"
             >
-              {typeof value === "string" ? truncate(value, 50) : value}
+              {typeof value === "string"
+                ? truncate(value, maxLen ?? 50)
+                : value}
             </Typography>
-            {/* <IconButton onClick={() => copyTextHandler(value)}>
+            <IconButton onClick={() => copyTextHandler(value)}>
               <CopyIcon />
-            </IconButton> */}
+            </IconButton>
           </Stack>
         ) : variant === "download" ? (
           <Stack direction="row" spacing="4px" alignItems="center">

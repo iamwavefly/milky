@@ -44,30 +44,31 @@ export default function Index() {
       {/* order information  */}
       <Box>
         <OnlyHeader alignHeader="left" header="Order Details" size="12px">
-          <Box my="auto" width="100%">
-            <Grid container spacing="32px">
-              <Grid item md={12 / 5}>
+          <Box my="auto" width="100%" flex={1}>
+            <Grid container spacing="32px" flex={1}>
+              <Grid item md={3}>
                 <Detail
                   title={"ORDER REFERENCE"}
+                  maxLen={25}
                   variant={"copy"}
                   value={details?.order_reference}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"PAYMENT REFERENCE"}
                   variant={"copy"}
                   value={details?.payment_reference}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"PAYMENT RESPONSE CODE"}
                   variant={"copy"}
                   value={details?.payment_response_code}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"PAYMENT RESPONSE MESSAGE"}
                   variant={"copy"}
@@ -87,28 +88,28 @@ export default function Index() {
         <OnlyHeader alignHeader="left" header="Customer Details" size="12px">
           <Box my="auto" width="100%">
             <Grid container spacing="32px">
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"CUSTOMER NAME"}
                   variant={"copy"}
                   value={details?.customer_name}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"CUSTOMER EMAIL"}
                   variant={"copy"}
                   value={details?.customer_email}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"CUSTOMER PHONE NUMBER"}
                   variant={"copy"}
                   value={details?.customer_phone}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail title={"Country"} variant={"copy"} value={"N/A"} />
               </Grid>
             </Grid>
@@ -118,23 +119,23 @@ export default function Index() {
       {/* Business registration  */}
       <Box mt="15px">
         <OnlyHeader alignHeader="left" header="Payment Details" size="12px">
-          <Stack gap="24px" my="auto">
+          <Stack gap="24px" my="auto" flex={1}>
             <Grid container spacing="32px">
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"PAYMENT TYPE"}
                   variant={"copy"}
                   value={details?.payment_type}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"CURRENCY"}
                   variant={"copy"}
                   value={details?.currency}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"AMOUNT"}
                   variant={"copy"}
@@ -143,69 +144,69 @@ export default function Index() {
                   )}`}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"STATUS"}
-                  variant={"copy"}
+                  variant={"status"}
                   value={details?.order_status}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+            </Grid>
+            <Divider />
+            <Grid container spacing="32px">
+              <Grid item md={3}>
                 <Detail
                   title={"NARRATION"}
                   variant={"copy"}
                   value={details?.narration}
                 />
               </Grid>
-            </Grid>
-            <Divider />
-            <Grid container spacing="32px">
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"REMARKS"}
                   variant={"copy"}
                   value={details?.remarks}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"FEE"}
                   variant={"copy"}
                   value={stringToCurrency(details?.fee)}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"SUBSIDIARY FEE"}
                   variant={"copy"}
                   value={stringToCurrency(details?.subsidiary_fee)}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+            </Grid>
+            <Divider />
+            <Grid container spacing="32px">
+              <Grid item md={3}>
                 <Detail
                   title={"CUSTOMER FEE"}
                   variant={"copy"}
                   value={stringToCurrency(details?.customer_fee)}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"WHO BEARS FEE?"}
                   variant={"copy"}
                   value={details?.who_bears_fee}
                 />
               </Grid>
-            </Grid>
-            <Divider />
-            <Grid container spacing="32px">
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"DATE CREATED"}
                   variant={"copy"}
                   value={moment(details?.date_created).format("L")}
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+              <Grid item md={3}>
                 <Detail
                   title={"DATE UPDATED"}
                   variant={"copy"}
@@ -216,7 +217,10 @@ export default function Index() {
                   }
                 />
               </Grid>
-              <Grid item md={12 / 5}>
+            </Grid>
+            <Divider />
+            <Grid container spacing="32px">
+              <Grid item md={3}>
                 <Detail
                   title={"DATE PAYMENT CONFIRMED"}
                   variant={"copy"}

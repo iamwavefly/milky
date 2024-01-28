@@ -109,10 +109,9 @@ export default function Index() {
             <Grid item xs={4}>
               <Detail
                 title="link Url"
+                maxLen={30}
                 value={
-                  details?.payment_link_url
-                    ? truncate(details?.payment_link_url, 30)
-                    : "..."
+                  details?.payment_link_url ? details?.payment_link_url : "..."
                 }
                 variant="copy"
               />

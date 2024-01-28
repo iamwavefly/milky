@@ -14,9 +14,10 @@ import CarretIcon from "../public/icons/arrow-down.svg";
 import FilterContent from "./filterContent";
 import useFetch from "@/hooks/useFetch";
 import baseUrl from "@/middleware/baseUrl";
+import { CurrencyProps } from "@/interfaces";
 
 interface Props {
-  updateFilter?: React.Dispatch<SetStateAction<string>>;
+  updateFilter?: React.Dispatch<SetStateAction<number>>;
   title?: string;
   selector?: string;
 }
@@ -55,9 +56,9 @@ export default function FilterCurrencyMenu({
     setCurrencies(fnCurrencies);
   }, [data?.data]);
 
-  const onSelectionChanged = (name: string) => {
+  const onSelectionChanged = (name: string, id: number) => {
     setSelectedCurrencies(name);
-    updateFilter?.(name);
+    updateFilter?.(id);
     handleClose();
   };
 
@@ -69,9 +70,9 @@ export default function FilterCurrencyMenu({
         open={open}
         onClose={handleClose}
       >
-        {currencies?.map(({ short_name, id }: any) => (
+        {currencies?.map(({ short_name, id }: CurrencyProps) => (
           <MenuItem
-            onClick={() => onSelectionChanged(short_name)}
+            onClick={() => onSelectionChanged(short_name, id)}
             selected={selectedCurrencies === short_name}
             value={short_name}
             key={id}
