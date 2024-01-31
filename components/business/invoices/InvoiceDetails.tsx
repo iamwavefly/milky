@@ -233,13 +233,14 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
   };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // Remove non-numeric characters from the input value
-    const inputValue = event.target.value.replace(/[^0-9]/g, "");
-    // Update the TextField value
-    event.target.value = inputValue;
-    // Forward the event to the parent component
-    if (formik.handleChange) {
-      formik.handleChange(event);
+    const input = event.target.value;
+    // Allow only numbers and decimals
+    const regex = /^[0-9]*\.?[0-9]*$/;
+    if (regex.test(input) || input === "") {
+      // Forward the event to the parent component
+      if (formik.handleChange) {
+        formik.handleChange(event);
+      }
     }
   };
 
