@@ -36,9 +36,11 @@ import { selectAppState } from "@/store/appSlice";
 const options = ["week", "year"];
 
 export default function Index() {
-  const [selectedCurrency, setSelectedCurrency] = useState<number>(0);
+  const [selectedCurrency, setSelectedCurrency] = useState<{
+    id: number;
+    name: string;
+  }>({ id: 0, name: "" });
   const [summary, setSummary] = useState<any>({});
-  const [csvHeader, setCsvHeader] = useState<any>([]);
   const [dateRange, setDateRange] = useState({ startDate: "", endDate: "" });
   const [selectedFilter, setSelectedFilter] = useState(1);
   // filter menu
@@ -57,12 +59,12 @@ export default function Index() {
 
   // filter menu ends
   const txnSummaryReq = useFetch(
-    `${baseUrl}/metric/transaction/summary?FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}&currencyId=${selectedCurrency}`,
+    `${baseUrl}/metric/transaction/summary?FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}&currencyId=${selectedCurrency?.id}`,
     "get"
   );
 
   const inflowOutflowChart = useFetch(
-    `${baseUrl}/metric/inflow/outflow?type=${options[selectedFilter]}&FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}&currencyId=${selectedCurrency}`,
+    `${baseUrl}/metric/inflow/outflow?type=${options[selectedFilter]}&FromDate=${dateRange.startDate}&ToDate=${dateRange.endDate}&currencyId=${selectedCurrency?.id}`,
     "get"
   );
 
@@ -131,7 +133,7 @@ export default function Index() {
             title={summary?.volume}
             change={summary?.volume_change}
             subtitle={"Total Transaction Volume"}
-            currency="NGN"
+            currency={selectedCurrency.name ?? "NGN"}
             icon={<DropIcon />}
           />
         </Grid>
@@ -140,7 +142,7 @@ export default function Index() {
             title={summary?.settlements}
             change={summary?.settlement_change}
             subtitle={"Total Transaction Settlements"}
-            currency="NGN"
+            currency={selectedCurrency.name ?? "NGN"}
             icon={<ReportIcon />}
           />
         </Grid>
@@ -220,7 +222,7 @@ export default function Index() {
               title={summary?.available_balance}
               change={summary?.available_balance_change}
               subtitle={"Available Balance"}
-              currency="NGN"
+              currency={selectedCurrency.name ?? "NGN"}
               icon={<ReportIcon />}
               linkTo="/balance/main"
             />
@@ -228,7 +230,7 @@ export default function Index() {
               title={summary?.ledger_balance}
               change={summary?.ledger_balance_change}
               subtitle={"Ledger Balance"}
-              currency="NGN"
+              currency={selectedCurrency.name ?? "NGN"}
               icon={<ReportIcon />}
               linkTo="/balance/main"
             />

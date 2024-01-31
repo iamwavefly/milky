@@ -17,7 +17,7 @@ import baseUrl from "@/middleware/baseUrl";
 import { CurrencyProps } from "@/interfaces";
 
 interface Props {
-  updateFilter?: React.Dispatch<SetStateAction<number>>;
+  updateFilter?: React.Dispatch<SetStateAction<{ id: number; name: string }>>;
   title?: string;
   selector?: string;
 }
@@ -53,12 +53,17 @@ export default function FilterCurrencyMenu({
     const fnCurrencies = data?.data?.filter(
       ({ is_allowed }: { is_allowed: boolean }) => is_allowed
     );
-    setCurrencies(fnCurrencies);
+    if (fnCurrencies.length) {
+      const { id, short_name } = fnCurrencies?.[0];
+      updateFilter?.({ id, name: short_name });
+      setSelectedCurrencies?.(short_name);
+      setCurrencies(fnCurrencies);
+    }
   }, [data?.data]);
 
   const onSelectionChanged = (name: string, id: number) => {
     setSelectedCurrencies(name);
-    updateFilter?.(id);
+    updateFilter?.({ id, name });
     handleClose();
   };
 
