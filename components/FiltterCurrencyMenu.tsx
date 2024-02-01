@@ -53,7 +53,7 @@ export default function FilterCurrencyMenu({
     const fnCurrencies = data?.data?.filter(
       ({ is_allowed }: { is_allowed: boolean }) => is_allowed
     );
-    if (fnCurrencies.length) {
+    if (fnCurrencies?.length) {
       const { id, short_name } = fnCurrencies?.[0];
       updateFilter?.({ id, name: short_name });
       setSelectedCurrencies?.(short_name);
