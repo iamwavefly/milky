@@ -7,7 +7,7 @@ import { Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 
 type NewInvoiceProps = {
-  invoice: InvoiceTypes;
+  invoice?: InvoiceTypes;
 };
 
 export default function NewInvoice({ invoice }: NewInvoiceProps) {
