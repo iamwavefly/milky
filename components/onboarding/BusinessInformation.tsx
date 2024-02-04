@@ -100,30 +100,30 @@ export default function BusinessInformation({ nextStep }: Props) {
     },
   });
 
-  // useEffect(() => {
-  //   if (fetchBusinessInformation?.data?.data) {
-  //     const {
-  //       support_email,
-  //       description,
-  //       mobile_number,
-  //       address,
-  //       city,
-  //       state,
-  //       website,
-  //       facebook,
-  //       instagram,
-  //       twitter,
-  //       logo,
-  //     } = fetchBusinessInformation?.data?.data;
-  //     formik.setFieldValue("description", description);
-  //     formik.setFieldValue("emailAddress", support_email);
-  //     formik.setFieldValue("phoneNumber", mobile_number);
-  //     formik.setFieldValue("address", address);
-  //     formik.setFieldValue("city", city);
-  //     formik.setFieldValue("state", state);
-  //     formik.setFieldValue("website", website);
-  //   }
-  // }, [fetchBusinessInformation?.data?.data]);
+  useEffect(() => {
+    if (fetchBusinessInformation?.data?.data) {
+      const {
+        support_email,
+        description,
+        mobile_number,
+        address,
+        city,
+        state,
+        website,
+        facebook,
+        instagram,
+        twitter,
+        logo,
+      } = fetchBusinessInformation?.data?.data;
+      formik.setFieldValue("description", description);
+      formik.setFieldValue("emailAddress", support_email);
+      formik.setFieldValue("phoneNumber", mobile_number);
+      formik.setFieldValue("address", address);
+      formik.setFieldValue("city", city);
+      formik.setFieldValue("state", state);
+      formik.setFieldValue("website", website);
+    }
+  }, [fetchBusinessInformation?.data?.data]);
 
   return (
     <Box bgcolor="#FFF">

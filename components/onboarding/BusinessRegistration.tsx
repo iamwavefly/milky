@@ -76,13 +76,6 @@ export default function BusinessRegistration({ nextStep }: Props) {
   }, []);
 
   useEffect(() => {
-    const { status, message } = data;
-    if (status === "success") {
-      nextStep();
-    }
-  }, [data]);
-
-  useEffect(() => {
     const { status, message } = removeStakeholderReq?.data;
     if (status === "success") {
       fetchStakeholders.handleSubmit();
@@ -92,6 +85,13 @@ export default function BusinessRegistration({ nextStep }: Props) {
   useEffect(() => {
     setStakeholders(fetchStakeholders?.data?.data);
   }, [fetchStakeholders?.data]);
+
+  useEffect(() => {
+    const { status, message } = data;
+    if (status === "success") {
+      nextStep();
+    }
+  }, [data]);
 
   useEffect(() => {
     const {

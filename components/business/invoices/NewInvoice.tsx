@@ -1,9 +1,16 @@
 import Stepper from "@/components/WyrrStepper";
+import useFetch from "@/hooks/useFetch";
+import { InvoiceTypes } from "@/interfaces";
+import baseUrl from "@/middleware/baseUrl";
 import { formStepLabel } from "@/utils/invoice";
 import { Box } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-export default function NewInvoice() {
+type NewInvoiceProps = {
+  invoice?: InvoiceTypes;
+};
+
+export default function NewInvoice({ invoice }: NewInvoiceProps) {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({});
 
@@ -20,7 +27,7 @@ export default function NewInvoice() {
         <Stepper activeStep={step} steps={formStepLabel} alternativeLabel />
       </Box>
       <Box>
-        <Form nextStep={nextStepHandler} form={form} />
+        <Form nextStep={nextStepHandler} form={form} invoice={invoice} />
       </Box>
     </Box>
   );
