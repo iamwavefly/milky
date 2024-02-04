@@ -120,4 +120,24 @@ export interface WalletProps {
   wallet_type: string;
 }
 
+export type InvoiceTypes = {
+  id?: number;
+  amount: number;
+  company_email: string;
+  company_name: string;
+  currency: string;
+  customer_email: string;
+  customer_name: string;
+  date_created: string;
+  description: string;
+  discount: number;
+  due_date: string;
+  logo: string;
+  payment_link: string;
+  reference: string;
+  status: string;
+  tax: number;
+  title: string;
+};
+
 export type ArcaSwitchProps = {} & SwitchProps;

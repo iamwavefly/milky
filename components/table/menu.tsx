@@ -14,17 +14,24 @@ import {
   Stack,
 } from "@mui/material";
 import Router, { useRouter } from "next/router";
-import { ChangeEvent, useEffect, useState } from "react";
+import {
+  ChangeEvent,
+  MouseEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { useDispatch } from "react-redux";
 import MoreIcon from "../../public/icons/more.svg";
 import BlacklistCustomer from "../business/customers/blacklistCustomer";
 import Modal from "../modal/modal";
-import { Product, UserProps } from "@/interfaces";
+import { InvoiceTypes, Product, UserProps } from "@/interfaces";
 import RemoveUser from "../settings/roles-permissions/RemoveUser";
 import NewUser from "../form/newUser";
 import { serialize } from "object-to-formdata";
 import DeleteProd from "../business/products/DeleteProduct";
 import NewProduct from "../business/products/NewProduct";
+import NewInvoice from "../business/invoices/NewInvoice";
 
 export const ViewTransaction = ({ id }: { id?: number }) => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -884,11 +891,31 @@ export const InvoiceMenu = ({ id }: { id: number }) => {
 
   const dispatch = useDispatch();
 
+  const fetchInvoiceDetails = useFetch(
+    `${baseUrl}/dashboard/invoice/all?InvoiceId=${id}`,
+    "get",
+    true
+  );
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/invoice/delete/${id}`,
     "delete",
     true
   );
+
+  // Edit invoice
+  const editInvoiceDrawal = useCallback(() => {
+    dispatch(
+      setDrawalState({
+        active: true,
+        title: "Edit Invoice",
+        content: (
+          <NewInvoice
+            invoice={fetchInvoiceDetails?.data?.items?.[0] as InvoiceTypes}
+          />
+        ),
+      })
+    );
+  }, [fetchInvoiceDetails?.data?.items]);
 
   const handleClick = (event: any) => {
     event.stopPropagation();
@@ -900,10 +927,19 @@ export const InvoiceMenu = ({ id }: { id: number }) => {
     setAnchorEl(null);
   };
 
-  const handleActionClick = (action: string, event: any) => {
+  // edit invoice
+  const handleEdit = (event?: MouseEvent<HTMLLIElement>) => {
+    fetchInvoiceDetails?.handleSubmit();
+  };
+
+  const handleActionClick = (
+    action: string,
+    event: MouseEvent<HTMLLIElement>
+  ) => {
     event.stopPropagation();
     handleClose(event);
     if (action === "delete") return handleSubmit();
+    if (action === "edit") return handleEdit();
   };
 
   useEffect(() => {
@@ -913,6 +949,12 @@ export const InvoiceMenu = ({ id }: { id: number }) => {
       handleClose();
     }
   }, [data]);
+
+  useEffect(() => {
+    if (fetchInvoiceDetails?.data?.items) {
+      editInvoiceDrawal();
+    }
+  }, [fetchInvoiceDetails?.data?.items]);
 
   return (
     <>
@@ -928,6 +970,9 @@ export const InvoiceMenu = ({ id }: { id: number }) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
+          <MenuItem onClick={(event) => handleActionClick("edit", event)}>
+            Edit
+          </MenuItem>
           <MenuItem
             sx={{ color: "#EA5851" }}
             onClick={(event) => handleActionClick("delete", event)}

@@ -14,12 +14,18 @@ import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import { notifyErrorHandler, resolveErrorMsg } from "@/middleware/catchErrors";
 import convertToBase64 from "@/helper/convertToBase64";
+import { InvoiceTypes } from "@/interfaces";
+import imgBaseUrl from "@/utils/imgBaseUrl";
 
 interface BusinessDetailsProps {
   nextStep: (data: {}) => void;
+  invoice: InvoiceTypes | undefined;
 }
 
-export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
+export default function BusinessDetails({
+  nextStep,
+  invoice,
+}: BusinessDetailsProps) {
   const [selectedFile, setSelectedFile] = useState("");
   const [logo, setLogo] = useState("");
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -98,6 +104,21 @@ export default function BusinessDetails({ nextStep }: BusinessDetailsProps) {
       nextStep({ ...data, image: newLogoUrl });
     },
   });
+
+  useEffect(() => {
+    console.log({ invoice });
+    if (invoice) {
+      if (invoice?.logo) {
+        setLogo(`${imgBaseUrl}invoice?.logo`);
+      }
+      formik.setValues({
+        companyName: invoice.company_name,
+        companyEmail: invoice.company_email,
+        customerName: invoice.customer_name,
+        customerEmail: invoice.customer_email,
+      });
+    }
+  }, [invoice]);
 
   return (
     <Box>

@@ -28,7 +28,10 @@ export default function ContactInformation({ nextStep }: Props) {
     `${baseUrl}/dashboard/onboarding/contact/information`
   );
 
-  const userDetails = useSelector(selectUserState).user;
+  const fetchPersonalInformation = useFetch(
+    `${baseUrl}/dashboard/onboarding/personal/information/view`,
+    "get"
+  );
 
   const formik = useFormik({
     initialValues: {
@@ -48,6 +51,10 @@ export default function ContactInformation({ nextStep }: Props) {
   });
 
   useEffect(() => {
+    fetchPersonalInformation?.handleSubmit();
+  }, [data]);
+
+  useEffect(() => {
     const { status, message } = data;
     if (status === "success") {
       nextStep();
@@ -55,13 +62,16 @@ export default function ContactInformation({ nextStep }: Props) {
   }, [data]);
 
   useEffect(() => {
-    const { first_name, last_name, mobile_number } = userDetails;
-    formik.setValues({
-      firstName: first_name,
-      lastName: last_name,
-      phoneNumber: mobile_number,
-    });
-  }, [userDetails]);
+    if (fetchPersonalInformation?.data?.data) {
+      const { mobile_number, first_name, last_name } =
+        fetchPersonalInformation?.data?.data;
+      formik.setValues({
+        firstName: first_name,
+        lastName: last_name,
+        phoneNumber: mobile_number,
+      });
+    }
+  }, [fetchPersonalInformation?.data]);
 
   return (
     <Box>
