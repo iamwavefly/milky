@@ -13,6 +13,8 @@ import baseUrl from "@/middleware/baseUrl";
 import Export from "@/components/Export";
 import DropdownMenu from "@/components/DropdownMenu";
 import { ResultProps } from "@/interfaces";
+import { useSelector } from "react-redux";
+import { selectAppState } from "@/store/appSlice";
 
 const TransactionTable = () => {
   const [currentPage, setCurrentPage] = useState<number | undefined>(1);
@@ -26,6 +28,8 @@ const TransactionTable = () => {
   });
 
   const containerRef = useRef();
+
+  const appLoader = useSelector(selectAppState).reload;
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/fetch/orders?${
@@ -42,7 +46,7 @@ const TransactionTable = () => {
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters, rowsPerPage]);
+  }, [currentPage, search, filters, rowsPerPage, appLoader]);
 
   return (
     <Box>

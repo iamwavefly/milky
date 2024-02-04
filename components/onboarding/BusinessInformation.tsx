@@ -30,6 +30,9 @@ interface Props {
 export default function BusinessInformation({ nextStep }: Props) {
   const [step, setStep] = useState(1);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [subsidiaryLogo, setSubsidiaryLogo] = useState<string | undefined>(
+    undefined
+  );
 
   const dispatch = useDispatch();
 
@@ -109,19 +112,16 @@ export default function BusinessInformation({ nextStep }: Props) {
         address,
         city,
         state,
-        website,
-        facebook,
-        instagram,
-        twitter,
-        logo,
       } = fetchBusinessInformation?.data?.data;
-      formik.setFieldValue("description", description);
-      formik.setFieldValue("emailAddress", support_email);
-      formik.setFieldValue("phoneNumber", mobile_number);
-      formik.setFieldValue("address", address);
-      formik.setFieldValue("city", city);
-      formik.setFieldValue("state", state);
-      formik.setFieldValue("website", website);
+
+      formik.setValues({
+        description,
+        emailAddress: support_email,
+        phoneNumber: mobile_number,
+        address,
+        city,
+        state,
+      });
     }
   }, [fetchBusinessInformation?.data?.data]);
 
@@ -144,7 +144,11 @@ export default function BusinessInformation({ nextStep }: Props) {
               >
                 Business logo (optional)
               </Typography>
-              <FileUpload update={setSelectedFile} acceptType="image/*" />
+              <FileUpload
+                update={setSelectedFile}
+                acceptType="image/*"
+                file={subsidiaryLogo}
+              />
             </Stack>
             <Stack mt="24px" spacing="24px">
               <TextField

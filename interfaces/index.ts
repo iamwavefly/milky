@@ -122,6 +122,7 @@ export interface WalletProps {
 
 export type InvoiceTypes = {
   id?: number;
+  subsidiary_id: number;
   amount: number;
   company_email: string;
   company_name: string;
@@ -138,6 +139,20 @@ export type InvoiceTypes = {
   status: string;
   tax: number;
   title: string;
+  bank_name: string;
+  payment_reference: string;
+  payment_type: string;
+  card_type: string;
+  card_number: string;
+  ip_address: string;
+  fee: string;
+  invoice_items: [
+    {
+      item: string;
+      amount: number;
+      quantity: number;
+    }
+  ];
 };
 
 export type ArcaSwitchProps = {} & SwitchProps;

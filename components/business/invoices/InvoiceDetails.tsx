@@ -22,10 +22,11 @@ import stringToCurrency from "@/helper/formatCurrency";
 import Router from "next/router";
 import cloudinary from "@/cloudinaryConfig";
 import Styles from "@/styles/invoice.module.scss";
-import { CurrencyProps, ItemsProps } from "@/interfaces";
+import { CurrencyProps, InvoiceTypes, ItemsProps } from "@/interfaces";
 
 interface BusinessDetailsProps {
   form: any;
+  invoice: InvoiceTypes | undefined;
 }
 
 const initialValues = {
@@ -41,7 +42,10 @@ const initialValues = {
   tax: "",
 };
 
-export default function InvoiceDetails({ form }: BusinessDetailsProps) {
+export default function InvoiceDetails({
+  form,
+  invoice,
+}: BusinessDetailsProps) {
   const [Items, setItems] = useState<ItemsProps[]>([]);
   const [amount, setAmount] = useState(0);
   const [total, setTotal] = useState(0);
@@ -199,6 +203,24 @@ export default function InvoiceDetails({ form }: BusinessDetailsProps) {
       formik.setFieldValue("bulk", 0);
     }
   }, [Items]);
+
+  // prefill data for edit request
+  useEffect(() => {
+    if (invoice) {
+      formik.setValues({
+        currency: invoice.currency,
+        description: invoice.description,
+        discount: "" + invoice.discount,
+        dueDate: invoice.due_date,
+        invoiceTitle: invoice.title,
+        amount: "" + invoice.amount,
+        tax: "" + invoice.tax,
+        quantity: "",
+        note: "",
+        bulk: 0,
+      });
+    }
+  }, [invoice]);
 
   const handleRemoveItem = (id: string, e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
