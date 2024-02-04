@@ -77,10 +77,10 @@ export default function BusinessInformation({ nextStep }: Props) {
       city,
       description,
       emailAddress,
+      state,
+      phoneNumber,
       facebook,
       instagram,
-      phoneNumber,
-      state,
       twitter,
       website,
     }: any) => {
@@ -112,6 +112,10 @@ export default function BusinessInformation({ nextStep }: Props) {
         address,
         city,
         state,
+        facebook,
+        instagram,
+        twitter,
+        website,
       } = fetchBusinessInformation?.data?.data;
 
       formik.setValues({
@@ -121,6 +125,11 @@ export default function BusinessInformation({ nextStep }: Props) {
         address,
         city,
         state,
+        // social networks
+        facebook: "",
+        instagram: "",
+        twitter: "",
+        website: "",
       });
     }
   }, [fetchBusinessInformation?.data?.data]);
