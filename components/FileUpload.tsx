@@ -13,6 +13,7 @@ interface FileUploadProps {
   update?: (file: any) => void;
   multiple?: boolean;
   icon?: ReactNode;
+  file?: string;
 }
 
 export default function FileUpload({
@@ -20,6 +21,7 @@ export default function FileUpload({
   acceptType,
   multiple,
   icon,
+  file,
   update,
 }: FileUploadProps) {
   const actualBtnRef = useRef(null);
@@ -125,7 +127,7 @@ export default function FileUpload({
             alignItems="center"
             sx={{ cursor: "pointer" }}
           >
-            {previewUrl ? (
+            {previewUrl || file ? (
               <ReloadIcon width="18px" height="18px" fill="#0048B1" />
             ) : (
               <AddIcon width="18px" height="18px" fill="#0048B1" />
@@ -136,7 +138,7 @@ export default function FileUpload({
               fontWeight={600}
               lineHeight="22px"
             >
-              {previewUrl ? "Change file" : "Browse file"}
+              {previewUrl || file ? "Change file" : "Browse file"}
             </Typography>
           </Stack>
         </Stack>

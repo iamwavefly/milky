@@ -892,7 +892,7 @@ export const InvoiceMenu = ({ id }: { id: number }) => {
   const dispatch = useDispatch();
 
   const fetchInvoiceDetails = useFetch(
-    `${baseUrl}/dashboard/invoice/all?InvoiceId=${id}`,
+    `${baseUrl}/dashboard/invoice/detail/${id}`,
     "get",
     true
   );
