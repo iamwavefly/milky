@@ -23,6 +23,7 @@ import Router from "next/router";
 import cloudinary from "@/cloudinaryConfig";
 import Styles from "@/styles/invoice.module.scss";
 import { CurrencyProps, InvoiceTypes, ItemsProps } from "@/interfaces";
+import moment from "moment";
 
 interface BusinessDetailsProps {
   form: any;
@@ -55,6 +56,10 @@ export default function InvoiceDetails({
 
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/invoice/create`
+  );
+  const updateReq = useFetch(
+    `${baseUrl}/dashboard/invoice/edit/${invoice?.id}`,
+    "put"
   );
   const currencies = useFetch(`${baseUrl}/dashboard/service/currencies`, "get");
 
@@ -96,6 +101,15 @@ export default function InvoiceDetails({
   }, [data]);
 
   useEffect(() => {
+    const { status } = updateReq?.data;
+    if (status === "success") {
+      close();
+      dispatch(reload());
+      Router.push("/business/invoice");
+    }
+  }, [updateReq?.data]);
+
+  useEffect(() => {
     currencies?.handleSubmit();
   }, []);
 
@@ -127,7 +141,8 @@ export default function InvoiceDetails({
 
       const { customerName, companyName, customerEmail, companyEmail, image } =
         form;
-      const payload = {
+      let payload = {
+        id: undefined as unknown as number,
         invoice_title: invoiceTitle,
         currency_id: currency,
         due_date: dueDate,
@@ -144,6 +159,10 @@ export default function InvoiceDetails({
           logo: image,
         },
       };
+      if (invoice) {
+        payload.id = invoice.id as number;
+        return updateReq?.handleSubmit(payload);
+      }
       handleSubmit(payload);
     },
   });
@@ -208,17 +227,34 @@ export default function InvoiceDetails({
   useEffect(() => {
     if (invoice) {
       formik.setValues({
-        currency: invoice.currency,
-        description: invoice.description,
+        currency: currencies?.data?.data?.find(
+          ({ short_name }: CurrencyProps) => invoice.currency === short_name
+        )?.id,
+        description: "",
         discount: "" + invoice.discount,
-        dueDate: invoice.due_date,
+        dueDate: moment(invoice.due_date).format("YYYY-MM-DD"),
         invoiceTitle: invoice.title,
-        amount: "" + invoice.amount,
+        amount: "",
         tax: "" + invoice.tax,
         quantity: "",
-        note: "",
+        note: invoice?.description,
         bulk: 0,
       });
+    }
+  }, [invoice, currencies?.data?.data]);
+  // prefill data for edit request -> update invoice items
+  useEffect(() => {
+    if (invoice?.invoice_items?.length) {
+      const itemContruc = invoice?.invoice_items?.map(
+        ({ amount, item, quantity }) => ({
+          item,
+          amount: amount * quantity,
+          unitPrice: amount,
+          quantity: quantity,
+          id: uuid(),
+        })
+      );
+      setItems(itemContruc);
     }
   }, [invoice]);
 
@@ -487,10 +523,10 @@ export default function InvoiceDetails({
           <LoadingButton
             variant="containedMedium"
             type="submit"
-            loading={loading}
+            loading={loading || updateReq?.loading}
             disabled={!(formik.isValid && formik.dirty)}
           >
-            Send invoice
+            {invoice ? "Update" : "Send"} invoice
           </LoadingButton>
         </Stack>
       </form>

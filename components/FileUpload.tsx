@@ -118,7 +118,7 @@ export default function FileUpload({
             lineHeight="21px"
             letterSpacing="0.195px"
           >
-            {fileName ?? "Drag and drop file here, or"}
+            {fileName ?? file?.split("=")[1] ?? "Drag and drop file here, or"}
           </Typography>
           <Stack
             direction="row"
