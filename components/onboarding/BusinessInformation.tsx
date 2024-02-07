@@ -112,10 +112,6 @@ export default function BusinessInformation({ nextStep }: Props) {
         address,
         city,
         state,
-        facebook,
-        instagram,
-        twitter,
-        website,
       } = fetchBusinessInformation?.data?.data;
 
       formik.setValues({
@@ -125,12 +121,17 @@ export default function BusinessInformation({ nextStep }: Props) {
         address,
         city,
         state,
-        // social networks
-        facebook: "",
-        instagram: "",
-        twitter: "",
-        website: "",
       });
+    }
+  }, [fetchBusinessInformation?.data?.data]);
+
+  useEffect(() => {
+    if (fetchBusinessInformation?.data?.data) {
+      const { website, logo } = fetchBusinessInformation?.data?.data;
+
+      setSubsidiaryLogo(logo);
+
+      formik.setFieldValue("website", website);
     }
   }, [fetchBusinessInformation?.data?.data]);
 

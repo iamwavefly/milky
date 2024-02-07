@@ -67,6 +67,15 @@ export default function BusinessRegistration({ nextStep }: Props) {
     "get"
   );
 
+  const fetchBusinessRegistration = useFetch(
+    `${baseUrl}/dashboard/onboarding/business/registration/view`,
+    "get"
+  );
+
+  useEffect(() => {
+    fetchBusinessRegistration.handleSubmit();
+  }, []);
+
   useEffect(() => {
     fetchBusinessClasses.handleSubmit();
   }, []);
@@ -152,6 +161,24 @@ export default function BusinessRegistration({ nextStep }: Props) {
       handleSubmit(formData);
     },
   });
+
+  useEffect(() => {
+    if (fetchBusinessRegistration?.data?.data) {
+      const {
+        support_email,
+        description,
+        mobile_number,
+        address,
+        city,
+        state,
+      } = fetchBusinessRegistration?.data?.data;
+
+      formik.setValues({
+        businessClass: "",
+        taxIdNumber: "",
+      });
+    }
+  }, []);
 
   return (
     <Box bgcolor="#FFF">

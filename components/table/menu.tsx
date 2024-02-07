@@ -910,12 +910,12 @@ export const InvoiceMenu = ({ id }: { id: number }) => {
         title: "Edit Invoice",
         content: (
           <NewInvoice
-            invoice={fetchInvoiceDetails?.data?.items?.[0] as InvoiceTypes}
+            invoice={fetchInvoiceDetails?.data?.data as InvoiceTypes}
           />
         ),
       })
     );
-  }, [fetchInvoiceDetails?.data?.items]);
+  }, [fetchInvoiceDetails?.data]);
 
   const handleClick = (event: any) => {
     event.stopPropagation();
@@ -951,10 +951,10 @@ export const InvoiceMenu = ({ id }: { id: number }) => {
   }, [data]);
 
   useEffect(() => {
-    if (fetchInvoiceDetails?.data?.items) {
+    if (fetchInvoiceDetails?.data?.data) {
       editInvoiceDrawal();
     }
-  }, [fetchInvoiceDetails?.data?.items]);
+  }, [fetchInvoiceDetails?.data?.data]);
 
   return (
     <>
