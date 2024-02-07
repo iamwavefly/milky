@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import ArrowUpIcon from "@/public/icons/close.svg";
+import EditIcon from "@/public/icons/edit.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { reload, setDrawalState } from "@/store/appSlice";
 import AddIcon from "@/public/icons/add.svg";
@@ -368,7 +369,6 @@ export default function InvoiceDetails({
               {Items?.map(({ item, id }: ItemsProps, index: number) => (
                 <Stack
                   className={Styles.itemContainer}
-                  onClick={() => handleEditItem(id)}
                   direction="row"
                   alignItems="center"
                   justifyContent="space-between"
@@ -378,9 +378,14 @@ export default function InvoiceDetails({
                   <Typography color="#070F1C" fontSize="14px" fontWeight={600}>
                     {item}
                   </Typography>
-                  <IconButton onClick={(e) => handleRemoveItem(id, e)}>
-                    <ArrowUpIcon width="20px" height="20px" fill="#6F7A90" />
-                  </IconButton>
+                  <Stack direction="row" spacing="6px">
+                    <IconButton onClick={() => handleEditItem(id)}>
+                      <EditIcon width="20px" height="20px" fill="#6F7A90" />
+                    </IconButton>
+                    <IconButton onClick={(e) => handleRemoveItem(id, e)}>
+                      <ArrowUpIcon width="20px" height="20px" fill="#6F7A90" />
+                    </IconButton>
+                  </Stack>
                 </Stack>
               ))}
             </Stack>
