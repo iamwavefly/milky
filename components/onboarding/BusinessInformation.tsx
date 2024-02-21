@@ -131,8 +131,6 @@ export default function BusinessInformation({ nextStep }: Props) {
       const { website, logo } = fetchBusinessInformation?.data?.data;
 
       setSubsidiaryLogo(logo);
-
-      formik.setFieldValue("website", website);
     }
   }, [fetchBusinessInformation?.data?.data]);
 

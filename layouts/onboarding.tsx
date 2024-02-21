@@ -1,7 +1,6 @@
 import React, { ReactNode, useEffect } from "react";
 import { Box, BoxProps, Stack, Typography } from "@mui/material";
 import Head from "next/head";
-import Logo from "../public/images/logo.svg";
 import Header from "@/components/onboarding/Header";
 
 type Props = {
