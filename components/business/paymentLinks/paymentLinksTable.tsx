@@ -1,21 +1,16 @@
-import { useState, useCallback, useEffect, useRef } from "react";
-import Styles from "../../styles.module.scss";
+import { useState, useEffect, useRef } from "react";
 import "react-super-responsive-table/dist/SuperResponsiveTableStyle.css";
 import { _businesses, _customers, _invoices } from "@/mocks";
 import Header from "@/components/table/header";
 import Table from "@/components/table/table";
-import FilterTable from "@/components/table/filter";
-import {
-  PaymentLinkColumns,
-  ProductsTableColumns,
-} from "@/components/table/columns";
+import { PaymentLinkColumns } from "@/components/table/columns";
 import Router from "next/router";
 import baseUrl from "@/middleware/baseUrl";
 import useFetch from "@/hooks/useFetch";
 import AddBox from "@/public/icons/link.svg";
 import { Box, Button } from "@mui/material";
-import { useDispatch } from "react-redux";
-import { setDrawalState } from "@/store/appSlice";
+import { useSelector } from "react-redux";
+import { selectAppState } from "@/store/appSlice";
 import NewPaymentLink from "./newPaymentLink";
 import DropdownMenu from "@/components/DropdownMenu";
 import Export from "@/components/Export";
@@ -37,6 +32,8 @@ const PaymentLinksTable = () => {
   const handleOpenModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
 
+  const reloadPage = useSelector(selectAppState).reload;
+
   const { loading, data, error, handleSubmit } = useFetch(
     `${baseUrl}/dashboard/payment/link/subsidiary?${
       rowsPerPage ? `limit=${rowsPerPage}&page=${currentPage}` : ""
@@ -54,7 +51,7 @@ const PaymentLinksTable = () => {
 
   useEffect(() => {
     handleSubmit();
-  }, [currentPage, search, filters, rowsPerPage]);
+  }, [currentPage, search, filters, rowsPerPage, reloadPage]);
 
   return (
     <Box>
