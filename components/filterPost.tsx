@@ -3,7 +3,7 @@ import { Stack, TextField } from "@mui/material";
 import React, { ChangeEvent } from "react";
 import { useDispatch } from "react-redux";
 
-export default function Filter() {
+export default function FilterPost() {
   const dispatch = useDispatch();
 
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
