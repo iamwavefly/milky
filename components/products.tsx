@@ -5,6 +5,7 @@ import React from "react";
 import Product from "./product";
 import { useSelector } from "react-redux";
 import { AppState } from "@/store/store";
+import PostSkeleton from "./skeletons/post";
 
 export default function Products({ limit, ...others }: ProductsTypes) {
   const searchQuery = useSelector((state: AppState) => state.cart.searchQuery);
@@ -17,7 +18,8 @@ export default function Products({ limit, ...others }: ProductsTypes) {
     <Grid container {...others} spacing="18px">
       {filteredProducts?.slice(0, limit)?.map((product) => (
         <Grid item key={product?.id} md={3}>
-          <Product {...product} />
+          {/* <Product {...product} /> */}
+          <PostSkeleton />
         </Grid>
       ))}
     </Grid>
