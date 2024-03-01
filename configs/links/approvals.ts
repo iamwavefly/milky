@@ -1,4 +1,4 @@
-import { HeaderTab } from "@/interfaces";
+import { HeaderTab } from "@/types";
 
 const ApprovalRoutes: HeaderTab[] = [
   { id: 1, name: "Providers setup approval", link: "/approvals?tab=setup" },

@@ -1,4 +1,4 @@
-import { HeaderTab } from "@/interfaces";
+import { HeaderTab } from "@/types";
 
 const SettlementHeaderRoutes: HeaderTab[] = [
   { id: 1, name: "Settlement Due", link: "/settlements" },

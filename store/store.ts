@@ -1,13 +1,13 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import { authSlice } from "./authSlice";
-import { appSlice } from "./appSlice";
+import { cartSlice } from "./cartSlice";
+import { checkoutSlice } from "./checkoutSlice";
 import { createWrapper } from "next-redux-wrapper";
 
 const makeStore = () =>
   configureStore({
     reducer: {
-      [authSlice.name]: authSlice.reducer,
-      [appSlice.name]: appSlice.reducer,
+      [cartSlice.name]: cartSlice.reducer,
+      [checkoutSlice.name]: checkoutSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({

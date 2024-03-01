@@ -10,7 +10,7 @@ import {
   SwitchProps,
   Typography,
 } from "@mui/material";
-import { ArcaSwitchProps } from "@/interfaces";
+import { ArcaSwitchProps } from "@/types";
 
 const IOSSwitch = styled((props: SwitchProps) => (
   <MuiSwitch

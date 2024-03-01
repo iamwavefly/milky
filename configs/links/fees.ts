@@ -1,4 +1,4 @@
-import { HeaderTab } from "@/interfaces";
+import { HeaderTab } from "@/types";
 
 const FeeRoutes: HeaderTab[] = [
   { id: 1, name: "Collection fees", link: "/fees?tab=collection" },

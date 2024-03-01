@@ -1,4 +1,4 @@
-import { HeaderTab } from "@/interfaces";
+import { HeaderTab } from "@/types";
 
 const ReconciliationHeaderRoutes: HeaderTab[] = [
   {

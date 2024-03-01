@@ -1,0 +1,30 @@
+.container {
+  margin-top: 28px;
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1269px;
+  height: 135px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.nav {
+  display: flex;
+  gap: 44px;
+  align-items: center;
+}
+
+// cart
+.cart {
+  gap: 9px;
+  align-items: center;
+}
+.cartButton {
+  width: 63px;
+  height: 63px;
+  border-radius: 100px;
+  background-color: #ff1a71;
+  &:hover {
+    background-color: #e60d60;
+  }
+}

@@ -1,4 +1,4 @@
-import { HeaderTab } from "@/interfaces";
+import { HeaderTab } from "@/types";
 
 const LimitRoutes: HeaderTab[] = [
   { id: 1, name: "Collection limits", link: "/limits?tab=collection" },

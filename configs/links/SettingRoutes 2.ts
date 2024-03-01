@@ -1,4 +1,4 @@
-import { HeaderTab } from "@/interfaces";
+import { HeaderTab } from "@/types";
 
 const SettingRoutes: HeaderTab[] = [
   { id: 1, name: "Users/Admins", link: "/settings" },

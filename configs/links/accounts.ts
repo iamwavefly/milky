@@ -1,4 +1,4 @@
-import { HeaderTab } from "@/interfaces";
+import { HeaderTab } from "@/types";
 
 const HeaderTabRoutes: HeaderTab[] = [
   { id: 1, name: "Businesses", link: "/accounts" },

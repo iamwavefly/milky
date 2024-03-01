@@ -1,4 +1,4 @@
-import { HeaderTab } from "@/interfaces";
+import { HeaderTab } from "@/types";
 
 const PayoutTabRoutes: any[] = [
   { id: 1, name: "Credit", link: "/payouts/credit" },

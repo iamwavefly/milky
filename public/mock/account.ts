@@ -1,4 +1,4 @@
-import { Card } from "@/interfaces";
+import { Card } from "@/types";
 
 const accountsRoutes: Card[] = [
   {
