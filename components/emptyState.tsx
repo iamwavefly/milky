@@ -1,7 +1,7 @@
 import { Box, Stack, Typography } from "@mui/material";
 import React from "react";
 
-export default function EmptyState({ order }: { order: boolean }) {
+export default function EmptyState({ order }: { order?: boolean }) {
   return (
     <Stack maxWidth="600px" mt="120px" mx="auto" textAlign="center">
       <Typography variant="h3">
