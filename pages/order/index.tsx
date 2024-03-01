@@ -24,7 +24,7 @@ export default function cart() {
   return (
     <Onboarding title="Cart">
       {!order.length ? (
-        <EmptyState />
+        <EmptyState order/>
       ) : (
         <Stack direction="row" mt="86px" mb="120px" gap="50px">
           {/* products */}
