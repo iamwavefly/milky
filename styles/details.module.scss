@@ -11,6 +11,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .relatedProdContainer {
@@ -29,7 +35,8 @@
   height: 189px;
   cursor: pointer;
   border-radius: 5px;
-  & > img {
+  padding: 0;
+  & img {
     width: 100%;
     height: 100%;
     object-fit: cover;

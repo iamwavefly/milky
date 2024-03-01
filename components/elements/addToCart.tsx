@@ -20,7 +20,8 @@ export default function AddToCart({
     e.stopPropagation();
 
     if (product?.id) {
-      const { id, name, description, amount, category, images } = product;
+      const { id, name, description, amount, category, images, subtitle } =
+        product;
       // Dispatch action to add product to the cart
       dispatch(
         addToCart({
@@ -31,6 +32,7 @@ export default function AddToCart({
           amount,
           category,
           images,
+          subtitle,
         })
       );
       toast.success(`Item ${isItemInCart ? "Updated in" : "Added to"} cart`);

@@ -15,7 +15,14 @@ export type ProductTypes = {
   images?: string[];
 };
 
-export type CheckoutTypes = {
+export type ProductReceiptTypes = {
+  image?: string;
+  name?: string;
+  subtitle?: string;
+  onClick: () => void;
+};
+
+export type CustomerTypes = {
   firstName: string;
   lastName: string;
   email: string;
@@ -32,3 +39,9 @@ export type AddToCartTypes = {
   width?: number;
   height?: number;
 } & ProductTypes;
+
+export type OrderReceiptType = {
+  id: number;
+  customer: CustomerTypes;
+  products: ProductTypes[];
+};

@@ -44,7 +44,7 @@ export default function index() {
                 <Image
                   src={require(`@/public/images${selectedImage}.png`)}
                   alt={"product?.name"}
-                  height={626}
+                  height={670}
                 />
               )}
             </Box>

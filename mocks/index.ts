@@ -1,5 +1,15 @@
 export const _products = [
   {
+    id: 7,
+    name: "ASHION 2024 Men's Casual",
+    subtitle: "new ASHION 2024 Men's Casual Shoes Big Size 39-47",
+    description:
+      "Imagine being a mother who works every morning and still having to take care of the baby. Our lactation cookies are specially made for you. Available in 2 flavors, you can have more than one kind of cookie because it’s so yummy. You might eat it too fast because it tastes so good",
+    amount: 13900,
+    category: "",
+    images: ["/product7", "/product4", "/product2", "/product5"],
+  },
+  {
     id: 1,
     name: "Milky Lactation Cookies",
     subtitle: "Lactation cookies to improve production of breastmilk",

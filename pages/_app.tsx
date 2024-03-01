@@ -10,6 +10,10 @@ import "aos/dist/aos.css";
 import "../styles/colors.scss";
 import { Toaster } from "react-hot-toast";
 
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { storeConfig, persistor } from "@/store/store";
+
 function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     AOS.init({
@@ -20,18 +24,21 @@ function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
-        <ProtectRoutes>
-          <Toaster
-            toastOptions={{
-              duration: 3000,
-            }}
-          />
-          <Component {...pageProps} />
-        </ProtectRoutes>
-      </ThemeProvider>
+      <Provider store={storeConfig}>
+        <PersistGate loading={null} persistor={persistor}></PersistGate>
+        <ThemeProvider theme={theme}>
+          <ProtectRoutes>
+            <Toaster
+              toastOptions={{
+                duration: 3000,
+              }}
+            />
+            <Component {...pageProps} />
+          </ProtectRoutes>
+        </ThemeProvider>
+      </Provider>
     </>
   );
 }
 
-export default wrapper.withRedux(App);
+export default App;

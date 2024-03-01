@@ -11,14 +11,26 @@ import PrintIcon from "@/public/icons/printer.svg";
 import CheckIcon from "@/public/icons/check.svg";
 import stringToCurrency from "@/utils/currency";
 import { calculateTotal } from "@/utils/calculator";
+import { OrderReceiptType } from "@/types";
 
-export default function OrderReceipt() {
-  const cart = useSelector((state: AppState) => state.cart.products);
-  const { firstName, lastName, address, email, phone } = useSelector(
-    (state: AppState) => state.checkout.checkout
-  );
-
-  const totalAmount = stringToCurrency(calculateTotal(cart));
+export default function OrderReceipt({
+  customer,
+  products,
+  id,
+}: OrderReceiptType) {
+  const {
+    additionalInfo,
+    address,
+    city,
+    country,
+    coupon,
+    email,
+    firstName,
+    lastName,
+    phone,
+    state,
+  } = customer;
+  const totalAmount = stringToCurrency(calculateTotal(products));
 
   return (
     <Stack className={Styles.container}>
@@ -28,7 +40,7 @@ export default function OrderReceipt() {
       </Box>
       {/* order number */}
       <Typography mx="auto" fontSize="30px" fontWeight={600} mt="13px">
-        Order #201
+        Order #{id}
       </Typography>
       {/* order status */}
       <Stack direction="row" gap="40px" mx="auto" mt="14px">
@@ -56,7 +68,7 @@ export default function OrderReceipt() {
       </Box>
       {/* cart items */}
       <Stack mt="28px" gap="22px">
-        {cart?.map((product) => (
+        {products?.map((product) => (
           <ProductOrder {...product} key={product.id} />
         ))}
       </Stack>

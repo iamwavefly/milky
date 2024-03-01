@@ -6,7 +6,7 @@ import Router from "next/router";
 import { useFormik } from "formik";
 import { checkoutSchema } from "@/schema";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCheckout } from "@/store/checkoutSlice";
+import { addToOrder } from "@/store/orderSlice";
 import { AppState } from "@/store/store";
 import { calculateTotal } from "@/utils/calculator";
 import stringToCurrency from "@/utils/currency";
@@ -31,7 +31,7 @@ export default function Checkout() {
     },
     validationSchema: checkoutSchema,
     onSubmit: (data) => {
-      dispatch(addToCheckout(data));
+      dispatch(addToOrder({ customer: data, products: cart }));
       Router.push("/order/complete");
     },
   });
