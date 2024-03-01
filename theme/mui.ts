@@ -239,6 +239,7 @@ const theme = createTheme({
           // maxHeight: "43px !important",
           "& > fieldset": {
             borderRadius: "10px !important",
+            padding: "0 14px",
           },
           "&.Mui-focused, &:hover": {
             "& > fieldset": {
