@@ -10,9 +10,14 @@ export default function ProductReceipt({
   image,
   subtitle,
   onClick,
+  active,
 }: ProductReceiptTypes) {
   return (
-    <Stack direction="row" className={Styles.prodContainer} onClick={onClick}>
+    <Stack
+      direction="row"
+      className={`${Styles.prodContainer} ${active ? Styles.active : ""}`}
+      onClick={onClick}
+    >
       <Stack direction="row" alignItems="center">
         {/* product thumbnail */}
         <Box className={Styles.thumbnail}>

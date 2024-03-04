@@ -20,6 +20,7 @@ export type ProductReceiptTypes = {
   name?: string;
   subtitle?: string;
   onClick: () => void;
+  active?: boolean;
 };
 
 export type CustomerTypes = {

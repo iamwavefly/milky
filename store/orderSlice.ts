@@ -4,18 +4,17 @@ import { HYDRATE } from "next-redux-wrapper";
 import { CustomerTypes, ProductTypes } from "@/types";
 
 type StateTypes = {
-  // order: [
-  //   {
-  //     id: number;
-  //     customer: CustomerTypes;
-  //     products: ProductTypes[];
-  //   }
-  // ];
-  order: any;
+  order: [
+    {
+      id: number;
+      customer: CustomerTypes;
+      products: ProductTypes[];
+    }
+  ];
 };
 
 // Initial state
-const initialState: StateTypes = {
+const initialState: any = {
   order: [],
 };
 // Actual Slice

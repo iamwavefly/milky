@@ -43,6 +43,9 @@ export const cartSlice = createSlice({
         itemToUpdate.quantity = quantity;
       }
     },
+    clearCart: (state) => {
+      state.products = [];
+    },
     setSearchQuery: (state, action) => {
       state.searchQuery = action.payload;
     },
@@ -59,8 +62,13 @@ export const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, updateQuantity, setSearchQuery } =
-  cartSlice.actions;
+export const {
+  addToCart,
+  removeFromCart,
+  updateQuantity,
+  clearCart,
+  setSearchQuery,
+} = cartSlice.actions;
 
 export const selectCartState = (state: AppState) => state.cart;
 

@@ -10,6 +10,7 @@ import { addToOrder } from "@/store/orderSlice";
 import { AppState } from "@/store/store";
 import { calculateTotal } from "@/utils/calculator";
 import stringToCurrency from "@/utils/currency";
+import { clearCart } from "@/store/cartSlice";
 
 export default function Checkout() {
   const cart = useSelector((state: AppState) => state.cart.products);
@@ -32,6 +33,7 @@ export default function Checkout() {
     validationSchema: checkoutSchema,
     onSubmit: (data) => {
       dispatch(addToOrder({ customer: data, products: cart }));
+      dispatch(clearCart());
       Router.push("/order/complete");
     },
   });
